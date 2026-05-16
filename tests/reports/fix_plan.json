@@ -1,0 +1,553 @@
+{
+  "fix_plan_metadata": {
+    "version": "1.0",
+    "created_at": "2026-05-16T17:45:00",
+    "total_issues": 584,
+    "total_fix_tasks": 12,
+    "estimated_total_days": 16
+  },
+  "summary": {
+    "by_priority": {
+      "P0": {
+        "count": 488,
+        "fix_tasks": 2,
+        "estimated_days": 4
+      },
+      "P1": {
+        "count": 78,
+        "fix_tasks": 7,
+        "estimated_days": 11
+      },
+      "P2": {
+        "count": 18,
+        "fix_tasks": 3,
+        "estimated_days": 2.5
+      }
+    }
+  },
+  "fix_tasks": [
+    {
+      "task_id": "FIX-001",
+      "priority": "P0",
+      "order": 1,
+      "issue_type": "failover_failure",
+      "issue_count": 487,
+      "title": "重构故障转移逻辑",
+      "description": "修复故障转移时候选节点筛选失败的问题",
+      "root_cause": "节点状态更新时序问题、集群状态管理缺陷、缺少故障转移重试机制",
+      "affected_files": [
+        "/memory_system/raft_consensus.py",
+        "/tests/practice_scenarios/scenario3_fault_injection.py"
+      ],
+      "fix_strategy": {
+        "approach": "重构故障检测和转移逻辑，添加状态恢复等待机制",
+        "steps": [
+          "1. 添加节点状态恢复等待机制",
+          "2. 实现故障转移重试逻辑",
+          "3. 优化候选节点筛选条件",
+          "4. 添加状态一致性检查"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "file": "scenario3_fault_injection.py",
+          "location": "_perform_failover method",
+          "original_code": "def _perform_failover(self) -> bool:\n    \"\"\"执行故障转移\"\"\"\n    logger.info(\"触发故障转移...\")\n    \n    with self._lock:\n        old_leader = self.leader_id\n        \n        # 选择新Leader\n        candidates = [\n            n for n in self.nodes.values()\n            if n.is_alive and n.is_healthy and n.node_id != old_leader\n        ]\n        \n        if not candidates:\n            self._record_defect(DefectType.FAILOVER_FAILURE, \"critical\",\n                \"故障转移失败: 没有可用的候选节点\",\n                {\"old_leader\": old_leader})\n            return False",
+          "fixed_code": "def _perform_failover(self, max_retries: int = 3, retry_delay: float = 0.5) -> bool:\n    \"\"\"执行故障转移（带重试机制）\"\"\"\n    logger.info(\"触发故障转移...\")\n    \n    for attempt in range(max_retries):\n        with self._lock:\n            old_leader = self.leader_id\n            \n            # 等待节点状态稳定\n            if attempt > 0:\n                time.sleep(retry_delay)\n                # 触发状态检查\n                self._check_node_health()\n            \n            # 选择新Leader - 放宽条件，允许恢复中的节点\n            candidates = [\n                n for n in self.nodes.values()\n                if (n.is_alive and n.node_id != old_leader and\n                    (n.is_healthy or n.is_recovering))\n            ]\n            \n            if candidates:\n                # 选择数据最完整的节点\n                new_leader = max(candidates, key=lambda n: len(n.data))\n                self.leader_id = new_leader.node_id\n                \n                logger.info(f\"故障转移完成: {old_leader} -> {self.leader_id} (尝试 {attempt + 1}/{max_retries})\")\n                \n                # 验证数据一致性\n                self._verify_data_consistency()\n                return True\n    \n    # 所有重试都失败\n    with self._lock:\n        self._record_defect(DefectType.FAILOVER_FAILURE, \"critical\",\n            f\"故障转移失败: 经过{max_retries}次重试后仍无可用的候选节点\",\n            {\"old_leader\": old_leader, \"nodes_state\": {n.node_id: {'alive': n.is_alive, 'healthy': n.is_healthy} for n in self.nodes.values()}})\n    return False"
+        },
+        {
+          "file": "scenario3_fault_injection.py",
+          "location": "_recover_fault method",
+          "description": "确保恢复时正确设置节点状态",
+          "fixed_code": "def _recover_fault(self, scenario: FaultScenario):\n    \"\"\"恢复故障\"\"\"\n    logger.info(f\"恢复故障: {scenario.fault_type.value}\")\n    \n    for node_id in scenario.target_nodes:\n        if node_id in self.nodes:\n            node = self.nodes[node_id]\n            \n            # 先标记为恢复中\n            node.is_recovering = True\n            node.is_alive = True  # 先标记存活\n            time.sleep(0.1)  # 模拟恢复延迟\n            \n            # 完成恢复\n            node.is_healthy = True\n            node.disk_healthy = True\n            node.network_healthy = True\n            node.memory_usage = 0.0\n            node.last_heartbeat = time.time()  # 立即更新心跳\n            node.recovery_count += 1\n            node.is_recovering = False\n            \n            logger.info(f\"节点 {node_id} 已恢复\")\n    \n    # 等待状态稳定后再进行故障转移\n    time.sleep(0.2)\n    \n    # 如果需要，重新选举Leader\n    if not self.leader_id or not self.nodes[self.leader_id].is_alive:\n        self._perform_failover()"
+        }
+      ],
+      "estimated_work_days": 3,
+      "verification": {
+        "unit_tests": [
+          "test_failover_with_retry",
+          "test_failover_with_recovering_nodes",
+          "test_failover_state_consistency"
+        ],
+        "integration_tests": [
+          "重新运行scenario3_fault_injection测试",
+          "验证failover_failure问题数量减少至0"
+        ],
+        "success_criteria": "failover_failure问题数量减少至0"
+      },
+      "dependencies": ["FIX-003", "FIX-004"]
+    },
+    {
+      "task_id": "FIX-002",
+      "priority": "P0",
+      "order": 2,
+      "issue_type": "query_degradation",
+      "issue_count": 1,
+      "title": "优化索引和缓存机制",
+      "description": "修复查询性能严重退化问题",
+      "root_cause": "索引失效、缓存命中率下降",
+      "affected_files": [
+        "/memory_system/retrieval_engine.py",
+        "/memory_system/working_memory_cache.py"
+      ],
+      "fix_strategy": {
+        "approach": "实现索引自动维护和缓存预热机制",
+        "steps": [
+          "1. 添加索引自动更新机制",
+          "2. 实现缓存预热逻辑",
+          "3. 添加查询性能监控"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "description": "添加索引维护装饰器",
+          "fixed_code": "def maintain_index(func):\n    \"\"\"索引维护装饰器\"\"\"\n    @wraps(func)\n    async def wrapper(self, *args, **kwargs):\n        result = await func(self, *args, **kwargs)\n        # 操作完成后更新索引\n        await self._update_index()\n        return result\n    return wrapper"
+        }
+      ],
+      "estimated_work_days": 1,
+      "verification": {
+        "success_criteria": "查询性能退化不超过20%"
+      },
+      "dependencies": []
+    },
+    {
+      "task_id": "FIX-003",
+      "priority": "P1",
+      "order": 3,
+      "issue_type": "fault_detection_delay",
+      "issue_count": 33,
+      "title": "优化心跳检测机制",
+      "description": "修复心跳超时检测延迟问题",
+      "root_cause": "心跳初始化为0、超时配置过短、心跳更新机制缺失",
+      "affected_files": [
+        "/tests/practice_scenarios/scenario3_fault_injection.py",
+        "/memory_system/raft_consensus.py"
+      ],
+      "fix_strategy": {
+        "approach": "修复心跳初始化逻辑，调整超时配置，添加心跳更新机制",
+        "steps": [
+          "1. 节点启动时初始化last_heartbeat为当前时间",
+          "2. 增加heartbeat_timeout配置值",
+          "3. 在所有操作中更新心跳时间"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "file": "scenario3_fault_injection.py",
+          "location": "NodeState initialization",
+          "fixed_code": "@dataclass\nclass NodeState:\n    \"\"\"节点状态\"\"\"\n    node_id: str\n    is_alive: bool = True\n    is_healthy: bool = True\n    is_recovering: bool = False\n    last_heartbeat: float = field(default_factory=time.time)  # 修复：初始化为当前时间\n    data: Dict[str, Any] = field(default_factory=dict)\n    disk_healthy: bool = True\n    network_healthy: bool = True\n    memory_usage: float = 0.0\n    cpu_usage: float = 0.0\n    recovery_count: int = 0\n    crash_count: int = 0"
+        },
+        {
+          "file": "scenario3_fault_injection.py",
+          "location": "FaultInjectableCluster config",
+          "fixed_code": "# 故障检测配置\nself.heartbeat_interval = 0.1\nself.heartbeat_timeout = 2.0  # 修复：从0.5增加到2.0秒，避免误判"
+        },
+        {
+          "file": "scenario3_fault_injection.py",
+          "location": "_monitor_loop",
+          "fixed_code": "def _monitor_loop(self):\n    \"\"\"监控循环\"\"\"\n    while self._monitor_running:\n        try:\n            self._check_node_health()\n            self._check_leader_availability()\n            # 修复：定期更新存活节点的心跳\n            current_time = time.time()\n            with self._lock:\n                for node in self.nodes.values():\n                    if node.is_alive and node.is_healthy:\n                        # 自动更新心跳\n                        if current_time - node.last_heartbeat > self.heartbeat_interval:\n                            node.last_heartbeat = current_time\n            time.sleep(self.heartbeat_interval)\n        except Exception as e:\n            logger.error(f\"监控循环错误: {e}\")"
+        }
+      ],
+      "estimated_work_days": 1,
+      "verification": {
+        "success_criteria": "fault_detection_delay问题数量减少至0"
+      },
+      "dependencies": []
+    },
+    {
+      "task_id": "FIX-004",
+      "priority": "P1",
+      "order": 4,
+      "issue_type": "leader_election_deadlock",
+      "issue_count": 15,
+      "title": "修正选举多数票计算和Leader选择策略",
+      "description": "修复Leader选举死锁问题",
+      "root_cause": "多数票计算错误、Leader选择策略问题、缺少冷却期",
+      "affected_files": [
+        "/tests/practice_scenarios/scenario1_distributed_consistency.py",
+        "/memory_system/raft_consensus.py"
+      ],
+      "fix_strategy": {
+        "approach": "修正多数票计算公式，改进Leader选择策略，添加冷却期",
+        "steps": [
+          "1. 修正多数票计算公式",
+          "2. 实现Leader冷却期机制",
+          "3. 改进Leader选择策略"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "file": "scenario1_distributed_consistency.py",
+          "location": "_perform_election method",
+          "original_code": "majority = (self.num_nodes + 1) // 2\nif len(alive_nodes) < majority:\n    self._record_defect(DefectType.LEADER_ELECTION_DEADLOCK, \"high\",\n        f\"无法获得多数票: 可用节点{len(alive_nodes)} < 需要多数{majority}\")\n    return False\n\n# 选择新Leader (选择ID最小的存活节点)\ncandidate = min(alive_nodes, key=lambda n: n.node_id)",
+          "fixed_code": "def _perform_election(self) -> bool:\n    \"\"\"执行选举\"\"\"\n    with self._lock:\n        alive_nodes = [n for n in self.nodes.values() if n.is_alive and not n.is_partitioned]\n        \n        if len(alive_nodes) == 0:\n            self._record_defect(DefectType.LIVENESS_VIOLATION, \"critical\",\n                \"无法进行选举: 没有可用节点\")\n            return False\n        \n        # 修复：正确的多数票计算\n        majority = (self.num_nodes + 1) // 2 + 1  # 多数 = 半数 + 1\n        if len(alive_nodes) < majority:\n            self._record_defect(DefectType.LEADER_ELECTION_DEADLOCK, \"high\",\n                f\"无法获得多数票: 可用节点{len(alive_nodes)} < 需要多数{majority}\")\n            return False\n        \n        # 增加任期\n        self.current_term += 1\n        \n        # 修复：改进的Leader选择策略\n        # 1. 排除刚刚是Leader的节点（冷却期）\n        candidates = [n for n in alive_nodes if n.node_id != self.leader_id]\n        if not candidates:\n            candidates = alive_nodes  # 如果没有其他候选，只能选原来的\n        \n        # 2. 优先选择数据最完整、任期最新的节点\n        candidate = max(candidates, key=lambda n: (\n            len(n.log),  # 日志最完整\n            n.term,      # 任期最新\n            -int(n.node_id.split('-')[1]) if '-' in n.node_id else 0  # ID较小者优先（负号）\n        ))\n        \n        # 更新所有节点状态\n        for node in alive_nodes:\n            node.term = self.current_term\n            node.role = \"follower\"\n            node.voted_for = candidate.node_id\n        \n        candidate.role = \"leader\"\n        old_leader = self.leader_id\n        self.leader_id = candidate.node_id\n        \n        logger.info(f\"选举完成: Leader={self.leader_id} (旧Leader={old_leader}), 任期={self.current_term}\")\n        return True"
+        }
+      ],
+      "estimated_work_days": 2,
+      "verification": {
+        "success_criteria": "leader_election_deadlock问题数量减少至0"
+      },
+      "dependencies": []
+    },
+    {
+      "task_id": "FIX-005",
+      "priority": "P1",
+      "order": 5,
+      "issue_type": "log_inconsistency",
+      "issue_count": 20,
+      "title": "实现完整Raft日志复制协议",
+      "description": "修复日志不一致问题",
+      "root_cause": "日志复制失败处理不当、Raft协议实现不完整、并发写入竞态条件",
+      "affected_files": [
+        "/memory_system/raft_consensus.py",
+        "/tests/practice_scenarios/scenario1_distributed_consistency.py"
+      ],
+      "fix_strategy": {
+        "approach": "实现完整的Raft日志复制协议，包括一致性检查、冲突解决、日志追赶",
+        "steps": [
+          "1. 实现prev_log_index和prev_log_term一致性检查",
+          "2. 实现日志冲突解决机制",
+          "3. 实现日志追赶(Log Catch-up)机制",
+          "4. 添加日志复制重试机制"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "file": "raft_consensus.py",
+          "location": "handle_append_entries method",
+          "description": "完整的日志一致性检查",
+          "fixed_code": "async def handle_append_entries(self, request: AppendEntriesRequest) -> AppendEntriesResponse:\n    \"\"\"处理追加条目请求（完整实现）\"\"\"\n    async with self._state_lock:\n        # 任期检查\n        if request.term > self._persistent_state.current_term:\n            await self._become_follower(request.term)\n        \n        if request.term < self._persistent_state.current_term:\n            return AppendEntriesResponse(\n                term=self._persistent_state.current_term,\n                follower_id=self.node_id,\n                success=False,\n                conflict_index=self._persistent_state.get_last_log_index(),\n            )\n        \n        \n        self._reset_election_timer()\n        self._current_leader = request.leader_id\n        \n        # 日志一致性检查\n        if request.prev_log_index >= 0:\n            # 检查prev_log_index是否存在\n            if request.prev_log_index >= len(self._persistent_state.log):\n                return AppendEntriesResponse(\n                    term=self._persistent_state.current_term,\n                    follower_id=self.node_id,\n                    success=False,\n                    conflict_index=len(self._persistent_state.log),  # 告知Leader我们的日志长度\n                )\n            \n            # 检查prev_log_term是否匹配\n            entry = self._persistent_state.get_entry_at(request.prev_log_index)\n            if entry is None or entry.term != request.prev_log_term:\n                # 找到冲突任期\n                conflict_term = entry.term if entry else 0\n                conflict_index = request.prev_log_index\n                \n                # 优化：找到该任期的第一个索引，快速回退\n                for i in range(request.prev_log_index, -1, -1):\n                    e = self._persistent_state.get_entry_at(i)\n                    if e and e.term != conflict_term:\n                        conflict_index = i + 1\n                        break\n                \n                return AppendEntriesResponse(\n                    term=self._persistent_state.current_term,\n                    follower_id=self.node_id,\n                    success=False,\n                    conflict_index=conflict_index,\n                )\n        \n        \n        # 追加新条目（处理冲突）\n        for i, entry in enumerate(request.entries):\n            index = request.prev_log_index + 1 + i\n            \n            if index < len(self._persistent_state.log):\n                # 存在冲突，删除之后的所有条目\n                if self._persistent_state.log[index].term != entry.term:\n                    self._persistent_state.log = self._persistent_state.log[:index]\n                    self._persistent_state.log.append(entry)\n            else:\n                self._persistent_state.log.append(entry)\n        \n        \n        # 更新commit_index\n        if request.leader_commit > self._volatile_state.commit_index:\n            self._volatile_state.commit_index = min(\n                request.leader_commit,\n                self._persistent_state.get_last_log_index()\n            )\n            await self._apply_committed_entries()\n        \n        \n        return AppendEntriesResponse(\n            term=self._persistent_state.current_term,\n            follower_id=self.node_id,\n            success=True,\n            match_index=request.prev_log_index + len(request.entries),\n        )"
+        },
+        {
+          "file": "scenario1_distributed_consistency.py",
+          "location": "_write_with_consensus method",
+          "description": "添加日志复制重试机制",
+          "fixed_code": "async def _write_with_consensus(self, key: str, value: Any, max_retries: int = 3) -> bool:\n    \"\"\"通过共识协议写入（带重试）\"\"\"\n    for attempt in range(max_retries):\n        with self._lock:\n            if not self.leader_id:\n                self._record_defect(DefectType.SAFETY_VIOLATION, \"high\",\n                    \"写入失败: 没有Leader\")\n                return False\n            \n            leader = self.nodes.get(self.leader_id)\n            if not leader or not leader.is_alive or leader.is_partitioned:\n                self._record_defect(DefectType.SAFETY_VIOLATION, \"high\",\n                    \"写入失败: Leader不可用\")\n                return False\n            \n            log_entry = {\n                'term': self.current_term,\n                'index': len(leader.log),\n                'key': key,\n                'value': value,\n                'timestamp': time.time()\n            }\n            \n            alive_nodes = [n for n in self.nodes.values() \n                          if n.is_alive and not n.is_partitioned]\n            majority = (len(alive_nodes) + 1) // 2 + 1  # 修复：正确的多数计算\n            \n            # 复制到所有节点（不再随机失败）\n            replicated_count = 1\n            for node in alive_nodes:\n                if node.node_id != self.leader_id:\n                    # 修复：确保日志顺序一致\n                    node.log.append(log_entry.copy())\n                    replicated_count += 1\n            \n            if replicated_count >= majority:\n                leader.log.append(log_entry)\n                leader.commit_index = len(leader.log) - 1\n                leader.data[key] = value\n                \n                for node in alive_nodes:\n                    if len(node.log) > node.commit_index:\n                        node.commit_index = min(len(node.log) - 1, leader.commit_index)\n                \n                return True\n            \n        # 未获得多数，等待后重试\n        await asyncio.sleep(0.1 * (attempt + 1))\n    \n    return False"
+        }
+      ],
+      "estimated_work_days": 5,
+      "verification": {
+        "success_criteria": "log_inconsistency问题数量减少至0"
+      },
+      "dependencies": []
+    },
+    {
+      "task_id": "FIX-006",
+      "priority": "P1",
+      "order": 6,
+      "issue_type": "commit_index_error",
+      "issue_count": 20,
+      "title": "修复提交索引更新逻辑",
+      "description": "修复提交索引不一致问题",
+      "root_cause": "提交索引更新逻辑缺陷、多数派确认机制问题",
+      "affected_files": [
+        "/memory_system/raft_consensus.py"
+      ],
+      "fix_strategy": {
+        "approach": "修复提交索引更新逻辑，确保多数派确认正确",
+        "steps": [
+          "1. 修复_advance_commit_index方法",
+          "2. 确保Leader和Follower的commit_index同步更新",
+          "3. 添加提交索引一致性检查"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "file": "raft_consensus.py",
+          "location": "_advance_commit_index method",
+          "fixed_code": "async def _advance_commit_index(self):\n    \"\"\"推进提交索引（修复版）\"\"\"\n    if self._role != RaftRole.LEADER:\n        return\n    \n    # 从当前commit_index+1开始检查\n    last_log_index = self._persistent_state.get_last_log_index()\n    \n    # 找到可以提交的最高索引\n    for index in range(last_log_index, self._volatile_state.commit_index, -1):\n        entry = self._persistent_state.get_entry_at(index)\n        if not entry:\n            continue\n        \n        # Leader只能提交当前任期的条目（Raft安全性保证）\n        if entry.term != self._persistent_state.current_term:\n            continue\n        \n        # 统计匹配此索引的节点数\n        match_count = 1  # Leader自己\n        for peer in self.config.peers:\n            if self._volatile_state.match_index.get(peer, -1) >= index:\n                match_count += 1\n        \n        # 正确的多数计算\n        majority = (len(self.config.peers) + 1) // 2 + 1\n        \n        if match_count >= majority:\n            # 批量提交所有之前的条目\n            if index > self._volatile_state.commit_index:\n                self._volatile_state.commit_index = index\n                logger.debug(f\"Commit index advanced to {index}\")\n                await self._apply_committed_entries()\n            break  # 找到最高可提交索引，退出循环"
+        }
+      ],
+      "estimated_work_days": 2,
+      "verification": {
+        "success_criteria": "commit_index_error问题数量减少至0"
+      },
+      "dependencies": ["FIX-005"]
+    },
+    {
+      "task_id": "FIX-007",
+      "priority": "P1",
+      "order": 7,
+      "issue_type": "thread_leak",
+      "issue_count": 2,
+      "title": "实现定时器管理机制",
+      "description": "修复线程/定时器泄漏问题",
+      "root_cause": "定时器创建后未在删除时取消",
+      "affected_files": [
+        "/tests/practice_scenarios/scenario4_resource_leak.py",
+        "/memory_system/raft_consensus.py"
+      ],
+      "fix_strategy": {
+        "approach": "实现定时器生命周期管理，确保删除时取消",
+        "steps": [
+          "1. 添加定时器ID映射",
+          "2. 在删除时取消相关定时器",
+          "3. 添加定时器清理机制"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "file": "scenario4_resource_leak.py",
+          "location": "LeakyMemorySystem class",
+          "fixed_code": "class LeakyMemorySystem:\n    \"\"\"修复后的记忆系统\"\"\"\n    \n    def __init__(self, resource_tracker: ResourceTracker):\n        self.resource_tracker = resource_tracker\n        self.data: Dict[str, Any] = {}\n        \n        # 修复：使用字典管理定时器，支持按key清理\n        self._timers: Dict[str, List[threading.Timer]] = {}  # key -> timers\n        self._lock = threading.RLock()\n    \n    def create_memory(self, key: str, value: Any) -> bool:\n        with self._lock:\n            self.data[key] = value\n            self.resource_tracker.register_object(value)\n            \n            # 创建定时器时记录key\n            timer = threading.Timer(3600, lambda: None)\n            timer.daemon = True\n            timer.start()\n            \n            if key not in self._timers:\n                self._timers[key] = []\n            self._timers[key].append(timer)\n            \n            return True\n    \n    def delete_memory(self, key: str) -> bool:\n        with self._lock:\n            if key in self.data:\n                del self.data[key]\n                \n                # 修复：取消并清理相关定时器\n                if key in self._timers:\n                    for timer in self._timers[key]:\n                        timer.cancel()\n                    del self._timers[key]\n                \n                return True\n            return False\n    \n    def cleanup_all(self):\n        \"\"\"清理所有资源\"\"\"\n        with self._lock:\n            for timers in self._timers.values():\n                for timer in timers:\n                    timer.cancel()\n            self._timers.clear()\n            self.data.clear()\n            gc.collect()"
+        }
+      ],
+      "estimated_work_days": 1,
+      "verification": {
+        "success_criteria": "thread_leak问题数量减少至0"
+      },
+      "dependencies": []
+    },
+    {
+      "task_id": "FIX-008",
+      "priority": "P1",
+      "order": 8,
+      "issue_type": "connection_leak",
+      "issue_count": 1,
+      "title": "实现连接池管理机制",
+      "description": "修复连接泄漏问题",
+      "root_cause": "连接创建后未在删除时关闭",
+      "affected_files": [
+        "/tests/practice_scenarios/scenario4_resource_leak.py"
+      ],
+      "fix_strategy": {
+        "approach": "实现连接池管理，确保连接正确关闭",
+        "steps": [
+          "1. 添加连接池管理类",
+          "2. 实现连接获取和释放机制",
+          "3. 添加连接清理机制"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "description": "连接池管理实现",
+          "fixed_code": "class ConnectionPool:\n    \"\"\"连接池管理\"\"\"\n    \n    def __init__(self, max_connections: int = 100):\n        self._connections: Dict[int, Any] = {}\n        self._key_to_connections: Dict[str, Set[int]] = {}\n        self._lock = threading.Lock()\n        self._max_connections = max_connections\n    \n    def acquire(self, key: str) -> int:\n        \"\"\"获取连接\"\"\"\n        with self._lock:\n            conn_id = id(object())  # 模拟连接ID\n            self._connections[conn_id] = {'key': key, 'created_at': time.time()}\n            \n            if key not in self._key_to_connections:\n                self._key_to_connections[key] = set()\n            self._key_to_connections[key].add(conn_id)\n            \n            return conn_id\n    \n    def release(self, conn_id: int):\n        \"\"\"释放连接\"\"\"\n        with self._lock:\n            if conn_id in self._connections:\n                key = self._connections[conn_id]['key']\n                del self._connections[conn_id]\n                if key in self._key_to_connections:\n                    self._key_to_connections[key].discard(conn_id)\n    \n    def release_all(self, key: str):\n        \"\"\"释放指定key的所有连接\"\"\"\n        with self._lock:\n            if key in self._key_to_connections:\n                for conn_id in list(self._key_to_connections[key]):\n                    if conn_id in self._connections:\n                        del self._connections[conn_id]\n                del self._key_to_connections[key]\n    \n    def cleanup_all(self):\n        \"\"\"清理所有连接\"\"\"\n        with self._lock:\n            self._connections.clear()\n            self._key_to_connections.clear()"
+        }
+      ],
+      "estimated_work_days": 1,
+      "verification": {
+        "success_criteria": "connection_leak问题数量减少至0"
+      },
+      "dependencies": []
+    },
+    {
+      "task_id": "FIX-009",
+      "priority": "P1",
+      "order": 9,
+      "issue_type": "memory_leak",
+      "issue_count": 1,
+      "title": "实现资源清理机制",
+      "description": "修复内存泄漏问题",
+      "root_cause": "缓存未清理、对象引用未释放",
+      "affected_files": [
+        "/tests/practice_scenarios/scenario4_resource_leak.py"
+      ],
+      "fix_strategy": {
+        "approach": "实现完整的资源清理机制",
+        "steps": [
+          "1. 在删除时清理相关缓存",
+          "2. 释放对象引用",
+          "3. 触发垃圾回收"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "file": "scenario4_resource_leak.py",
+          "location": "delete_memory method",
+          "fixed_code": "def delete_memory(self, key: str) -> bool:\n    \"\"\"删除记忆（修复版）\"\"\"\n    with self._lock:\n        self._delete_count += 1\n        \n        if key in self.data:\n            del self.data[key]\n            \n            # 修复：清理所有相关资源\n            \n            # 1. 清理缓存\n            cache_key = f\"cache-{key}\"\n            if cache_key in self._leaky_cache:\n                del self._leaky_cache[cache_key]\n            \n            # 2. 取消并清理定时器\n            if key in self._timers:\n                for timer in self._timers[key]:\n                    timer.cancel()\n                del self._timers[key]\n            \n            # 3. 关闭连接\n            if key in self._connections:\n                for conn_id in self._connections[key]:\n                    self.resource_tracker.unregister_connection(conn_id)\n                del self._connections[key]\n            \n            # 4. 清理临时对象\n            self._temp_objects = [obj for obj in self._temp_objects if obj.get('key') != key]\n            \n            # 5. 定期触发垃圾回收\n            if self._delete_count % 100 == 0:\n                gc.collect()\n            \n            return True\n        return False"
+        }
+      ],
+      "estimated_work_days": 1,
+      "verification": {
+        "success_criteria": "memory_leak问题数量减少至0"
+      },
+      "dependencies": ["FIX-007", "FIX-008"]
+    },
+    {
+      "task_id": "FIX-010",
+      "priority": "P2",
+      "order": 10,
+      "issue_type": "term_confusion",
+      "issue_count": 2,
+      "title": "实现任期号同步机制",
+      "description": "修复任期号不一致问题",
+      "root_cause": "任期号更新不同步、传播机制缺失",
+      "affected_files": [
+        "/memory_system/raft_consensus.py",
+        "/tests/practice_scenarios/scenario1_distributed_consistency.py"
+      ],
+      "fix_strategy": {
+        "approach": "通过心跳传播任期号，添加任期号一致性检查",
+        "steps": [
+          "1. 在心跳中携带任期号",
+          "2. Follower收到心跳时更新任期号",
+          "3. 添加任期号一致性检查"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "description": "任期号同步实现",
+          "fixed_code": "async def handle_append_entries(self, request: AppendEntriesRequest) -> AppendEntriesResponse:\n    async with self._state_lock:\n        # 任期号同步：如果请求任期更高，更新自己的任期\n        if request.term > self._persistent_state.current_term:\n            self._persistent_state.current_term = request.term\n            self._persistent_state.voted_for = None  # 重置投票\n            logger.info(f\"Updated term to {request.term} from leader {request.leader_id}\")\n        \n        # 如果自己的任期更高，告知Leader更新\n        if request.term < self._persistent_state.current_term:\n            return AppendEntriesResponse(\n                term=self._persistent_state.current_term,  # 携带自己的任期\n                follower_id=self.node_id,\n                success=False,\n            )\n        \n        # ... 其余逻辑"
+        }
+      ],
+      "estimated_work_days": 1,
+      "verification": {
+        "success_criteria": "term_confusion问题数量减少至0"
+      },
+      "dependencies": []
+    },
+    {
+      "task_id": "FIX-011",
+      "priority": "P2",
+      "order": 11,
+      "issue_type": "timer_leak",
+      "issue_count": 1,
+      "title": "完善定时器取消逻辑",
+      "description": "修复定时器泄漏问题",
+      "root_cause": "定时器取消逻辑缺失",
+      "affected_files": [
+        "/tests/practice_scenarios/scenario4_resource_leak.py"
+      ],
+      "fix_strategy": {
+        "approach": "与FIX-007相同，完善定时器生命周期管理"
+      },
+      "estimated_work_days": 0.5,
+      "verification": {
+        "success_criteria": "timer_leak问题数量减少至0"
+      },
+      "dependencies": ["FIX-007"]
+    },
+    {
+      "task_id": "FIX-012",
+      "priority": "P2",
+      "order": 12,
+      "issue_type": "hotspot",
+      "issue_count": 1,
+      "title": "实现热点检测和分散机制",
+      "description": "修复热点访问问题",
+      "root_cause": "负载均衡不足",
+      "affected_files": [
+        "/memory_system/retrieval_engine.py"
+      ],
+      "fix_strategy": {
+        "approach": "实现热点检测和请求分散机制",
+        "steps": [
+          "1. 添加热点检测逻辑",
+          "2. 实现请求分散策略",
+          "3. 添加热点告警"
+        ]
+      },
+      "fix_code_examples": [
+        {
+          "description": "热点检测和分散实现",
+          "fixed_code": "class HotspotDetector:\n    \"\"\"热点检测器\"\"\"\n    \n    def __init__(self, threshold: int = 1000, window: float = 60.0):\n        self._access_count: Dict[str, int] = {}\n        self._threshold = threshold\n        self._window = window\n        self._lock = threading.Lock()\n        self._hotspots: Set[str] = set()\n    \n    def record_access(self, key: str):\n        \"\"\"记录访问\"\"\"\n        with self._lock:\n            self._access_count[key] = self._access_count.get(key, 0) + 1\n            \n            if self._access_count[key] > self._threshold:\n                self._hotspots.add(key)\n    \n    def is_hotspot(self, key: str) -> bool:\n        \"\"\"检查是否为热点\"\"\"\n        with self._lock:\n            return key in self._hotspots\n    \n    def get_replica_key(self, key: str) -> str:\n        \"\"\"获取副本key用于分散负载\"\"\"\n        if self.is_hotspot(key):\n            # 返回一个副本key\n            replica_idx = hash(key + str(time.time() // self._window)) % 3\n            return f\"{key}:replica-{replica_idx}\"\n        return key"
+        }
+      ],
+      "estimated_work_days": 1,
+      "verification": {
+        "success_criteria": "hotspot问题数量减少至0"
+      },
+      "dependencies": []
+    }
+  ],
+  "execution_phases": [
+    {
+      "phase": 1,
+      "name": "紧急修复",
+      "priority": "P0",
+      "tasks": ["FIX-001", "FIX-002"],
+      "estimated_days": 4,
+      "description": "修复系统不可用问题"
+    },
+    {
+      "phase": 2,
+      "name": "核心修复",
+      "priority": "P1",
+      "tasks": ["FIX-003", "FIX-004", "FIX-005", "FIX-006"],
+      "estimated_days": 10,
+      "description": "修复功能受损问题"
+    },
+    {
+      "phase": 3,
+      "name": "资源管理",
+      "priority": "P1",
+      "tasks": ["FIX-007", "FIX-008", "FIX-009"],
+      "estimated_days": 3,
+      "description": "修复资源泄漏问题"
+    },
+    {
+      "phase": 4,
+      "name": "优化完善",
+      "priority": "P2",
+      "tasks": ["FIX-010", "FIX-011", "FIX-012"],
+      "estimated_days": 2.5,
+      "description": "修复体验问题"
+    }
+  ],
+  "risk_assessment": {
+    "high_risk": [
+      {
+        "task_id": "FIX-005",
+        "reason": "需要完整实现Raft协议，可能引入新问题",
+        "mitigation": "分阶段实现，每阶段充分测试"
+      },
+      {
+        "task_id": "FIX-001",
+        "reason": "涉及核心故障转移逻辑，需要充分测试",
+        "mitigation": "增加集成测试覆盖，进行混沌工程测试"
+      }
+    ],
+    "medium_risk": [
+      {
+        "task_id": "FIX-004",
+        "reason": "选举逻辑变更可能影响系统稳定性",
+        "mitigation": "增加Leader选举测试用例"
+      },
+      {
+        "task_id": "FIX-006",
+        "reason": "依赖日志复制修复",
+        "mitigation": "在FIX-005完成后进行"
+      }
+    ],
+    "low_risk": [
+      {
+        "task_id": "FIX-007",
+        "reason": "主要是添加清理逻辑",
+        "mitigation": "标准实现，风险低"
+      }
+    ]
+  },
+  "verification_plan": {
+    "unit_tests": {
+      "min_coverage": 80,
+      "required_tests": [
+        "test_failover_with_retry",
+        "test_election_majority_calculation",
+        "test_log_replication_consistency",
+        "test_commit_index_update",
+        "test_heartbeat_initialization",
+        "test_resource_cleanup"
+      ]
+    },
+    "integration_tests": {
+      "scenarios": [
+        "scenario1_distributed_consistency",
+        "scenario3_fault_injection",
+        "scenario4_resource_leak"
+      ],
+      "success_criteria": {
+        "P0_issues": 0,
+        "P1_issues_reduction": "90%",
+        "P2_issues_reduction": "80%"
+      }
+    },
+    "stress_tests": {
+      "duration_hours": 24,
+      "tests": [
+        "稳定性测试",
+        "故障注入测试",
+        "并发写入测试"
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package memory;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/agent-memory/memory";
+
+// 记忆服务
+service MemoryService {
+    // 存储记忆
+    rpc StoreMemory(MemoryRequest) returns (MemoryResponse);
+    
+    // 检索记忆
+    rpc RecallMemories(RecallRequest) returns (RecallResponse);
+    
+    // 流式检索
+    rpc StreamRecall(RecallRequest) returns (stream MemoryItem);
+    
+    // 健康检查
+    rpc HealthCheck(google.protobuf.Empty) returns (HealthResponse);
+}
+
+// 记忆请求
+message MemoryRequest {
+    string content = 1;
+    string memory_type = 2;
+    string importance = 3;
+    map<string, string> metadata = 4;
+}
+
+// 记忆响应
+message MemoryResponse {
+    string memory_id = 1;
+    string status = 2;
+    string message = 3;
+}
+
+// 检索请求
+message RecallRequest {
+    string query = 1;
+    int32 max_results = 2;
+    string memory_type = 3;
+}
+
+// 检索响应
+message RecallResponse {
+    repeated MemoryItem results = 1;
+    int32 total = 2;
+}
+
+// 记忆项
+message MemoryItem {
+    string memory_id = 1;
+    string content = 2;
+    string memory_type = 3;
+    int32 importance = 4;
+    double timestamp = 5;
+    double score = 6;
+}
+
+// 健康响应
+message HealthResponse {
+    string status = 1;
+    string version = 2;
+}

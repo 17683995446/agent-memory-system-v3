@@ -1,0 +1,77 @@
+{
+  "pipeline_info": {
+    "pipeline_id": "pipeline_1778946753",
+    "commit_hash": "a1b2c3d4e5f6",
+    "branch": "main",
+    "start_time": "2026-05-16T15:52:33.834863",
+    "end_time": "2026-05-16T15:52:34.636724",
+    "duration_seconds": 0.801861
+  },
+  "summary": {
+    "total_stages": 1,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0,
+    "overall_status": "failed"
+  },
+  "stages": [
+    {
+      "stage": "unit_test",
+      "name": "Unit Test Suite",
+      "status": "failed",
+      "duration_seconds": 0.8013856410980225,
+      "message": "单元测试: 7/8 通过",
+      "details": {
+        "test_cases": [
+          {
+            "name": "test_memory_store",
+            "status": "passed",
+            "duration_ms": 37.005670984482414
+          },
+          {
+            "name": "test_vector_search",
+            "status": "passed",
+            "duration_ms": 38.422565273581995
+          },
+          {
+            "name": "test_index_build",
+            "status": "passed",
+            "duration_ms": 53.47916295553998
+          },
+          {
+            "name": "test_query_parser",
+            "status": "passed",
+            "duration_ms": 45.626420479464876
+          },
+          {
+            "name": "test_cache_manager",
+            "status": "passed",
+            "duration_ms": 60.9888198344882
+          },
+          {
+            "name": "test_auth_service",
+            "status": "passed",
+            "duration_ms": 36.20020224022164
+          },
+          {
+            "name": "test_encryption",
+            "status": "failed",
+            "duration_ms": 61.36266215826652,
+            "error": "Assertion error in test_encryption"
+          },
+          {
+            "name": "test_compression",
+            "status": "passed",
+            "duration_ms": 90.90624567312615
+          }
+        ],
+        "summary": {
+          "total": 8,
+          "passed": 7,
+          "failed": 1,
+          "coverage": 94.92146436988546
+        }
+      }
+    }
+  ]
+}

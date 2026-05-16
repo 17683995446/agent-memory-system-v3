@@ -1,0 +1,100 @@
+site_name: Agent Memory System
+site_description: A hierarchical long-short term memory system for AI agents with fast retrieval
+site_author: Agent Memory Team
+site_url: https://agent-memory-system.readthedocs.io/
+
+repo_name: agent-memory-system
+repo_url: https://github.com/agent-memory-system/agent-memory-system
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - toc.follow
+    - content.code.copy
+    - content.code.annotate
+
+plugins:
+  - search
+  - mermaid2:
+      arguments:
+        theme: |
+          ^(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'default'
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - 首页: index.md
+  - 架构设计:
+      - 系统架构: architecture.md
+      - 核心抽象: core-abstractions.md
+      - 存储后端: storage-backends.md
+  - 流程详解:
+      - 记忆存储: flow-remember.md
+      - 记忆检索: flow-recall.md
+      - 记忆整合: flow-consolidate.md
+      - 记忆遗忘: flow-forget.md
+  - 时序图:
+      - API 生命周期: sequence-api.md
+      - 初始化流程: sequence-init.md
+  - API 参考: api-reference.md
+  - 配置指南: configuration.md
+  - 快速开始: quickstart.md
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/agent-memory-system

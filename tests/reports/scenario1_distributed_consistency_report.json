@@ -1,0 +1,6469 @@
+{
+  "scenario": "分布式一致性压力测试",
+  "scenario_id": "scenario1_distributed_consistency",
+  "start_time": "2026-05-16T17:25:41.678259",
+  "end_time": "2026-05-16T17:25:53.405301",
+  "duration_seconds": 11.72704267501831,
+  "summary": {
+    "total_tests": 5,
+    "defects_found": 57,
+    "critical_defects": 0,
+    "high_defects": 41,
+    "medium_defects": 16,
+    "low_defects": 0
+  },
+  "defects_by_type": {
+    "log_inconsistency": [
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952343.0076432,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 994,
+            "node-1": 890,
+            "node-2": 916,
+            "node-3": 912,
+            "node-4": 900
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952343.6492295,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1094,
+            "node-1": 979,
+            "node-2": 1005,
+            "node-3": 1008,
+            "node-4": 988
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952344.7929063,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1194,
+            "node-1": 1069,
+            "node-2": 1092,
+            "node-3": 1008,
+            "node-4": 988
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952345.876092,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1244,
+            "node-1": 1117,
+            "node-2": 1137,
+            "node-3": 1054,
+            "node-4": 1034
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952346.5865536,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1543,
+            "node-1": 1387,
+            "node-2": 1403,
+            "node-3": 1322,
+            "node-4": 1303
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.0410619,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1643,
+            "node-1": 1479,
+            "node-2": 1495,
+            "node-3": 1412,
+            "node-4": 1388
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.0480351,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1643,
+            "node-1": 1479,
+            "node-2": 1495,
+            "node-3": 1412,
+            "node-4": 1388
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.4812593,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1743,
+            "node-1": 1571,
+            "node-2": 1575,
+            "node-3": 1506,
+            "node-4": 1475
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.4880412,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1743,
+            "node-1": 1571,
+            "node-2": 1575,
+            "node-3": 1506,
+            "node-4": 1475
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.93338,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1843,
+            "node-1": 1660,
+            "node-2": 1664,
+            "node-3": 1595,
+            "node-4": 1561
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.9399512,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1843,
+            "node-1": 1660,
+            "node-2": 1664,
+            "node-3": 1595,
+            "node-4": 1561
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952348.3866546,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1943,
+            "node-1": 1750,
+            "node-2": 1754,
+            "node-3": 1686,
+            "node-4": 1652
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952348.392929,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1943,
+            "node-1": 1750,
+            "node-2": 1754,
+            "node-3": 1686,
+            "node-4": 1652
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952348.8358238,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2043,
+            "node-1": 1838,
+            "node-2": 1846,
+            "node-3": 1782,
+            "node-4": 1739
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952349.8426013,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2173,
+            "node-1": 1954,
+            "node-2": 1966,
+            "node-3": 1896,
+            "node-4": 1860
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952350.8587704,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2303,
+            "node-1": 2075,
+            "node-2": 2085,
+            "node-3": 2019,
+            "node-4": 1977
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952351.8751483,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2432,
+            "node-1": 2188,
+            "node-2": 2199,
+            "node-3": 2134,
+            "node-4": 2099
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952352.8836412,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2432,
+            "node-1": 2188,
+            "node-2": 2199,
+            "node-3": 2134,
+            "node-4": 2099
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952352.8903246,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2432,
+            "node-1": 2188,
+            "node-2": 2199,
+            "node-3": 2134,
+            "node-4": 2099
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952353.39922,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2432,
+            "node-1": 2188,
+            "node-2": 2199,
+            "node-3": 2134,
+            "node-4": 2099
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      }
+    ],
+    "commit_index_error": [
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952343.0076966,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 993,
+            "node-1": 889,
+            "node-2": 915,
+            "node-3": 911,
+            "node-4": 899
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952343.6492708,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1093,
+            "node-1": 978,
+            "node-2": 1004,
+            "node-3": 1007,
+            "node-4": 987
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952344.792959,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1193,
+            "node-1": 1068,
+            "node-2": 1091,
+            "node-3": 1007,
+            "node-4": 987
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952345.8761346,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1243,
+            "node-1": 1116,
+            "node-2": 1136,
+            "node-3": 1053,
+            "node-4": 1033
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952346.5866063,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1542,
+            "node-1": 1386,
+            "node-2": 1402,
+            "node-3": 1321,
+            "node-4": 1302
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.0411084,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1642,
+            "node-1": 1478,
+            "node-2": 1494,
+            "node-3": 1411,
+            "node-4": 1387
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.048071,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1642,
+            "node-1": 1478,
+            "node-2": 1494,
+            "node-3": 1411,
+            "node-4": 1387
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.4812963,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1742,
+            "node-1": 1570,
+            "node-2": 1574,
+            "node-3": 1505,
+            "node-4": 1474
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.488073,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1742,
+            "node-1": 1570,
+            "node-2": 1574,
+            "node-3": 1505,
+            "node-4": 1474
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.9334197,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1842,
+            "node-1": 1659,
+            "node-2": 1663,
+            "node-3": 1594,
+            "node-4": 1560
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.9399848,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1842,
+            "node-1": 1659,
+            "node-2": 1663,
+            "node-3": 1594,
+            "node-4": 1560
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952348.386698,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1942,
+            "node-1": 1749,
+            "node-2": 1753,
+            "node-3": 1685,
+            "node-4": 1651
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952348.3929589,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1942,
+            "node-1": 1749,
+            "node-2": 1753,
+            "node-3": 1685,
+            "node-4": 1651
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952348.8358593,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2042,
+            "node-1": 1837,
+            "node-2": 1845,
+            "node-3": 1781,
+            "node-4": 1738
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952349.842648,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2172,
+            "node-1": 1953,
+            "node-2": 1965,
+            "node-3": 1895,
+            "node-4": 1859
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952350.8588257,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2302,
+            "node-1": 2074,
+            "node-2": 2084,
+            "node-3": 2018,
+            "node-4": 1976
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952351.8751976,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2431,
+            "node-1": 2187,
+            "node-2": 2198,
+            "node-3": 2133,
+            "node-4": 2098
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952352.8837008,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2431,
+            "node-1": 2187,
+            "node-2": 2198,
+            "node-3": 2133,
+            "node-4": 2098
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952352.8903573,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2431,
+            "node-1": 2187,
+            "node-2": 2198,
+            "node-3": 2133,
+            "node-4": 2098
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952353.3992643,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2431,
+            "node-1": 2187,
+            "node-2": 2198,
+            "node-3": 2133,
+            "node-4": 2098
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      }
+    ],
+    "leader_election_deadlock": [
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952346.5937865,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952347.0541034,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952347.4938936,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952347.9458005,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952348.3986876,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "high",
+        "description": "无法获得多数票: 可用节点2 < 需要多数3",
+        "timestamp": 1778952351.8819647,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952352.9464839,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952352.9967918,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.0469959,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.0972931,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.1475832,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.197998,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.248389,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.298707,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.3489664,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      }
+    ],
+    "term_confusion": [
+      {
+        "defect_type": "term_confusion",
+        "severity": "medium",
+        "description": "任期号不一致",
+        "timestamp": 1778952352.8882632,
+        "evidence": {
+          "terms": {
+            "node-0": 6,
+            "node-1": 7,
+            "node-2": 8,
+            "node-3": 8,
+            "node-4": 8
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "term_confusion",
+        "severity": "medium",
+        "description": "任期号不一致",
+        "timestamp": 1778952352.8944082,
+        "evidence": {
+          "terms": {
+            "node-0": 6,
+            "node-1": 7,
+            "node-2": 8,
+            "node-3": 8,
+            "node-4": 8
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      }
+    ]
+  },
+  "defects_by_severity": {
+    "high": [
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952343.0076432,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 994,
+            "node-1": 890,
+            "node-2": 916,
+            "node-3": 912,
+            "node-4": 900
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952343.0076966,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 993,
+            "node-1": 889,
+            "node-2": 915,
+            "node-3": 911,
+            "node-4": 899
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952343.6492295,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1094,
+            "node-1": 979,
+            "node-2": 1005,
+            "node-3": 1008,
+            "node-4": 988
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952343.6492708,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1093,
+            "node-1": 978,
+            "node-2": 1004,
+            "node-3": 1007,
+            "node-4": 987
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952344.7929063,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1194,
+            "node-1": 1069,
+            "node-2": 1092,
+            "node-3": 1008,
+            "node-4": 988
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952344.792959,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1193,
+            "node-1": 1068,
+            "node-2": 1091,
+            "node-3": 1007,
+            "node-4": 987
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952345.876092,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1244,
+            "node-1": 1117,
+            "node-2": 1137,
+            "node-3": 1054,
+            "node-4": 1034
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952345.8761346,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1243,
+            "node-1": 1116,
+            "node-2": 1136,
+            "node-3": 1053,
+            "node-4": 1033
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952346.5865536,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1543,
+            "node-1": 1387,
+            "node-2": 1403,
+            "node-3": 1322,
+            "node-4": 1303
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952346.5866063,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1542,
+            "node-1": 1386,
+            "node-2": 1402,
+            "node-3": 1321,
+            "node-4": 1302
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.0410619,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1643,
+            "node-1": 1479,
+            "node-2": 1495,
+            "node-3": 1412,
+            "node-4": 1388
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.0411084,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1642,
+            "node-1": 1478,
+            "node-2": 1494,
+            "node-3": 1411,
+            "node-4": 1387
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.0480351,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1643,
+            "node-1": 1479,
+            "node-2": 1495,
+            "node-3": 1412,
+            "node-4": 1388
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.048071,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1642,
+            "node-1": 1478,
+            "node-2": 1494,
+            "node-3": 1411,
+            "node-4": 1387
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.4812593,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1743,
+            "node-1": 1571,
+            "node-2": 1575,
+            "node-3": 1506,
+            "node-4": 1475
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.4812963,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1742,
+            "node-1": 1570,
+            "node-2": 1574,
+            "node-3": 1505,
+            "node-4": 1474
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.4880412,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1743,
+            "node-1": 1571,
+            "node-2": 1575,
+            "node-3": 1506,
+            "node-4": 1475
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.488073,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1742,
+            "node-1": 1570,
+            "node-2": 1574,
+            "node-3": 1505,
+            "node-4": 1474
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.93338,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1843,
+            "node-1": 1660,
+            "node-2": 1664,
+            "node-3": 1595,
+            "node-4": 1561
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.9334197,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1842,
+            "node-1": 1659,
+            "node-2": 1663,
+            "node-3": 1594,
+            "node-4": 1560
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952347.9399512,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1843,
+            "node-1": 1660,
+            "node-2": 1664,
+            "node-3": 1595,
+            "node-4": 1561
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952347.9399848,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1842,
+            "node-1": 1659,
+            "node-2": 1663,
+            "node-3": 1594,
+            "node-4": 1560
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952348.3866546,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1943,
+            "node-1": 1750,
+            "node-2": 1754,
+            "node-3": 1686,
+            "node-4": 1652
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952348.386698,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1942,
+            "node-1": 1749,
+            "node-2": 1753,
+            "node-3": 1685,
+            "node-4": 1651
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952348.392929,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 1943,
+            "node-1": 1750,
+            "node-2": 1754,
+            "node-3": 1686,
+            "node-4": 1652
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952348.3929589,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 1942,
+            "node-1": 1749,
+            "node-2": 1753,
+            "node-3": 1685,
+            "node-4": 1651
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952348.8358238,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2043,
+            "node-1": 1838,
+            "node-2": 1846,
+            "node-3": 1782,
+            "node-4": 1739
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952348.8358593,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2042,
+            "node-1": 1837,
+            "node-2": 1845,
+            "node-3": 1781,
+            "node-4": 1738
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952349.8426013,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2173,
+            "node-1": 1954,
+            "node-2": 1966,
+            "node-3": 1896,
+            "node-4": 1860
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952349.842648,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2172,
+            "node-1": 1953,
+            "node-2": 1965,
+            "node-3": 1895,
+            "node-4": 1859
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952350.8587704,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2303,
+            "node-1": 2075,
+            "node-2": 2085,
+            "node-3": 2019,
+            "node-4": 1977
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952350.8588257,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2302,
+            "node-1": 2074,
+            "node-2": 2084,
+            "node-3": 2018,
+            "node-4": 1976
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952351.8751483,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2432,
+            "node-1": 2188,
+            "node-2": 2199,
+            "node-3": 2134,
+            "node-4": 2099
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952351.8751976,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2431,
+            "node-1": 2187,
+            "node-2": 2198,
+            "node-3": 2133,
+            "node-4": 2098
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "high",
+        "description": "无法获得多数票: 可用节点2 < 需要多数3",
+        "timestamp": 1778952351.8819647,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952352.8836412,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2432,
+            "node-1": 2188,
+            "node-2": 2199,
+            "node-3": 2134,
+            "node-4": 2099
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952352.8837008,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2431,
+            "node-1": 2187,
+            "node-2": 2198,
+            "node-3": 2133,
+            "node-4": 2098
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952352.8903246,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2432,
+            "node-1": 2188,
+            "node-2": 2199,
+            "node-3": 2134,
+            "node-4": 2099
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952352.8903573,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2431,
+            "node-1": 2187,
+            "node-2": 2198,
+            "node-3": 2133,
+            "node-4": 2098
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "log_inconsistency",
+        "severity": "high",
+        "description": "日志长度不一致",
+        "timestamp": 1778952353.39922,
+        "evidence": {
+          "log_lengths": {
+            "node-0": 2432,
+            "node-1": 2188,
+            "node-2": 2199,
+            "node-3": 2134,
+            "node-4": 2099
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "commit_index_error",
+        "severity": "high",
+        "description": "提交索引不一致",
+        "timestamp": 1778952353.3992643,
+        "evidence": {
+          "commit_indices": {
+            "node-0": 2431,
+            "node-1": 2187,
+            "node-2": 2198,
+            "node-3": 2133,
+            "node-4": 2098
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      }
+    ],
+    "medium": [
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952346.5937865,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952347.0541034,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952347.4938936,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952347.9458005,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952348.3986876,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "term_confusion",
+        "severity": "medium",
+        "description": "任期号不一致",
+        "timestamp": 1778952352.8882632,
+        "evidence": {
+          "terms": {
+            "node-0": 6,
+            "node-1": 7,
+            "node-2": 8,
+            "node-3": 8,
+            "node-4": 8
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "term_confusion",
+        "severity": "medium",
+        "description": "任期号不一致",
+        "timestamp": 1778952352.8944082,
+        "evidence": {
+          "terms": {
+            "node-0": 6,
+            "node-1": 7,
+            "node-2": 8,
+            "node-3": 8,
+            "node-4": 8
+          }
+        },
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952352.9464839,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952352.9967918,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.0469959,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.0972931,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.1475832,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.197998,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.248389,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.298707,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      },
+      {
+        "defect_type": "leader_election_deadlock",
+        "severity": "medium",
+        "description": "Leader切换后选举了相同的节点",
+        "timestamp": 1778952353.3489664,
+        "evidence": {},
+        "affected_nodes": [
+          "node-0",
+          "node-1",
+          "node-2",
+          "node-3",
+          "node-4"
+        ],
+        "reproduction_steps": []
+      }
+    ]
+  },
+  "all_defects": [
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952343.0076432,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 994,
+          "node-1": 890,
+          "node-2": 916,
+          "node-3": 912,
+          "node-4": 900
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952343.0076966,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 993,
+          "node-1": 889,
+          "node-2": 915,
+          "node-3": 911,
+          "node-4": 899
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952343.6492295,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1094,
+          "node-1": 979,
+          "node-2": 1005,
+          "node-3": 1008,
+          "node-4": 988
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952343.6492708,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1093,
+          "node-1": 978,
+          "node-2": 1004,
+          "node-3": 1007,
+          "node-4": 987
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952344.7929063,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1194,
+          "node-1": 1069,
+          "node-2": 1092,
+          "node-3": 1008,
+          "node-4": 988
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952344.792959,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1193,
+          "node-1": 1068,
+          "node-2": 1091,
+          "node-3": 1007,
+          "node-4": 987
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952345.876092,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1244,
+          "node-1": 1117,
+          "node-2": 1137,
+          "node-3": 1054,
+          "node-4": 1034
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952345.8761346,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1243,
+          "node-1": 1116,
+          "node-2": 1136,
+          "node-3": 1053,
+          "node-4": 1033
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952346.5865536,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1543,
+          "node-1": 1387,
+          "node-2": 1403,
+          "node-3": 1322,
+          "node-4": 1303
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952346.5866063,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1542,
+          "node-1": 1386,
+          "node-2": 1402,
+          "node-3": 1321,
+          "node-4": 1302
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952346.5937865,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952347.0410619,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1643,
+          "node-1": 1479,
+          "node-2": 1495,
+          "node-3": 1412,
+          "node-4": 1388
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952347.0411084,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1642,
+          "node-1": 1478,
+          "node-2": 1494,
+          "node-3": 1411,
+          "node-4": 1387
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952347.0480351,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1643,
+          "node-1": 1479,
+          "node-2": 1495,
+          "node-3": 1412,
+          "node-4": 1388
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952347.048071,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1642,
+          "node-1": 1478,
+          "node-2": 1494,
+          "node-3": 1411,
+          "node-4": 1387
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952347.0541034,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952347.4812593,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1743,
+          "node-1": 1571,
+          "node-2": 1575,
+          "node-3": 1506,
+          "node-4": 1475
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952347.4812963,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1742,
+          "node-1": 1570,
+          "node-2": 1574,
+          "node-3": 1505,
+          "node-4": 1474
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952347.4880412,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1743,
+          "node-1": 1571,
+          "node-2": 1575,
+          "node-3": 1506,
+          "node-4": 1475
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952347.488073,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1742,
+          "node-1": 1570,
+          "node-2": 1574,
+          "node-3": 1505,
+          "node-4": 1474
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952347.4938936,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952347.93338,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1843,
+          "node-1": 1660,
+          "node-2": 1664,
+          "node-3": 1595,
+          "node-4": 1561
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952347.9334197,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1842,
+          "node-1": 1659,
+          "node-2": 1663,
+          "node-3": 1594,
+          "node-4": 1560
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952347.9399512,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1843,
+          "node-1": 1660,
+          "node-2": 1664,
+          "node-3": 1595,
+          "node-4": 1561
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952347.9399848,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1842,
+          "node-1": 1659,
+          "node-2": 1663,
+          "node-3": 1594,
+          "node-4": 1560
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952347.9458005,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952348.3866546,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1943,
+          "node-1": 1750,
+          "node-2": 1754,
+          "node-3": 1686,
+          "node-4": 1652
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952348.386698,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1942,
+          "node-1": 1749,
+          "node-2": 1753,
+          "node-3": 1685,
+          "node-4": 1651
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952348.392929,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 1943,
+          "node-1": 1750,
+          "node-2": 1754,
+          "node-3": 1686,
+          "node-4": 1652
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952348.3929589,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 1942,
+          "node-1": 1749,
+          "node-2": 1753,
+          "node-3": 1685,
+          "node-4": 1651
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952348.3986876,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952348.8358238,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 2043,
+          "node-1": 1838,
+          "node-2": 1846,
+          "node-3": 1782,
+          "node-4": 1739
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952348.8358593,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 2042,
+          "node-1": 1837,
+          "node-2": 1845,
+          "node-3": 1781,
+          "node-4": 1738
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952349.8426013,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 2173,
+          "node-1": 1954,
+          "node-2": 1966,
+          "node-3": 1896,
+          "node-4": 1860
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952349.842648,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 2172,
+          "node-1": 1953,
+          "node-2": 1965,
+          "node-3": 1895,
+          "node-4": 1859
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952350.8587704,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 2303,
+          "node-1": 2075,
+          "node-2": 2085,
+          "node-3": 2019,
+          "node-4": 1977
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952350.8588257,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 2302,
+          "node-1": 2074,
+          "node-2": 2084,
+          "node-3": 2018,
+          "node-4": 1976
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952351.8751483,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 2432,
+          "node-1": 2188,
+          "node-2": 2199,
+          "node-3": 2134,
+          "node-4": 2099
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952351.8751976,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 2431,
+          "node-1": 2187,
+          "node-2": 2198,
+          "node-3": 2133,
+          "node-4": 2098
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "high",
+      "description": "无法获得多数票: 可用节点2 < 需要多数3",
+      "timestamp": 1778952351.8819647,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952352.8836412,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 2432,
+          "node-1": 2188,
+          "node-2": 2199,
+          "node-3": 2134,
+          "node-4": 2099
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952352.8837008,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 2431,
+          "node-1": 2187,
+          "node-2": 2198,
+          "node-3": 2133,
+          "node-4": 2098
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "term_confusion",
+      "severity": "medium",
+      "description": "任期号不一致",
+      "timestamp": 1778952352.8882632,
+      "evidence": {
+        "terms": {
+          "node-0": 6,
+          "node-1": 7,
+          "node-2": 8,
+          "node-3": 8,
+          "node-4": 8
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952352.8903246,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 2432,
+          "node-1": 2188,
+          "node-2": 2199,
+          "node-3": 2134,
+          "node-4": 2099
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952352.8903573,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 2431,
+          "node-1": 2187,
+          "node-2": 2198,
+          "node-3": 2133,
+          "node-4": 2098
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "term_confusion",
+      "severity": "medium",
+      "description": "任期号不一致",
+      "timestamp": 1778952352.8944082,
+      "evidence": {
+        "terms": {
+          "node-0": 6,
+          "node-1": 7,
+          "node-2": 8,
+          "node-3": 8,
+          "node-4": 8
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952352.9464839,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952352.9967918,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952353.0469959,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952353.0972931,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952353.1475832,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952353.197998,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952353.248389,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952353.298707,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "leader_election_deadlock",
+      "severity": "medium",
+      "description": "Leader切换后选举了相同的节点",
+      "timestamp": 1778952353.3489664,
+      "evidence": {},
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "log_inconsistency",
+      "severity": "high",
+      "description": "日志长度不一致",
+      "timestamp": 1778952353.39922,
+      "evidence": {
+        "log_lengths": {
+          "node-0": 2432,
+          "node-1": 2188,
+          "node-2": 2199,
+          "node-3": 2134,
+          "node-4": 2099
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    },
+    {
+      "defect_type": "commit_index_error",
+      "severity": "high",
+      "description": "提交索引不一致",
+      "timestamp": 1778952353.3992643,
+      "evidence": {
+        "commit_indices": {
+          "node-0": 2431,
+          "node-1": 2187,
+          "node-2": 2198,
+          "node-3": 2133,
+          "node-4": 2098
+        }
+      },
+      "affected_nodes": [
+        "node-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4"
+      ],
+      "reproduction_steps": []
+    }
+  ],
+  "test_results": {
+    "normal_concurrent_write": {
+      "write_result": {
+        "total_operations": 1000,
+        "successful": 994,
+        "failed": 6,
+        "conflicts": 0,
+        "latencies": [
+          0.023126602172851562,
+          0.010013580322265625,
+          0.0073909759521484375,
+          0.005245208740234375,
+          0.0069141387939453125,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.00667572021484375,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.008821487426757812,
+          0.00667572021484375,
+          0.0059604644775390625,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.008821487426757812,
+          0.00667572021484375,
+          0.0069141387939453125,
+          0.0069141387939453125,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.007152557373046875,
+          0.0057220458984375,
+          0.008344650268554688,
+          0.005245208740234375,
+          0.0069141387939453125,
+          0.0073909759521484375,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.0059604644775390625,
+          0.005245208740234375,
+          0.0057220458984375,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.009059906005859375,
+          0.00667572021484375,
+          0.006198883056640625,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.00667572021484375,
+          0.0057220458984375,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.0073909759521484375,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.015974044799804688,
+          0.006198883056640625,
+          0.005245208740234375,
+          0.0073909759521484375,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.0069141387939453125,
+          0.0069141387939453125,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.0054836273193359375,
+          0.00667572021484375,
+          0.00476837158203125,
+          0.008106231689453125,
+          0.0057220458984375,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.0054836273193359375,
+          0.0057220458984375,
+          0.007152557373046875,
+          0.0073909759521484375,
+          0.0064373016357421875,
+          0.00667572021484375,
+          0.00667572021484375,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.0054836273193359375,
+          0.00476837158203125,
+          0.0069141387939453125,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.0069141387939453125,
+          0.00762939453125,
+          0.0054836273193359375,
+          0.0064373016357421875,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.006198883056640625,
+          0.0064373016357421875,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.008106231689453125,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.006198883056640625,
+          0.006198883056640625,
+          0.00667572021484375,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.0050067901611328125,
+          0.0045299530029296875,
+          0.0059604644775390625,
+          0.008106231689453125,
+          0.0054836273193359375,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.008106231689453125,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.0057220458984375,
+          0.006198883056640625,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.007867813110351562,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.007152557373046875,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.0054836273193359375,
+          0.00762939453125,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.0057220458984375,
+          0.0059604644775390625,
+          0.0064373016357421875,
+          0.034332275390625,
+          0.008821487426757812,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.0050067901611328125,
+          0.008344650268554688,
+          0.0069141387939453125,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.00762939453125,
+          0.007152557373046875,
+          0.00476837158203125,
+          0.0054836273193359375,
+          0.009059906005859375,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.006198883056640625,
+          0.0073909759521484375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.0057220458984375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.0054836273193359375,
+          0.0073909759521484375,
+          0.008106231689453125,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.007867813110351562,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.0054836273193359375,
+          0.008344650268554688,
+          0.0050067901611328125,
+          0.0057220458984375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.00667572021484375,
+          0.0057220458984375,
+          0.0064373016357421875,
+          0.0054836273193359375,
+          0.0059604644775390625,
+          0.00476837158203125,
+          0.0064373016357421875,
+          0.00476837158203125,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.00762939453125,
+          0.0050067901611328125,
+          0.007867813110351562,
+          0.0050067901611328125,
+          0.00762939453125,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.0045299530029296875,
+          0.0045299530029296875,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.005245208740234375,
+          0.0059604644775390625,
+          0.00667572021484375,
+          0.0095367431640625,
+          0.00476837158203125,
+          0.0045299530029296875,
+          0.0045299530029296875,
+          0.007152557373046875,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.0050067901611328125,
+          0.008344650268554688,
+          0.0054836273193359375,
+          0.00476837158203125,
+          0.00667572021484375,
+          0.008106231689453125,
+          0.0059604644775390625,
+          0.0057220458984375,
+          0.006198883056640625,
+          0.0073909759521484375,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.0069141387939453125,
+          0.0073909759521484375,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.007152557373046875,
+          0.0059604644775390625,
+          0.005245208740234375,
+          0.006198883056640625,
+          0.00476837158203125,
+          0.0045299530029296875,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.009059906005859375,
+          0.0064373016357421875,
+          0.0054836273193359375,
+          0.008106231689453125,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.007867813110351562,
+          0.0050067901611328125,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.008106231689453125,
+          0.0050067901611328125,
+          0.0050067901611328125,
+          0.0057220458984375,
+          0.007867813110351562,
+          0.008344650268554688,
+          0.005245208740234375,
+          0.0054836273193359375,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.0064373016357421875,
+          0.006198883056640625,
+          0.0064373016357421875,
+          0.009059906005859375,
+          0.0050067901611328125,
+          0.0054836273193359375,
+          0.00476837158203125,
+          0.00667572021484375,
+          0.0059604644775390625,
+          0.0054836273193359375,
+          0.0050067901611328125,
+          0.007867813110351562,
+          0.00476837158203125,
+          0.0069141387939453125,
+          0.00667572021484375,
+          0.0054836273193359375,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.0050067901611328125,
+          0.0069141387939453125,
+          0.0064373016357421875,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.008344650268554688,
+          0.0057220458984375,
+          0.007867813110351562,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.011205673217773438,
+          0.00667572021484375,
+          0.0073909759521484375,
+          0.0057220458984375,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.008106231689453125,
+          0.005245208740234375,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.007867813110351562,
+          0.00762939453125,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.00667572021484375,
+          0.0054836273193359375,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.008344650268554688,
+          0.007867813110351562,
+          0.00476837158203125,
+          0.007867813110351562,
+          0.0069141387939453125,
+          0.009059906005859375,
+          0.0057220458984375,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.010728836059570312,
+          0.0059604644775390625,
+          0.009298324584960938,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.008106231689453125,
+          0.0054836273193359375,
+          0.0064373016357421875,
+          0.00476837158203125,
+          0.008821487426757812,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.01239776611328125,
+          0.0054836273193359375,
+          0.011920928955078125,
+          0.0095367431640625,
+          0.0073909759521484375,
+          0.0035762786865234375,
+          0.0059604644775390625,
+          0.009059906005859375,
+          0.015974044799804688,
+          0.008821487426757812,
+          0.014066696166992188,
+          0.012636184692382812,
+          0.0059604644775390625,
+          0.008821487426757812,
+          0.018835067749023438,
+          0.006198883056640625,
+          0.005245208740234375,
+          0.013828277587890625,
+          0.01049041748046875,
+          0.011682510375976562,
+          0.0050067901611328125,
+          0.0171661376953125,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.008344650268554688,
+          0.0069141387939453125,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.0054836273193359375,
+          0.008106231689453125,
+          0.0054836273193359375,
+          0.0057220458984375,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.0054836273193359375,
+          0.009298324584960938,
+          0.005245208740234375,
+          0.007152557373046875,
+          0.00476837158203125,
+          0.005245208740234375,
+          0.00476837158203125,
+          0.007867813110351562,
+          0.007152557373046875,
+          0.015497207641601562,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.0054836273193359375,
+          0.007867813110351562,
+          0.0054836273193359375,
+          0.007867813110351562,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.0054836273193359375,
+          0.0073909759521484375,
+          0.0073909759521484375,
+          0.0095367431640625,
+          0.005245208740234375,
+          0.0069141387939453125,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.009775161743164062,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.0057220458984375,
+          0.0069141387939453125,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.0057220458984375,
+          0.0073909759521484375,
+          0.007867813110351562,
+          0.0073909759521484375,
+          0.0054836273193359375,
+          0.00858306884765625,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.006198883056640625,
+          0.005245208740234375,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.005245208740234375,
+          0.006198883056640625,
+          0.009059906005859375,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.0069141387939453125,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.00762939453125,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.0064373016357421875,
+          0.0069141387939453125,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.010013580322265625,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.00858306884765625,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.00667572021484375,
+          0.008106231689453125,
+          0.0059604644775390625,
+          0.006198883056640625,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.0054836273193359375,
+          0.0064373016357421875,
+          0.00476837158203125,
+          0.0045299530029296875,
+          0.0054836273193359375,
+          0.00476837158203125,
+          0.00858306884765625,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.00762939453125,
+          0.00476837158203125,
+          0.006198883056640625,
+          0.0057220458984375,
+          0.009298324584960938,
+          0.0064373016357421875,
+          0.006198883056640625,
+          0.0069141387939453125,
+          0.0069141387939453125,
+          0.0045299530029296875,
+          0.0064373016357421875,
+          0.0054836273193359375,
+          0.008821487426757812,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.0054836273193359375,
+          0.008106231689453125,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.007867813110351562,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.008344650268554688,
+          0.0054836273193359375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.00762939453125,
+          0.00667572021484375,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.00762939453125,
+          0.005245208740234375,
+          0.0057220458984375,
+          0.0064373016357421875,
+          0.010013580322265625,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.0030994415283203125,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.007152557373046875,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.00667572021484375,
+          0.00667572021484375,
+          0.010251998901367188,
+          0.0095367431640625,
+          0.007867813110351562,
+          0.0059604644775390625,
+          0.00476837158203125,
+          0.007152557373046875,
+          0.007867813110351562,
+          0.00476837158203125,
+          0.00762939453125,
+          0.0073909759521484375,
+          0.008344650268554688,
+          0.0073909759521484375,
+          0.008106231689453125,
+          0.007152557373046875,
+          0.0050067901611328125,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.0095367431640625,
+          0.007867813110351562,
+          0.008344650268554688,
+          0.0059604644775390625,
+          0.00762939453125,
+          0.0064373016357421875,
+          0.0069141387939453125,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.00858306884765625,
+          0.013589859008789062,
+          0.0035762786865234375,
+          0.0069141387939453125,
+          0.007152557373046875,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.00858306884765625,
+          0.0059604644775390625,
+          0.007152557373046875,
+          0.0069141387939453125,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.006198883056640625,
+          0.00476837158203125,
+          0.0073909759521484375,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.00667572021484375,
+          0.0069141387939453125,
+          0.00667572021484375,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.005245208740234375,
+          0.008344650268554688,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.006198883056640625,
+          0.0045299530029296875,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.00667572021484375,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.008344650268554688,
+          0.0064373016357421875,
+          0.00476837158203125,
+          0.0064373016357421875,
+          0.006198883056640625,
+          0.007152557373046875,
+          0.0057220458984375,
+          0.00762939453125,
+          0.007152557373046875,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.008106231689453125,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.0057220458984375,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.00476837158203125,
+          0.007152557373046875,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.0045299530029296875,
+          0.0069141387939453125,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.008106231689453125,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.008821487426757812,
+          0.0054836273193359375,
+          0.0064373016357421875,
+          0.0069141387939453125,
+          0.007152557373046875,
+          0.006198883056640625,
+          0.00667572021484375,
+          0.0054836273193359375,
+          0.00667572021484375,
+          0.008106231689453125,
+          0.024318695068359375,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.0069141387939453125,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.00476837158203125,
+          0.006198883056640625,
+          0.034809112548828125,
+          0.008821487426757812,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.007152557373046875,
+          0.003814697265625,
+          0.0054836273193359375,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.0057220458984375,
+          0.00476837158203125,
+          0.00762939453125,
+          0.007152557373046875,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.007867813110351562,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.0059604644775390625,
+          0.007867813110351562,
+          0.00667572021484375,
+          0.0073909759521484375,
+          0.0064373016357421875,
+          0.0073909759521484375,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.0069141387939453125,
+          0.0054836273193359375,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.0069141387939453125,
+          0.00476837158203125,
+          0.007867813110351562,
+          0.0057220458984375,
+          0.0069141387939453125,
+          0.0069141387939453125,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.0324249267578125,
+          0.0057220458984375,
+          0.0057220458984375,
+          0.0069141387939453125,
+          0.0054836273193359375,
+          0.00476837158203125,
+          0.007152557373046875,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.006198883056640625,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.0050067901611328125,
+          0.0054836273193359375,
+          0.00858306884765625,
+          0.0050067901611328125,
+          0.0054836273193359375,
+          0.0069141387939453125,
+          0.00667572021484375,
+          0.00762939453125,
+          0.0057220458984375,
+          0.0054836273193359375,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.0054836273193359375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.008106231689453125,
+          0.00476837158203125,
+          0.0064373016357421875,
+          0.0073909759521484375,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.007152557373046875,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.0059604644775390625,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.0045299530029296875,
+          0.00667572021484375,
+          0.00858306884765625,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.00762939453125,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.00667572021484375,
+          0.007152557373046875,
+          0.00476837158203125,
+          0.0073909759521484375,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.0064373016357421875,
+          0.0069141387939453125,
+          0.00476837158203125,
+          0.0069141387939453125,
+          0.006198883056640625,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.0057220458984375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.00476837158203125,
+          0.0045299530029296875,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.0054836273193359375,
+          0.00667572021484375,
+          0.00476837158203125,
+          0.00858306884765625,
+          0.007152557373046875,
+          0.0059604644775390625,
+          0.0059604644775390625,
+          0.03743171691894531,
+          0.0059604644775390625,
+          0.005245208740234375,
+          0.0054836273193359375,
+          0.012159347534179688,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.00476837158203125,
+          0.0045299530029296875,
+          0.0054836273193359375,
+          0.00858306884765625,
+          0.020265579223632812,
+          0.008106231689453125,
+          0.00858306884765625,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.00476837158203125,
+          0.007152557373046875,
+          0.011444091796875,
+          0.01239776611328125,
+          0.005245208740234375,
+          0.0057220458984375,
+          0.010251998901367188,
+          0.009059906005859375,
+          0.0050067901611328125,
+          0.008821487426757812,
+          0.010967254638671875,
+          0.009059906005859375,
+          0.00762939453125,
+          0.0059604644775390625,
+          0.0054836273193359375,
+          0.0133514404296875,
+          0.006198883056640625,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.011920928955078125,
+          0.00667572021484375,
+          0.020742416381835938,
+          0.01239776611328125,
+          0.01239776611328125,
+          0.010013580322265625,
+          0.010967254638671875,
+          0.009775161743164062,
+          0.010251998901367188,
+          0.007152557373046875,
+          0.00667572021484375,
+          0.0054836273193359375,
+          0.013828277587890625,
+          0.006198883056640625,
+          0.0054836273193359375,
+          0.0054836273193359375,
+          0.008344650268554688,
+          0.008344650268554688,
+          0.0057220458984375,
+          0.0069141387939453125,
+          0.008106231689453125,
+          0.0054836273193359375,
+          0.0054836273193359375,
+          0.0057220458984375,
+          0.0057220458984375,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.0073909759521484375,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.0059604644775390625,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.0073909759521484375,
+          0.00667572021484375,
+          0.00858306884765625,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.006198883056640625,
+          0.0059604644775390625,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.0054836273193359375,
+          0.007152557373046875,
+          0.00476837158203125,
+          0.0054836273193359375,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.005245208740234375,
+          0.005245208740234375,
+          0.009775161743164062,
+          0.007152557373046875,
+          0.00667572021484375,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.007152557373046875,
+          0.00476837158203125,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.009059906005859375,
+          0.0057220458984375,
+          0.005245208740234375,
+          0.0050067901611328125,
+          0.0069141387939453125,
+          0.011205673217773438,
+          0.00762939453125,
+          0.0054836273193359375,
+          0.005245208740234375,
+          0.0064373016357421875,
+          0.00667572021484375,
+          0.006198883056640625,
+          0.005245208740234375,
+          0.00667572021484375,
+          0.0069141387939453125,
+          0.00667572021484375,
+          0.007152557373046875,
+          0.005245208740234375,
+          0.008344650268554688,
+          0.0054836273193359375,
+          0.006198883056640625,
+          0.00762939453125,
+          0.0050067901611328125,
+          0.006198883056640625,
+          0.00476837158203125,
+          0.00476837158203125,
+          0.00667572021484375,
+          0.0057220458984375,
+          0.0050067901611328125,
+          0.0064373016357421875,
+          0.0050067901611328125,
+          0.008106231689453125,
+          0.0050067901611328125,
+          0.0059604644775390625,
+          0.00762939453125,
+          0.0050067901611328125,
+          0.00667572021484375,
+          0.005245208740234375,
+          0.007867813110351562,
+          0.005245208740234375,
+          0.007152557373046875,
+          0.0069141387939453125,
+          0.0069141387939453125,
+          0.008821487426757812,
+          0.007867813110351562,
+          0.0059604644775390625,
+          0.0059604644775390625,
+          0.006198883056640625,
+          0.00667572021484375,
+          0.0069141387939453125,
+          0.006198883056640625,
+          0.0050067901611328125,
+          0.01049041748046875,
+          0.006198883056640625,
+          0.0059604644775390625,
+          0.0064373016357421875,
+          0.0069141387939453125,
+          0.0050067901611328125,
+          0.009059906005859375,
+          0.0064373016357421875,
+          0.008344650268554688,
+          0.0073909759521484375,
+          0.0073909759521484375,
+          0.0057220458984375,
+          0.006198883056640625,
+          0.0069141387939453125,
+          0.006198883056640625,
+          0.0057220458984375,
+          0.00762939453125
+        ]
+      },
+      "consistency": {
+        "is_consistent": false,
+        "inconsistencies": [
+          {
+            "type": "log_length_mismatch",
+            "details": {
+              "node-0": 994,
+              "node-1": 890,
+              "node-2": 916,
+              "node-3": 912,
+              "node-4": 900
+            }
+          },
+          {
+            "type": "commit_index_mismatch",
+            "details": {
+              "node-0": 993,
+              "node-1": 889,
+              "node-2": 915,
+              "node-3": 911,
+              "node-4": 899
+            }
+          }
+        ],
+        "data_checksums": {
+          "node-0": "9fd749dd761bdcfdc10cf4f24cb11e9a",
+          "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+          "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+          "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+          "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+        },
+        "log_lengths": {
+          "node-0": 994,
+          "node-1": 890,
+          "node-2": 916,
+          "node-3": 912,
+          "node-4": 900
+        },
+        "commit_indices": {
+          "node-0": 993,
+          "node-1": 889,
+          "node-2": 915,
+          "node-3": 911,
+          "node-4": 899
+        }
+      },
+      "success": false
+    },
+    "partition_write": {
+      "scenarios": [
+        {
+          "name": "minority_partition",
+          "write": {
+            "total_operations": 100,
+            "successful": 100,
+            "failed": 0,
+            "conflicts": 0,
+            "latencies": [
+              0.019073486328125,
+              0.008821487426757812,
+              0.00667572021484375,
+              0.011444091796875,
+              0.0059604644775390625,
+              0.00858306884765625,
+              0.0069141387939453125,
+              0.00667572021484375,
+              0.0069141387939453125,
+              0.0057220458984375,
+              0.0054836273193359375,
+              0.0054836273193359375,
+              0.0069141387939453125,
+              0.0057220458984375,
+              0.00762939453125,
+              0.0054836273193359375,
+              0.005245208740234375,
+              0.006198883056640625,
+              0.0064373016357421875,
+              0.0069141387939453125,
+              0.0064373016357421875,
+              0.0057220458984375,
+              0.0073909759521484375,
+              0.01049041748046875,
+              0.008344650268554688,
+              0.007152557373046875,
+              0.0057220458984375,
+              0.00667572021484375,
+              0.0073909759521484375,
+              0.0054836273193359375,
+              0.0064373016357421875,
+              0.0050067901611328125,
+              0.00667572021484375,
+              0.0045299530029296875,
+              0.0059604644775390625,
+              0.005245208740234375,
+              0.0057220458984375,
+              0.0054836273193359375,
+              0.00858306884765625,
+              0.0069141387939453125,
+              0.00667572021484375,
+              0.008106231689453125,
+              0.0057220458984375,
+              0.0059604644775390625,
+              0.0064373016357421875,
+              0.00667572021484375,
+              0.0064373016357421875,
+              0.0050067901611328125,
+              0.007152557373046875,
+              0.00667572021484375,
+              0.0057220458984375,
+              0.0057220458984375,
+              0.0073909759521484375,
+              0.006198883056640625,
+              0.0050067901611328125,
+              0.0059604644775390625,
+              0.0057220458984375,
+              0.00667572021484375,
+              0.005245208740234375,
+              0.0045299530029296875,
+              0.0050067901611328125,
+              0.00667572021484375,
+              0.0059604644775390625,
+              0.0069141387939453125,
+              0.007867813110351562,
+              0.005245208740234375,
+              0.0057220458984375,
+              0.006198883056640625,
+              0.0057220458984375,
+              0.0057220458984375,
+              0.0050067901611328125,
+              0.0050067901611328125,
+              0.0064373016357421875,
+              0.0057220458984375,
+              0.0050067901611328125,
+              0.0059604644775390625,
+              0.00476837158203125,
+              0.0059604644775390625,
+              0.005245208740234375,
+              0.0054836273193359375,
+              0.006198883056640625,
+              0.00858306884765625,
+              0.006198883056640625,
+              0.006198883056640625,
+              0.006198883056640625,
+              0.0050067901611328125,
+              0.006198883056640625,
+              0.0057220458984375,
+              0.0057220458984375,
+              0.0059604644775390625,
+              0.007152557373046875,
+              0.011205673217773438,
+              0.0059604644775390625,
+              0.00762939453125,
+              0.007867813110351562,
+              0.0064373016357421875,
+              0.0064373016357421875,
+              0.0069141387939453125,
+              0.010251998901367188,
+              0.014066696166992188
+            ]
+          },
+          "consistency": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1094,
+                  "node-1": 979,
+                  "node-2": 1005,
+                  "node-3": 1008,
+                  "node-4": 988
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1093,
+                  "node-1": 978,
+                  "node-2": 1004,
+                  "node-3": 1007,
+                  "node-4": 987
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "9aecf0db342fbf51c80904bcc9d23d04",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1094,
+              "node-1": 979,
+              "node-2": 1005,
+              "node-3": 1008,
+              "node-4": 988
+            },
+            "commit_indices": {
+              "node-0": 1093,
+              "node-1": 978,
+              "node-2": 1004,
+              "node-3": 1007,
+              "node-4": 987
+            }
+          }
+        },
+        {
+          "name": "majority_partition",
+          "write": {
+            "total_operations": 100,
+            "successful": 100,
+            "failed": 0,
+            "conflicts": 0,
+            "latencies": [
+              0.02574920654296875,
+              0.011205673217773438,
+              0.0069141387939453125,
+              0.0069141387939453125,
+              0.007867813110351562,
+              0.014543533325195312,
+              0.010013580322265625,
+              0.00762939453125,
+              0.0069141387939453125,
+              0.006198883056640625,
+              0.0040531158447265625,
+              0.0059604644775390625,
+              0.0050067901611328125,
+              0.0045299530029296875,
+              0.0045299530029296875,
+              0.005245208740234375,
+              0.00476837158203125,
+              0.0050067901611328125,
+              0.0054836273193359375,
+              0.0045299530029296875,
+              0.0059604644775390625,
+              0.005245208740234375,
+              0.0057220458984375,
+              0.005245208740234375,
+              0.0054836273193359375,
+              0.003814697265625,
+              0.0054836273193359375,
+              0.0040531158447265625,
+              0.0059604644775390625,
+              0.004291534423828125,
+              0.0054836273193359375,
+              0.005245208740234375,
+              0.0050067901611328125,
+              0.0050067901611328125,
+              0.0057220458984375,
+              0.0045299530029296875,
+              0.005245208740234375,
+              0.0040531158447265625,
+              0.0054836273193359375,
+              0.0045299530029296875,
+              0.0059604644775390625,
+              0.004291534423828125,
+              0.0054836273193359375,
+              0.005245208740234375,
+              0.0050067901611328125,
+              0.005245208740234375,
+              0.0050067901611328125,
+              0.0054836273193359375,
+              0.005245208740234375,
+              0.0054836273193359375,
+              0.0057220458984375,
+              0.0050067901611328125,
+              0.00476837158203125,
+              0.003814697265625,
+              0.005245208740234375,
+              0.0054836273193359375,
+              0.0133514404296875,
+              0.0054836273193359375,
+              0.00476837158203125,
+              0.00476837158203125,
+              0.00476837158203125,
+              0.005245208740234375,
+              0.0050067901611328125,
+              0.0054836273193359375,
+              0.0059604644775390625,
+              0.0045299530029296875,
+              0.004291534423828125,
+              0.00476837158203125,
+              0.005245208740234375,
+              0.0050067901611328125,
+              0.0050067901611328125,
+              0.0050067901611328125,
+              0.0045299530029296875,
+              0.005245208740234375,
+              0.0040531158447265625,
+              0.0054836273193359375,
+              0.0045299530029296875,
+              0.0057220458984375,
+              0.005245208740234375,
+              0.0054836273193359375,
+              0.004291534423828125,
+              0.00476837158203125,
+              0.0045299530029296875,
+              0.0045299530029296875,
+              0.007152557373046875,
+              0.0054836273193359375,
+              0.00762939453125,
+              0.0054836273193359375,
+              0.0045299530029296875,
+              0.003814697265625,
+              0.0054836273193359375,
+              0.005245208740234375,
+              0.0054836273193359375,
+              0.005245208740234375,
+              0.0057220458984375,
+              0.0064373016357421875,
+              0.0059604644775390625,
+              0.0057220458984375,
+              0.007152557373046875,
+              0.006198883056640625
+            ]
+          },
+          "consistency": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1194,
+                  "node-1": 1069,
+                  "node-2": 1092,
+                  "node-3": 1008,
+                  "node-4": 988
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1193,
+                  "node-1": 1068,
+                  "node-2": 1091,
+                  "node-3": 1007,
+                  "node-4": 987
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "bb8bf4339759281b4a6d3a0192104ca4",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1194,
+              "node-1": 1069,
+              "node-2": 1092,
+              "node-3": 1008,
+              "node-4": 988
+            },
+            "commit_indices": {
+              "node-0": 1193,
+              "node-1": 1068,
+              "node-2": 1091,
+              "node-3": 1007,
+              "node-4": 987
+            }
+          }
+        },
+        {
+          "name": "complete_partition",
+          "write": {
+            "total_operations": 50,
+            "successful": 50,
+            "failed": 0,
+            "conflicts": 0,
+            "latencies": [
+              0.024318695068359375,
+              0.009298324584960938,
+              0.0073909759521484375,
+              0.005245208740234375,
+              0.0050067901611328125,
+              0.008344650268554688,
+              0.0069141387939453125,
+              0.006198883056640625,
+              0.00762939453125,
+              0.00476837158203125,
+              0.00476837158203125,
+              0.010728836059570312,
+              0.00667572021484375,
+              0.0064373016357421875,
+              0.006198883056640625,
+              0.006198883056640625,
+              0.0064373016357421875,
+              0.0059604644775390625,
+              0.0050067901611328125,
+              0.0073909759521484375,
+              0.0069141387939453125,
+              0.0054836273193359375,
+              0.0057220458984375,
+              0.00667572021484375,
+              0.005245208740234375,
+              0.0095367431640625,
+              0.0064373016357421875,
+              0.0069141387939453125,
+              0.0054836273193359375,
+              0.007867813110351562,
+              0.0064373016357421875,
+              0.0054836273193359375,
+              0.00667572021484375,
+              0.0059604644775390625,
+              0.005245208740234375,
+              0.0059604644775390625,
+              0.0059604644775390625,
+              0.0059604644775390625,
+              0.0064373016357421875,
+              0.0054836273193359375,
+              0.00476837158203125,
+              0.0073909759521484375,
+              0.0059604644775390625,
+              0.00476837158203125,
+              0.005245208740234375,
+              0.0073909759521484375,
+              0.00667572021484375,
+              0.0054836273193359375,
+              0.00762939453125,
+              0.0064373016357421875
+            ]
+          },
+          "consistency": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1244,
+                  "node-1": 1117,
+                  "node-2": 1137,
+                  "node-3": 1054,
+                  "node-4": 1034
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1243,
+                  "node-1": 1116,
+                  "node-2": 1136,
+                  "node-3": 1053,
+                  "node-4": 1033
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "20a6cc5aae3a01e84ef94ed23d1719b1",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1244,
+              "node-1": 1117,
+              "node-2": 1137,
+              "node-3": 1054,
+              "node-4": 1034
+            },
+            "commit_indices": {
+              "node-0": 1243,
+              "node-1": 1116,
+              "node-2": 1136,
+              "node-3": 1053,
+              "node-4": 1033
+            }
+          }
+        }
+      ]
+    },
+    "leader_change_consistency": {
+      "scenarios": [
+        {
+          "round": 1,
+          "leader_change_success": true,
+          "consistency_before": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1543,
+                  "node-1": 1387,
+                  "node-2": 1403,
+                  "node-3": 1322,
+                  "node-4": 1303
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1542,
+                  "node-1": 1386,
+                  "node-2": 1402,
+                  "node-3": 1321,
+                  "node-4": 1302
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "48355b78b77072e1e585f5feba611b77",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1543,
+              "node-1": 1387,
+              "node-2": 1403,
+              "node-3": 1322,
+              "node-4": 1303
+            },
+            "commit_indices": {
+              "node-0": 1542,
+              "node-1": 1386,
+              "node-2": 1402,
+              "node-3": 1321,
+              "node-4": 1302
+            }
+          },
+          "consistency_after": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1643,
+                  "node-1": 1479,
+                  "node-2": 1495,
+                  "node-3": 1412,
+                  "node-4": 1388
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1642,
+                  "node-1": 1478,
+                  "node-2": 1494,
+                  "node-3": 1411,
+                  "node-4": 1387
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "6f912aa5278f141c023ad2f6af702c76",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1643,
+              "node-1": 1479,
+              "node-2": 1495,
+              "node-3": 1412,
+              "node-4": 1388
+            },
+            "commit_indices": {
+              "node-0": 1642,
+              "node-1": 1478,
+              "node-2": 1494,
+              "node-3": 1411,
+              "node-4": 1387
+            }
+          },
+          "write_result": {
+            "total_operations": 100,
+            "successful": 100,
+            "failed": 0,
+            "conflicts": 0,
+            "latencies": [
+              0.018835067749023438,
+              0.008821487426757812,
+              0.006198883056640625,
+              0.009298324584960938,
+              0.0064373016357421875,
+              0.018596649169921875,
+              0.011205673217773438,
+              0.017404556274414062,
+              0.022172927856445312,
+              0.010967254638671875,
+              0.0095367431640625,
+              0.0152587890625,
+              0.008821487426757812,
+              0.0057220458984375,
+              0.016689300537109375,
+              0.008344650268554688,
+              0.01430511474609375,
+              0.016450881958007812,
+              0.011920928955078125,
+              0.0064373016357421875,
+              0.007867813110351562,
+              0.0059604644775390625,
+              0.0073909759521484375,
+              0.0054836273193359375,
+              0.00667572021484375,
+              0.006198883056640625,
+              0.008106231689453125,
+              0.007867813110351562,
+              0.0064373016357421875,
+              0.015974044799804688,
+              0.00858306884765625,
+              0.00667572021484375,
+              0.006198883056640625,
+              0.006198883056640625,
+              0.010251998901367188,
+              0.013589859008789062,
+              0.009059906005859375,
+              0.010251998901367188,
+              0.009298324584960938,
+              0.007867813110351562,
+              0.0069141387939453125,
+              0.012159347534179688,
+              0.012636184692382812,
+              0.010251998901367188,
+              0.009059906005859375,
+              0.0095367431640625,
+              0.0095367431640625,
+              0.009775161743164062,
+              0.012874603271484375,
+              0.012159347534179688,
+              0.010728836059570312,
+              0.0171661376953125,
+              0.015735626220703125,
+              0.01239776611328125,
+              0.019311904907226562,
+              0.011205673217773438,
+              0.009298324584960938,
+              0.013113021850585938,
+              0.011920928955078125,
+              0.0095367431640625,
+              0.0095367431640625,
+              0.016450881958007812,
+              0.01049041748046875,
+              0.020742416381835938,
+              0.008344650268554688,
+              0.008344650268554688,
+              0.007867813110351562,
+              0.011920928955078125,
+              0.009775161743164062,
+              0.012636184692382812,
+              0.016450881958007812,
+              0.008106231689453125,
+              0.0095367431640625,
+              0.00667572021484375,
+              0.007152557373046875,
+              0.007152557373046875,
+              0.0059604644775390625,
+              0.007152557373046875,
+              0.015020370483398438,
+              0.008106231689453125,
+              0.011682510375976562,
+              0.00858306884765625,
+              0.012874603271484375,
+              0.008821487426757812,
+              0.007867813110351562,
+              0.009059906005859375,
+              0.0069141387939453125,
+              0.00667572021484375,
+              0.0057220458984375,
+              0.008344650268554688,
+              0.009298324584960938,
+              0.014781951904296875,
+              0.012874603271484375,
+              0.009298324584960938,
+              0.011920928955078125,
+              0.013113021850585938,
+              0.012159347534179688,
+              0.019073486328125,
+              0.018358230590820312,
+              0.01811981201171875
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "leader_change_success": true,
+          "consistency_before": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1643,
+                  "node-1": 1479,
+                  "node-2": 1495,
+                  "node-3": 1412,
+                  "node-4": 1388
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1642,
+                  "node-1": 1478,
+                  "node-2": 1494,
+                  "node-3": 1411,
+                  "node-4": 1387
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "6f912aa5278f141c023ad2f6af702c76",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1643,
+              "node-1": 1479,
+              "node-2": 1495,
+              "node-3": 1412,
+              "node-4": 1388
+            },
+            "commit_indices": {
+              "node-0": 1642,
+              "node-1": 1478,
+              "node-2": 1494,
+              "node-3": 1411,
+              "node-4": 1387
+            }
+          },
+          "consistency_after": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1743,
+                  "node-1": 1571,
+                  "node-2": 1575,
+                  "node-3": 1506,
+                  "node-4": 1475
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1742,
+                  "node-1": 1570,
+                  "node-2": 1574,
+                  "node-3": 1505,
+                  "node-4": 1474
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "ebd9cebbe422981041276586e94bc84f",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1743,
+              "node-1": 1571,
+              "node-2": 1575,
+              "node-3": 1506,
+              "node-4": 1475
+            },
+            "commit_indices": {
+              "node-0": 1742,
+              "node-1": 1570,
+              "node-2": 1574,
+              "node-3": 1505,
+              "node-4": 1474
+            }
+          },
+          "write_result": {
+            "total_operations": 100,
+            "successful": 100,
+            "failed": 0,
+            "conflicts": 0,
+            "latencies": [
+              0.016927719116210938,
+              0.009775161743164062,
+              0.007867813110351562,
+              0.007152557373046875,
+              0.00667572021484375,
+              0.018596649169921875,
+              0.01049041748046875,
+              0.00762939453125,
+              0.008106231689453125,
+              0.00762939453125,
+              0.006198883056640625,
+              0.006198883056640625,
+              0.013828277587890625,
+              0.0064373016357421875,
+              0.011920928955078125,
+              0.0073909759521484375,
+              0.0054836273193359375,
+              0.006198883056640625,
+              0.010728836059570312,
+              0.0057220458984375,
+              0.0050067901611328125,
+              0.006198883056640625,
+              0.0095367431640625,
+              0.009775161743164062,
+              0.0059604644775390625,
+              0.0057220458984375,
+              0.0064373016357421875,
+              0.0050067901611328125,
+              0.007152557373046875,
+              0.005245208740234375,
+              0.00667572021484375,
+              0.0057220458984375,
+              0.0054836273193359375,
+              0.0059604644775390625,
+              0.0050067901611328125,
+              0.0069141387939453125,
+              0.0069141387939453125,
+              0.0069141387939453125,
+              0.0057220458984375,
+              0.006198883056640625,
+              0.0064373016357421875,
+              0.0064373016357421875,
+              0.006198883056640625,
+              0.0045299530029296875,
+              0.0059604644775390625,
+              0.006198883056640625,
+              0.00476837158203125,
+              0.006198883056640625,
+              0.0050067901611328125,
+              0.0057220458984375,
+              0.0095367431640625,
+              0.009298324584960938,
+              0.00667572021484375,
+              0.008344650268554688,
+              0.0069141387939453125,
+              0.01239776611328125,
+              0.0059604644775390625,
+              0.0069141387939453125,
+              0.008344650268554688,
+              0.0054836273193359375,
+              0.0064373016357421875,
+              0.00762939453125,
+              0.007152557373046875,
+              0.0050067901611328125,
+              0.01049041748046875,
+              0.007867813110351562,
+              0.0057220458984375,
+              0.0054836273193359375,
+              0.00667572021484375,
+              0.0064373016357421875,
+              0.005245208740234375,
+              0.010728836059570312,
+              0.0064373016357421875,
+              0.0054836273193359375,
+              0.007867813110351562,
+              0.0054836273193359375,
+              0.0059604644775390625,
+              0.0059604644775390625,
+              0.0059604644775390625,
+              0.007152557373046875,
+              0.006198883056640625,
+              0.0057220458984375,
+              0.009059906005859375,
+              0.01049041748046875,
+              0.0073909759521484375,
+              0.0073909759521484375,
+              0.006198883056640625,
+              0.0054836273193359375,
+              0.0050067901611328125,
+              0.0057220458984375,
+              0.016689300537109375,
+              0.006198883056640625,
+              0.007152557373046875,
+              0.005245208740234375,
+              0.008344650268554688,
+              0.007152557373046875,
+              0.0054836273193359375,
+              0.00762939453125,
+              0.0054836273193359375,
+              0.0064373016357421875
+            ]
+          }
+        },
+        {
+          "round": 3,
+          "leader_change_success": true,
+          "consistency_before": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1743,
+                  "node-1": 1571,
+                  "node-2": 1575,
+                  "node-3": 1506,
+                  "node-4": 1475
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1742,
+                  "node-1": 1570,
+                  "node-2": 1574,
+                  "node-3": 1505,
+                  "node-4": 1474
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "ebd9cebbe422981041276586e94bc84f",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1743,
+              "node-1": 1571,
+              "node-2": 1575,
+              "node-3": 1506,
+              "node-4": 1475
+            },
+            "commit_indices": {
+              "node-0": 1742,
+              "node-1": 1570,
+              "node-2": 1574,
+              "node-3": 1505,
+              "node-4": 1474
+            }
+          },
+          "consistency_after": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1843,
+                  "node-1": 1660,
+                  "node-2": 1664,
+                  "node-3": 1595,
+                  "node-4": 1561
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1842,
+                  "node-1": 1659,
+                  "node-2": 1663,
+                  "node-3": 1594,
+                  "node-4": 1560
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "5a352559b11b37101125fa16647e5397",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1843,
+              "node-1": 1660,
+              "node-2": 1664,
+              "node-3": 1595,
+              "node-4": 1561
+            },
+            "commit_indices": {
+              "node-0": 1842,
+              "node-1": 1659,
+              "node-2": 1663,
+              "node-3": 1594,
+              "node-4": 1560
+            }
+          },
+          "write_result": {
+            "total_operations": 100,
+            "successful": 100,
+            "failed": 0,
+            "conflicts": 0,
+            "latencies": [
+              0.026941299438476562,
+              0.010967254638671875,
+              0.008106231689453125,
+              0.00667572021484375,
+              0.0059604644775390625,
+              0.0073909759521484375,
+              0.0064373016357421875,
+              0.00858306884765625,
+              0.00667572021484375,
+              0.0095367431640625,
+              0.0059604644775390625,
+              0.0064373016357421875,
+              0.005245208740234375,
+              0.00667572021484375,
+              0.0073909759521484375,
+              0.0054836273193359375,
+              0.015974044799804688,
+              0.007152557373046875,
+              0.0054836273193359375,
+              0.009298324584960938,
+              0.0059604644775390625,
+              0.0073909759521484375,
+              0.0054836273193359375,
+              0.005245208740234375,
+              0.006198883056640625,
+              0.005245208740234375,
+              0.013589859008789062,
+              0.011682510375976562,
+              0.008344650268554688,
+              0.008344650268554688,
+              0.0064373016357421875,
+              0.0054836273193359375,
+              0.0059604644775390625,
+              0.0073909759521484375,
+              0.007152557373046875,
+              0.0054836273193359375,
+              0.0059604644775390625,
+              0.007152557373046875,
+              0.009059906005859375,
+              0.00667572021484375,
+              0.005245208740234375,
+              0.009775161743164062,
+              0.007152557373046875,
+              0.00667572021484375,
+              0.019073486328125,
+              0.0133514404296875,
+              0.0073909759521484375,
+              0.0059604644775390625,
+              0.00667572021484375,
+              0.007152557373046875,
+              0.0054836273193359375,
+              0.007152557373046875,
+              0.006198883056640625,
+              0.0059604644775390625,
+              0.0064373016357421875,
+              0.0069141387939453125,
+              0.0057220458984375,
+              0.00667572021484375,
+              0.0064373016357421875,
+              0.00762939453125,
+              0.0064373016357421875,
+              0.006198883056640625,
+              0.0050067901611328125,
+              0.006198883056640625,
+              0.0064373016357421875,
+              0.008821487426757812,
+              0.00858306884765625,
+              0.007152557373046875,
+              0.005245208740234375,
+              0.006198883056640625,
+              0.0059604644775390625,
+              0.0133514404296875,
+              0.006198883056640625,
+              0.009775161743164062,
+              0.0059604644775390625,
+              0.00858306884765625,
+              0.0133514404296875,
+              0.007152557373046875,
+              0.014066696166992188,
+              0.0073909759521484375,
+              0.00858306884765625,
+              0.0069141387939453125,
+              0.0054836273193359375,
+              0.00476837158203125,
+              0.0069141387939453125,
+              0.0069141387939453125,
+              0.064849853515625,
+              0.005245208740234375,
+              0.010728836059570312,
+              0.007867813110351562,
+              0.0057220458984375,
+              0.0054836273193359375,
+              0.0069141387939453125,
+              0.0057220458984375,
+              0.0059604644775390625,
+              0.0064373016357421875,
+              0.00667572021484375,
+              0.03266334533691406,
+              0.009775161743164062,
+              0.009298324584960938
+            ]
+          }
+        },
+        {
+          "round": 4,
+          "leader_change_success": true,
+          "consistency_before": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1843,
+                  "node-1": 1660,
+                  "node-2": 1664,
+                  "node-3": 1595,
+                  "node-4": 1561
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1842,
+                  "node-1": 1659,
+                  "node-2": 1663,
+                  "node-3": 1594,
+                  "node-4": 1560
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "5a352559b11b37101125fa16647e5397",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1843,
+              "node-1": 1660,
+              "node-2": 1664,
+              "node-3": 1595,
+              "node-4": 1561
+            },
+            "commit_indices": {
+              "node-0": 1842,
+              "node-1": 1659,
+              "node-2": 1663,
+              "node-3": 1594,
+              "node-4": 1560
+            }
+          },
+          "consistency_after": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1943,
+                  "node-1": 1750,
+                  "node-2": 1754,
+                  "node-3": 1686,
+                  "node-4": 1652
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1942,
+                  "node-1": 1749,
+                  "node-2": 1753,
+                  "node-3": 1685,
+                  "node-4": 1651
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "f3a643ff7641e75843ad517fde39d7c9",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1943,
+              "node-1": 1750,
+              "node-2": 1754,
+              "node-3": 1686,
+              "node-4": 1652
+            },
+            "commit_indices": {
+              "node-0": 1942,
+              "node-1": 1749,
+              "node-2": 1753,
+              "node-3": 1685,
+              "node-4": 1651
+            }
+          },
+          "write_result": {
+            "total_operations": 100,
+            "successful": 100,
+            "failed": 0,
+            "conflicts": 0,
+            "latencies": [
+              0.021457672119140625,
+              0.00858306884765625,
+              0.00667572021484375,
+              0.005245208740234375,
+              0.005245208740234375,
+              0.0073909759521484375,
+              0.0054836273193359375,
+              0.0054836273193359375,
+              0.009059906005859375,
+              0.0069141387939453125,
+              0.00667572021484375,
+              0.00667572021484375,
+              0.005245208740234375,
+              0.0057220458984375,
+              0.0050067901611328125,
+              0.0069141387939453125,
+              0.0064373016357421875,
+              0.0054836273193359375,
+              0.0073909759521484375,
+              0.00667572021484375,
+              0.006198883056640625,
+              0.0064373016357421875,
+              0.007152557373046875,
+              0.0059604644775390625,
+              0.007152557373046875,
+              0.007867813110351562,
+              0.00667572021484375,
+              0.00667572021484375,
+              0.006198883056640625,
+              0.009298324584960938,
+              0.010013580322265625,
+              0.007152557373046875,
+              0.0059604644775390625,
+              0.0069141387939453125,
+              0.0057220458984375,
+              0.00762939453125,
+              0.0069141387939453125,
+              0.006198883056640625,
+              0.0059604644775390625,
+              0.008106231689453125,
+              0.0054836273193359375,
+              0.007152557373046875,
+              0.0050067901611328125,
+              0.006198883056640625,
+              0.0059604644775390625,
+              0.0057220458984375,
+              0.0064373016357421875,
+              0.005245208740234375,
+              0.0064373016357421875,
+              0.0054836273193359375,
+              0.0057220458984375,
+              0.008344650268554688,
+              0.0069141387939453125,
+              0.0069141387939453125,
+              0.0064373016357421875,
+              0.006198883056640625,
+              0.0050067901611328125,
+              0.00667572021484375,
+              0.006198883056640625,
+              0.007152557373046875,
+              0.0064373016357421875,
+              0.0050067901611328125,
+              0.0064373016357421875,
+              0.0069141387939453125,
+              0.006198883056640625,
+              0.0057220458984375,
+              0.006198883056640625,
+              0.005245208740234375,
+              0.00476837158203125,
+              0.008106231689453125,
+              0.0064373016357421875,
+              0.0059604644775390625,
+              0.0064373016357421875,
+              0.005245208740234375,
+              0.006198883056640625,
+              0.006198883056640625,
+              0.007152557373046875,
+              0.0050067901611328125,
+              0.00476837158203125,
+              0.0064373016357421875,
+              0.0064373016357421875,
+              0.0059604644775390625,
+              0.0059604644775390625,
+              0.0069141387939453125,
+              0.0059604644775390625,
+              0.00476837158203125,
+              0.004291534423828125,
+              0.0064373016357421875,
+              0.006198883056640625,
+              0.00667572021484375,
+              0.0059604644775390625,
+              0.031948089599609375,
+              0.011205673217773438,
+              0.008821487426757812,
+              0.00858306884765625,
+              0.0057220458984375,
+              0.009059906005859375,
+              0.009059906005859375,
+              0.00762939453125,
+              0.0057220458984375
+            ]
+          }
+        },
+        {
+          "round": 5,
+          "leader_change_success": true,
+          "consistency_before": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 1943,
+                  "node-1": 1750,
+                  "node-2": 1754,
+                  "node-3": 1686,
+                  "node-4": 1652
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 1942,
+                  "node-1": 1749,
+                  "node-2": 1753,
+                  "node-3": 1685,
+                  "node-4": 1651
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "f3a643ff7641e75843ad517fde39d7c9",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 1943,
+              "node-1": 1750,
+              "node-2": 1754,
+              "node-3": 1686,
+              "node-4": 1652
+            },
+            "commit_indices": {
+              "node-0": 1942,
+              "node-1": 1749,
+              "node-2": 1753,
+              "node-3": 1685,
+              "node-4": 1651
+            }
+          },
+          "consistency_after": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 2043,
+                  "node-1": 1838,
+                  "node-2": 1846,
+                  "node-3": 1782,
+                  "node-4": 1739
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 2042,
+                  "node-1": 1837,
+                  "node-2": 1845,
+                  "node-3": 1781,
+                  "node-4": 1738
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "9e63e268abd16648c71f06021686817c",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 2043,
+              "node-1": 1838,
+              "node-2": 1846,
+              "node-3": 1782,
+              "node-4": 1739
+            },
+            "commit_indices": {
+              "node-0": 2042,
+              "node-1": 1837,
+              "node-2": 1845,
+              "node-3": 1781,
+              "node-4": 1738
+            }
+          },
+          "write_result": {
+            "total_operations": 100,
+            "successful": 100,
+            "failed": 0,
+            "conflicts": 0,
+            "latencies": [
+              0.0209808349609375,
+              0.009775161743164062,
+              0.00667572021484375,
+              0.0069141387939453125,
+              0.007867813110351562,
+              0.009059906005859375,
+              0.00762939453125,
+              0.0054836273193359375,
+              0.0064373016357421875,
+              0.006198883056640625,
+              0.006198883056640625,
+              0.0069141387939453125,
+              0.0057220458984375,
+              0.0054836273193359375,
+              0.0064373016357421875,
+              0.005245208740234375,
+              0.00762939453125,
+              0.0054836273193359375,
+              0.006198883056640625,
+              0.005245208740234375,
+              0.0050067901611328125,
+              0.00762939453125,
+              0.006198883056640625,
+              0.0069141387939453125,
+              0.0069141387939453125,
+              0.0073909759521484375,
+              0.007152557373046875,
+              0.00762939453125,
+              0.00476837158203125,
+              0.007867813110351562,
+              0.0069141387939453125,
+              0.0050067901611328125,
+              0.007152557373046875,
+              0.00762939453125,
+              0.0064373016357421875,
+              0.0059604644775390625,
+              0.007152557373046875,
+              0.009298324584960938,
+              0.0059604644775390625,
+              0.0059604644775390625,
+              0.0069141387939453125,
+              0.0054836273193359375,
+              0.006198883056640625,
+              0.00476837158203125,
+              0.009775161743164062,
+              0.01049041748046875,
+              0.007867813110351562,
+              0.005245208740234375,
+              0.006198883056640625,
+              0.0057220458984375,
+              0.00667572021484375,
+              0.00667572021484375,
+              0.005245208740234375,
+              0.0064373016357421875,
+              0.0059604644775390625,
+              0.006198883056640625,
+              0.005245208740234375,
+              0.0069141387939453125,
+              0.007152557373046875,
+              0.005245208740234375,
+              0.005245208740234375,
+              0.009298324584960938,
+              0.00762939453125,
+              0.0054836273193359375,
+              0.00667572021484375,
+              0.00762939453125,
+              0.007152557373046875,
+              0.0069141387939453125,
+              0.0050067901611328125,
+              0.0050067901611328125,
+              0.006198883056640625,
+              0.0064373016357421875,
+              0.00762939453125,
+              0.01239776611328125,
+              0.0054836273193359375,
+              0.0069141387939453125,
+              0.0059604644775390625,
+              0.00667572021484375,
+              0.0064373016357421875,
+              0.0057220458984375,
+              0.005245208740234375,
+              0.010013580322265625,
+              0.0057220458984375,
+              0.014066696166992188,
+              0.00762939453125,
+              0.05650520324707031,
+              0.0059604644775390625,
+              0.00667572021484375,
+              0.0057220458984375,
+              0.007867813110351562,
+              0.020503997802734375,
+              0.024080276489257812,
+              0.010967254638671875,
+              0.010013580322265625,
+              0.016689300537109375,
+              0.0095367431640625,
+              0.011444091796875,
+              0.0133514404296875,
+              0.011205673217773438,
+              0.00858306884765625
+            ]
+          }
+        }
+      ]
+    },
+    "multiple_partition_heal": {
+      "cycles": [
+        {
+          "cycle": 1,
+          "partition": [
+            [
+              "node-0"
+            ],
+            [
+              "node-1",
+              "node-2",
+              "node-3",
+              "node-4"
+            ]
+          ],
+          "consistency_after_heal": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 2173,
+                  "node-1": 1954,
+                  "node-2": 1966,
+                  "node-3": 1896,
+                  "node-4": 1860
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 2172,
+                  "node-1": 1953,
+                  "node-2": 1965,
+                  "node-3": 1895,
+                  "node-4": 1859
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "ff45f8e1a105301de0d60dee5dd4c0e8",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 2173,
+              "node-1": 1954,
+              "node-2": 1966,
+              "node-3": 1896,
+              "node-4": 1860
+            },
+            "commit_indices": {
+              "node-0": 2172,
+              "node-1": 1953,
+              "node-2": 1965,
+              "node-3": 1895,
+              "node-4": 1859
+            }
+          }
+        },
+        {
+          "cycle": 2,
+          "partition": [
+            [
+              "node-0",
+              "node-1",
+              "node-2"
+            ],
+            [
+              "node-3",
+              "node-4"
+            ]
+          ],
+          "consistency_after_heal": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 2303,
+                  "node-1": 2075,
+                  "node-2": 2085,
+                  "node-3": 2019,
+                  "node-4": 1977
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 2302,
+                  "node-1": 2074,
+                  "node-2": 2084,
+                  "node-3": 2018,
+                  "node-4": 1976
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "3a78968487c8cbed1555cca9671b5446",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 2303,
+              "node-1": 2075,
+              "node-2": 2085,
+              "node-3": 2019,
+              "node-4": 1977
+            },
+            "commit_indices": {
+              "node-0": 2302,
+              "node-1": 2074,
+              "node-2": 2084,
+              "node-3": 2018,
+              "node-4": 1976
+            }
+          }
+        },
+        {
+          "cycle": 3,
+          "partition": [
+            [
+              "node-0",
+              "node-1"
+            ],
+            [
+              "node-2",
+              "node-3",
+              "node-4"
+            ]
+          ],
+          "consistency_after_heal": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 2432,
+                  "node-1": 2188,
+                  "node-2": 2199,
+                  "node-3": 2134,
+                  "node-4": 2099
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 2431,
+                  "node-1": 2187,
+                  "node-2": 2198,
+                  "node-3": 2133,
+                  "node-4": 2098
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "89be93edca346256dc16d247c4390392",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 2432,
+              "node-1": 2188,
+              "node-2": 2199,
+              "node-3": 2134,
+              "node-4": 2099
+            },
+            "commit_indices": {
+              "node-0": 2431,
+              "node-1": 2187,
+              "node-2": 2198,
+              "node-3": 2133,
+              "node-4": 2098
+            }
+          }
+        }
+      ]
+    },
+    "edge_cases": {
+      "scenarios": [
+        {
+          "name": "all_nodes_restart",
+          "consistency": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 2432,
+                  "node-1": 2188,
+                  "node-2": 2199,
+                  "node-3": 2134,
+                  "node-4": 2099
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 2431,
+                  "node-1": 2187,
+                  "node-2": 2198,
+                  "node-3": 2133,
+                  "node-4": 2098
+                }
+              },
+              {
+                "type": "term_mismatch",
+                "details": {
+                  "node-0": 6,
+                  "node-1": 7,
+                  "node-2": 8,
+                  "node-3": 8,
+                  "node-4": 8
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "89be93edca346256dc16d247c4390392",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 2432,
+              "node-1": 2188,
+              "node-2": 2199,
+              "node-3": 2134,
+              "node-4": 2099
+            },
+            "commit_indices": {
+              "node-0": 2431,
+              "node-1": 2187,
+              "node-2": 2198,
+              "node-3": 2133,
+              "node-4": 2098
+            }
+          }
+        },
+        {
+          "name": "leader_quick_recovery",
+          "consistency": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 2432,
+                  "node-1": 2188,
+                  "node-2": 2199,
+                  "node-3": 2134,
+                  "node-4": 2099
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 2431,
+                  "node-1": 2187,
+                  "node-2": 2198,
+                  "node-3": 2133,
+                  "node-4": 2098
+                }
+              },
+              {
+                "type": "term_mismatch",
+                "details": {
+                  "node-0": 6,
+                  "node-1": 7,
+                  "node-2": 8,
+                  "node-3": 8,
+                  "node-4": 8
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "89be93edca346256dc16d247c4390392",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 2432,
+              "node-1": 2188,
+              "node-2": 2199,
+              "node-3": 2134,
+              "node-4": 2099
+            },
+            "commit_indices": {
+              "node-0": 2431,
+              "node-1": 2187,
+              "node-2": 2198,
+              "node-3": 2133,
+              "node-4": 2098
+            }
+          }
+        },
+        {
+          "name": "frequent_leader_changes",
+          "consistency": {
+            "is_consistent": false,
+            "inconsistencies": [
+              {
+                "type": "log_length_mismatch",
+                "details": {
+                  "node-0": 2432,
+                  "node-1": 2188,
+                  "node-2": 2199,
+                  "node-3": 2134,
+                  "node-4": 2099
+                }
+              },
+              {
+                "type": "commit_index_mismatch",
+                "details": {
+                  "node-0": 2431,
+                  "node-1": 2187,
+                  "node-2": 2198,
+                  "node-3": 2133,
+                  "node-4": 2098
+                }
+              }
+            ],
+            "data_checksums": {
+              "node-0": "89be93edca346256dc16d247c4390392",
+              "node-1": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-2": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-3": "99914b932bd37a50b983c5e7c90ae93b",
+              "node-4": "99914b932bd37a50b983c5e7c90ae93b"
+            },
+            "log_lengths": {
+              "node-0": 2432,
+              "node-1": 2188,
+              "node-2": 2199,
+              "node-3": 2134,
+              "node-4": 2099
+            },
+            "commit_indices": {
+              "node-0": 2431,
+              "node-1": 2187,
+              "node-2": 2198,
+              "node-3": 2133,
+              "node-4": 2098
+            }
+          }
+        }
+      ]
+    }
+  }
+}

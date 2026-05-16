@@ -1,0 +1,443 @@
+{
+  "scenario": "性能瓶颈和边界测试",
+  "scenario_id": "scenario5_performance_boundary",
+  "start_time": "2026-05-16T17:35:38.722231",
+  "end_time": "2026-05-16T17:35:50.287906",
+  "duration_seconds": 11.565674543380737,
+  "config": {
+    "target_items": 10000
+  },
+  "summary": {
+    "total_tests": 6,
+    "defects_found": 2,
+    "critical_defects": 1,
+    "high_defects": 0,
+    "medium_defects": 1,
+    "low_defects": 0
+  },
+  "defects_by_type": {
+    "hotspot": [
+      {
+        "defect_type": "hotspot",
+        "severity": "medium",
+        "description": "检测到热点: hotspot-key 访问次数=10000",
+        "timestamp": 1778952940.0832665,
+        "evidence": {
+          "hotspot": "hotspot-key",
+          "access_count": 10000
+        },
+        "performance_impact": 0.0
+      }
+    ],
+    "query_degradation": [
+      {
+        "defect_type": "query_degradation",
+        "severity": "critical",
+        "description": "读取性能严重退化: 5.9x",
+        "timestamp": 1778952950.28786,
+        "evidence": {
+          "first_avg": 0.0011715888977050781,
+          "last_avg": 0.006925106048583984
+        },
+        "performance_impact": 5.910866910866911
+      }
+    ]
+  },
+  "defects_by_severity": {
+    "medium": [
+      {
+        "defect_type": "hotspot",
+        "severity": "medium",
+        "description": "检测到热点: hotspot-key 访问次数=10000",
+        "timestamp": 1778952940.0832665,
+        "evidence": {
+          "hotspot": "hotspot-key",
+          "access_count": 10000
+        },
+        "performance_impact": 0.0
+      }
+    ],
+    "critical": [
+      {
+        "defect_type": "query_degradation",
+        "severity": "critical",
+        "description": "读取性能严重退化: 5.9x",
+        "timestamp": 1778952950.28786,
+        "evidence": {
+          "first_avg": 0.0011715888977050781,
+          "last_avg": 0.006925106048583984
+        },
+        "performance_impact": 5.910866910866911
+      }
+    ]
+  },
+  "all_defects": [
+    {
+      "defect_type": "hotspot",
+      "severity": "medium",
+      "description": "检测到热点: hotspot-key 访问次数=10000",
+      "timestamp": 1778952940.0832665,
+      "evidence": {
+        "hotspot": "hotspot-key",
+        "access_count": 10000
+      },
+      "performance_impact": 0.0
+    },
+    {
+      "defect_type": "query_degradation",
+      "severity": "critical",
+      "description": "读取性能严重退化: 5.9x",
+      "timestamp": 1778952950.28786,
+      "evidence": {
+        "first_avg": 0.0011715888977050781,
+        "last_avg": 0.006925106048583984
+      },
+      "performance_impact": 5.910866910866911
+    }
+  ],
+  "test_results": {
+    "large_scale_insert": {
+      "total_inserted": 10000,
+      "batch_metrics": [
+        {
+          "batch": 1,
+          "items": 10000,
+          "time_ms": 97.82242774963379,
+          "throughput": 102226.04601057283,
+          "avg_latency_ms": 0.006212353706359863,
+          "p99_latency_ms": 0.025033950805664062
+        }
+      ],
+      "throughput_history": [
+        102226.04601057283
+      ],
+      "total_time_seconds": 0.1089022159576416,
+      "avg_throughput": 91825.49603847897
+    },
+    "index_building": {
+      "index_sizes": {
+        "1000": {
+          "build_time_ms": 4.178285598754883,
+          "items_per_second": 239332.61055634808,
+          "primary_index_size": 1000,
+          "secondary_indices": 3
+        },
+        "10000": {
+          "build_time_ms": 61.33222579956055,
+          "items_per_second": 163046.42249053434,
+          "primary_index_size": 10000,
+          "secondary_indices": 3
+        },
+        "100000": {
+          "build_time_ms": 563.335657119751,
+          "items_per_second": 177514.06064243242,
+          "primary_index_size": 100000,
+          "secondary_indices": 3
+        }
+      },
+      "build_times": {}
+    },
+    "query_performance": {
+      "query_types": {
+        "point_lookup": {
+          "num_queries": 1000,
+          "avg_latency_ms": 0.0012543201446533203,
+          "p99_latency_ms": 0.0021457672119140625,
+          "max_latency_ms": 0.0054836273193359375
+        },
+        "range_query": {
+          "num_queries": 100,
+          "avg_latency_ms": 2.641873359680176,
+          "p99_latency_ms": 3.840923309326172,
+          "max_latency_ms": 3.840923309326172
+        },
+        "filter_query": {
+          "num_queries": 100,
+          "avg_latency_ms": 2.284255027770996,
+          "p99_latency_ms": 3.2377243041992188,
+          "max_latency_ms": 3.2377243041992188
+        },
+        "full_scan": {
+          "num_queries": 1,
+          "avg_latency_ms": 1.1723041534423828,
+          "p99_latency_ms": 1.1723041534423828,
+          "max_latency_ms": 1.1723041534423828,
+          "results_count": 10000
+        }
+      },
+      "latency_distribution": []
+    },
+    "shard_balance": {
+      "initial_balance": {
+        "balanced": false,
+        "imbalance_ratio": 0.224,
+        "avg_size": 500.0,
+        "max_size": 572,
+        "min_size": 460,
+        "sizes": [
+          520,
+          509,
+          489,
+          489,
+          572,
+          487,
+          460,
+          508,
+          494,
+          515,
+          495,
+          514,
+          502,
+          517,
+          487,
+          468,
+          508,
+          473,
+          485,
+          508
+        ]
+      },
+      "after_operations": {
+        "balanced": false,
+        "imbalance_ratio": 0.22397760223977603,
+        "avg_size": 500.05,
+        "max_size": 572,
+        "min_size": 460,
+        "sizes": [
+          520,
+          509,
+          489,
+          489,
+          572,
+          487,
+          460,
+          508,
+          494,
+          516,
+          495,
+          514,
+          502,
+          517,
+          487,
+          468,
+          508,
+          473,
+          485,
+          508
+        ]
+      },
+      "rebalance_metrics": {},
+      "hotspots": [
+        [
+          "hotspot-key",
+          10000
+        ]
+      ]
+    },
+    "boundary_conditions": {
+      "tests": [
+        {
+          "name": "empty_key",
+          "success": true,
+          "latency_ms": 0.0064373016357421875
+        },
+        {
+          "name": "large_value",
+          "success": true,
+          "latency_ms": 1.7867088317871094,
+          "value_size_kb": 980.478515625
+        },
+        {
+          "name": "concurrent_writes",
+          "count": 100,
+          "avg_latency_ms": 0.0022125244140625,
+          "max_latency_ms": 0.009298324584960938
+        },
+        {
+          "name": "non_existent_keys",
+          "count": 1000
+        }
+      ]
+    },
+    "performance_degradation": {
+      "measurements": [
+        {
+          "items": 10000,
+          "write_avg_ms": 0.0026221275329589844,
+          "write_p99_ms": 0.005245208740234375,
+          "read_avg_ms": 0.0011715888977050781,
+          "read_p99_ms": 0.0019073486328125
+        },
+        {
+          "items": 50000,
+          "write_avg_ms": 0.0023832321166992188,
+          "write_p99_ms": 0.0057220458984375,
+          "read_avg_ms": 0.0036649703979492188,
+          "read_p99_ms": 0.0069141387939453125
+        },
+        {
+          "items": 100000,
+          "write_avg_ms": 0.0024929046630859375,
+          "write_p99_ms": 0.005245208740234375,
+          "read_avg_ms": 0.004240274429321289,
+          "read_p99_ms": 0.0064373016357421875
+        },
+        {
+          "items": 200000,
+          "write_avg_ms": 0.0029201507568359375,
+          "write_p99_ms": 0.005245208740234375,
+          "read_avg_ms": 0.0055539608001708984,
+          "read_p99_ms": 0.009775161743164062
+        },
+        {
+          "items": 500000,
+          "write_avg_ms": 0.0034203529357910156,
+          "write_p99_ms": 0.009059906005859375,
+          "read_avg_ms": 0.006925106048583984,
+          "read_p99_ms": 0.012874603271484375
+        }
+      ],
+      "degradation_detected": true,
+      "write_degradation_factor": 1.3044189852700492,
+      "read_degradation_factor": 5.910866910866911
+    }
+  },
+  "store_stats": {
+    "total_items": 500999,
+    "num_shards": 20,
+    "primary_index_size": 500999,
+    "secondary_indices_count": 7,
+    "slow_operations_count": 3,
+    "shard_balance": {
+      "balanced": true,
+      "imbalance_ratio": 0.012814396835123422,
+      "avg_size": 25049.95,
+      "max_size": 25221,
+      "min_size": 24900,
+      "sizes": [
+        24917,
+        25155,
+        25059,
+        24937,
+        25211,
+        24977,
+        25018,
+        25015,
+        25221,
+        25212,
+        24954,
+        25086,
+        25132,
+        25022,
+        25048,
+        24928,
+        25066,
+        24900,
+        25164,
+        24977
+      ]
+    },
+    "shard_stats": {
+      "0": {
+        "reads": 345,
+        "writes": 24917,
+        "size": 24917
+      },
+      "1": {
+        "reads": 338,
+        "writes": 25155,
+        "size": 25155
+      },
+      "2": {
+        "reads": 354,
+        "writes": 25159,
+        "size": 25059
+      },
+      "3": {
+        "reads": 337,
+        "writes": 24937,
+        "size": 24937
+      },
+      "4": {
+        "reads": 331,
+        "writes": 25211,
+        "size": 25211
+      },
+      "5": {
+        "reads": 377,
+        "writes": 24977,
+        "size": 24977
+      },
+      "6": {
+        "reads": 343,
+        "writes": 25018,
+        "size": 25018
+      },
+      "7": {
+        "reads": 343,
+        "writes": 25015,
+        "size": 25015
+      },
+      "8": {
+        "reads": 344,
+        "writes": 25222,
+        "size": 25221
+      },
+      "9": {
+        "reads": 360,
+        "writes": 35212,
+        "size": 25212
+      },
+      "10": {
+        "reads": 362,
+        "writes": 24956,
+        "size": 24954
+      },
+      "11": {
+        "reads": 365,
+        "writes": 25086,
+        "size": 25086
+      },
+      "12": {
+        "reads": 384,
+        "writes": 25132,
+        "size": 25132
+      },
+      "13": {
+        "reads": 334,
+        "writes": 25022,
+        "size": 25022
+      },
+      "14": {
+        "reads": 361,
+        "writes": 25049,
+        "size": 25048
+      },
+      "15": {
+        "reads": 313,
+        "writes": 24930,
+        "size": 24928
+      },
+      "16": {
+        "reads": 358,
+        "writes": 25067,
+        "size": 25066
+      },
+      "17": {
+        "reads": 351,
+        "writes": 24900,
+        "size": 24900
+      },
+      "18": {
+        "reads": 371,
+        "writes": 25164,
+        "size": 25164
+      },
+      "19": {
+        "reads": 329,
+        "writes": 24978,
+        "size": 24977
+      }
+    }
+  }
+}

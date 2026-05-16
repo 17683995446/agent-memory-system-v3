@@ -1,0 +1,407 @@
+{
+  "scenario": "内存和资源泄漏测试",
+  "scenario_id": "scenario4_resource_leak",
+  "start_time": "2026-05-16T17:32:57.977731",
+  "end_time": "2026-05-16T17:33:01.200081",
+  "duration_seconds": 3.222350835800171,
+  "config": {
+    "simulation_hours": 0.1
+  },
+  "summary": {
+    "total_tests": 4,
+    "defects_found": 5,
+    "critical_defects": 0,
+    "high_defects": 4,
+    "medium_defects": 1,
+    "low_defects": 0
+  },
+  "defects_by_type": {
+    "thread_leak": [
+      {
+        "defect_type": "thread_leak",
+        "severity": "high",
+        "description": "线程增长率异常: 1.00 线程/分钟",
+        "timestamp": 1778952777.9786072,
+        "evidence": {
+          "growth_rate": 1.0
+        },
+        "growth_rate": 1.0
+      },
+      {
+        "defect_type": "thread_leak",
+        "severity": "high",
+        "description": "线程增长率异常: 29.30 线程/分钟",
+        "timestamp": 1778952778.196983,
+        "evidence": {
+          "growth_rate": 29.3
+        },
+        "growth_rate": 29.3
+      }
+    ],
+    "timer_leak": [
+      {
+        "defect_type": "timer_leak",
+        "severity": "medium",
+        "description": "定时器泄漏: 138 个未取消的定时器",
+        "timestamp": 1778952778.197102,
+        "evidence": {
+          "timer_count": 138
+        },
+        "growth_rate": 0.0
+      }
+    ],
+    "connection_leak": [
+      {
+        "defect_type": "connection_leak",
+        "severity": "high",
+        "description": "连接泄漏: 138 个未关闭的连接",
+        "timestamp": 1778952778.1971858,
+        "evidence": {
+          "connection_count": 138
+        },
+        "growth_rate": 0.0
+      }
+    ],
+    "memory_leak": [
+      {
+        "defect_type": "memory_leak",
+        "severity": "high",
+        "description": "删除数据后内存未释放",
+        "timestamp": 1778952780.9101539,
+        "evidence": {
+          "before": 2.311678886413574,
+          "after_delete": 45.89712142944336
+        },
+        "growth_rate": 0.0
+      }
+    ]
+  },
+  "defects_by_severity": {
+    "high": [
+      {
+        "defect_type": "thread_leak",
+        "severity": "high",
+        "description": "线程增长率异常: 1.00 线程/分钟",
+        "timestamp": 1778952777.9786072,
+        "evidence": {
+          "growth_rate": 1.0
+        },
+        "growth_rate": 1.0
+      },
+      {
+        "defect_type": "thread_leak",
+        "severity": "high",
+        "description": "线程增长率异常: 29.30 线程/分钟",
+        "timestamp": 1778952778.196983,
+        "evidence": {
+          "growth_rate": 29.3
+        },
+        "growth_rate": 29.3
+      },
+      {
+        "defect_type": "connection_leak",
+        "severity": "high",
+        "description": "连接泄漏: 138 个未关闭的连接",
+        "timestamp": 1778952778.1971858,
+        "evidence": {
+          "connection_count": 138
+        },
+        "growth_rate": 0.0
+      },
+      {
+        "defect_type": "memory_leak",
+        "severity": "high",
+        "description": "删除数据后内存未释放",
+        "timestamp": 1778952780.9101539,
+        "evidence": {
+          "before": 2.311678886413574,
+          "after_delete": 45.89712142944336
+        },
+        "growth_rate": 0.0
+      }
+    ],
+    "medium": [
+      {
+        "defect_type": "timer_leak",
+        "severity": "medium",
+        "description": "定时器泄漏: 138 个未取消的定时器",
+        "timestamp": 1778952778.197102,
+        "evidence": {
+          "timer_count": 138
+        },
+        "growth_rate": 0.0
+      }
+    ]
+  },
+  "all_defects": [
+    {
+      "defect_type": "thread_leak",
+      "severity": "high",
+      "description": "线程增长率异常: 1.00 线程/分钟",
+      "timestamp": 1778952777.9786072,
+      "evidence": {
+        "growth_rate": 1.0
+      },
+      "growth_rate": 1.0
+    },
+    {
+      "defect_type": "thread_leak",
+      "severity": "high",
+      "description": "线程增长率异常: 29.30 线程/分钟",
+      "timestamp": 1778952778.196983,
+      "evidence": {
+        "growth_rate": 29.3
+      },
+      "growth_rate": 29.3
+    },
+    {
+      "defect_type": "timer_leak",
+      "severity": "medium",
+      "description": "定时器泄漏: 138 个未取消的定时器",
+      "timestamp": 1778952778.197102,
+      "evidence": {
+        "timer_count": 138
+      },
+      "growth_rate": 0.0
+    },
+    {
+      "defect_type": "connection_leak",
+      "severity": "high",
+      "description": "连接泄漏: 138 个未关闭的连接",
+      "timestamp": 1778952778.1971858,
+      "evidence": {
+        "connection_count": 138
+      },
+      "growth_rate": 0.0
+    },
+    {
+      "defect_type": "memory_leak",
+      "severity": "high",
+      "description": "删除数据后内存未释放",
+      "timestamp": 1778952780.9101539,
+      "evidence": {
+        "before": 2.311678886413574,
+        "after_delete": 45.89712142944336
+      },
+      "growth_rate": 0.0
+    }
+  ],
+  "test_results": {
+    "basic_leak_detection": {
+      "snapshots": [
+        {
+          "timestamp": 1778952777.9784446,
+          "memory_used_mb": 0.04404926300048828,
+          "memory_peak_mb": 0.04420948028564453,
+          "object_count": 0,
+          "thread_count": 2,
+          "file_handle_count": 0,
+          "connection_count": 1,
+          "cache_size": 1,
+          "gc_collections": [
+            376,
+            0,
+            1
+          ]
+        }
+      ],
+      "defects_found": [],
+      "initial": {
+        "timestamp": 1778952777.977904,
+        "memory_used_mb": 0.01580047607421875,
+        "memory_peak_mb": 0.020262718200683594,
+        "object_count": 0,
+        "thread_count": 1,
+        "file_handle_count": 0,
+        "connection_count": 0,
+        "cache_size": 0,
+        "gc_collections": [
+          297,
+          0,
+          1
+        ]
+      },
+      "final": {
+        "timestamp": 1778952778.1655042,
+        "memory_used_mb": 0.3161582946777344,
+        "memory_peak_mb": 0.3167686462402344,
+        "object_count": 0,
+        "thread_count": 19,
+        "file_handle_count": 0,
+        "connection_count": 18,
+        "cache_size": 18,
+        "gc_collections": [
+          479,
+          1,
+          1
+        ]
+      },
+      "memory_growth_mb": 0.3003578186035156,
+      "stats": {
+        "data_count": 15,
+        "cache_count": 18,
+        "listener_count": 18,
+        "timer_count": 18,
+        "connection_count": 18,
+        "temp_object_count": 18,
+        "create_count": 18,
+        "delete_count": 5
+      }
+    },
+    "high_frequency_operations": {
+      "operations": 170,
+      "creates": 120,
+      "deletes": 50,
+      "snapshots": [],
+      "memory_growth_mb": 1.4991474151611328,
+      "final_stats": {
+        "data_count": 85,
+        "cache_count": 138,
+        "listener_count": 138,
+        "timer_count": 138,
+        "connection_count": 138,
+        "temp_object_count": 138,
+        "create_count": 138,
+        "delete_count": 55
+      }
+    },
+    "long_running_leak": {
+      "checkpoints": [
+        {
+          "checkpoint": 1,
+          "memory_mb": 1.857804298400879,
+          "data_count": 88,
+          "cache_count": 142,
+          "listener_count": 142,
+          "timer_count": 142,
+          "connection_count": 142,
+          "temp_object_count": 142
+        },
+        {
+          "checkpoint": 2,
+          "memory_mb": 1.9071245193481445,
+          "data_count": 91,
+          "cache_count": 146,
+          "listener_count": 146,
+          "timer_count": 146,
+          "connection_count": 146,
+          "temp_object_count": 146
+        },
+        {
+          "checkpoint": 3,
+          "memory_mb": 1.9568471908569336,
+          "data_count": 94,
+          "cache_count": 150,
+          "listener_count": 150,
+          "timer_count": 150,
+          "connection_count": 150,
+          "temp_object_count": 150
+        },
+        {
+          "checkpoint": 4,
+          "memory_mb": 2.006026268005371,
+          "data_count": 97,
+          "cache_count": 154,
+          "listener_count": 154,
+          "timer_count": 154,
+          "connection_count": 154,
+          "temp_object_count": 154
+        },
+        {
+          "checkpoint": 5,
+          "memory_mb": 2.0552167892456055,
+          "data_count": 98,
+          "cache_count": 158,
+          "listener_count": 158,
+          "timer_count": 158,
+          "connection_count": 158,
+          "temp_object_count": 158
+        },
+        {
+          "checkpoint": 6,
+          "memory_mb": 2.104403495788574,
+          "data_count": 102,
+          "cache_count": 162,
+          "listener_count": 162,
+          "timer_count": 162,
+          "connection_count": 162,
+          "temp_object_count": 162
+        },
+        {
+          "checkpoint": 7,
+          "memory_mb": 2.1535539627075195,
+          "data_count": 106,
+          "cache_count": 166,
+          "listener_count": 166,
+          "timer_count": 166,
+          "connection_count": 166,
+          "temp_object_count": 166
+        },
+        {
+          "checkpoint": 8,
+          "memory_mb": 2.2071104049682617,
+          "data_count": 108,
+          "cache_count": 170,
+          "listener_count": 170,
+          "timer_count": 170,
+          "connection_count": 170,
+          "temp_object_count": 170
+        },
+        {
+          "checkpoint": 9,
+          "memory_mb": 2.2614965438842773,
+          "data_count": 110,
+          "cache_count": 174,
+          "listener_count": 174,
+          "timer_count": 174,
+          "connection_count": 174,
+          "temp_object_count": 174
+        },
+        {
+          "checkpoint": 10,
+          "memory_mb": 2.310774803161621,
+          "data_count": 113,
+          "cache_count": 178,
+          "listener_count": 178,
+          "timer_count": 178,
+          "connection_count": 178,
+          "temp_object_count": 178
+        }
+      ],
+      "leak_detected": false
+    },
+    "stress_leak": {
+      "phases": [
+        {
+          "name": "stress_create",
+          "memory_before": 2.311678886413574,
+          "memory_after": 45.895806312561035,
+          "memory_growth": 43.58412742614746
+        },
+        {
+          "name": "delete_all",
+          "memory_before": 45.895806312561035,
+          "memory_after": 45.89712142944336,
+          "memory_growth": 0.0013151168823242188
+        },
+        {
+          "name": "force_cleanup",
+          "memory_before": 45.89712142944336,
+          "memory_after": 0.613316535949707,
+          "memory_growth": -45.28380489349365
+        }
+      ],
+      "cleanup_effectiveness": 1.0389674510139433,
+      "final_stats": {
+        "data_count": 113,
+        "cache_count": 0,
+        "listener_count": 0,
+        "timer_count": 0,
+        "connection_count": 0,
+        "temp_object_count": 0,
+        "create_count": 1178,
+        "delete_count": 1067
+      }
+    }
+  }
+}

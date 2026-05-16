@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-memory-system"
+version = "2.30.0"
+description = "A hierarchical long-short term memory system for AI agents with fast retrieval"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Agent Memory Team"}
+]
+keywords = ["memory", "agent", "ai", "vector-search", "retrieval"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Artificial Intelligence",
+]
+
+dependencies = [
+    "pydantic>=2.0",
+    "cachetools>=5.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+full = [
+    "sentence-transformers>=2.0",
+    "faiss-cpu>=1.7",
+    "chromadb>=0.4",
+    "qdrant-client>=1.7",
+    "fastapi>=0.100",
+    "uvicorn>=0.20",
+    "slowapi>=0.1",
+    "httpx>=0.24",
+    "python-multipart>=0.0.6",
+    "grpcio>=1.50",
+    "prometheus-client>=0.16",
+    "structlog>=23.0",
+    "opentelemetry-api>=1.20",
+    "opentelemetry-sdk>=1.20",
+    "typer>=0.9",
+    "rich>=13.0",
+    "pydantic-settings>=2.0",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "httpx>=0.24",
+]
+
+[project.scripts]
+agent-memory = "memory_system.command_line_interface:app"
+
+[tool.setuptools.packages.find]
+include = ["memory_system*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "benchmark: marks tests as benchmark tests",
+]
+
+[tool.coverage.run]
+source = ["memory_system"]
+omit = [
+    "memory_system/proto/*",
+    "memory_system/code_memory_support/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@abstractmethod",
+]
+fail_under = 60

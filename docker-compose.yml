@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  memory-system:
+    build: .
+    container_name: agent-memory
+    ports:
+      - "8000:8000"
+    environment:
+      - MEMORY_STORAGE_BACKEND=memory
+      - MEMORY_EMBEDDING_PROVIDER=sentence_transformers
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  # 可选: Qdrant 向量数据库
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    profiles:
+      - qdrant
+
+  # 可选: Chroma 向量数据库
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: chroma
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/data
+    profiles:
+      - chroma
+
+volumes:
+  qdrant_data:
+  chroma_data:

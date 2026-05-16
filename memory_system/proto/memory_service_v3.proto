@@ -1,0 +1,565 @@
+syntax = "proto3";
+
+package agent_memory.v3;
+
+option go_package = "github.com/agent-memory-system/proto/v3";
+option python_package = "memory_system.proto.v3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+// ==================== 核心消息定义 ====================
+
+// 内存条目
+message MemoryEntry {
+  string id = 1;
+  string agent_id = 2;
+  string tenant_id = 3;
+  MemoryType memory_type = 4;
+  string content = 5;
+  repeated float embedding = 6;
+  map<string, string> metadata = 7;
+  double importance_score = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp expires_at = 10;
+  int32 access_count = 11;
+  google.protobuf.Timestamp last_accessed_at = 12;
+}
+
+// 内存类型
+enum MemoryType {
+  MEMORY_TYPE_UNSPECIFIED = 0;
+  MEMORY_TYPE_SHORT_TERM = 1;
+  MEMORY_TYPE_LONG_TERM = 2;
+  MEMORY_TYPE_WORKING = 3;
+  MEMORY_TYPE_EPISODIC = 4;
+  MEMORY_TYPE_SEMANTIC = 5;
+}
+
+// 搜索请求
+message SearchRequest {
+  string agent_id = 1;
+  string tenant_id = 2;
+  string query = 3;
+  repeated float query_embedding = 4;
+  int32 top_k = 5;
+  double min_score = 6;
+  MemoryType memory_type_filter = 7;
+  map<string, string> metadata_filter = 8;
+  TimeRange time_range = 9;
+}
+
+// 时间范围
+message TimeRange {
+  google.protobuf.Timestamp start_time = 1;
+  google.protobuf.Timestamp end_time = 2;
+}
+
+// 搜索结果
+message SearchResult {
+  MemoryEntry entry = 1;
+  double score = 2;
+  string match_type = 3;  // "vector", "keyword", "hybrid"
+}
+
+// 搜索响应
+message SearchResponse {
+  repeated SearchResult results = 1;
+  int32 total_count = 2;
+  double search_time_ms = 3;
+}
+
+// 存储请求
+message StoreRequest {
+  string agent_id = 1;
+  string tenant_id = 2;
+  MemoryType memory_type = 3;
+  string content = 4;
+  repeated float embedding = 5;
+  map<string, string> metadata = 6;
+  double importance_score = 7;
+  int32 ttl_seconds = 8;  // 0表示永不过期
+}
+
+// 存储响应
+message StoreResponse {
+  string memory_id = 1;
+  bool success = 2;
+  string error_message = 3;
+}
+
+// 批量存储请求
+message BatchStoreRequest {
+  repeated StoreRequest requests = 1;
+  bool atomic = 2;  // 是否原子操作
+}
+
+// 批量存储响应
+message BatchStoreResponse {
+  repeated StoreResponse responses = 1;
+  int32 success_count = 2;
+  int32 failed_count = 3;
+}
+
+// 获取请求
+message GetRequest {
+  string memory_id = 1;
+  string agent_id = 2;
+  string tenant_id = 3;
+}
+
+// 删除请求
+message DeleteRequest {
+  string memory_id = 1;
+  string agent_id = 2;
+  string tenant_id = 3;
+  bool permanent = 4;  // true=永久删除, false=标记删除
+}
+
+// 删除响应
+message DeleteResponse {
+  bool success = 1;
+  string error_message = 2;
+}
+
+// 更新请求
+message UpdateRequest {
+  string memory_id = 1;
+  string agent_id = 2;
+  string tenant_id = 3;
+  optional string content = 4;
+  optional repeated float embedding = 5;
+  optional map<string, string> metadata = 6;
+  optional double importance_score = 7;
+}
+
+// ==================== 流式消息定义 ====================
+
+// 流式存储请求
+message StreamingStoreRequest {
+  oneof data {
+    StreamHeader header = 1;
+    MemoryChunk chunk = 2;
+    StreamFooter footer = 3;
+  }
+}
+
+// 流头部
+message StreamHeader {
+  string agent_id = 1;
+  string tenant_id = 2;
+  MemoryType memory_type = 3;
+  int64 total_size = 4;
+  map<string, string> metadata = 5;
+}
+
+// 内存块
+message MemoryChunk {
+  bytes data = 1;
+  int32 sequence = 2;
+  bool is_last = 3;
+}
+
+// 流尾部
+message StreamFooter {
+  string checksum = 1;
+  map<string, string> final_metadata = 2;
+}
+
+// 流式搜索响应
+message StreamingSearchResponse {
+  oneof data {
+    SearchResult result = 1;
+    SearchComplete complete = 2;
+    SearchError error = 3;
+  }
+}
+
+// 搜索完成
+message SearchComplete {
+  int32 total_results = 1;
+  double search_time_ms = 2;
+}
+
+// 搜索错误
+message SearchError {
+  string error_code = 1;
+  string error_message = 2;
+}
+
+// ==================== Raft共识消息 ====================
+
+// Raft命令
+message RaftCommand {
+  string command_id = 1;
+  RaftCommandType command_type = 2;
+  bytes payload = 3;
+  int64 term = 4;
+  string leader_id = 5;
+}
+
+// Raft命令类型
+enum RaftCommandType {
+  RAFT_COMMAND_TYPE_UNSPECIFIED = 0;
+  RAFT_COMMAND_TYPE_STORE = 1;
+  RAFT_COMMAND_TYPE_DELETE = 2;
+  RAFT_COMMAND_TYPE_UPDATE = 3;
+  RAFT_COMMAND_TYPE_CONFIG_CHANGE = 4;
+}
+
+// Raft提案请求
+message RaftProposeRequest {
+  RaftCommand command = 1;
+  int64 timeout_ms = 2;
+}
+
+// Raft提案响应
+message RaftProposeResponse {
+  bool accepted = 1;
+  string leader_id = 2;
+  int64 current_term = 3;
+  string error_message = 4;
+}
+
+// Raft状态请求
+message RaftStatusRequest {
+  bool include_details = 1;
+}
+
+// Raft状态响应
+message RaftStatusResponse {
+  string node_id = 1;
+  RaftRole role = 2;
+  int64 current_term = 3;
+  string leader_id = 4;
+  int64 log_size = 5;
+  int64 commit_index = 6;
+  int64 last_applied = 7;
+  repeated string peers = 8;
+}
+
+// Raft角色
+enum RaftRole {
+  RAFT_ROLE_UNSPECIFIED = 0;
+  RAFT_ROLE_FOLLOWER = 1;
+  RAFT_ROLE_CANDIDATE = 2;
+  RAFT_ROLE_LEADER = 3;
+}
+
+// ==================== 事务消息 ====================
+
+// 事务请求
+message TransactionRequest {
+  string transaction_id = 1;
+  TransactionType type = 2;
+  repeated TransactionOperation operations = 3;
+  int64 timeout_ms = 4;
+}
+
+// 事务类型
+enum TransactionType {
+  TRANSACTION_TYPE_UNSPECIFIED = 0;
+  TRANSACTION_TYPE_2PC = 1;      // 两阶段提交
+  TRANSACTION_TYPE_SAGA = 2;     // Saga模式
+}
+
+// 事务操作
+message TransactionOperation {
+  string operation_id = 1;
+  OperationType type = 2;
+  oneof request {
+    StoreRequest store = 3;
+    DeleteRequest delete = 4;
+    UpdateRequest update = 5;
+  }
+  string compensation_operation_id = 6;  // Saga补偿操作ID
+}
+
+// 操作类型
+enum OperationType {
+  OPERATION_TYPE_UNSPECIFIED = 0;
+  OPERATION_TYPE_STORE = 1;
+  OPERATION_TYPE_DELETE = 2;
+  OPERATION_TYPE_UPDATE = 3;
+}
+
+// 事务响应
+message TransactionResponse {
+  string transaction_id = 1;
+  TransactionStatus status = 2;
+  repeated OperationResult results = 3;
+  string error_message = 4;
+}
+
+// 事务状态
+enum TransactionStatus {
+  TRANSACTION_STATUS_UNSPECIFIED = 0;
+  TRANSACTION_STATUS_ACTIVE = 1;
+  TRANSACTION_STATUS_PREPARING = 2;
+  TRANSACTION_STATUS_PREPARED = 3;
+  TRANSACTION_STATUS_COMMITTING = 4;
+  TRANSACTION_STATUS_COMMITTED = 5;
+  TRANSACTION_STATUS_ABORTING = 6;
+  TRANSACTION_STATUS_ABORTED = 7;
+  TRANSACTION_STATUS_COMPENSATING = 8;
+  TRANSACTION_STATUS_COMPENSATED = 9;
+}
+
+// 操作结果
+message OperationResult {
+  string operation_id = 1;
+  bool success = 2;
+  string memory_id = 3;
+  string error_message = 4;
+}
+
+// ==================== 健康检查消息 ====================
+
+// 健康检查请求
+message HealthCheckRequest {
+  string service = 1;
+}
+
+// 健康检查响应
+message HealthCheckResponse {
+  ServingStatus status = 1;
+  string message = 2;
+  map<string, ServiceHealth> services = 3;
+  int64 timestamp = 4;
+}
+
+// 服务健康状态
+message ServiceHealth {
+  bool healthy = 1;
+  string status = 2;
+  double latency_ms = 3;
+  string last_error = 4;
+}
+
+// 服务状态
+enum ServingStatus {
+  SERVING_STATUS_UNSPECIFIED = 0;
+  SERVING_STATUS_SERVING = 1;
+  SERVING_STATUS_NOT_SERVING = 2;
+  SERVING_STATUS_SERVICE_UNKNOWN = 3;
+}
+
+// ==================== 监控指标消息 ====================
+
+// 指标请求
+message MetricsRequest {
+  repeated string metric_names = 1;
+  TimeRange time_range = 2;
+}
+
+// 指标响应
+message MetricsResponse {
+  repeated Metric metrics = 1;
+}
+
+// 指标
+message Metric {
+  string name = 1;
+  double value = 2;
+  map<string, string> labels = 3;
+  google.protobuf.Timestamp timestamp = 4;
+  MetricType type = 5;
+}
+
+// 指标类型
+enum MetricType {
+  METRIC_TYPE_UNSPECIFIED = 0;
+  METRIC_TYPE_COUNTER = 1;
+  METRIC_TYPE_GAUGE = 2;
+  METRIC_TYPE_HISTOGRAM = 3;
+  METRIC_TYPE_SUMMARY = 4;
+}
+
+// ==================== 集群管理消息 ====================
+
+// 集群节点信息
+message ClusterNode {
+  string node_id = 1;
+  string address = 2;
+  NodeStatus status = 3;
+  map<string, string> metadata = 4;
+  int64 last_heartbeat = 5;
+}
+
+// 节点状态
+enum NodeStatus {
+  NODE_STATUS_UNSPECIFIED = 0;
+  NODE_STATUS_HEALTHY = 1;
+  NODE_STATUS_UNHEALTHY = 2;
+  NODE_STATUS_OFFLINE = 3;
+  NODE_STATUS_JOINING = 4;
+  NODE_STATUS_LEAVING = 5;
+}
+
+// 集群状态请求
+message ClusterStatusRequest {}
+
+// 集群状态响应
+message ClusterStatusResponse {
+  string cluster_id = 1;
+  repeated ClusterNode nodes = 2;
+  string leader_id = 3;
+  int32 replication_factor = 4;
+}
+
+// 加入集群请求
+message JoinClusterRequest {
+  string node_id = 1;
+  string address = 2;
+  map<string, string> metadata = 3;
+}
+
+// 加入集群响应
+message JoinClusterResponse {
+  bool success = 1;
+  repeated ClusterNode current_nodes = 2;
+  string error_message = 3;
+}
+
+// ==================== 服务定义 ====================
+
+// Agent Memory Service
+service AgentMemoryService {
+  // 基本CRUD操作
+  rpc Store(StoreRequest) returns (StoreResponse);
+  rpc Get(GetRequest) returns (MemoryEntry);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc Update(UpdateRequest) returns (StoreResponse);
+  
+  // 搜索操作
+  rpc Search(SearchRequest) returns (SearchResponse);
+  rpc StreamingSearch(SearchRequest) returns (stream StreamingSearchResponse);
+  
+  // 批量操作
+  rpc BatchStore(BatchStoreRequest) returns (BatchStoreResponse);
+  
+  // 流式操作
+  rpc StreamingStore(stream StreamingStoreRequest) returns (StoreResponse);
+  
+  // Raft共识操作
+  rpc RaftPropose(RaftProposeRequest) returns (RaftProposeResponse);
+  rpc RaftStatus(RaftStatusRequest) returns (RaftStatusResponse);
+  
+  // 事务操作
+  rpc ExecuteTransaction(TransactionRequest) returns (TransactionResponse);
+  rpc GetTransactionStatus(TransactionRequest) returns (TransactionResponse);
+  
+  // 健康检查
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+  rpc WatchHealth(google.protobuf.Empty) returns (stream HealthCheckResponse);
+  
+  // 监控指标
+  rpc GetMetrics(MetricsRequest) returns (MetricsResponse);
+  rpc StreamMetrics(MetricsRequest) returns (stream MetricsResponse);
+  
+  // 集群管理
+  rpc GetClusterStatus(ClusterStatusRequest) returns (ClusterStatusResponse);
+  rpc JoinCluster(JoinClusterRequest) returns (JoinClusterResponse);
+  rpc LeaveCluster(ClusterNode) returns (google.protobuf.Empty);
+}
+
+// 内部节点间通信服务
+service InternalNodeService {
+  // Raft RPC
+  rpc RequestVote(RaftVoteRequest) returns (RaftVoteResponse);
+  rpc AppendEntries(RaftAppendRequest) returns (RaftAppendResponse);
+  rpc InstallSnapshot(RaftSnapshotRequest) returns (RaftSnapshotResponse);
+  
+  // 数据同步
+  rpc SyncData(SyncDataRequest) returns (SyncDataResponse);
+  rpc ReplicateMemory(ReplicateMemoryRequest) returns (ReplicateMemoryResponse);
+}
+
+// Raft投票请求
+message RaftVoteRequest {
+  int64 term = 1;
+  string candidate_id = 2;
+  int64 last_log_index = 3;
+  int64 last_log_term = 4;
+}
+
+// Raft投票响应
+message RaftVoteResponse {
+  int64 term = 1;
+  bool vote_granted = 2;
+  string voter_id = 3;
+}
+
+// Raft追加条目请求
+message RaftAppendRequest {
+  int64 term = 1;
+  string leader_id = 2;
+  int64 prev_log_index = 3;
+  int64 prev_log_term = 4;
+  repeated RaftLogEntry entries = 5;
+  int64 leader_commit = 6;
+}
+
+// Raft日志条目
+message RaftLogEntry {
+  int64 index = 1;
+  int64 term = 2;
+  RaftCommand command = 3;
+}
+
+// Raft追加响应
+message RaftAppendResponse {
+  int64 term = 1;
+  bool success = 2;
+  string follower_id = 3;
+  int64 match_index = 4;
+  int64 conflict_index = 5;
+}
+
+// Raft快照请求
+message RaftSnapshotRequest {
+  int64 term = 1;
+  string leader_id = 2;
+  int64 last_included_index = 3;
+  int64 last_included_term = 4;
+  int64 offset = 5;
+  bytes data = 6;
+  bool done = 7;
+}
+
+// Raft快照响应
+message RaftSnapshotResponse {
+  int64 term = 1;
+  bool success = 2;
+  string follower_id = 3;
+}
+
+// 数据同步请求
+message SyncDataRequest {
+  string node_id = 1;
+  int64 last_index = 2;
+  string partition_id = 3;
+}
+
+// 数据同步响应
+message SyncDataResponse {
+  bool success = 1;
+  repeated MemoryEntry entries = 2;
+  int64 last_index = 3;
+  bool has_more = 4;
+}
+
+// 复制内存请求
+message ReplicateMemoryRequest {
+  string source_node_id = 1;
+  string target_node_id = 2;
+  MemoryEntry entry = 3;
+  int64 sequence = 4;
+}
+
+// 复制内存响应
+message ReplicateMemoryResponse {
+  bool success = 1;
+  int64 received_sequence = 2;
+}

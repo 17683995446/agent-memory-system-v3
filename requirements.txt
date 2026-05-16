@@ -1,0 +1,36 @@
+# Agent Memory System V2 - 依赖配置
+# 核心依赖
+pydantic>=2.0.0
+
+# 向量数据库（可选安装）
+chromadb>=0.4.0      # Chroma向量数据库
+qdrant-client>=1.7.0 # Qdrant向量数据库
+
+# ANN 索引 (可选)
+faiss-cpu>=1.7.0
+
+# 嵌入模型（可选安装）
+numpy>=1.24.0                 # 某些嵌入模型需要
+sentence-transformers>=2.2.0  # Sentence-BERT生态
+FlagEmbedding>=1.2.0          # BGE模型
+
+# 工具库
+python-dotenv>=1.0.0   # 环境变量管理
+pyyaml>=6.0            # YAML配置支持
+typer>=0.9.0           # CLI工具
+rich>=13.0.0           # 美化输出
+tenacity>=8.0.0        # 重试机制
+fastapi>=0.104.0       # REST API框架
+uvicorn[standard]>=0.24.0  # ASGI服务器
+httpx>=0.25.0          # 异步HTTP客户端（测试用）
+
+# 监控与日志（可选安装）
+prometheus-client>=0.19.0  # 监控指标
+structlog>=23.0.0          # 结构化日志
+
+# 开发依赖
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-benchmark>=4.0.0  # 性能基准测试
+black>=23.0.0
+mypy>=1.0.0

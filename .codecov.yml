@@ -1,0 +1,76 @@
+# Codecov配置
+# 用于代码覆盖率报告和PR检查
+
+coverage:
+  # 覆盖率精度设置
+  precision: 2
+  round: down
+  range: "70...100"
+
+  # 状态检查配置
+  status:
+    # 项目整体覆盖率
+    project:
+      default:
+        target: 80%
+        threshold: 2%
+        base: auto
+        paths:
+          - "memory_system/"
+        if_not_found: success
+        if_ci_failed: error
+        only_pulls: false
+
+    # 补丁覆盖率(新代码)
+    patch:
+      default:
+        target: 80%
+        threshold: 2%
+        base: auto
+        if_not_found: success
+        if_ci_failed: error
+        only_pulls: false
+
+    # 变更覆盖率
+    changes:
+      default:
+        target: 80%
+        if_not_found: success
+        if_ci_failed: error
+
+# 忽略的文件和目录
+ignore:
+  - "tests/**/*"
+  - "tests/*"
+  - "**/test_*.py"
+  - "**/*_test.py"
+  - "**/conftest.py"
+  - "examples/**/*"
+  - "docs/**/*"
+  - "**/__init__.py"
+  - "memory_system/proto/**/*"
+  - "memory_system/command_line_interface.py"
+
+# 评论配置
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+  hide_project_coverage: false
+
+# 标记配置
+flags:
+  unit:
+    paths:
+      - "memory_system/"
+    carryforward: true
+  integration:
+    paths:
+      - "memory_system/"
+    carryforward: true
+
+# GitHub检查配置
+github_checks:
+  annotations: true
