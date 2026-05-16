@@ -330,8 +330,11 @@ class PipelineStage:
         self._query_times: Deque[float] = deque(maxlen=100)
     
     async def start(self, output_queue: Optional[asyncio.Queue] = None):
-        """启动阶段"""
-        self.output_queue = output_queue
+        """启动阶段 - DEFECT-002 [P0] 修复: 当 output_queue 参数为 None 时不覆盖已设置的 output_queue"""
+        # DEFECT-002 修复: 仅在显式传入 output_queue 时才覆盖，避免 Pipeline.start()
+        # 调用 stage.start() 时传入 None 导致已连接的 output_queue 被清空
+        if output_queue is not None:
+            self.output_queue = output_queue
         self._shutdown_event.clear()
         
         # 启动工作线程

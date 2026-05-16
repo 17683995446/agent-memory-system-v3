@@ -555,6 +555,26 @@ class CommandBus:
     命令总线
     
     负责路由命令到对应的处理器，支持中间件和事务
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from cqrs_system import CommandBus, InMemoryEventStore, Command, CommandHandler, CommandResult
+        >>> 
+        >>> event_store = InMemoryEventStore()
+        >>> bus = CommandBus(event_store)
+        >>> 
+        >>> # 注册命令处理器
+        >>> class CreateOrderHandler(CommandHandler):
+        ...     def get_command_type(self):
+        ...         return CreateOrder
+        ...     async def handle(self, command: Command) -> CommandResult:
+        ...         return CommandResult(status=CommandResultStatus.SUCCESS, data={"id": "123"})
+        >>> bus.register_handler(CreateOrderHandler())
+        >>> 
+        >>> # 发送命令
+        >>> result = await bus.dispatch(CreateOrder(data={"item": "book"}))
+        >>> print(result.data)  # {"id": "123"}
     """
     
     def __init__(self, event_store: EventStore):

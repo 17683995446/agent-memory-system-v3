@@ -840,7 +840,32 @@ class KubernetesPodFaultInjector(FaultInjector):
 
 
 class ChaosEngineeringFramework:
-    """混沌工程框架主类"""
+    """
+    混沌工程框架主类
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from chaos_engineering import ChaosEngineeringFramework, FaultConfig, FaultType
+        >>> 
+        >>> framework = ChaosEngineeringFramework()
+        >>> 
+        >>> # 创建故障实验
+        >>> config = FaultConfig(
+        ...     fault_type=FaultType.CPU,
+        ...     duration=30,
+        ...     intensity=0.5
+        ... )
+        >>> experiment = framework.create_experiment(
+        ...     name="cpu-stress-test",
+        ...     description="Test service under CPU stress",
+        ...     fault_config=config
+        ... )
+        >>> 
+        >>> # 运行实验
+        >>> result = await framework.run_experiment("cpu-stress-test")
+        >>> print(result.resilience_score)
+    """
 
     def __init__(self):
         self._experiments: Dict[str, ChaosExperiment] = {}

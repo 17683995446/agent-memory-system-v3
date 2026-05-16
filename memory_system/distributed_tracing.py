@@ -505,7 +505,30 @@ _current_context: ContextVar[Optional[TraceContext]] = ContextVar('trace_context
 
 
 class Tracer:
-    """追踪器"""
+    """
+    追踪器
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from distributed_tracing import Tracer, ConsoleExporter, ProbabilisticSampler
+        >>> 
+        >>> tracer = Tracer(
+        ...     service_name="my-service",
+        ...     sampler=ProbabilisticSampler(1.0),
+        ...     exporter=ConsoleExporter()
+        >>> )
+        >>> 
+        >>> # 创建根 Span
+        >>> with tracer.start_span("handle_request") as span:
+        ...     span.set_attribute("http.method", "GET")
+        ...     # 创建子 Span
+        ...     with tracer.start_span("db_query", parent=span) as child:
+        ...         child.set_attribute("db.system", "postgresql")
+        >>> 
+        >>> # 导出追踪数据
+        >>> await tracer.flush()
+    """
     
     def __init__(
         self,

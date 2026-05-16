@@ -914,6 +914,23 @@ class APIGateway:
     API网关
     
     整合所有网关功能
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from api_gateway import APIGateway
+        >>> 
+        >>> gateway = APIGateway()
+        >>> 
+        >>> # 注册路由
+        >>> gateway.router.add_route("GET", "/api/users", user_list_handler)
+        >>> gateway.router.add_route("POST", "/api/users", user_create_handler)
+        >>> 
+        >>> # 处理请求
+        >>> response = await gateway.handle_request(
+        ...     method="GET", path="/api/users", headers={}
+        ... )
+        >>> print(response.status)  # 200
     """
     
     def __init__(

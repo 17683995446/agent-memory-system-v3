@@ -1108,6 +1108,29 @@ class Operator:
     Kubernetes Operator门面
     
     整合所有Operator功能
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from k8s_operator import Operator
+        >>> 
+        >>> operator = Operator()
+        >>> await operator.initialize()
+        >>> 
+        >>> # 创建自定义资源
+        >>> crd = CustomResourceDefinition(
+        ...     group="memory.example.com",
+        ...     version="v1",
+        ...     kind="MemoryStore",
+        ...     plural="memorystores"
+        ... )
+        >>> await operator.create_crd(crd)
+        >>> 
+        >>> # 自动扩缩容
+        >>> await operator.auto_scaler.scale("memory-store", namespace="default", replicas=3)
+        >>> 
+        >>> # 备份
+        >>> await operator.backup_manager.create_backup("memory-store", "default")
     """
     
     def __init__(self, kube_config: Optional[str] = None):

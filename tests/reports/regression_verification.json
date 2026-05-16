@@ -1,0 +1,368 @@
+{
+  "metadata": {
+    "version": "V3.0.0",
+    "generated_at": "2026-05-16T21:23:37.403648+00:00",
+    "test_type": "regression_verification_post_fix",
+    "defects_verified": [
+      "DEFECT-001",
+      "DEFECT-002",
+      "DEFECT-005",
+      "DEFECT-006"
+    ]
+  },
+  "summary": {
+    "total": 30,
+    "passed": 30,
+    "failed": 0,
+    "skipped": 0,
+    "pass_rate": "100.0%",
+    "duration_seconds": 79.83
+  },
+  "test_results": [
+    {
+      "test_id": "TEST-1a",
+      "test_name": "import memory_system 包级别导入",
+      "defect_id": "DEFECT-001",
+      "status": "PASS",
+      "details": "成功导入 memory_system, version=3.0.0",
+      "before_status": "FAIL (torch_scatter等依赖缺失导致整个包导入失败)",
+      "after_status": "PASS (try/except包裹，依赖缺失时优雅降级)",
+      "timestamp": "2026-05-16T21:22:20.932094+00:00"
+    },
+    {
+      "test_id": "TEST-1b",
+      "test_name": "核心模块导入 (73/76)",
+      "defect_id": "DEFECT-001",
+      "status": "PASS",
+      "details": "所有核心模块导入成功。3个可选依赖模块因依赖缺失跳过，0个模块因结构问题跳过（均非DEFECT-001范围）",
+      "before_status": "FAIL (重量级模块导入失败导致整个包不可用)",
+      "after_status": "PASS",
+      "timestamp": "2026-05-16T21:22:20.932113+00:00"
+    },
+    {
+      "test_id": "TEST-1c",
+      "test_name": "重量级模块优雅降级",
+      "defect_id": "DEFECT-001",
+      "status": "PASS",
+      "details": "6个重量级模块在依赖缺失时优雅降级，不影响包导入",
+      "before_status": "FAIL (依赖缺失直接抛出ImportError，整个包不可用)",
+      "after_status": "PASS (try/except包裹，设为None并warning)",
+      "timestamp": "2026-05-16T21:22:20.932262+00:00"
+    },
+    {
+      "test_id": "TEST-2a",
+      "test_name": "Pipeline正确连接多个Stage",
+      "defect_id": "DEFECT-002",
+      "status": "PASS",
+      "details": "3个Stage正确连接，output_queue -> next input_queue",
+      "before_status": "FAIL (stage.start(None)覆盖已连接的output_queue)",
+      "after_status": "PASS (仅当output_queue非None时才覆盖)",
+      "timestamp": "2026-05-16T21:22:22.434709+00:00"
+    },
+    {
+      "test_id": "TEST-2b",
+      "test_name": "数据在Stage之间正确传递",
+      "defect_id": "DEFECT-002",
+      "status": "PASS",
+      "details": "数据 5 -> double -> 10 -> add -> 110, 正确传递",
+      "before_status": "FAIL (数据无法在Stage间传递)",
+      "after_status": "PASS",
+      "timestamp": "2026-05-16T21:22:23.436670+00:00"
+    },
+    {
+      "test_id": "TEST-2c",
+      "test_name": "wait_for_result正确收到结果",
+      "defect_id": "DEFECT-002",
+      "status": "PASS",
+      "details": "5个数据项全部通过wait_for_result正确收到",
+      "before_status": "FAIL (wait_for_result超时或返回None)",
+      "after_status": "PASS",
+      "timestamp": "2026-05-16T21:22:23.938265+00:00"
+    },
+    {
+      "test_id": "TEST-2d",
+      "test_name": "Pipeline批量提交submit_many",
+      "defect_id": "DEFECT-002",
+      "status": "PASS",
+      "details": "10个数据项批量提交并全部收到结果",
+      "before_status": "FAIL",
+      "after_status": "PASS",
+      "timestamp": "2026-05-16T21:22:24.440629+00:00"
+    },
+    {
+      "test_id": "TEST-3a",
+      "test_name": "单节点Raft立即成为Leader",
+      "defect_id": "DEFECT-005",
+      "status": "PASS",
+      "details": "单节点启动后立即成为Leader, term=1, 无需等待选举超时",
+      "before_status": "FAIL (单节点等待选举超时才能成为Leader)",
+      "after_status": "PASS (无peers时跳过选举直接成为Leader)",
+      "timestamp": "2026-05-16T21:22:24.440841+00:00"
+    },
+    {
+      "test_id": "TEST-3b",
+      "test_name": "单节点Raft日志写入",
+      "defect_id": "DEFECT-005",
+      "status": "PASS",
+      "details": "单节点Leader成功写入日志 (log_length=1, proposal=logged_but_not_committed)",
+      "before_status": "FAIL (单节点无法在合理时间内成为Leader)",
+      "after_status": "PASS (立即成为Leader，日志写入正常)",
+      "timestamp": "2026-05-16T21:22:26.442101+00:00"
+    },
+    {
+      "test_id": "TEST-3c",
+      "test_name": "多节点Raft不直接成为Leader",
+      "defect_id": "DEFECT-005",
+      "status": "PASS",
+      "details": "多节点启动后角色为 FOLLOWER，不直接成为Leader，需等待选举",
+      "before_status": "N/A",
+      "after_status": "PASS (仅无peers时跳过选举)",
+      "timestamp": "2026-05-16T21:22:26.442223+00:00"
+    },
+    {
+      "test_id": "TEST-4a",
+      "test_name": "watch()方法注册回调",
+      "defect_id": "DEFECT-006",
+      "status": "PASS",
+      "details": "watch()成功注册回调到_listeners字典",
+      "before_status": "FAIL (ConfigCenter没有watch方法)",
+      "after_status": "PASS (新增watch和on_config_change方法)",
+      "timestamp": "2026-05-16T21:22:26.442799+00:00"
+    },
+    {
+      "test_id": "TEST-4b",
+      "test_name": "配置变更回调触发(_notify_listeners)",
+      "defect_id": "DEFECT-006",
+      "status": "PASS",
+      "details": "配置变更后回调被触发 1 次",
+      "before_status": "FAIL (无watch方法，回调无法注册)",
+      "after_status": "PASS",
+      "timestamp": "2026-05-16T21:22:26.443280+00:00"
+    },
+    {
+      "test_id": "TEST-4c",
+      "test_name": "on_config_change()全局监听",
+      "defect_id": "DEFECT-006",
+      "status": "PASS",
+      "details": "全局监听器收到 2 个事件（跨命名空间）",
+      "before_status": "FAIL (无on_config_change方法)",
+      "after_status": "PASS (使用*:*通配符注册全局监听)",
+      "timestamp": "2026-05-16T21:22:26.443625+00:00"
+    },
+    {
+      "test_id": "TEST-4d",
+      "test_name": "通配符匹配精度",
+      "defect_id": "DEFECT-006",
+      "status": "PASS",
+      "details": "精确匹配：production:database.host 触发，其他不触发",
+      "before_status": "N/A",
+      "after_status": "PASS",
+      "timestamp": "2026-05-16T21:22:26.443998+00:00"
+    },
+    {
+      "test_id": "TEST-4e",
+      "test_name": "同步和异步回调支持",
+      "defect_id": "DEFECT-006",
+      "status": "PASS",
+      "details": "同步回调和异步回调均正确执行",
+      "before_status": "N/A",
+      "after_status": "PASS",
+      "timestamp": "2026-05-16T21:22:26.444348+00:00"
+    },
+    {
+      "test_id": "TEST-5-1",
+      "test_name": "场景1: Pipeline基础集成",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "Pipeline创建、启动、提交、获取结果、停止 全流程正常",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:22:26.947606+00:00"
+    },
+    {
+      "test_id": "TEST-5-2",
+      "test_name": "场景2: Pipeline+TaskScheduler集成",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "TaskScheduler调度任务中调用Pipeline，数据正确流转",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:22:59.003504+00:00"
+    },
+    {
+      "test_id": "TEST-5-3",
+      "test_name": "场景3: 5级Pipeline数据流",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "数据经过5个Stage正确流转，step从0变为5",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:01.508413+00:00"
+    },
+    {
+      "test_id": "TEST-5-4",
+      "test_name": "场景4: Pipeline错误重试",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "重试机制正常，第3次尝试成功 (共调用3次)",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:02.310141+00:00"
+    },
+    {
+      "test_id": "TEST-5-5",
+      "test_name": "场景5: Pipeline并发提交",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "20个并发提交全部成功返回",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:02.885181+00:00"
+    },
+    {
+      "test_id": "TEST-5-6",
+      "test_name": "场景6: TaskScheduler任务执行",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "TaskScheduler成功执行2个任务: ['A', 'B']",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:33.887161+00:00"
+    },
+    {
+      "test_id": "TEST-5-7",
+      "test_name": "场景7: Raft单节点生命周期",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "单节点Raft启动/停止/重启，每次都立即成为Leader",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:33.887370+00:00"
+    },
+    {
+      "test_id": "TEST-5-8",
+      "test_name": "场景8: ConfigCenter+Pipeline配置集成",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "ConfigCenter配置驱动Pipeline创建和运行",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:34.390909+00:00"
+    },
+    {
+      "test_id": "TEST-5-9",
+      "test_name": "场景9: Pipeline生命周期管理",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "Pipeline RUNNING -> PAUSED -> RUNNING -> STOPPED 全流程正常",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:34.891978+00:00"
+    },
+    {
+      "test_id": "TEST-5-10",
+      "test_name": "场景10: 端到端数据流 ConfigCenter->Pipeline->Raft",
+      "defect_id": "INTEGRATION",
+      "status": "PASS",
+      "details": "ConfigCenter配置 -> Pipeline处理 -> Raft状态验证 完整数据流",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:35.395060+00:00"
+    },
+    {
+      "test_id": "TEST-6-1",
+      "test_name": "文档示例: async_pipeline.create_memory_pipeline",
+      "defect_id": "DOC_EXAMPLE",
+      "status": "PASS",
+      "details": "create_memory_pipeline示例正常运行，embedding->storage->indexing三阶段完成",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:36.898426+00:00"
+    },
+    {
+      "test_id": "TEST-6-2",
+      "test_name": "文档示例: config_center完整用法",
+      "defect_id": "DOC_EXAMPLE",
+      "status": "PASS",
+      "details": "ConfigCenter文档示例正常运行：创建命名空间、设置/获取配置、Facade、版本管理",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:36.901790+00:00"
+    },
+    {
+      "test_id": "TEST-6-3",
+      "test_name": "文档示例: raft_consensus单节点",
+      "defect_id": "DOC_EXAMPLE",
+      "status": "PASS",
+      "details": "Raft单节点文档示例正常运行：启动、立即成为Leader、查询状态",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:36.901912+00:00"
+    },
+    {
+      "test_id": "TEST-6-4",
+      "test_name": "文档示例: memory_system包信息",
+      "defect_id": "DOC_EXAMPLE",
+      "status": "PASS",
+      "details": "get_module_info() 返回版本 3.0.0, 6 个模块",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:36.902548+00:00"
+    },
+    {
+      "test_id": "TEST-6-5",
+      "test_name": "文档示例: Pipeline自定义配置",
+      "defect_id": "DOC_EXAMPLE",
+      "status": "PASS",
+      "details": "自定义PipelineConfig和StageConfig正常工作",
+      "before_status": "",
+      "after_status": "",
+      "timestamp": "2026-05-16T21:23:37.403594+00:00"
+    }
+  ],
+  "remaining_issues": [],
+  "fix_comparison": {
+    "DEFECT-001": {
+      "tests_total": 3,
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "before_status": "FAIL (torch_scatter等依赖缺失导致整个包导入失败)",
+      "after_status": "PASS (try/except包裹，依赖缺失时优雅降级)"
+    },
+    "DEFECT-002": {
+      "tests_total": 4,
+      "tests_passed": 4,
+      "tests_failed": 0,
+      "before_status": "FAIL (stage.start(None)覆盖已连接的output_queue)",
+      "after_status": "PASS (仅当output_queue非None时才覆盖)"
+    },
+    "DEFECT-005": {
+      "tests_total": 3,
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "before_status": "FAIL (单节点等待选举超时才能成为Leader)",
+      "after_status": "PASS (无peers时跳过选举直接成为Leader)"
+    },
+    "DEFECT-006": {
+      "tests_total": 5,
+      "tests_passed": 5,
+      "tests_failed": 0,
+      "before_status": "FAIL (ConfigCenter没有watch方法)",
+      "after_status": "PASS (新增watch和on_config_change方法)"
+    },
+    "INTEGRATION": {
+      "tests_total": 10,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "before_status": "",
+      "after_status": ""
+    },
+    "DOC_EXAMPLE": {
+      "tests_total": 5,
+      "tests_passed": 5,
+      "tests_failed": 0,
+      "before_status": "",
+      "after_status": ""
+    }
+  }
+}

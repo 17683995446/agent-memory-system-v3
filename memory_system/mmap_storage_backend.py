@@ -23,11 +23,15 @@
     >>> storage = MMapStorageBackend(config)
     >>> await storage.open()
     >>> 
-    >>> # 写入数据
-    >>> offset = await storage.write(b"Hello, World!")
+    >>> # 写入数据 (key-value 模式)
+    >>> offset = await storage.write("my_key", b"Hello, World!")
     >>> 
-    >>> # 读取数据
-    >>> data = await storage.read(offset, 13)
+    >>> # 读取数据 (通过 key)
+    >>> data = await storage.read("my_key")
+    >>> print(data)  # b"Hello, World!"
+    >>> 
+    >>> # 删除数据
+    >>> await storage.delete("my_key")
     >>> 
     >>> await storage.close()
 """

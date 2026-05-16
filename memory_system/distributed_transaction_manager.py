@@ -30,8 +30,8 @@
     >>> 
     >>> # 使用Saga
     >>> saga = SagaOrchestrator()
-    >>> await saga.add_step(step1, compensation1)
-    >>> await saga.add_step(step2, compensation2)
+    >>> saga.add_step("reserve_inventory", reserve_inventory_action, release_inventory_compensation)
+    >>> saga.add_step("process_payment", process_payment_action, refund_payment_compensation)
     >>> result = await saga.execute()
 """
 

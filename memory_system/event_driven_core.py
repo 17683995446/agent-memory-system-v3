@@ -182,6 +182,24 @@ class EventBus(ABC):
     事件总线抽象基类
     
     定义事件发布和订阅的标准接口，支持多种后端实现
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from event_driven_core import InMemoryEventBus, Event
+        >>> 
+        >>> bus = InMemoryEventBus()
+        >>> await bus.connect()
+        >>> 
+        >>> # 订阅事件
+        >>> async def on_order_created(event: Event):
+        ...     print(f"Order created: {event.data}")
+        >>> bus.subscribe("order.created", on_order_created)
+        >>> 
+        >>> # 发布事件
+        >>> await bus.publish(Event(topic="order.created", data={"order_id": "123"}))
+        >>> 
+        >>> await bus.disconnect()
     """
     
     def __init__(self, backend_type: BackendType):

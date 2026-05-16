@@ -150,6 +150,25 @@ class ServiceRegistry(ABC):
     服务注册表抽象
     
     管理服务实例的注册、发现和心跳
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from microservices_framework import InMemoryServiceRegistry, ServiceInstance
+        >>> 
+        >>> registry = InMemoryServiceRegistry()
+        >>> 
+        >>> # 注册服务
+        >>> instance = ServiceInstance(
+        ...     service_name="user-service",
+        ...     host="10.0.0.1", port=8080,
+        ...     metadata={"version": "1.0.0"}
+        ... )
+        >>> await registry.register(instance)
+        >>> 
+        >>> # 发现服务
+        >>> instances = await registry.discover("user-service")
+        >>> print(instances[0].host)  # "10.0.0.1"
     """
     
     @abstractmethod

@@ -175,7 +175,28 @@ class AlertInstance:
 
 
 class MetricsCollector:
-    """指标收集器 (Prometheus风格)"""
+    """
+    指标收集器 (Prometheus风格)
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from monitoring_alerting import MetricsCollector
+        >>> 
+        >>> collector = MetricsCollector()
+        >>> 
+        >>> # 记录计数器
+        >>> collector.counter("http_requests_total", labels={"method": "GET", "status": "200"})
+        >>> 
+        >>> # 记录仪表盘值
+        >>> collector.gauge("active_connections", 42)
+        >>> 
+        >>> # 记录直方图
+        >>> collector.histogram("request_duration_seconds", 0.123, labels={"endpoint": "/api"})
+        >>> 
+        >>> # 获取指标
+        >>> metrics = collector.get_metrics()
+    """
     
     def __init__(self, max_history: int = 10000):
         self._metrics: Dict[str, deque] = defaultdict(lambda: deque(maxlen=max_history))

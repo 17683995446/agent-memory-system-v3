@@ -1,0 +1,192 @@
+{
+  "report_title": "Agent Memory System V3.0 - Cross-Module Integration Test Report",
+  "generated_at": "2026-05-16T20:49:04.622226+00:00",
+  "total_errors": 14,
+  "errors_by_type": {
+    "RUNTIME_ERROR": 2,
+    "DATA_FLOW_ERROR": 1,
+    "INTERFACE_ERROR": 11
+  },
+  "errors_by_test": {
+    "Pipeline+TaskScheduler Pipeline BUG": 1,
+    "RaftCluster+DistributedTransaction节点角色": 1,
+    "ConfigCenter+Microservices配置监听": 1,
+    "完整数据流 Pipeline BUG": 1,
+    "event_driven_core缺少使用示例": 1,
+    "cqrs_system缺少使用示例": 1,
+    "config_center缺少使用示例": 1,
+    "microservices_framework缺少使用示例": 1,
+    "distributed_tracing缺少使用示例": 1,
+    "monitoring_alerting缺少使用示例": 1,
+    "security_hardening缺少使用示例": 1,
+    "api_gateway缺少使用示例": 1,
+    "chaos_engineering缺少使用示例": 1,
+    "service_mesh_client缺少使用示例": 1
+  },
+  "errors": [
+    {
+      "test_id": "INT-001",
+      "test_name": "Pipeline+TaskScheduler Pipeline BUG",
+      "error_type": "RUNTIME_ERROR",
+      "error_message": "Pipeline处理超时: PipelineStage.start()覆盖了Pipeline设置的output_queue，导致结果无法传递到结果收集器。根因: Pipeline.start()先设置stages[i].output_queue，然后stage.start(output_queue=None)将其覆盖为None",
+      "module_a": "async_pipeline",
+      "module_b": "task_scheduler",
+      "stack_trace": "Traceback (most recent call last):\n  File \"/usr/lib/python3.10/asyncio/tasks.py\", line 456, in wait_for\n    return fut.result()\nasyncio.exceptions.CancelledError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/workspace/agent_memory_system_v2/memory_system/async_pipeline.py\", line 1123, in submit\n    result = await asyncio.wait_for(future, timeout=timeout)\n  File \"/usr/lib/python3.10/asyncio/tasks.py\", line 458, in wait_for\n    raise exceptions.TimeoutError() from exc\nasyncio.exceptions.TimeoutError\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/data/user/work/test_integration.py\", line 267, in test_pipeline_task_scheduler\n    result = await pipeline.submit(test_data, wait_for_result=True, timeout=10.0)\n  File \"/workspace/agent_memory_system_v2/memory_system/async_pipeline.py\", line 1127, in submit\n    raise PipelineError(f\"Pipeline processing timeout after {timeout}s\")\nmemory_system.async_pipeline.PipelineError: Pipeline processing timeout after 10.0s\n",
+      "details": {
+        "bug_type": "output_queue_override",
+        "bug_location": "PipelineStage.start() line 332-334",
+        "fix": "PipelineStage.start()不应覆盖已设置的output_queue"
+      },
+      "timestamp": "2026-05-16T20:48:02.659158+00:00"
+    },
+    {
+      "test_id": "INT-003",
+      "test_name": "RaftCluster+DistributedTransaction节点角色",
+      "error_type": "DATA_FLOW_ERROR",
+      "error_message": "单节点Raft未成为Leader, role=CANDIDATE",
+      "module_a": "raft_consensus",
+      "module_b": "distributed_transaction_manager",
+      "stack_trace": "",
+      "details": {
+        "raft_role": "CANDIDATE"
+      },
+      "timestamp": "2026-05-16T20:48:33.012511+00:00"
+    },
+    {
+      "test_id": "INT-004",
+      "test_name": "ConfigCenter+Microservices配置监听",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "ConfigCenter缺少watch/on_config_change方法",
+      "module_a": "config_center",
+      "module_b": "microservices_framework",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:48:33.033122+00:00"
+    },
+    {
+      "test_id": "INT-008",
+      "test_name": "完整数据流 Pipeline BUG",
+      "error_type": "RUNTIME_ERROR",
+      "error_message": "Pipeline处理超时: PipelineStage.start()覆盖了Pipeline设置的output_queue，导致多阶段数据流无法正常工作。根因: Pipeline.start()先设置stages[i].output_queue，然后stage.start(output_queue=None)将其覆盖为None",
+      "module_a": "async_pipeline",
+      "module_b": "mmap_storage_backend",
+      "stack_trace": "Traceback (most recent call last):\n  File \"/usr/lib/python3.10/asyncio/tasks.py\", line 456, in wait_for\n    return fut.result()\nasyncio.exceptions.CancelledError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/workspace/agent_memory_system_v2/memory_system/async_pipeline.py\", line 1123, in submit\n    result = await asyncio.wait_for(future, timeout=timeout)\n  File \"/usr/lib/python3.10/asyncio/tasks.py\", line 458, in wait_for\n    raise exceptions.TimeoutError() from exc\nasyncio.exceptions.TimeoutError\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/data/user/work/test_integration.py\", line 1064, in test_full_data_flow\n    result = await pipeline.submit(test_data, wait_for_result=True, timeout=30.0)\n  File \"/workspace/agent_memory_system_v2/memory_system/async_pipeline.py\", line 1127, in submit\n    raise PipelineError(f\"Pipeline processing timeout after {timeout}s\")\nmemory_system.async_pipeline.PipelineError: Pipeline processing timeout after 30.0s\n",
+      "details": {
+        "bug_type": "output_queue_override",
+        "bug_location": "PipelineStage.start() line 332-334",
+        "fix": "PipelineStage.start()不应覆盖已设置的output_queue"
+      },
+      "timestamp": "2026-05-16T20:49:03.070806+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "event_driven_core缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.event_driven_core 的docstring中未找到使用示例",
+      "module_a": "memory_system.event_driven_core",
+      "module_b": "event_driven_core",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621744+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "cqrs_system缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.cqrs_system 的docstring中未找到使用示例",
+      "module_a": "memory_system.cqrs_system",
+      "module_b": "cqrs_system",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621783+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "config_center缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.config_center 的docstring中未找到使用示例",
+      "module_a": "memory_system.config_center",
+      "module_b": "config_center",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621849+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "microservices_framework缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.microservices_framework 的docstring中未找到使用示例",
+      "module_a": "memory_system.microservices_framework",
+      "module_b": "microservices_framework",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621866+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "distributed_tracing缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.distributed_tracing 的docstring中未找到使用示例",
+      "module_a": "memory_system.distributed_tracing",
+      "module_b": "distributed_tracing",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621883+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "monitoring_alerting缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.monitoring_alerting 的docstring中未找到使用示例",
+      "module_a": "memory_system.monitoring_alerting",
+      "module_b": "monitoring_alerting",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621897+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "security_hardening缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.security_hardening 的docstring中未找到使用示例",
+      "module_a": "memory_system.security_hardening",
+      "module_b": "security_hardening",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621911+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "api_gateway缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.api_gateway 的docstring中未找到使用示例",
+      "module_a": "memory_system.api_gateway",
+      "module_b": "api_gateway",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621926+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "chaos_engineering缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.chaos_engineering 的docstring中未找到使用示例",
+      "module_a": "memory_system.chaos_engineering",
+      "module_b": "chaos_engineering",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621940+00:00"
+    },
+    {
+      "test_id": "INT-010",
+      "test_name": "service_mesh_client缺少使用示例",
+      "error_type": "INTERFACE_ERROR",
+      "error_message": "memory_system.service_mesh_client 的docstring中未找到使用示例",
+      "module_a": "memory_system.service_mesh_client",
+      "module_b": "service_mesh_client",
+      "stack_trace": "",
+      "details": {},
+      "timestamp": "2026-05-16T20:49:04.621954+00:00"
+    }
+  ]
+}

@@ -221,6 +221,26 @@ class ServiceMeshClient(ABC):
     Service Mesh客户端抽象基类
     
     定义与Service Mesh控制平面交互的标准接口
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from service_mesh_client import IstioMeshClient, MeshProvider
+        >>> 
+        >>> client = IstioMeshClient(provider=MeshProvider.ISTIO, namespace="production")
+        >>> await client.connect()
+        >>> 
+        >>> # 配置流量管理
+        >>> await client.set_destination_rule(
+        ...     service="user-service",
+        ...     versions=[{"name": "v1", "weight": 90}, {"name": "v2", "weight": 10}]
+        ... )
+        >>> 
+        >>> # 获取服务状态
+        >>> status = await client.get_service_status("user-service")
+        >>> print(status.healthy_instances)
+        >>> 
+        >>> await client.disconnect()
     """
     
     def __init__(self, provider: MeshProvider, namespace: str = "default"):

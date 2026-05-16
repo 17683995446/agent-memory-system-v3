@@ -610,6 +610,29 @@ class ConfigCenter:
     配置中心
     
     统一的配置管理入口
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from config_center import ConfigCenter, FileConfigStorage, AESConfigEncryptor
+        >>> 
+        >>> storage = FileConfigStorage("/tmp/app_config")
+        >>> encryptor = AESConfigEncryptor("my-secret-key")
+        >>> center = ConfigCenter(storage, encryptor)
+        >>> await center.initialize()
+        >>> 
+        >>> # 设置配置
+        >>> await center.set("database.host", "db.example.com", namespace="production")
+        >>> await center.set("database.port", 5432, namespace="production")
+        >>> 
+        >>> # 获取配置
+        >>> host = await center.get("database.host", namespace="production")
+        >>> 
+        >>> # 监听配置变更
+        >>> await center.watch("database.*", lambda event: print(f"Changed: {event.key}"))
+        >>> 
+        >>> # 创建版本快照
+        >>> version = await center.create_version("production", comment="v1.0 release")
     """
     
     def __init__(
@@ -819,21 +842,27 @@ class ConfigCenter:
         await self._notify_listeners(event)
     
     async def _notify_listeners(self, event: ConfigChangeEvent) -> None:
-        """通知监听器"""
+        """通知监听器 - DEFECT-006: 支持 *:* 全局通配符匹配"""
         for pattern, callbacks in self._listeners.items():
             namespace, key_pattern = pattern.split(":", 1)
             
-            if namespace == event.namespace:
-                # 检查是否匹配
-                if key_pattern == "*" or event.key == key_pattern:
-                    for callback in callbacks:
-                        try:
-                            if asyncio.iscoroutinefunction(callback):
-                                await callback(event)
-                            else:
-                                callback(event)
-                        except Exception as e:
-                            logger.exception(f"Listener callback error: {e}")
+            # DEFECT-006: 支持 *:* 全局匹配（匹配所有命名空间和键）
+            if namespace == "*" and key_pattern == "*":
+                matched = True
+            elif namespace == event.namespace:
+                matched = (key_pattern == "*" or event.key == key_pattern)
+            else:
+                matched = False
+            
+            if matched:
+                for callback in callbacks:
+                    try:
+                        if asyncio.iscoroutinefunction(callback):
+                            await callback(event)
+                        else:
+                            callback(event)
+                    except Exception as e:
+                        logger.exception(f"Listener callback error: {e}")
     
     async def create_version(
         self,
@@ -894,6 +923,76 @@ class ConfigCenter:
     def get_versions(self, namespace: str) -> List[ConfigVersion]:
         """获取版本历史"""
         return self._versions.get(namespace, [])
+    
+    # ========================================================================
+    # DEFECT-006 [P1] 修复: 添加配置变更监听接口
+    # ========================================================================
+    
+    async def watch(
+        self,
+        key: str,
+        callback: Union[
+            Callable[[ConfigChangeEvent], None],
+            Callable[[ConfigChangeEvent], Coroutine[Any, Any, None]]
+        ],
+        namespace: str = "default"
+    ) -> None:
+        """
+        监听指定配置键的变更
+        
+        DEFECT-006 [P1] 新增: 当指定 key 的配置发生变化时自动触发回调。
+        
+        Args:
+            key: 配置键（支持通配符 *）
+            callback: 回调函数，接收 ConfigChangeEvent 参数。
+                      支持同步和异步回调。
+            namespace: 命名空间，默认为 "default"
+        
+        示例:
+            >>> async def on_db_host_change(event: ConfigChangeEvent):
+            ...     print(f"DB host changed: {event.old_value} -> {event.new_value}")
+            >>> await config_center.watch("database.host", on_db_host_change, "production")
+        """
+        full_key = f"{namespace}:{key}"
+        
+        if full_key not in self._listeners:
+            self._listeners[full_key] = []
+        
+        self._listeners[full_key].append(callback)
+        
+        # 启动底层存储的监视
+        await self.storage.watch(namespace, self._on_config_change)
+        
+        logger.info(f"Registered watcher for {full_key}")
+    
+    async def on_config_change(
+        self,
+        callback: Union[
+            Callable[[ConfigChangeEvent], None],
+            Callable[[ConfigChangeEvent], Coroutine[Any, Any, None]]
+        ]
+    ) -> None:
+        """
+        全局配置变更监听
+        
+        DEFECT-006 [P1] 新增: 注册一个全局回调，当任意配置变更时都会被触发。
+        
+        Args:
+            callback: 回调函数，接收 ConfigChangeEvent 参数。
+                      支持同步和异步回调。
+        
+        示例:
+            >>> async def on_any_change(event: ConfigChangeEvent):
+            ...     print(f"Config changed: {event.namespace}/{event.key}")
+            >>> await config_center.on_config_change(on_any_change)
+        """
+        # 使用通配符 "*" 注册到所有命名空间
+        if "*:*" not in self._listeners:
+            self._listeners["*:*"] = []
+        
+        self._listeners["*:*"].append(callback)
+        
+        logger.info("Registered global config change listener")
 
 
 # ============================================================================

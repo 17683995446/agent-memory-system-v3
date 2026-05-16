@@ -785,7 +785,28 @@ class VulnerabilityScanner:
 
 
 class SecurityHardeningModule:
-    """安全加固模块主类"""
+    """
+    安全加固模块主类
+    
+    DEFECT-007 [P2] 新增使用示例:
+    
+    示例用法:
+        >>> from security_hardening import SecurityHardeningModule, Permission
+        >>> 
+        >>> security = SecurityHardeningModule()
+        >>> 
+        >>> # 输入验证
+        >>> is_valid = security.validator.validate_email("user@example.com")
+        >>> 
+        >>> # 加密解密
+        >>> encrypted = security.crypto.encrypt("sensitive data")
+        >>> decrypted = security.crypto.decrypt(encrypted)
+        >>> 
+        >>> # RBAC 权限检查
+        >>> security.rbac.add_role("admin", [Permission.READ, Permission.WRITE, Permission.ADMIN])
+        >>> security.rbac.assign_role("user_001", "admin")
+        >>> allowed = security.rbac.check_permission("user_001", Permission.WRITE)
+    """
     
     def __init__(self, master_key: Optional[bytes] = None):
         self.validator = InputValidator()

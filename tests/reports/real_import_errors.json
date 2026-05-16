@@ -1,0 +1,152 @@
+{
+  "timestamp": "2026-05-16T19:29:51.863660",
+  "python_version": "3.10.12 (main, Mar  3 2026, 11:56:32) [GCC 11.4.0]",
+  "project_root": "/workspace/agent_memory_system_v2",
+  "total_modules": 77,
+  "successful": 72,
+  "failed": 5,
+  "errors": [
+    {
+      "module": "grpc_service",
+      "full_module_name": "memory_system.grpc_service",
+      "error_type": "ModuleNotFoundError",
+      "error_message": "No module named 'grpc'",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/test_all_imports.py\", line 388, in load_module_directly\n    spec.loader.exec_module(module)\n  File \"<frozen importlib._bootstrap_external>\", line 883, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\n  File \"/workspace/agent_memory_system_v2/memory_system/grpc_service.py\", line 49, in <module>\n    import grpc\nModuleNotFoundError: No module named 'grpc'\n",
+      "category": "external_dependency_missing",
+      "suggestion": "安装缺失的外部依赖: pip install grpc",
+      "missing_deps": [
+        "grpc"
+      ]
+    },
+    {
+      "module": "gnn_memory_engine",
+      "full_module_name": "memory_system.gnn_memory_engine",
+      "error_type": "ModuleNotFoundError",
+      "error_message": "No module named 'torch_scatter'",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/test_all_imports.py\", line 388, in load_module_directly\n    spec.loader.exec_module(module)\n  File \"<frozen importlib._bootstrap_external>\", line 883, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\n  File \"/workspace/agent_memory_system_v2/memory_system/gnn_memory_engine.py\", line 17, in <module>\n    from torch_scatter import scatter_mean, scatter_max, scatter_add\nModuleNotFoundError: No module named 'torch_scatter'\n",
+      "category": "external_dependency_missing",
+      "suggestion": "安装缺失的外部依赖: pip install torch_scatter",
+      "missing_deps": [
+        "torch_scatter"
+      ]
+    },
+    {
+      "module": "command_line_interface",
+      "full_module_name": "memory_system.command_line_interface",
+      "error_type": "ModuleNotFoundError",
+      "error_message": "No module named 'typer'",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/test_all_imports.py\", line 388, in load_module_directly\n    spec.loader.exec_module(module)\n  File \"<frozen importlib._bootstrap_external>\", line 883, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\n  File \"/workspace/agent_memory_system_v2/memory_system/command_line_interface.py\", line 10, in <module>\n    import typer\nModuleNotFoundError: No module named 'typer'\n",
+      "category": "external_dependency_missing",
+      "suggestion": "安装缺失的外部依赖: pip install typer",
+      "missing_deps": [
+        "typer"
+      ]
+    },
+    {
+      "module": "grpc_service_server",
+      "full_module_name": "memory_system.grpc_service_server",
+      "error_type": "ModuleNotFoundError",
+      "error_message": "No module named 'grpc'",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/test_all_imports.py\", line 388, in load_module_directly\n    spec.loader.exec_module(module)\n  File \"<frozen importlib._bootstrap_external>\", line 883, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\n  File \"/workspace/agent_memory_system_v2/memory_system/grpc_service_server.py\", line 10, in <module>\n    import grpc\nModuleNotFoundError: No module named 'grpc'\n",
+      "category": "external_dependency_missing",
+      "suggestion": "安装缺失的外部依赖: pip install grpc",
+      "missing_deps": [
+        "grpc"
+      ]
+    },
+    {
+      "module": "restful_api_server",
+      "full_module_name": "memory_system.restful_api_server",
+      "error_type": "ModuleNotFoundError",
+      "error_message": "No module named 'fastapi'",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/test_all_imports.py\", line 388, in load_module_directly\n    spec.loader.exec_module(module)\n  File \"<frozen importlib._bootstrap_external>\", line 883, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\n  File \"/workspace/agent_memory_system_v2/memory_system/restful_api_server.py\", line 16, in <module>\n    from fastapi import Depends, FastAPI, HTTPException, Query, Request, status, WebSocket, WebSocketDisconnect\nModuleNotFoundError: No module named 'fastapi'\n",
+      "category": "external_dependency_missing",
+      "suggestion": "安装缺失的外部依赖: pip install fastapi",
+      "missing_deps": [
+        "fastapi"
+      ]
+    }
+  ],
+  "successes": [
+    "memory_system.raft_consensus",
+    "memory_system.async_pipeline",
+    "memory_system.task_scheduler",
+    "memory_system.distributed_transaction_manager",
+    "memory_system.mmap_storage_backend",
+    "memory_system.rl_retrieval_optimizer",
+    "memory_system.meta_learning_embedder",
+    "memory_system.nas_module",
+    "memory_system.contrastive_memory_learning",
+    "memory_system.transformer_xl_memory",
+    "memory_system.event_driven_core",
+    "memory_system.cqrs_system",
+    "memory_system.microservices_framework",
+    "memory_system.service_mesh_client",
+    "memory_system.k8s_operator",
+    "memory_system.api_gateway",
+    "memory_system.config_center",
+    "memory_system.chaos_engineering",
+    "memory_system.distributed_tracing",
+    "memory_system.aiops_platform",
+    "memory_system.testing_platform",
+    "memory_system.monitoring_alerting",
+    "memory_system.security_hardening",
+    "memory_system.documentation_generator",
+    "memory_system.i18n_support",
+    "memory_system.agent_memory_system_facade",
+    "memory_system.api_doc_generator",
+    "memory_system.async_batch_writer",
+    "memory_system.audit_logger",
+    "memory_system.batch_processor",
+    "memory_system.cache_replacement_policies",
+    "memory_system.cache_warmer",
+    "memory_system.deduplication_system",
+    "memory_system.di_container",
+    "memory_system.embedding_factory",
+    "memory_system.enhanced_tenant_isolation",
+    "memory_system.exceptions",
+    "memory_system.hnsw_index",
+    "memory_system.i18n",
+    "memory_system.incremental_embedding_updater",
+    "memory_system.llm_summarizer",
+    "memory_system.memory_snapshot_manager",
+    "memory_system.memory_ttl_expiration_manager",
+    "memory_system.metrics_collector",
+    "memory_system.monitoring_metrics_collector",
+    "memory_system.plugin_extension_manager",
+    "memory_system.rate_limiter",
+    "memory_system.read_write_lock",
+    "memory_system.retrieval_engine",
+    "memory_system.retrieval_utils",
+    "memory_system.snapshot_serializer",
+    "memory_system.structured_logging_config",
+    "memory_system.telemetry_tracing_manager",
+    "memory_system.tenant_isolation_manager",
+    "memory_system.time_indexed_ttl_manager",
+    "memory_system.ttl_storage_interface",
+    "memory_system.type_hints_check",
+    "memory_system.validators",
+    "memory_system.vector_quantization",
+    "memory_system.websocket_event_notifier",
+    "memory_system.working_memory_cache",
+    "memory_system.core_abstractions",
+    "memory_system.embedding_providers",
+    "memory_system.storage_backends",
+    "memory_system.retrieval_strategies",
+    "memory_system.consolidation_strategies",
+    "memory_system.forgetting_strategies",
+    "memory_system.importance_scorers",
+    "memory_system.memory_io_operations",
+    "memory_system.code_memory_support",
+    "memory_system.working_memory_backends",
+    "memory_system.configuration_settings"
+  ],
+  "summary": {
+    "total": 77,
+    "successful": 72,
+    "failed": 5,
+    "category_counts": {
+      "external_dependency_missing": 5
+    }
+  }
+}

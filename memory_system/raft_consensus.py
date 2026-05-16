@@ -1424,10 +1424,10 @@ class RaftNode:
             raise ProposalTimeoutError(f"Proposal timed out after {timeout}s")
     
     async def start(self):
-        """启动Raft节点 - P1修复: 初始化心跳时间"""
+        """启动Raft节点 - P1修复: 初始化心跳时间; DEFECT-005 修复: 单节点直接成为Leader"""
         logger.info(f"Starting Raft node {self.node_id}")
         self._shutdown_event.clear()
-        
+
         # P1修复: 初始化心跳时间
         now = time.time()
         self._last_heartbeat_sent = now
@@ -1435,8 +1435,24 @@ class RaftNode:
         for peer in self.config.peers:
             self._last_heartbeat_received[peer] = now
             self._heartbeat_missed[peer] = 0
-        
-        self._reset_election_timer()
+
+        # DEFECT-005 [P1] 修复: 单节点集群时跳过选举，直接成为Leader
+        # 当集群只有1个节点（无peers）时，无需选举即可直接成为Leader
+        if not self.config.peers:
+            logger.info(
+                f"Node {self.node_id} is the only node in the cluster, "
+                f"bypassing election and becoming Leader immediately"
+            )
+            self._persistent_state.current_term = 1
+            self._persistent_state.voted_for = self.node_id
+            self._role = RaftRole.LEADER
+            self._current_leader = self.node_id
+            self._votes_received = {self.node_id}
+            self._volatile_state.initialize_leader_state([], self._persistent_state.get_last_log_index())
+            # 启动心跳定时器（Leader需要发送心跳）
+            self._heartbeat_timer = asyncio.create_task(self._heartbeat_loop())
+        else:
+            self._reset_election_timer()
     
     async def stop(self):
         """停止Raft节点 - P1修复: 清理所有资源"""
