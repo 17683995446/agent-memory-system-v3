@@ -1,18 +1,18 @@
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.build_meta"
+build-backend = "setuptools.backends._legacy:_Backend"
 
 [project]
 name = "agent-memory-system"
-version = "2.30.0"
-description = "A hierarchical long-short term memory system for AI agents with fast retrieval"
+version = "3.1.0"
+description = "高度模块化的分布式智能记忆管理系统"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
 authors = [
-    {name = "Agent Memory Team"}
+    {name = "Agent Memory System Team", email = "team@agent-memory-system.dev"},
 ]
-keywords = ["memory", "agent", "ai", "vector-search", "retrieval"]
+keywords = ["memory", "agent", "distributed", "raft", "gnn", "reinforcement-learning", "cqrs", "event-sourcing"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -20,69 +20,60 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
 dependencies = [
-    "pydantic>=2.0",
-    "cachetools>=5.0",
+    "cryptography>=41.0",
+    "passlib>=1.7",
+    "structlog>=23.0",
+    "tenacity>=8.0",
     "pyyaml>=6.0",
+    "babel>=2.12",
 ]
 
 [project.optional-dependencies]
-full = [
-    "sentence-transformers>=2.0",
-    "faiss-cpu>=1.7",
-    "chromadb>=0.4",
-    "qdrant-client>=1.7",
+ml = [
+    "torch>=2.0",
+    "torch-scatter",
+    "transformers>=4.30",
+    "sentence-transformers>=2.2",
+]
+api = [
     "fastapi>=0.100",
-    "uvicorn>=0.20",
-    "slowapi>=0.1",
-    "httpx>=0.24",
-    "python-multipart>=0.0.6",
-    "grpcio>=1.50",
-    "prometheus-client>=0.16",
-    "structlog>=23.0",
+    "uvicorn>=0.23",
+    "pydantic>=2.0",
+]
+distributed = [
+    "redis>=4.5",
+    "consul>=1.1",
+    "prometheus-client>=0.17",
     "opentelemetry-api>=1.20",
     "opentelemetry-sdk>=1.20",
-    "typer>=0.9",
-    "rich>=13.0",
-    "pydantic-settings>=2.0",
 ]
 dev = [
     "pytest>=7.0",
     "pytest-asyncio>=0.21",
-    "httpx>=0.24",
+    "pytest-cov>=4.0",
+    "rich>=13.0",
+]
+all = [
+    "agent-memory-system[ml,api,distributed,dev]",
 ]
 
-[project.scripts]
-agent-memory = "memory_system.command_line_interface:app"
-
-[tool.setuptools.packages.find]
-include = ["memory_system*"]
+[project.urls]
+Homepage = "https://github.com/17683995446/agent-memory-system-v3"
+Documentation = "https://github.com/17683995446/agent-memory-system-v3#readme"
+Repository = "https://github.com/17683995446/agent-memory-system-v3"
+Issues = "https://github.com/17683995446/agent-memory-system-v3/issues"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests",
-    "benchmark: marks tests as benchmark tests",
-]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
 
-[tool.coverage.run]
-source = ["memory_system"]
-omit = [
-    "memory_system/proto/*",
-    "memory_system/code_memory_support/*",
-]
-
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "if __name__ == .__main__.:",
-    "if TYPE_CHECKING:",
-    "raise NotImplementedError",
-    "@abstractmethod",
-]
-fail_under = 60
+[tool.setuptools.packages.find]
+include = ["memory_system*"]

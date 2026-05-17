@@ -6,6 +6,9 @@ import sys
 import os
 import hashlib
 import math
+import asyncio
+import tempfile
+import shutil
 
 import pytest
 
@@ -132,3 +135,35 @@ async def memory_system():
 
     # 清理
     await memory.close()
+
+
+# ============================================================================
+# V3.0 新增 fixtures
+# ============================================================================
+
+
+@pytest.fixture
+def tmp_dir():
+    """提供临时目录"""
+    d = tempfile.mkdtemp()
+    yield d
+    shutil.rmtree(d, ignore_errors=True)
+
+
+@pytest.fixture
+def event_loop():
+    """提供事件循环"""
+    loop = asyncio.new_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest.fixture
+def sample_config():
+    """提供示例配置"""
+    return {
+        "storage_backend": "memory",
+        "embedding_provider": "mock",
+        "cache_enabled": True,
+        "max_memory_items": 1000,
+    }

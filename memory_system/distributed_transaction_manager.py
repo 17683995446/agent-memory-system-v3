@@ -41,6 +41,7 @@ import logging
 import time
 import uuid
 from abc import ABC, abstractmethod
+from collections import defaultdict
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import (
@@ -55,7 +56,8 @@ from typing import (
     TypeVar,
     Union,
 )
-from collections import defaultdict
+
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 
 logger = logging.getLogger(__name__)
@@ -260,15 +262,13 @@ class SagaStep:
     max_retries: int = 3
     
     async def execute(self, context: TransactionContext) -> Any:
-        """执行步骤"""
-        for attempt in range(self.max_retries):
-            try:
-                result = await self.action(context)
-                return result
-            except Exception as e:
-                if attempt == self.max_retries - 1:
-                    raise
-                await asyncio.sleep(0.1 * (2 ** attempt))
+        """执行步骤 - 使用tenacity重试机制替代手动循环"""
+        retry_decorator = retry(
+            stop=stop_after_attempt(self.max_retries),
+            wait=wait_exponential(multiplier=0.1, min=0.1, max=10.0),
+        )
+        retry_fn = retry_decorator(self.action)
+        return await retry_fn(context)
     
     async def compensate(self, context: TransactionContext, action_result: Any):
         """执行补偿"""

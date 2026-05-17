@@ -21,11 +21,13 @@ import threading
 import time
 import uuid
 import warnings
+import os as _os
 from abc import ABC, abstractmethod
 from base64 import b64decode, b64encode
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum, auto
+from functools import wraps
 from typing import (
     Any,
     Callable,
@@ -36,7 +38,9 @@ from typing import (
     Tuple,
     Union,
 )
-from functools import wraps
+
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import passlib.hash as _passlib_hash
 
 # 配置日志
 logger = logging.getLogger(__name__)
@@ -350,6 +354,61 @@ class CryptoManager:
         for i, byte in enumerate(encrypted):
             decrypted.append(byte ^ key[i % key_len])
         return bytes(decrypted).decode()
+
+    def encrypt(self, data: str) -> str:
+        """AES-256-GCM 加密 (生产级安全)
+        
+        Args:
+            data: 要加密的明文
+            
+        Returns:
+            Base64编码的密文 (nonce + ciphertext + tag)
+            
+        Raises:
+            RuntimeError: 如果master_key长度不足
+        """
+        if len(self._master_key) < 32:
+            raise RuntimeError("Master key must be at least 32 bytes for AES-256")
+        
+        key = self._master_key[:32]  # AES-256
+        nonce = _os.urandom(12)  # 96-bit nonce for GCM
+        aesgcm = AESGCM(key)
+        ciphertext = aesgcm.encrypt(nonce, data.encode('utf-8'), None)
+        return b64encode(nonce + ciphertext).decode('ascii')
+    
+    def decrypt(self, encrypted_data: str) -> str:
+        """AES-256-GCM 解密 (生产级安全)
+        
+        Args:
+            encrypted_data: Base64编码的密文
+            
+        Returns:
+            解密后的明文
+            
+        Raises:
+            ValueError: 如果解密失败(数据被篡改或密钥错误)
+        """
+        if len(self._master_key) < 32:
+            raise RuntimeError("Master key must be at least 32 bytes for AES-256")
+        
+        key = self._master_key[:32]
+        raw = b64decode(encrypted_data)
+        nonce = raw[:12]
+        ciphertext = raw[12:]
+        aesgcm = AESGCM(key)
+        plaintext = aesgcm.decrypt(nonce, ciphertext, None)
+        return plaintext.decode('utf-8')
+
+    def hash_password_bcrypt(self, password: str) -> str:
+        """使用bcrypt哈希密码 (生产级安全)"""
+        return _passlib_hash.bcrypt.hash(password)
+    
+    def verify_password_bcrypt(self, password: str, hash_value: str) -> bool:
+        """验证bcrypt密码哈希"""
+        try:
+            return _passlib_hash.bcrypt.verify(password, hash_value)
+        except Exception:
+            return False
 
 
 class CSRFProtector:

@@ -1,29 +1,74 @@
 """
-Agent Memory System V3.0 - Step 3: 深度创新阶段
+Agent Memory System V3.0 - 智能记忆管理系统
 
-前沿AI模块集合，包含以下核心组件：
-1. 图神经网络记忆关联引擎 (GNN Memory Engine)
-2. 强化学习智能检索优化器 (RL Retrieval Optimizer)
-3. 元学习自适应嵌入系统 (Meta-Learning Adaptive Embedder)
-4. 神经架构搜索模块 (Neural Architecture Search Module)
-5. 对比学习记忆表示 (Contrastive Memory Learning)
-6. Transformer-XL长程记忆 (Transformer-XL Long-term Memory)
+一个高度模块化的分布式记忆管理系统，支持多种存储后端、
+嵌入模型、检索策略和一致性保证。
 
-Author: Agent Memory System V3.0
-Date: 2026-05-16
-Version: 3.0.0
+核心特性:
+- 分布式Raft共识协议
+- 多种嵌入模型支持(OpenAI/BGE/Sentence-Transformers)
+- GNN/RL/元学习驱动的智能检索
+- CQRS事件溯源架构
+- 混合逻辑时钟和向量时钟
+- 完整的安全加固(RBAC/ABAC/加密/审计)
+- 云原生部署支持(K8s Operator/Service Mesh)
+
+示例用法:
+    >>> from memory_system import AgentMemorySystem
+    >>> system = AgentMemorySystem()
+    >>> await system.initialize()
+    >>> await system.store("user_001", "Hello world", metadata={"type": "greeting"})
 """
 
-__version__ = "3.0.0"
-__author__ = "Agent Memory System V3.0"
-
-# DEFECT-001 [P0] 修复: 将所有重量级模块的导入改为 try/except 包裹，
-# 当 torch_scatter 等依赖缺失时，整个包仍可导入，导入失败时设为 None 并打印 warning
+__version__ = "3.1.0"
+__author__ = "Agent Memory System Team"
+__license__ = "MIT"
 
 import warnings
 import logging
 
 _logger = logging.getLogger(__name__)
+
+# ============================================================================
+# 核心模块导入 (始终可用的轻量级模块)
+# ============================================================================
+
+from memory_system.agent_memory_system_facade import MemorySystem as AgentMemorySystem
+from memory_system.embedding_factory import EmbeddingFactory, ProviderInfo
+from memory_system.security_hardening import (
+    SecurityHardeningModule,
+    Permission,
+    CryptoManager,
+    RBACManager,
+    ABACManager,
+    AuditLogger,
+    InputValidator,
+)
+from memory_system.config_center import (
+    ConfigCenter,
+    ConfigItem,
+    FileConfigStorage,
+    InMemoryConfigStorage,
+)
+from memory_system.raft_consensus import RaftNode, RaftConfig, RaftRole
+from memory_system.cqrs_system import (
+    AggregateRoot,
+    CommandBus,
+    QueryBus,
+    InMemoryEventStore,
+    ConcurrencyException,
+)
+from memory_system.event_driven_core import EventBus, DomainEvent, InMemoryEventBus
+from memory_system.async_pipeline import Pipeline, PipelineStage, PipelineConfig
+from memory_system.partition_tolerance import (
+    QuorumManager,
+    PartitionManager,
+    PartitionEvent,
+)
+
+# ============================================================================
+# 重量级 AI 模块导入 (需要 torch 等依赖，使用 try/except 保护)
+# ============================================================================
 
 # 图神经网络记忆关联引擎
 try:
@@ -199,8 +244,54 @@ except Exception as _e:
     generate_synthetic_sequence = None
     train_transformer_xl = None
 
+# ============================================================================
+# __all__ 导出列表
+# ============================================================================
+
 __all__ = [
-    # GNN Memory Engine
+    # Version
+    "__version__",
+    # Core
+    "AgentMemorySystem",
+    "EmbeddingFactory",
+    "ProviderInfo",
+    # Security
+    "SecurityHardeningModule",
+    "Permission",
+    "CryptoManager",
+    "RBACManager",
+    "ABACManager",
+    "AuditLogger",
+    "InputValidator",
+    # Config
+    "ConfigCenter",
+    "ConfigItem",
+    "FileConfigStorage",
+    "InMemoryConfigStorage",
+    # Consensus
+    "RaftNode",
+    "RaftConfig",
+    "RaftRole",
+    # CQRS
+    "AggregateRoot",
+    "CommandBus",
+    "QueryBus",
+    "InMemoryEventStore",
+    "ConcurrencyException",
+    # Events
+    "EventBus",
+    "DomainEvent",
+    "InMemoryEventBus",
+    # Pipeline
+    "Pipeline",
+    "PipelineStage",
+    "PipelineConfig",
+    # Partition
+    "QuorumManager",
+    "PartitionManager",
+    "PartitionEvent",
+
+    # GNN Memory Engine (may be None if torch missing)
     'GNNMemoryEngine',
     'GNNType',
     'MemoryNode',
@@ -214,7 +305,7 @@ __all__ = [
     'create_sample_memory_graph',
     'train_gnn_memory_engine',
 
-    # RL Retrieval Optimizer
+    # RL Retrieval Optimizer (may be None if torch missing)
     'RLRetrievalOptimizer',
     'DQNRetrievalOptimizer',
     'MultiArmedBandit',
@@ -228,7 +319,7 @@ __all__ = [
     'create_sample_retrieval_state',
     'train_rl_optimizer',
 
-    # Meta-Learning
+    # Meta-Learning (may be None if torch missing)
     'MetaLearningEmbedder',
     'MAML',
     'PrototypicalNetwork',
@@ -240,7 +331,7 @@ __all__ = [
     'train_meta_embedder',
     'evaluate_few_shot',
 
-    # NAS Module
+    # NAS Module (may be None if torch missing)
     'NASModule',
     'DARTSSearchNetwork',
     'DARTSSearcher',
@@ -252,7 +343,7 @@ __all__ = [
     'OperationType',
     'create_dummy_loaders',
 
-    # Contrastive Learning
+    # Contrastive Learning (may be None if torch missing)
     'ContrastiveMemoryLearner',
     'ContrastiveMemoryEncoder',
     'SimCLRLoss',
@@ -266,7 +357,7 @@ __all__ = [
     'create_synthetic_memories',
     'evaluate_contrastive_learning',
 
-    # Transformer-XL
+    # Transformer-XL (may be None if torch missing)
     'TransformerXL',
     'TransformerXLConfig',
     'TransformerXLLayer',
@@ -276,7 +367,7 @@ __all__ = [
     'LongTermMemorySystem',
     'MemoryIntegration',
     'generate_synthetic_sequence',
-    'train_transformer_xl'
+    'train_transformer_xl',
 ]
 
 
@@ -285,15 +376,25 @@ def get_module_info() -> dict:
     return {
         'version': __version__,
         'author': __author__,
+        'license': __license__,
         'modules': [
+            'agent_memory_system_facade',
+            'embedding_factory',
+            'security_hardening',
+            'config_center',
+            'raft_consensus',
+            'cqrs_system',
+            'event_driven_core',
+            'async_pipeline',
+            'partition_tolerance',
             'gnn_memory_engine',
             'rl_retrieval_optimizer',
             'meta_learning_embedder',
             'nas_module',
             'contrastive_memory_learning',
-            'transformer_xl_memory'
+            'transformer_xl_memory',
         ],
-        'description': 'Agent Memory System V3.0 - Step 3: Advanced AI Modules'
+        'description': 'Agent Memory System V3.0 - 智能记忆管理系统'
     }
 
 
@@ -324,5 +425,17 @@ def check_dependencies() -> dict:
         dependencies['sklearn'] = sklearn.__version__
     except ImportError:
         dependencies['sklearn'] = 'Not installed'
+
+    try:
+        import cryptography
+        dependencies['cryptography'] = cryptography.__version__
+    except ImportError:
+        dependencies['cryptography'] = 'Not installed'
+
+    try:
+        import structlog
+        dependencies['structlog'] = structlog.__version__
+    except ImportError:
+        dependencies['structlog'] = 'Not installed'
 
     return dependencies

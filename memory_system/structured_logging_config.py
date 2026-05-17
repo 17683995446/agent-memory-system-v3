@@ -375,3 +375,47 @@ class PerformanceLogger:
 
 # 向后兼容的别名
 configure_structured_logging = configure_logging
+
+
+def configure_structlog(
+    level: str = "INFO",
+    json_format: bool = True,
+    service_name: str = "agent-memory-system",
+    log_file: Optional[str] = None,
+) -> None:
+    """配置structlog为标准日志处理器
+    
+    Args:
+        level: 日志级别
+        json_format: 是否使用JSON格式
+        service_name: 服务名称
+        log_file: 日志文件路径(可选)
+    """
+    import structlog
+    
+    shared_processors = [
+        structlog.contextvars.merge_contextvars,
+        structlog.stdlib.add_logger_name,
+        structlog.stdlib.add_log_level,
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.StackInfoRenderer(),
+        structlog.processors.UnicodeDecoder(),
+    ]
+    
+    if json_format:
+        processors = shared_processors + [
+            structlog.processors.format_exc_info,
+            structlog.processors.JSONRenderer(),
+        ]
+    else:
+        processors = shared_processors + [
+            structlog.dev.ConsoleRenderer(colors=True),
+        ]
+    
+    structlog.configure(
+        processors=processors,
+        wrapper_class=structlog.stdlib.BoundLogger,
+        context_class=dict,
+        logger_factory=structlog.stdlib.LoggerFactory(),
+        cache_logger_on_first_use=True,
+    )

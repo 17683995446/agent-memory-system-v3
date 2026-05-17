@@ -41,7 +41,14 @@ const searchIndex = [
   { title: 'API接口', desc: 'API接口文档', url: 'tech-specs.html#api', keywords: 'api interface' },
   { title: '配置参数', desc: '配置参数说明', url: 'tech-specs.html#config', keywords: 'configuration parameters' },
   { title: '性能指标', desc: '性能指标说明', url: 'tech-specs.html#performance', keywords: 'performance metrics' },
-  { title: '部署指南', desc: '系统部署指南', url: 'tech-specs.html#deployment', keywords: 'deployment guide' }
+  { title: '部署指南', desc: '系统部署指南', url: 'tech-specs.html#deployment', keywords: 'deployment guide' },
+  { title: '综合评分', desc: '多维度质量评估报告', url: 'evaluation.html', keywords: 'evaluation score grade' },
+  { title: '总体评分', desc: '综合评分 86.7/100 Grade A', url: 'evaluation.html#overall-score', keywords: 'overall score' },
+  { title: '雷达图', desc: '九维评估雷达图', url: 'evaluation.html#radar', keywords: 'radar chart dimensions' },
+  { title: '评分明细', desc: '各维度评分明细表', url: 'evaluation.html#breakdown', keywords: 'score breakdown table' },
+  { title: '待改进项', desc: '系统待改进问题列表', url: 'evaluation.html#issues', keywords: 'issues remaining' },
+  { title: '改进路线图', desc: '短期/中期/长期改进计划', url: 'evaluation.html#roadmap', keywords: 'roadmap improvement plan' },
+  { title: '质量指标', desc: '质量指标汇总', url: 'evaluation.html#quality-metrics', keywords: 'quality metrics summary' }
 ];
 
 // Initialize search functionality

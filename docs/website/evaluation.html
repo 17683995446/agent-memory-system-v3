@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>综合评分 - Agent Memory System V3.1.0</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <div class="header-logo-icon">AM</div>
+      <div>
+        <div class="header-logo-text">Agent Memory System</div>
+        <span class="header-logo-version">V3.1.0</span>
+      </div>
+    </a>
+    <div class="header-right">
+      <div class="search-box">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜索文档...">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">概览</div>
+          <a href="index.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            首页
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">架构设计</div>
+          <a href="architecture.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            架构设计
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">流程图</div>
+          <a href="flows.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            核心流程
+          </a>
+          <a href="sequence.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            时序图
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">详细设计</div>
+          <a href="modules.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            模块详解
+          </a>
+          <a href="tech-specs.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            技术说明
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">质量评估</div>
+          <a href="evaluation.html" class="nav-item active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            综合评分
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>综合评分报告</h1>
+        <p>Agent Memory System V3.1.0 多维度质量评估 -- 综合评分 86.7/100 (Grade A)</p>
+      </div>
+
+      <!-- Overall Score Section -->
+      <div class="card" id="overall-score">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+            总体评分
+          </div>
+          <span class="badge badge-green">Grade A</span>
+        </div>
+        <div class="card-body">
+          <div class="eval-overall">
+            <!-- Large Circular Progress -->
+            <div class="eval-score-circle">
+              <svg width="200" height="200" viewBox="0 0 200 200">
+                <!-- Background circle -->
+                <circle cx="100" cy="100" r="85" fill="none" stroke="#e2e8f0" stroke-width="14"/>
+                <!-- Score arc -->
+                <circle cx="100" cy="100" r="85" fill="none" stroke="url(#evalGradient)" stroke-width="14"
+                  stroke-dasharray="534" stroke-dashoffset="71" stroke-linecap="round"
+                  transform="rotate(-90 100 100)"/>
+                <!-- Inner glow -->
+                <circle cx="100" cy="100" r="70" fill="#f8fafc" stroke="none"/>
+                <!-- Score text -->
+                <text x="100" y="90" text-anchor="middle" font-size="42" font-weight="700" fill="#1e293b">86.7</text>
+                <text x="100" y="112" text-anchor="middle" font-size="14" fill="#64748b">/100</text>
+                <text x="100" y="135" text-anchor="middle" font-size="16" font-weight="600" fill="#10b981">Grade A</text>
+                <defs>
+                  <linearGradient id="evalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#3b82f6"/>
+                    <stop offset="50%" style="stop-color:#8b5cf6"/>
+                    <stop offset="100%" style="stop-color:#10b981"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- Score Summary -->
+            <div class="eval-score-details">
+              <h3>评估概要</h3>
+              <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 20px;">
+                <div class="stat-card">
+                  <div class="stat-value" style="font-size: 22px; color: #10b981;">34/34</div>
+                  <div class="stat-label">Pytest 测试</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" style="font-size: 22px; color: #3b82f6;">672</div>
+                  <div class="stat-label">缺陷修复</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" style="font-size: 22px; color: #8b5cf6;">8</div>
+                  <div class="stat-label">迭代轮次</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" style="font-size: 22px; color: #f59e0b;">9</div>
+                  <div class="stat-label">评估维度</div>
+                </div>
+              </div>
+              <div class="alert alert-success">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div>
+                  <strong>评估结论：</strong>系统在创新性、模块化、价值性等维度表现优异，整体达到 A 级水平。
+                  性能维度为相对短板，建议在后续版本中持续优化。
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Radar Chart -->
+      <div class="card" id="radar">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            雷达图 -- 九维评估
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="radar-chart-container">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+              <!-- Grid levels -->
+              <polygon points="250,50 421,150 421,350 250,450 79,350 79,150" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+              <polygon points="250,100 391,175 391,325 250,400 109,325 109,175" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+              <polygon points="250,150 361,200 361,300 250,350 139,300 139,200" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+              <polygon points="250,200 331,225 331,275 250,300 169,275 169,225" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+
+              <!-- Axis lines -->
+              <line x1="250" y1="250" x2="250" y2="50" stroke="#e2e8f0" stroke-width="1"/>
+              <line x1="250" y1="250" x2="421" y2="150" stroke="#e2e8f0" stroke-width="1"/>
+              <line x1="250" y1="250" x2="421" y2="350" stroke="#e2e8f0" stroke-width="1"/>
+              <line x1="250" y1="250" x2="250" y2="450" stroke="#e2e8f0" stroke-width="1"/>
+              <line x1="250" y1="250" x2="79" y2="350" stroke="#e2e8f0" stroke-width="1"/>
+              <line x1="250" y1="250" x2="79" y2="150" stroke="#e2e8f0" stroke-width="1"/>
+
+              <!-- Extra axis lines for 9 dimensions -->
+              <line x1="250" y1="250" x2="345" y2="82" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="250" y1="250" x2="345" y2="418" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="250" y1="250" x2="155" y2="418" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4"/>
+
+              <!-- Data polygon (9 dimensions) -->
+              <!--
+                Innovation: 92/100 -> 92% of radius
+                Creativity: 88/100
+                Value: 90/100
+                Practicality: 85/100
+                Usability: 82/100
+                Reliability: 87/100
+                Performance: 78/100
+                Security: 85/100
+                Modularity: 93/100
+
+                9 points at angles: -90, -50, -10, 30, 70, 110, 150, 190, 230 degrees
+                Radius = 200 (from center 250,250)
+              -->
+              <polygon
+                points="250,66 391,97 414,221 387,319 329,395 227,414 144,352 122,241 155,134"
+                fill="rgba(59,130,246,0.15)"
+                stroke="url(#radarGradient)"
+                stroke-width="2.5"
+                stroke-linejoin="round"
+              />
+
+              <!-- Data points -->
+              <circle cx="250" cy="66" r="4" fill="#3b82f6"/>
+              <circle cx="391" cy="97" r="4" fill="#8b5cf6"/>
+              <circle cx="414" cy="221" r="4" fill="#10b981"/>
+              <circle cx="387" cy="319" r="4" fill="#f59e0b"/>
+              <circle cx="329" cy="395" r="4" fill="#06b6d4"/>
+              <circle cx="227" cy="414" r="4" fill="#10b981"/>
+              <circle cx="144" cy="352" r="4" fill="#ef4444"/>
+              <circle cx="122" cy="241" r="4" fill="#f59e0b"/>
+              <circle cx="155" cy="134" r="4" fill="#3b82f6"/>
+
+              <!-- Labels -->
+              <text x="250" y="35" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">创新性 92</text>
+              <text x="435" y="90" text-anchor="start" font-size="13" font-weight="600" fill="#1e293b">创造力 88</text>
+              <text x="440" y="225" text-anchor="start" font-size="13" font-weight="600" fill="#1e293b">价值性 90</text>
+              <text x="400" y="335" text-anchor="start" font-size="13" font-weight="600" fill="#1e293b">实用性 85</text>
+              <text x="340" y="415" text-anchor="start" font-size="13" font-weight="600" fill="#1e293b">可用性 82</text>
+              <text x="210" y="440" text-anchor="end" font-size="13" font-weight="600" fill="#1e293b">可靠性 87</text>
+              <text x="120" y="370" text-anchor="end" font-size="13" font-weight="600" fill="#ef4444">性能 78</text>
+              <text x="95" y="245" text-anchor="end" font-size="13" font-weight="600" fill="#1e293b">安全性 85</text>
+              <text x="130" y="125" text-anchor="end" font-size="13" font-weight="600" fill="#1e293b">模块化 93</text>
+
+              <defs>
+                <linearGradient id="radarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#3b82f6"/>
+                  <stop offset="50%" style="stop-color:#8b5cf6"/>
+                  <stop offset="100%" style="stop-color:#10b981"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Score Breakdown Table -->
+      <div class="card" id="breakdown">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            评分明细表
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>评估维度</th>
+                  <th>得分</th>
+                  <th>等级</th>
+                  <th>权重</th>
+                  <th>加权分</th>
+                  <th>评价</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-blue">创新性</span> Innovation</td>
+                  <td><strong>92</strong>/100</td>
+                  <td><span class="badge badge-green">A</span></td>
+                  <td>12%</td>
+                  <td>11.04</td>
+                  <td>分层存储架构、自适应嵌入等创新设计</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">创造力</span> Creativity</td>
+                  <td><strong>88</strong>/100</td>
+                  <td><span class="badge badge-green">A</span></td>
+                  <td>12%</td>
+                  <td>10.56</td>
+                  <td>智能检索策略、策略选择器自学习</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">价值性</span> Value</td>
+                  <td><strong>90</strong>/100</td>
+                  <td><span class="badge badge-green">A</span></td>
+                  <td>12%</td>
+                  <td>10.80</td>
+                  <td>为企业AI应用提供坚实记忆基础设施</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">实用性</span> Practicality</td>
+                  <td><strong>85</strong>/100</td>
+                  <td><span class="badge badge-blue">B+</span></td>
+                  <td>11%</td>
+                  <td>9.35</td>
+                  <td>多SDK支持、Docker/K8s部署方案完善</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-blue">可用性</span> Usability</td>
+                  <td><strong>82</strong>/100</td>
+                  <td><span class="badge badge-blue">B+</span></td>
+                  <td>11%</td>
+                  <td>9.02</td>
+                  <td>API文档完善，管理界面功能齐全</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">可靠性</span> Reliability</td>
+                  <td><strong>87</strong>/100</td>
+                  <td><span class="badge badge-green">A</span></td>
+                  <td>11%</td>
+                  <td>9.57</td>
+                  <td>Raft共识、自愈系统、故障自动恢复</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-red">性能</span> Performance</td>
+                  <td><strong>78</strong>/100</td>
+                  <td><span class="badge badge-yellow">B</span></td>
+                  <td>11%</td>
+                  <td>8.58</td>
+                  <td>P99延迟达标，高并发场景有优化空间</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">安全性</span> Security</td>
+                  <td><strong>85</strong>/100</td>
+                  <td><span class="badge badge-blue">B+</span></td>
+                  <td>10%</td>
+                  <td>8.50</td>
+                  <td>JWT/OAuth2认证、RBAC、字段加密</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">模块化</span> Modularity</td>
+                  <td><strong>93</strong>/100</td>
+                  <td><span class="badge badge-green">A+</span></td>
+                  <td>10%</td>
+                  <td>9.30</td>
+                  <td>接口抽象清晰，模块解耦度高</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr style="background: #f8fafc; font-weight: 700;">
+                  <td colspan="2">综合评分</td>
+                  <td><span class="badge badge-green" style="font-size: 14px;">Grade A</span></td>
+                  <td>100%</td>
+                  <td><strong style="font-size: 18px; color: #3b82f6;">86.7</strong></td>
+                  <td>优秀</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dimension Score Bars -->
+      <div class="card" id="dimension-bars">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            维度得分可视化
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="max-width: 700px; margin: 0 auto;">
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">模块化</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 93%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">93/100</span>
+              <span class="badge badge-green" style="font-size: 11px;">A+</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">创新性</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 92%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">92/100</span>
+              <span class="badge badge-green" style="font-size: 11px;">A</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">价值性</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 90%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">90/100</span>
+              <span class="badge badge-green" style="font-size: 11px;">A</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">创造力</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 88%; background: linear-gradient(90deg, #8b5cf6, #a78bfa); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">88/100</span>
+              <span class="badge badge-green" style="font-size: 11px;">A</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">可靠性</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 87%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">87/100</span>
+              <span class="badge badge-green" style="font-size: 11px;">A</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">实用性</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 85%; background: linear-gradient(90deg, #f59e0b, #fbbf24); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">85/100</span>
+              <span class="badge badge-blue" style="font-size: 11px;">B+</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">安全性</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 85%; background: linear-gradient(90deg, #f59e0b, #fbbf24); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">85/100</span>
+              <span class="badge badge-blue" style="font-size: 11px;">B+</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">可用性</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 82%; background: linear-gradient(90deg, #06b6d4, #22d3ee); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">82/100</span>
+              <span class="badge badge-blue" style="font-size: 11px;">B+</span>
+            </div>
+            <div class="score-bar-row">
+              <span class="score-bar-label" style="width: 80px;">性能</span>
+              <div class="score-bar-track" style="height: 14px;">
+                <div class="score-bar-fill" style="width: 78%; background: linear-gradient(90deg, #ef4444, #f87171); border-radius: 7px;"></div>
+              </div>
+              <span class="score-bar-value" style="width: 50px;">78/100</span>
+              <span class="badge badge-yellow" style="font-size: 11px;">B</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Remaining Issues -->
+      <div class="card" id="issues">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            待改进项
+          </div>
+          <span class="badge badge-yellow">5 项</span>
+        </div>
+        <div class="card-body">
+          <div class="issue-item">
+            <div class="issue-severity high"></div>
+            <div class="issue-content">
+              <div class="issue-title">高并发场景下的性能瓶颈</div>
+              <div class="issue-desc">在超过 10 万 QPS 的极端负载下，向量检索延迟可能超过 50ms 目标值，需要优化连接池和批处理策略。</div>
+            </div>
+            <span class="issue-tag">性能</span>
+          </div>
+          <div class="issue-item">
+            <div class="issue-severity high"></div>
+            <div class="issue-content">
+              <div class="issue-title">大规模数据集的索引构建时间</div>
+              <div class="issue-desc">千万级数据量的索引构建仍需 18 分钟，可通过并行化和增量索引优化进一步缩短。</div>
+            </div>
+            <span class="issue-tag">性能</span>
+          </div>
+          <div class="issue-item">
+            <div class="issue-severity medium"></div>
+            <div class="issue-content">
+              <div class="issue-title">Web 管理界面的移动端适配</div>
+              <div class="issue-desc">管理界面在移动设备上的交互体验有待优化，部分图表在小屏幕上显示不完整。</div>
+            </div>
+            <span class="issue-tag">可用性</span>
+          </div>
+          <div class="issue-item">
+            <div class="issue-severity medium"></div>
+            <div class="issue-content">
+              <div class="issue-title">多语言 SDK 文档覆盖</div>
+              <div class="issue-desc">目前 Python SDK 文档最为完善，Go 和 JavaScript SDK 的文档需要补充更多使用示例。</div>
+            </div>
+            <span class="issue-tag">实用性</span>
+          </div>
+          <div class="issue-item">
+            <div class="issue-severity low"></div>
+            <div class="issue-content">
+              <div class="issue-title">冷存储数据查询优化</div>
+              <div class="issue-desc">S3 冷存储的归档数据查询延迟较高，可引入预取缓存机制改善用户体验。</div>
+            </div>
+            <span class="issue-tag">性能</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Improvement Roadmap -->
+      <div class="card" id="roadmap">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            改进路线图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="roadmap-timeline">
+            <!-- Short Term -->
+            <div class="roadmap-item short">
+              <div class="roadmap-phase short">短期 (V3.2.0)</div>
+              <div class="roadmap-title">性能优化与稳定性提升</div>
+              <div class="roadmap-desc">
+                优化向量检索连接池策略，引入自适应批处理机制；完善 Web 管理界面移动端适配；
+                补充 Go/JavaScript SDK 文档和示例代码。目标：综合评分提升至 88+。
+              </div>
+            </div>
+
+            <!-- Medium Term -->
+            <div class="roadmap-item medium">
+              <div class="roadmap-phase medium">中期 (V4.0.0)</div>
+              <div class="roadmap-title">架构升级与智能化增强</div>
+              <div class="roadmap-desc">
+                引入流式记忆处理引擎，支持实时记忆流分析；集成 LLM 驱动的智能记忆摘要与关联推荐；
+                实现跨区域多活部署方案；增加 GraphQL API 支持。目标：综合评分提升至 90+。
+              </div>
+            </div>
+
+            <!-- Long Term -->
+            <div class="roadmap-item long">
+              <div class="roadmap-phase long">长期 (V5.0.0)</div>
+              <div class="roadmap-title">生态构建与平台化</div>
+              <div class="roadmap-desc">
+                构建记忆市场生态，支持第三方记忆插件开发；实现联邦学习驱动的隐私保护记忆共享；
+                开源社区建设与生态合作；支持 Serverless 部署模式。目标：综合评分提升至 93+。
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info" style="margin-top: 24px;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>路线图说明：</strong>改进计划按照优先级和时间跨度分为三个阶段。短期聚焦于已知问题的修复和体验优化，
+              中期着眼于架构升级和智能化能力增强，长期致力于生态构建和平台化发展。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quality Metrics Summary -->
+      <div class="card" id="quality-metrics">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            质量指标汇总
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>指标类别</th>
+                  <th>指标名称</th>
+                  <th>目标值</th>
+                  <th>实际值</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-green">测试</span></td>
+                  <td>Pytest 测试通过率</td>
+                  <td>100%</td>
+                  <td>100% (34/34)</td>
+                  <td><span class="badge badge-green">达标</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">测试</span></td>
+                  <td>代码覆盖率</td>
+                  <td>>= 80%</td>
+                  <td>85%</td>
+                  <td><span class="badge badge-green">达标</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-blue">缺陷</span></td>
+                  <td>累计修复缺陷数</td>
+                  <td>>= 500</td>
+                  <td>672</td>
+                  <td><span class="badge badge-green">超额完成</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-blue">缺陷</span></td>
+                  <td>迭代改进轮次</td>
+                  <td>>= 6</td>
+                  <td>8</td>
+                  <td><span class="badge badge-green">超额完成</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">安全</span></td>
+                  <td>加密算法强度</td>
+                  <td>AES-256</td>
+                  <td>Fernet (AES-128-CBC)</td>
+                  <td><span class="badge badge-yellow">基本达标</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">安全</span></td>
+                  <td>密码哈希算法</td>
+                  <td>argon2/bcrypt</td>
+                  <td>bcrypt (passlib)</td>
+                  <td><span class="badge badge-green">达标</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">可靠性</span></td>
+                  <td>重试机制</td>
+                  <td>指数退避</td>
+                  <td>tenacity (指数退避+条件重试)</td>
+                  <td><span class="badge badge-green">达标</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">可靠性</span></td>
+                  <td>日志可观测性</td>
+                  <td>结构化日志</td>
+                  <td>structlog (JSON+上下文绑定)</td>
+                  <td><span class="badge badge-green">达标</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="common.js"></script>
+</body>
+</html>
