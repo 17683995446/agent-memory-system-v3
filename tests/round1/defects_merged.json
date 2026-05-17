@@ -1,0 +1,327 @@
+{
+  "report_info": {
+    "generated_at": "2026-05-17T06:35:00",
+    "round": "round1_complete",
+    "description": "Agent Memory System V3.0 第1轮完整缺陷报告（含深层测试补充）",
+    "total_defects": 7,
+    "original_defects": 2,
+    "supplemental_defects": 5,
+    "total_scenarios": 10
+  },
+  "summary": {
+    "p0_count": 5,
+    "p1_count": 2,
+    "p2_count": 0,
+    "p3_count": 0
+  },
+  "defects_by_severity": {
+    "P0": [
+      {
+        "id": "DEFECT-S4-001",
+        "severity": "P0",
+        "type": "recovery_failure",
+        "description": "自动恢复失败 4 次",
+        "failed_count": 4,
+        "scenario": "级联故障注入",
+        "source_file": "scenario4_cascading_failure_metrics.json",
+        "test_phase": "original"
+      },
+      {
+        "id": "DEFECT-R7-001",
+        "severity": "P0",
+        "type": "deadlock",
+        "description": "读写锁在高并发场景下发生死锁: 17次",
+        "scenario": "线程死锁检测",
+        "details": {
+          "deadlock_count": 17,
+          "threads_involved": 100,
+          "locks_involved": 20,
+          "duration_seconds": 60,
+          "total_operations": 7701
+        },
+        "affected_components": ["read_write_lock.py", "ReadWriteLock"],
+        "root_cause": "锁获取顺序不一致导致循环等待",
+        "recommendation": "实现锁排序机制或超时机制",
+        "test_phase": "supplemental"
+      },
+      {
+        "id": "DEFECT-R10-002",
+        "severity": "P0",
+        "type": "insufficient_validation",
+        "description": "验证不足导致非法输入被接受: 3次",
+        "scenario": "边界条件测试",
+        "details": {
+          "failed_tests": 3,
+          "examples": [
+            "null_byte: 空字节字符被接受",
+            "type_integer: 整数类型未正确拒绝",
+            "type_list: 列表类型未正确拒绝"
+          ]
+        },
+        "affected_components": ["agent_memory_system_facade.py", "remember()"],
+        "root_cause": "输入验证不完整，缺少类型检查和特殊字符过滤",
+        "recommendation": "加强输入验证，添加类型检查和危险字符过滤",
+        "test_phase": "supplemental"
+      },
+      {
+        "id": "DEFECT-R10-003",
+        "severity": "P0",
+        "type": "unexpected_exception_on_boundary",
+        "description": "边界条件触发意外异常(AttributeError): 2次",
+        "scenario": "边界条件测试",
+        "details": {
+          "exception_count": 2,
+          "error": "'int' object has no attribute 'strip'",
+          "affected_tests": ["type_integer", "type_list"]
+        },
+        "affected_components": ["agent_memory_system_facade.py", "remember()"],
+        "root_cause": "假设输入为字符串，未处理非字符串类型",
+        "recommendation": "添加类型检查和早期验证",
+        "test_phase": "supplemental"
+      },
+      {
+        "id": "DEFECT-R8-001",
+        "severity": "P0",
+        "type": "configuration_error",
+        "description": "嵌入提供者配置名称不一致导致系统初始化失败",
+        "scenario": "资源耗尽测试",
+        "details": {
+          "expected": "sentence_transformer",
+          "actual_available": ["sentence_transformers", "bge"],
+          "error": "未知的嵌入提供者: sentence_transformer"
+        },
+        "affected_components": ["MemoryConfig", "MemorySystemBuilder"],
+        "root_cause": "配置默认值与实际注册名称不一致",
+        "recommendation": "统一配置名称或添加别名支持",
+        "test_phase": "supplemental"
+      }
+    ],
+    "P1": [
+      {
+        "id": "DEFECT-S5-001",
+        "severity": "P1",
+        "type": "low_commit_rate",
+        "description": "事务提交率过低: 31.0%",
+        "threshold": "90%",
+        "actual": "31.0%",
+        "scenario": "分布式事务压力",
+        "source_file": "scenario5_distributed_transaction_metrics.json",
+        "test_phase": "original"
+      },
+      {
+        "id": "DEFECT-R9-003",
+        "severity": "P1",
+        "type": "unexpected_system_error",
+        "description": "异常恢复过程中出现意外的StorageError: 4次",
+        "scenario": "异常恢复测试",
+        "details": {
+          "error_count": 4,
+          "affected_operations": ["recall_3", "recall_4", "recall_69", "recall_91"],
+          "error_type": "StorageError"
+        },
+        "affected_components": ["storage_backends"],
+        "root_cause": "存储层在异常注入后状态不一致",
+        "recommendation": "增强存储层的异常恢复能力",
+        "test_phase": "supplemental"
+      }
+    ],
+    "P2": [],
+    "P3": []
+  },
+  "all_defects": [
+    {
+      "id": "DEFECT-S4-001",
+      "severity": "P0",
+      "type": "recovery_failure",
+      "description": "自动恢复失败 4 次",
+      "scenario": "级联故障注入",
+      "source_file": "scenario4_cascading_failure_metrics.json",
+      "test_phase": "original"
+    },
+    {
+      "id": "DEFECT-R7-001",
+      "severity": "P0",
+      "type": "deadlock",
+      "description": "读写锁在高并发场景下发生死锁: 17次",
+      "scenario": "线程死锁检测",
+      "source_file": "scenario7_deadlock_report.json",
+      "test_phase": "supplemental"
+    },
+    {
+      "id": "DEFECT-R10-002",
+      "severity": "P0",
+      "type": "insufficient_validation",
+      "description": "验证不足导致非法输入被接受: 3次",
+      "scenario": "边界条件测试",
+      "source_file": "scenario10_boundary_report.json",
+      "test_phase": "supplemental"
+    },
+    {
+      "id": "DEFECT-R10-003",
+      "severity": "P0",
+      "type": "unexpected_exception_on_boundary",
+      "description": "边界条件触发意外异常: 2次",
+      "scenario": "边界条件测试",
+      "source_file": "scenario10_boundary_report.json",
+      "test_phase": "supplemental"
+    },
+    {
+      "id": "DEFECT-R8-001",
+      "severity": "P0",
+      "type": "configuration_error",
+      "description": "嵌入提供者配置名称不一致",
+      "scenario": "资源耗尽测试",
+      "source_file": "scenario8_resource_exhaustion_report.json",
+      "test_phase": "supplemental"
+    },
+    {
+      "id": "DEFECT-S5-001",
+      "severity": "P1",
+      "type": "low_commit_rate",
+      "description": "事务提交率过低: 31.0%",
+      "scenario": "分布式事务压力",
+      "source_file": "scenario5_distributed_transaction_metrics.json",
+      "test_phase": "original"
+    },
+    {
+      "id": "DEFECT-R9-003",
+      "severity": "P1",
+      "type": "unexpected_system_error",
+      "description": "异常恢复过程中出现意外的StorageError: 4次",
+      "scenario": "异常恢复测试",
+      "source_file": "scenario9_exception_recovery_report.json",
+      "test_phase": "supplemental"
+    }
+  ],
+  "test_coverage": {
+    "original_scenarios": [
+      "scenario1_write_storm_10k",
+      "scenario2_read_write_mixed",
+      "scenario3_raft_split_recovery",
+      "scenario4_cascading_failure",
+      "scenario5_distributed_transaction"
+    ],
+    "supplemental_scenarios": [
+      "scenario6_memory_leak",
+      "scenario7_deadlock",
+      "scenario8_resource_exhaustion",
+      "scenario9_exception_recovery",
+      "scenario10_boundary"
+    ]
+  },
+  "supplemental_test_results": {
+    "scenario6_memory_leak": {
+      "status": "passed",
+      "leak_detected": false,
+      "total_created": 8700,
+      "total_deleted": 4350,
+      "peak_memory_mb": 3.48,
+      "duration_seconds": 90,
+      "defects_found": 0
+    },
+    "scenario7_deadlock": {
+      "status": "failed",
+      "deadlock_detected": true,
+      "deadlock_count": 17,
+      "total_operations": 7701,
+      "duration_seconds": 60,
+      "defects_found": 1
+    },
+    "scenario8_resource_exhaustion": {
+      "status": "passed",
+      "file_handles_achieved": 1000,
+      "memory_peak_mb": 1129.88,
+      "connections_successful": 100,
+      "degradation_detected": false,
+      "defects_found": 1
+    },
+    "scenario9_exception_recovery": {
+      "status": "passed_with_issues",
+      "total_operations": 200,
+      "successful_operations": 160,
+      "exception_thrown": 40,
+      "inconsistent_state": 0,
+      "unexpected_errors": 4,
+      "defects_found": 1
+    },
+    "scenario10_boundary": {
+      "status": "failed",
+      "total_tests": 28,
+      "passed": 25,
+      "failed": 3,
+      "pass_rate": 0.893,
+      "defects_found": 2
+    }
+  },
+  "fix_priority": {
+    "critical_p0": [
+      "DEFECT-R7-001: 死锁问题 - 影响系统稳定性",
+      "DEFECT-R10-002: 输入验证不足 - 安全风险",
+      "DEFECT-R10-003: 边界异常 - 影响健壮性",
+      "DEFECT-R8-001: 配置错误 - 影响可用性",
+      "DEFECT-S4-001: 恢复失败 - 影响可靠性"
+    ],
+    "high_p1": [
+      "DEFECT-S5-001: 事务提交率低 - 影响性能",
+      "DEFECT-R9-003: 异常恢复问题 - 影响稳定性"
+    ]
+  },
+  "recommendations": [
+    {
+      "priority": "P0",
+      "defect_id": "DEFECT-R7-001",
+      "component": "read_write_lock.py",
+      "issue": "死锁问题",
+      "action": "实现锁获取超时机制和死锁检测",
+      "estimated_effort": "3天"
+    },
+    {
+      "priority": "P0",
+      "defect_id": "DEFECT-R10-002",
+      "component": "agent_memory_system_facade.py",
+      "issue": "输入验证不足",
+      "action": "添加全面的输入类型检查和特殊字符过滤",
+      "estimated_effort": "2天"
+    },
+    {
+      "priority": "P0",
+      "defect_id": "DEFECT-R10-003",
+      "component": "agent_memory_system_facade.py",
+      "issue": "边界异常",
+      "action": "添加类型检查和早期验证",
+      "estimated_effort": "1天"
+    },
+    {
+      "priority": "P0",
+      "defect_id": "DEFECT-R8-001",
+      "component": "configuration_settings",
+      "issue": "配置不一致",
+      "action": "统一配置名称或添加别名映射",
+      "estimated_effort": "0.5天"
+    },
+    {
+      "priority": "P0",
+      "defect_id": "DEFECT-S4-001",
+      "component": "recovery_system",
+      "issue": "恢复失败",
+      "action": "改进自动恢复机制",
+      "estimated_effort": "3天"
+    },
+    {
+      "priority": "P1",
+      "defect_id": "DEFECT-S5-001",
+      "component": "transaction_manager",
+      "issue": "事务提交率低",
+      "action": "优化事务处理逻辑",
+      "estimated_effort": "2天"
+    },
+    {
+      "priority": "P1",
+      "defect_id": "DEFECT-R9-003",
+      "component": "storage_backends",
+      "issue": "异常恢复能力",
+      "action": "增强存储层的异常处理和恢复机制",
+      "estimated_effort": "2天"
+    }
+  ]
+}

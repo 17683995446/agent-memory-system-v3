@@ -1,0 +1,213 @@
+{
+  "scenario": "exception_recovery",
+  "operation_count": 100,
+  "exception_rate": 0.2,
+  "total_operations": 200,
+  "successful_operations": 160,
+  "exception_thrown": 40,
+  "inconsistent_state": 0,
+  "by_operation_type": {
+    "remember": {
+      "total": 100,
+      "success": 87,
+      "exception": 13,
+      "inconsistent": 0
+    },
+    "recall": {
+      "total": 100,
+      "success": 73,
+      "exception": 27,
+      "inconsistent": 0
+    }
+  },
+  "inconsistencies": [],
+  "defects": [
+    {
+      "id": "DEFECT-R9-003",
+      "severity": "P1",
+      "type": "unexpected_system_error",
+      "description": "\u610f\u5916\u7684\u7cfb\u7edf\u9519\u8bef: 4 \u6b21",
+      "examples": [
+        {
+          "op": "recall_3",
+          "error": "StorageError"
+        },
+        {
+          "op": "recall_4",
+          "error": "StorageError"
+        },
+        {
+          "op": "recall_69",
+          "error": "StorageError"
+        },
+        {
+          "op": "recall_91",
+          "error": "StorageError"
+        }
+      ]
+    }
+  ],
+  "defect_count": 1,
+  "sample_results": [
+    {
+      "operation_id": "remember_0",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_1",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_2",
+      "type": "remember",
+      "success": false,
+      "exception": true,
+      "exception_type": "RuntimeError",
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_3",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_4",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_5",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_6",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_7",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_8",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_9",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_10",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_11",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_12",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_13",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_14",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_15",
+      "type": "remember",
+      "success": false,
+      "exception": true,
+      "exception_type": "RuntimeError",
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_16",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_17",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_18",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    },
+    {
+      "operation_id": "remember_19",
+      "type": "remember",
+      "success": true,
+      "exception": false,
+      "exception_type": null,
+      "consistent": true
+    }
+  ]
+}

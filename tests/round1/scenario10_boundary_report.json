@@ -1,0 +1,135 @@
+{
+  "scenario": "boundary_conditions",
+  "total_tests": 28,
+  "passed": 25,
+  "failed": 3,
+  "pass_rate": 0.8928571428571429,
+  "by_category": {
+    "null": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "empty": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "min": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "max": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "special_chars": {
+      "total": 5,
+      "passed": 4,
+      "failed": 1
+    },
+    "unicode": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    "type": {
+      "total": 2,
+      "passed": 0,
+      "failed": 2
+    },
+    "boundary": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "query": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0
+    }
+  },
+  "by_operation": {
+    "remember": {
+      "total": 19,
+      "passed": 16,
+      "failed": 3
+    },
+    "recall": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0
+    }
+  },
+  "failed_tests": [
+    {
+      "test_name": "null_byte",
+      "category": "special_chars",
+      "input": "test\u0000test",
+      "expected": "reject",
+      "actual": "accept",
+      "success": false,
+      "error": null,
+      "error_type": null,
+      "memory_id": "8d4f2b56415d4fc4a7bb0f94e01a5177",
+      "issue": "\u5e94\u8be5\u88ab\u62d2\u7edd\u4f46\u63a5\u53d7\u4e86: null_byte",
+      "operation": "remember"
+    },
+    {
+      "test_name": "type_integer",
+      "category": "type",
+      "input": "12345",
+      "expected": "reject",
+      "actual": "exception",
+      "success": false,
+      "error": "'int' object has no attribute 'strip'",
+      "error_type": "AttributeError",
+      "issue": "\u610f\u5916\u5f02\u5e38: type_integer",
+      "operation": "remember"
+    },
+    {
+      "test_name": "type_list",
+      "category": "type",
+      "input": "['item1', 'item2']",
+      "expected": "reject",
+      "actual": "exception",
+      "success": false,
+      "error": "'list' object has no attribute 'strip'",
+      "error_type": "AttributeError",
+      "issue": "\u610f\u5916\u5f02\u5e38: type_list",
+      "operation": "remember"
+    }
+  ],
+  "defects": [
+    {
+      "id": "DEFECT-R10-002",
+      "severity": "P0",
+      "type": "insufficient_validation",
+      "description": "\u9a8c\u8bc1\u4e0d\u8db3\u5bfc\u81f4\u975e\u6cd5\u8f93\u5165\u88ab\u63a5\u53d7: 3 \u6b21",
+      "examples": [
+        "null_byte",
+        "type_integer",
+        "type_list"
+      ]
+    },
+    {
+      "id": "DEFECT-R10-003",
+      "severity": "P0",
+      "type": "unexpected_exception_on_boundary",
+      "description": "\u8fb9\u754c\u6761\u4ef6\u89e6\u53d1\u610f\u5916\u5f02\u5e38: 2 \u6b21",
+      "examples": [
+        {
+          "name": "type_integer",
+          "error": "'int' object has no attribute 'strip'"
+        },
+        {
+          "name": "type_list",
+          "error": "'list' object has no attribute 'strip'"
+        }
+      ]
+    }
+  ],
+  "defect_count": 2
+}

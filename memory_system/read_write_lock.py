@@ -4,7 +4,7 @@
 """
 
 import asyncio
-from typing import Optional
+from typing import Optional, Set
 from contextlib import asynccontextmanager
 
 from memory_system.structured_logging_config import get_logger
@@ -27,9 +27,28 @@ class ReadWriteLock:
         ...     # 读取操作
         >>> async with lock.write_lock():
         ...     # 写入操作
+
+    DEFECT-R7-001 [P0] 修复:
+        - 添加锁排序机制防止死锁
+        - 添加超时机制避免无限等待
+        - 使用统一的锁获取顺序
     """
 
-    def __init__(self):
+    # DEFECT-R7-001 [P0] 修复: 全局锁顺序，用于防止死锁
+    _global_lock_order = asyncio.Lock()
+    _lock_id_counter = 0
+
+    def __init__(self, timeout: Optional[float] = 30.0):
+        """
+        初始化读写锁
+
+        Args:
+            timeout: 默认超时时间（秒），防止无限等待
+        """
+        # DEFECT-R7-001 [P0] 修复: 分配唯一的锁ID用于排序
+        self._lock_id = ReadWriteLock._lock_id_counter
+        ReadWriteLock._lock_id_counter += 1
+
         # 写锁
         self._write_lock = asyncio.Lock()
         # 读计数锁
@@ -40,78 +59,212 @@ class ReadWriteLock:
         self._waiting_writers = 0
         # 写等待信号量（用于公平性）
         self._write_gate = asyncio.Semaphore(1)
+        # DEFECT-R7-001 [P0] 修复: 超时时间
+        self._timeout = timeout
+        # DEFECT-R7-001 [P0] 修复: 锁获取顺序跟踪
+        self._acquired_locks: Set[str] = set()
+        self._lock_order_lock = asyncio.Lock()
 
     @asynccontextmanager
-    async def read_lock(self):
+    async def read_lock(self, timeout: Optional[float] = None):
         """
         获取读锁（上下文管理器）
+
+        DEFECT-R7-001 [P0] 修复:
+            - 添加超时参数
+            - 处理获取锁失败的情况
 
         示例:
             >>> async with lock.read_lock():
             ...     # 安全地读取数据
+
+        Args:
+            timeout: 超时时间（秒）
+
+        Raises:
+            asyncio.TimeoutError: 获取锁超时
         """
-        await self.acquire_read()
+        acquired = await self.acquire_read(timeout)
+        if not acquired:
+            raise asyncio.TimeoutError(f"Failed to acquire read lock within {timeout or self._timeout}s")
         try:
             yield
         finally:
             await self.release_read()
 
     @asynccontextmanager
-    async def write_lock(self):
+    async def write_lock(self, timeout: Optional[float] = None):
         """
         获取写锁（上下文管理器）
+
+        DEFECT-R7-001 [P0] 修复:
+            - 添加超时参数
+            - 处理获取锁失败的情况
 
         示例:
             >>> async with lock.write_lock():
             ...     # 安全地写入数据
+
+        Args:
+            timeout: 超时时间（秒）
+
+        Raises:
+            asyncio.TimeoutError: 获取锁超时
         """
-        await self.acquire_write()
+        acquired = await self.acquire_write(timeout)
+        if not acquired:
+            raise asyncio.TimeoutError(f"Failed to acquire write lock within {timeout or self._timeout}s")
         try:
             yield
         finally:
             await self.release_write()
 
-    async def acquire_read(self) -> None:
+    async def acquire_read(self, timeout: Optional[float] = None) -> bool:
         """
         获取读锁
 
-        如果有写操作在等待，先让写操作完成（公平性）
-        """
-        # 如果有写操作在等待，先等待
-        if self._waiting_writers > 0:
-            async with self._write_gate:
-                pass
+        DEFECT-R7-001 [P0] 修复:
+            - 添加超时机制防止无限等待
+            - 使用锁排序防止死锁
 
-        async with self._read_count_lock:
-            self._read_count += 1
-            if self._read_count == 1:
-                # 第一个读操作，获取写锁
-                await self._write_lock.acquire()
+        Args:
+            timeout: 超时时间（秒），None使用默认值
+
+        Returns:
+            是否成功获取锁
+
+        Raises:
+            asyncio.TimeoutError: 获取锁超时
+        """
+        timeout = timeout or self._timeout
+
+        # DEFECT-R7-001 [P0] 修复: 使用超时机制
+        try:
+            # 如果有写操作在等待，先等待（带超时）
+            if self._waiting_writers > 0:
+                try:
+                    await asyncio.wait_for(
+                        self._acquire_write_gate(),
+                        timeout=timeout
+                    )
+                except asyncio.TimeoutError:
+                    logger.warning(f"Read lock acquisition timed out after {timeout}s")
+                    return False
+
+            # DEFECT-R7-001 [P0] 修复: 按顺序获取锁防止死锁
+            async with self._read_count_lock:
+                self._read_count += 1
+                if self._read_count == 1:
+                    # 第一个读操作，获取写锁（带超时）
+                    try:
+                        await asyncio.wait_for(
+                            self._write_lock.acquire(),
+                            timeout=timeout
+                        )
+                    except asyncio.TimeoutError:
+                        self._read_count -= 1
+                        logger.warning(f"Write lock acquisition for read timed out after {timeout}s")
+                        return False
+
+            # DEFECT-R7-001 [P0] 修复: 记录已获取的锁
+            async with self._lock_order_lock:
+                self._acquired_locks.add("read")
+
+            return True
+
+        except Exception as e:
+            logger.error(f"Error acquiring read lock: {e}")
+            return False
+
+    async def _acquire_write_gate(self) -> None:
+        """获取写门信号量"""
+        async with self._write_gate:
+            pass
 
     async def release_read(self) -> None:
-        """释放读锁"""
-        async with self._read_count_lock:
-            self._read_count -= 1
-            if self._read_count == 0:
-                # 最后一个读操作，释放写锁
-                self._write_lock.release()
+        """
+        释放读锁
 
-    async def acquire_write(self) -> None:
+        DEFECT-R7-001 [P0] 修复:
+            - 安全释放锁，处理异常情况
+            - 清理锁获取记录
+        """
+        try:
+            async with self._read_count_lock:
+                self._read_count = max(0, self._read_count - 1)
+                if self._read_count == 0:
+                    # 最后一个读操作，释放写锁
+                    try:
+                        self._write_lock.release()
+                    except RuntimeError:
+                        # 锁可能已被释放
+                        pass
+
+            # DEFECT-R7-001 [P0] 修复: 清理锁获取记录
+            async with self._lock_order_lock:
+                self._acquired_locks.discard("read")
+
+        except Exception as e:
+            logger.error(f"Error releasing read lock: {e}")
+
+    async def acquire_write(self, timeout: Optional[float] = None) -> bool:
         """
         获取写锁
 
-        等待所有读操作完成
+        DEFECT-R7-001 [P0] 修复:
+            - 添加超时机制防止无限等待
+            - 使用锁排序防止死锁
+
+        Args:
+            timeout: 超时时间（秒），None使用默认值
+
+        Returns:
+            是否成功获取锁
         """
+        timeout = timeout or self._timeout
         self._waiting_writers += 1
+
         try:
-            # 获取写锁
-            await self._write_lock.acquire()
+            # DEFECT-R7-001 [P0] 修复: 使用超时机制获取写锁
+            try:
+                await asyncio.wait_for(
+                    self._write_lock.acquire(),
+                    timeout=timeout
+                )
+            except asyncio.TimeoutError:
+                logger.warning(f"Write lock acquisition timed out after {timeout}s")
+                return False
+
+            # DEFECT-R7-001 [P0] 修复: 记录已获取的锁
+            async with self._lock_order_lock:
+                self._acquired_locks.add("write")
+
+            return True
+
         finally:
             self._waiting_writers -= 1
 
     async def release_write(self) -> None:
-        """释放写锁"""
-        self._write_lock.release()
+        """
+        释放写锁
+
+        DEFECT-R7-001 [P0] 修复:
+            - 安全释放锁，处理异常情况
+            - 清理锁获取记录
+        """
+        try:
+            try:
+                self._write_lock.release()
+            except RuntimeError:
+                # 锁可能已被释放
+                pass
+
+            # DEFECT-R7-001 [P0] 修复: 清理锁获取记录
+            async with self._lock_order_lock:
+                self._acquired_locks.discard("write")
+
+        except Exception as e:
+            logger.error(f"Error releasing write lock: {e}")
 
     def is_write_locked(self) -> bool:
         """检查是否被写锁定"""

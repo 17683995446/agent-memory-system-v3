@@ -198,26 +198,52 @@ class ServiceRegistry(ABC):
 
 
 class InMemoryServiceRegistry(ServiceRegistry):
-    """内存服务注册表实现"""
-    
-    def __init__(self, heartbeat_timeout: int = 30):
+    """内存服务注册表实现
+
+    DEFECT-S4-001 [P0] 修复:
+        - 增强故障检测机制
+        - 添加自动恢复功能
+        - 添加健康检查重试逻辑
+    """
+
+    def __init__(self, heartbeat_timeout: int = 30, recovery_enabled: bool = True):
         self._services: Dict[ServiceId, ServiceInstance] = {}
         self._service_index: Dict[str, Set[ServiceId]] = {}
         self._heartbeat_timeout = heartbeat_timeout
         self._watchers: Dict[str, List[Callable]] = {}
         self._lock = asyncio.Lock()
         self._cleanup_task: Optional[asyncio.Task] = None
+
+        # DEFECT-S4-001 [P0] 修复: 自动恢复配置
+        self._recovery_enabled = recovery_enabled
+        self._failed_services: Dict[ServiceId, Dict[str, Any]] = {}  # 失败服务记录
+        self._recovery_attempts: Dict[ServiceId, int] = {}  # 恢复尝试次数
+        self._max_recovery_attempts = 5  # 最大恢复尝试次数
+        self._recovery_interval = 5.0  # 恢复检查间隔（秒）
+        self._recovery_task: Optional[asyncio.Task] = None
     
     async def start(self) -> None:
-        """启动清理任务"""
+        """启动清理任务和恢复任务"""
         self._cleanup_task = asyncio.create_task(self._cleanup_loop())
-    
+        # DEFECT-S4-001 [P0] 修复: 启动自动恢复任务
+        if self._recovery_enabled:
+            self._recovery_task = asyncio.create_task(self._recovery_loop())
+            logger.info("Auto-recovery enabled for service registry")
+
     async def stop(self) -> None:
-        """停止清理任务"""
+        """停止清理任务和恢复任务"""
         if self._cleanup_task:
             self._cleanup_task.cancel()
             try:
                 await self._cleanup_task
+            except asyncio.CancelledError:
+                pass
+
+        # DEFECT-S4-001 [P0] 修复: 停止恢复任务
+        if self._recovery_task:
+            self._recovery_task.cancel()
+            try:
+                await self._recovery_task
             except asyncio.CancelledError:
                 pass
     
@@ -297,20 +323,168 @@ class InMemoryServiceRegistry(ServiceRegistry):
                 logger.exception(f"Cleanup error: {e}")
     
     async def _cleanup_expired(self) -> None:
-        """清理过期服务"""
+        """
+        清理过期服务
+
+        DEFECT-S4-001 [P0] 修复:
+            - 增强故障检测
+            - 记录失败服务以便恢复
+        """
         now = datetime.now(timezone.utc)
         expired = []
-        
+
         async with self._lock:
             for sid, instance in self._services.items():
-                if (now - instance.last_heartbeat).seconds > self._heartbeat_timeout:
+                heartbeat_age = (now - instance.last_heartbeat).total_seconds()
+                if heartbeat_age > self._heartbeat_timeout:
                     expired.append(sid)
-            
+                    # DEFECT-S4-001 [P0] 修复: 记录失败服务
+                    if sid not in self._failed_services:
+                        self._failed_services[sid] = {
+                            "instance": instance,
+                            "failed_at": now,
+                            "reason": f"Heartbeat timeout: {heartbeat_age:.1f}s",
+                        }
+                        logger.warning(
+                            f"Service marked for recovery: {instance.name} ({sid}), "
+                            f"heartbeat age: {heartbeat_age:.1f}s"
+                        )
+
             for sid in expired:
                 instance = self._services.pop(sid, None)
                 if instance:
                     self._service_index[instance.name].discard(sid)
+                    instance.status = ServiceStatus.UNHEALTHY
                     logger.warning(f"Service expired: {instance.name} ({sid})")
+
+    async def _recovery_loop(self) -> None:
+        """
+        自动恢复循环
+
+        DEFECT-S4-001 [P0] 修复:
+            - 定期检查失败服务
+            - 尝试恢复服务
+            - 限制恢复尝试次数
+        """
+        while True:
+            try:
+                await asyncio.sleep(self._recovery_interval)
+                await self._attempt_recovery()
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.exception(f"Recovery loop error: {e}")
+
+    async def _attempt_recovery(self) -> None:
+        """
+        尝试恢复失败的服务
+
+        DEFECT-S4-001 [P0] 修复: 实现自动恢复逻辑
+        """
+        recovered = []
+
+        async with self._lock:
+            for sid, failure_info in list(self._failed_services.items()):
+                instance = failure_info.get("instance")
+                if not instance:
+                    continue
+
+                # 检查恢复尝试次数
+                attempts = self._recovery_attempts.get(sid, 0)
+                if attempts >= self._max_recovery_attempts:
+                    logger.warning(
+                        f"Max recovery attempts ({self._max_recovery_attempts}) "
+                        f"reached for service {instance.name} ({sid}), removing from recovery"
+                    )
+                    recovered.append(sid)
+                    continue
+
+                # 尝试恢复
+                self._recovery_attempts[sid] = attempts + 1
+                logger.info(
+                    f"Attempting recovery of {instance.name} ({sid}), "
+                    f"attempt {attempts + 1}/{self._max_recovery_attempts}"
+                )
+
+                # 执行健康检查
+                is_healthy = await self._check_service_health(instance)
+
+                if is_healthy:
+                    # 恢复成功
+                    instance.status = ServiceStatus.HEALTHY
+                    instance.last_heartbeat = datetime.now(timezone.utc)
+                    self._services[sid] = instance
+                    self._service_index[instance.name].add(sid)
+                    recovered.append(sid)
+                    # 重置恢复计数
+                    self._recovery_attempts.pop(sid, None)
+                    logger.info(f"Service recovered successfully: {instance.name} ({sid})")
+                    # 通知观察者
+                    await self._notify_watchers(instance.name)
+
+        # 清理已恢复的服务记录
+        for sid in recovered:
+            self._failed_services.pop(sid, None)
+
+    async def _check_service_health(self, instance: ServiceInstance) -> bool:
+        """
+        检查服务健康状态
+
+        DEFECT-S4-001 [P0] 修复: 增强健康检查
+
+        Args:
+            instance: 服务实例
+
+        Returns:
+            服务是否健康
+        """
+        # 如果有健康检查URL，尝试访问
+        if instance.health_check_url:
+            try:
+                import aiohttp
+                timeout = aiohttp.ClientTimeout(total=5.0)
+                async with aiohttp.ClientSession(timeout=timeout) as session:
+                    async with session.get(instance.health_check_url) as resp:
+                        if resp.status == 200:
+                            return True
+            except Exception as e:
+                logger.debug(f"Health check failed for {instance.name}: {e}")
+
+        # 如果没有健康检查URL或检查失败，基于心跳时间判断
+        now = datetime.now(timezone.utc)
+        if instance.last_heartbeat:
+            heartbeat_age = (now - instance.last_heartbeat).total_seconds()
+            # 如果心跳在超时时间内，认为服务可能恢复
+            if heartbeat_age < self._heartbeat_timeout * 2:
+                return True
+
+        return False
+
+    def get_recovery_stats(self) -> Dict[str, Any]:
+        """
+        获取恢复统计信息
+
+        DEFECT-S4-001 [P0] 修复: 提供恢复状态监控
+
+        Returns:
+            恢复统计信息
+        """
+        return {
+            "recovery_enabled": self._recovery_enabled,
+            "failed_services_count": len(self._failed_services),
+            "failed_services": [
+                {
+                    "service_id": sid,
+                    "name": info.get("instance", {}).name if info.get("instance") else "unknown",
+                    "failed_at": info.get("failed_at"),
+                    "reason": info.get("reason"),
+                    "recovery_attempts": self._recovery_attempts.get(sid, 0),
+                }
+                for sid, info in self._failed_services.items()
+            ],
+            "max_recovery_attempts": self._max_recovery_attempts,
+            "recovery_interval": self._recovery_interval,
+        }
 
 
 class ConsulServiceRegistry(ServiceRegistry):

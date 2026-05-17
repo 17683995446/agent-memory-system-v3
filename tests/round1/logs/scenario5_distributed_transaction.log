@@ -1,0 +1,36 @@
+2026-05-17 05:31:54,330 - __main__ - INFO - ================================================================================
+2026-05-17 05:31:54,330 - __main__ - INFO - 场景5: 分布式事务压力测试
+2026-05-17 05:31:54,330 - __main__ - INFO - ================================================================================
+2026-05-17 05:31:54,330 - __main__ - INFO - 并发事务: 1,000
+2026-05-17 05:31:54,330 - __main__ - INFO - 隔离级别: read_committed
+2026-05-17 05:31:54,330 - __main__ - INFO - 目标持续时间: 3.0 分钟
+2026-05-17 05:31:54,330 - __main__ - INFO - ================================================================================
+2026-05-17 05:31:59,379 - __main__ - INFO - [Stats] TX: 97519 | Committed: 30327 | Aborted: 67192 | Entries: 93102 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:04,447 - __main__ - INFO - [Stats] TX: 186716 | Committed: 57792 | Aborted: 128924 | Entries: 177278 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:09,839 - __main__ - INFO - [Stats] TX: 271145 | Committed: 83886 | Aborted: 187259 | Entries: 257589 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:14,952 - __main__ - INFO - [Stats] TX: 348121 | Committed: 107742 | Aborted: 240379 | Entries: 330896 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:20,085 - __main__ - INFO - [Stats] TX: 419501 | Committed: 130049 | Aborted: 289452 | Entries: 399119 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:25,239 - __main__ - INFO - [Stats] TX: 496758 | Committed: 154050 | Aborted: 342708 | Entries: 472685 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:31,031 - __main__ - INFO - [Stats] TX: 569173 | Committed: 176312 | Aborted: 392861 | Entries: 540870 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:36,425 - __main__ - INFO - [Stats] TX: 642750 | Committed: 199259 | Aborted: 443491 | Entries: 611660 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:36,912 - __main__ - INFO - ================================================================================
+2026-05-17 05:32:36,912 - __main__ - INFO - 场景5: 分布式事务压力测试
+2026-05-17 05:32:36,912 - __main__ - INFO - ================================================================================
+2026-05-17 05:32:36,912 - __main__ - INFO - 并发事务: 1,000
+2026-05-17 05:32:36,912 - __main__ - INFO - 隔离级别: read_committed
+2026-05-17 05:32:36,912 - __main__ - INFO - 目标持续时间: 3.0 分钟
+2026-05-17 05:32:36,912 - __main__ - INFO - ================================================================================
+2026-05-17 05:32:41,978 - __main__ - INFO - [Stats] TX: 93051 | Committed: 28944 | Aborted: 64107 | Entries: 88795 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:42,545 - __main__ - INFO - [Stats] TX: 724453 | Committed: 224440 | Aborted: 500013 | Entries: 688824 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:47,129 - __main__ - INFO - [Stats] TX: 178049 | Committed: 55293 | Aborted: 122756 | Entries: 169869 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:47,780 - __main__ - INFO - [Stats] TX: 804344 | Committed: 249172 | Aborted: 555172 | Entries: 764911 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:52,231 - __main__ - INFO - [Stats] TX: 259217 | Committed: 80507 | Aborted: 178710 | Entries: 247156 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:53,265 - __main__ - INFO - [Stats] TX: 866770 | Committed: 268565 | Aborted: 598205 | Entries: 824384 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:57,357 - __main__ - INFO - [Stats] TX: 333584 | Committed: 103621 | Aborted: 229963 | Entries: 318070 | Locks: 0 | Conflicts: 0
+2026-05-17 05:32:58,546 - __main__ - INFO - [Stats] TX: 942783 | Committed: 291975 | Aborted: 650808 | Entries: 896514 | Locks: 0 | Conflicts: 0
+2026-05-17 05:33:02,510 - __main__ - INFO - [Stats] TX: 402841 | Committed: 125026 | Aborted: 277815 | Entries: 384052 | Locks: 0 | Conflicts: 0
+2026-05-17 05:33:03,845 - __main__ - INFO - [Stats] TX: 1016563 | Committed: 314907 | Aborted: 701656 | Entries: 966829 | Locks: 0 | Conflicts: 0
+2026-05-17 05:33:08,059 - __main__ - INFO - [Stats] TX: 472016 | Committed: 146471 | Aborted: 325545 | Entries: 449729 | Locks: 0 | Conflicts: 0
+2026-05-17 05:36:54,550 - __main__ - INFO - [Stats] TX: 481413 | Committed: 149423 | Aborted: 331990 | Entries: 458699 | Locks: 0 | Conflicts: 0
+2026-05-17 05:36:59,740 - __main__ - INFO - [Stats] TX: 481414 | Committed: 149424 | Aborted: 331990 | Entries: 458701 | Locks: 0 | Conflicts: 0
+2026-05-17 05:37:08,802 - __main__ - INFO - 测试报告已保存到: /workspace/agent_memory_system_v2/tests/round1/metrics/scenario5_distributed_transaction_metrics.json

@@ -26,23 +26,123 @@ class ProviderInfo:
 
 class EmbeddingFactory:
     """简化的嵌入提供者工厂
-    
+
     提供统一的嵌入提供者创建和管理接口。
     支持注册自定义提供者和内置提供者自动发现。
-    
+
+    DEFECT-R8-001 [P0] 修复:
+        - 统一配置名称
+        - 添加别名支持
+        - 规范化提供者名称映射
+
     Example:
         # 创建提供者
         provider = EmbeddingFactory.create("openai", api_key="xxx")
-        
+
         # 注册自定义提供者
         EmbeddingFactory.register("custom", CustomProvider)
-        
+
         # 列出可用提供者
         providers = EmbeddingFactory.list_providers()
+
+        # 使用别名创建（DEFECT-R8-001 修复）
+        provider = EmbeddingFactory.create("sentence-transformer")  # 别名
+        provider = EmbeddingFactory.create("sentence_transformer")  # 标准名
     """
-    
+
     _providers: Dict[str, ProviderInfo] = {}
     _initialized: bool = False
+
+    # DEFECT-R8-001 [P0] 修复: 别名映射表，统一配置名称
+    # 注意: 所有键都应该使用下划线格式，因为 _resolve_name 会将连字符替换为下划线
+    _ALIASES: Dict[str, str] = {
+        # 标准名称 -> 标准名称（自映射）
+        "openai": "openai",
+        "bge": "bge",
+        "mock": "mock",
+        "sentence_transformer": "sentence_transformer",
+
+        # 常见别名 -> 标准名称（使用下划线格式，因为 _resolve_name 会转换）
+        "sentence_transformers": "sentence_transformer",
+        "st": "sentence_transformer",
+        "huggingface": "sentence_transformer",
+        "hf": "sentence_transformer",
+        "openai_embedding": "openai",
+        "ada": "openai",
+        "bge_embedding": "bge",
+        "test": "mock",
+        "dummy": "mock",
+        "default": "mock",
+    }
+
+    @classmethod
+    def _resolve_name(cls, name: str) -> str:
+        """解析提供者名称（处理别名）
+
+        DEFECT-R8-001 [P0] 修复: 统一配置名称解析
+
+        Args:
+            name: 提供者名称或别名
+
+        Returns:
+            标准化的提供者名称
+
+        Raises:
+            EmbeddingProviderNotFoundError: 如果名称无法解析
+        """
+        if not name or not isinstance(name, str):
+            raise EmbeddingProviderNotFoundError(
+                str(name),
+                list(cls._providers.keys())
+            )
+
+        # 规范化名称：小写，替换连字符为下划线
+        normalized = name.lower().strip().replace("-", "_")
+
+        # 查找别名映射
+        if normalized in cls._ALIASES:
+            resolved = cls._ALIASES[normalized]
+            if resolved != normalized:
+                logger.debug(f"Resolved alias '{name}' -> '{resolved}'")
+            return resolved
+
+        # 检查是否直接存在于注册表中
+        if normalized in cls._providers:
+            return normalized
+
+        # 尝试模糊匹配
+        for provider_name in cls._providers.keys():
+            if provider_name.lower() == normalized:
+                return provider_name
+
+        # 无法解析
+        raise EmbeddingProviderNotFoundError(
+            name,
+            list(cls._providers.keys())
+        )
+
+    @classmethod
+    def register_alias(cls, alias: str, target: str) -> None:
+        """
+        注册别名
+
+        DEFECT-R8-001 [P0] 修复: 支持动态别名注册
+
+        Args:
+            alias: 别名
+            target: 目标标准名称
+        """
+        normalized_alias = alias.lower().strip().replace("-", "_")
+        normalized_target = target.lower().strip().replace("-", "_")
+
+        if normalized_target not in cls._providers:
+            raise EmbeddingProviderNotFoundError(
+                target,
+                list(cls._providers.keys())
+            )
+
+        cls._ALIASES[normalized_alias] = normalized_target
+        logger.debug(f"Registered alias '{alias}' -> '{target}'")
     
     @classmethod
     def _ensure_initialized(cls):
@@ -129,47 +229,50 @@ class EmbeddingFactory:
     @classmethod
     def create(cls, name: str, **kwargs) -> EmbeddingProvider:
         """创建嵌入提供者实例
-        
+
+        DEFECT-R8-001 [P0] 修复:
+            - 支持别名解析
+            - 统一配置名称处理
+
         Args:
-            name: 提供者名称
+            name: 提供者名称或别名
             **kwargs: 传递给提供者的配置参数
-            
+
         Returns:
             嵌入提供者实例
-            
+
         Raises:
             EmbeddingProviderNotFoundError: 提供者不存在
             ConfigurationError: 配置无效
         """
         cls._ensure_initialized()
-        
-        if name not in cls._providers:
-            available = list(cls._providers.keys())
-            raise EmbeddingProviderNotFoundError(name, available)
-        
-        provider_info = cls._providers[name]
-        
+
+        # DEFECT-R8-001 [P0] 修复: 解析名称（处理别名）
+        resolved_name = cls._resolve_name(name)
+
+        provider_info = cls._providers[resolved_name]
+
         # 合并默认配置和用户配置
         config = {**provider_info.default_config, **kwargs}
-        
+
         # 检查认证要求
         if provider_info.requires_auth:
             auth_keys = ["api_key", "api_token", "auth_token"]
             if not any(key in config and config[key] for key in auth_keys):
                 raise ConfigurationError(
-                    message=f"Provider '{name}' requires authentication",
+                    message=f"Provider '{resolved_name}' requires authentication",
                     config_key="api_key"
                 )
-        
+
         try:
             instance = provider_info.provider_class(**config)
-            logger.info(f"Created embedding provider: {name}")
+            logger.info(f"Created embedding provider: {resolved_name} (requested: {name})")
             return instance
         except Exception as e:
             raise ConfigurationError(
-                message=f"Failed to create embedding provider '{name}': {str(e)}",
-                config_key=name,
-                details={"exception": str(e)}
+                message=f"Failed to create embedding provider '{resolved_name}': {str(e)}",
+                config_key=resolved_name,
+                details={"exception": str(e), "requested_name": name}
             )
     
     @classmethod
@@ -185,28 +288,40 @@ class EmbeddingFactory:
     @classmethod
     def get_provider_info(cls, name: str) -> Optional[ProviderInfo]:
         """获取提供者信息
-        
+
+        DEFECT-R8-001 [P0] 修复: 支持别名解析
+
         Args:
-            name: 提供者名称
-            
+            name: 提供者名称或别名
+
         Returns:
             提供者信息，如果不存在则返回None
         """
         cls._ensure_initialized()
-        return cls._providers.get(name)
+        try:
+            resolved_name = cls._resolve_name(name)
+            return cls._providers.get(resolved_name)
+        except EmbeddingProviderNotFoundError:
+            return None
     
     @classmethod
     def is_registered(cls, name: str) -> bool:
         """检查提供者是否已注册
-        
+
+        DEFECT-R8-001 [P0] 修复: 支持别名解析
+
         Args:
-            name: 提供者名称
-            
+            name: 提供者名称或别名
+
         Returns:
             是否已注册
         """
         cls._ensure_initialized()
-        return name in cls._providers
+        try:
+            resolved_name = cls._resolve_name(name)
+            return resolved_name in cls._providers
+        except EmbeddingProviderNotFoundError:
+            return False
     
     @classmethod
     def unregister(cls, name: str) -> bool:
@@ -234,20 +349,23 @@ class EmbeddingFactory:
     @classmethod
     def get_default_config(cls, name: str) -> Dict[str, Any]:
         """获取提供者的默认配置
-        
+
+        DEFECT-R8-001 [P0] 修复: 支持别名解析
+
         Args:
-            name: 提供者名称
-            
+            name: 提供者名称或别名
+
         Returns:
             默认配置字典
-            
+
         Raises:
             EmbeddingProviderNotFoundError: 提供者不存在
         """
         cls._ensure_initialized()
-        if name not in cls._providers:
+        resolved_name = cls._resolve_name(name)
+        if resolved_name not in cls._providers:
             raise EmbeddingProviderNotFoundError(name, list(cls._providers.keys()))
-        return cls._providers[name].default_config.copy()
+        return cls._providers[resolved_name].default_config.copy()
 
 
 class MockEmbeddingProvider(EmbeddingProvider):

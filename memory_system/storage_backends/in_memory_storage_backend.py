@@ -4,6 +4,9 @@
 """
 
 from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
+import logging
+
+logger = logging.getLogger(__name__)
 import asyncio
 import time
 
@@ -21,13 +24,18 @@ if TYPE_CHECKING:
 class MemoryStorage(StorageBackend):
     """
     内存存储后端
-    
+
     特点:
         - 纯内存存储，速度快
         - 适合测试和小规模场景
         - 不支持持久化
+
+    DEFECT-R9-003 [P1] 修复:
+        - 增强异常处理
+        - 添加数据一致性检查
+        - 添加恢复机制
     """
-    
+
     def __init__(self, max_memories: int = DEFAULT_MAX_MEMORIES):
         self.max_memories = max_memories
         if max_memories < 1:
@@ -39,36 +47,175 @@ class MemoryStorage(StorageBackend):
         self._inverted_index: Dict[str, Set[str]] = {}  # token -> set of memory_ids
         self._doc_lengths: Dict[str, int] = {}  # memory_id -> token count
         self._lock = asyncio.Lock()
+
+        # DEFECT-R9-003 [P1] 修复: 异常恢复相关
+        self._error_count = 0
+        self._max_errors = 10  # 最大错误次数，超过后触发恢复
+        self._last_error: Optional[Exception] = None
+        self._recovery_attempts = 0
+        self._is_recovering = False
     
     async def add(self, item: MemoryItem) -> str:
-        """添加记忆"""
-        async with self._lock:
-            self._memories[item.memory_id] = item
+        """
+        添加记忆
 
-            if item.memory_type == MemoryType.EPISODIC:
-                self._episodic_ids.append(item.memory_id)
-            elif item.memory_type == MemoryType.SEMANTIC:
-                self._semantic_ids.append(item.memory_id)
+        DEFECT-R9-003 [P1] 修复:
+            - 增强异常处理
+            - 添加错误计数和恢复
+        """
+        try:
+            # DEFECT-R9-003 [P1] 修复: 检查是否需要恢复
+            if self._should_recover():
+                await self._attempt_recovery()
 
-            # 维护倒排索引
-            from memory_system.core_abstractions.mathematical_utility_functions import tokenize
-            tokens = set(tokenize(item.content))
-            self._doc_lengths[item.memory_id] = len(tokens)
-            for token in tokens:
-                if token not in self._inverted_index:
-                    self._inverted_index[token] = set()
-                self._inverted_index[token].add(item.memory_id)
+            async with self._lock:
+                self._memories[item.memory_id] = item
 
-            # 检查容量限制
-            if len(self._memories) > self.max_memories:
-                await self._evict_oldest()
+                if item.memory_type == MemoryType.EPISODIC:
+                    self._episodic_ids.append(item.memory_id)
+                elif item.memory_type == MemoryType.SEMANTIC:
+                    self._semantic_ids.append(item.memory_id)
 
+                # 维护倒排索引
+                from memory_system.core_abstractions.mathematical_utility_functions import tokenize
+                tokens = set(tokenize(item.content))
+                self._doc_lengths[item.memory_id] = len(tokens)
+                for token in tokens:
+                    if token not in self._inverted_index:
+                        self._inverted_index[token] = set()
+                    self._inverted_index[token].add(item.memory_id)
+
+                # 检查容量限制
+                if len(self._memories) > self.max_memories:
+                    await self._evict_oldest()
+
+            # DEFECT-R9-003 [P1] 修复: 成功操作后重置错误计数
+            self._error_count = 0
             return item.memory_id
+
+        except Exception as e:
+            self._handle_error(e, "add")
+            raise
+
+    def _handle_error(self, error: Exception, operation: str) -> None:
+        """
+        处理错误
+
+        DEFECT-R9-003 [P1] 修复: 错误处理和计数
+        """
+        self._error_count += 1
+        self._last_error = error
+        logger.error(f"Storage error in {operation}: {error} (error count: {self._error_count})")
+
+        if self._error_count >= self._max_errors:
+            logger.warning(f"Max errors ({self._max_errors}) reached, recovery may be needed")
+
+    def _should_recover(self) -> bool:
+        """
+        检查是否需要恢复
+
+        DEFECT-R9-003 [P1] 修复: 恢复判断逻辑
+        """
+        return self._error_count >= self._max_errors and not self._is_recovering
+
+    async def _attempt_recovery(self) -> bool:
+        """
+        尝试恢复存储状态
+
+        DEFECT-R9-003 [P1] 修复: 实现恢复逻辑
+
+        Returns:
+            是否恢复成功
+        """
+        if self._is_recovering:
+            return False
+
+        self._is_recovering = True
+        self._recovery_attempts += 1
+        logger.info(f"Attempting storage recovery (attempt {self._recovery_attempts})")
+
+        try:
+            async with self._lock:
+                # 检查数据一致性
+                await self._check_consistency()
+
+                # 清理无效数据
+                await self._cleanup_invalid_data()
+
+            # 重置错误状态
+            self._error_count = 0
+            self._last_error = None
+            logger.info("Storage recovery completed successfully")
+            return True
+
+        except Exception as e:
+            logger.error(f"Storage recovery failed: {e}")
+            return False
+        finally:
+            self._is_recovering = False
+
+    async def _check_consistency(self) -> None:
+        """
+        检查数据一致性
+
+        DEFECT-R9-003 [P1] 修复: 一致性检查
+        """
+        # 检查索引一致性
+        invalid_ids = []
+        for memory_id in self._episodic_ids:
+            if memory_id not in self._memories:
+                invalid_ids.append(memory_id)
+        for memory_id in invalid_ids:
+            self._episodic_ids.remove(memory_id)
+            logger.warning(f"Removed invalid episodic id: {memory_id}")
+
+        invalid_ids = []
+        for memory_id in self._semantic_ids:
+            if memory_id not in self._memories:
+                invalid_ids.append(memory_id)
+        for memory_id in invalid_ids:
+            self._semantic_ids.remove(memory_id)
+            logger.warning(f"Removed invalid semantic id: {memory_id}")
+
+    async def _cleanup_invalid_data(self) -> None:
+        """
+        清理无效数据
+
+        DEFECT-R9-003 [P1] 修复: 数据清理
+        """
+        # 清理无效的倒排索引
+        invalid_tokens = []
+        for token, memory_ids in self._inverted_index.items():
+            valid_ids = {mid for mid in memory_ids if mid in self._memories}
+            if valid_ids != memory_ids:
+                self._inverted_index[token] = valid_ids
+                if not valid_ids:
+                    invalid_tokens.append(token)
+
+        for token in invalid_tokens:
+            del self._inverted_index[token]
+            logger.debug(f"Removed empty inverted index: {token}")
+
+        # 清理无效的文档长度记录
+        invalid_doc_lengths = [
+            mid for mid in self._doc_lengths
+            if mid not in self._memories
+        ]
+        for mid in invalid_doc_lengths:
+            del self._doc_lengths[mid]
     
     async def get(self, memory_id: str) -> Optional[MemoryItem]:
-        """获取记忆"""
-        async with self._lock:
-            return self._memories.get(memory_id)
+        """
+        获取记忆
+
+        DEFECT-R9-003 [P1] 修复: 增强异常处理
+        """
+        try:
+            async with self._lock:
+                return self._memories.get(memory_id)
+        except Exception as e:
+            self._handle_error(e, "get")
+            raise
     
     async def search_by_vector(
         self,
@@ -184,14 +331,50 @@ class MemoryStorage(StorageBackend):
             )
     
     async def close(self):
-        """关闭连接"""
-        async with self._lock:
-            self._memories.clear()
-            self._episodic_ids.clear()
-            self._semantic_ids.clear()
-            self._links.clear()
-            self._inverted_index.clear()
-            self._doc_lengths.clear()
+        """
+        关闭连接
+
+        DEFECT-R9-003 [P1] 修复: 安全关闭并清理状态
+        """
+        try:
+            async with self._lock:
+                self._memories.clear()
+                self._episodic_ids.clear()
+                self._semantic_ids.clear()
+                self._links.clear()
+                self._inverted_index.clear()
+                self._doc_lengths.clear()
+
+            # DEFECT-R9-003 [P1] 修复: 重置错误状态
+            self._error_count = 0
+            self._last_error = None
+            self._recovery_attempts = 0
+            self._is_recovering = False
+
+        except Exception as e:
+            logger.error(f"Error during storage close: {e}")
+            raise
+
+    def get_health_status(self) -> Dict[str, Any]:
+        """
+        获取存储健康状态
+
+        DEFECT-R9-003 [P1] 修复: 健康状态监控
+
+        Returns:
+            健康状态信息
+        """
+        return {
+            "error_count": self._error_count,
+            "max_errors": self._max_errors,
+            "recovery_attempts": self._recovery_attempts,
+            "is_recovering": self._is_recovering,
+            "memory_count": len(self._memories),
+            "episodic_count": len(self._episodic_ids),
+            "semantic_count": len(self._semantic_ids),
+            "last_error": str(self._last_error) if self._last_error else None,
+            "healthy": self._error_count < self._max_errors,
+        }
     
     # ---- 图关联操作 ----
     

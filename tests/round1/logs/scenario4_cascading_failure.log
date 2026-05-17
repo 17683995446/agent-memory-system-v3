@@ -1,0 +1,203 @@
+2026-05-17 05:28:38,322 - __main__ - INFO - 新Leader选举: node_1
+2026-05-17 05:28:38,322 - __main__ - INFO - ================================================================================
+2026-05-17 05:28:38,322 - __main__ - INFO - 场景4: 级联故障注入测试
+2026-05-17 05:28:38,322 - __main__ - INFO - ================================================================================
+2026-05-17 05:28:38,322 - __main__ - INFO - 集群规模: 5节点
+2026-05-17 05:28:38,322 - __main__ - INFO - 目标持续时间: 3.0 分钟
+2026-05-17 05:28:38,322 - __main__ - INFO - ================================================================================
+2026-05-17 05:28:41,323 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 5 | Failed: 0 | Disk: 0.0% | Mem: 0.0% | Data: 81
+2026-05-17 05:28:41,323 - __main__ - INFO - 
+========================================
+2026-05-17 05:28:41,323 - __main__ - INFO - Phase 1: 杀死Leader节点
+2026-05-17 05:28:41,323 - __main__ - INFO - ========================================
+2026-05-17 05:28:41,824 - __main__ - INFO - 新Leader选举: node_2
+2026-05-17 05:28:41,824 - __main__ - WARNING - 故障注入: leader_death - node_1
+2026-05-17 05:28:43,825 - __main__ - INFO - 恢复事件: node_recovery - node_1
+2026-05-17 05:28:44,323 - __main__ - INFO - [Health] Leader: node_2 | Healthy: 4 | Failed: 0 | Disk: 0.0% | Mem: 0.0% | Data: 154
+2026-05-17 05:28:47,324 - __main__ - INFO - [Health] Leader: node_2 | Healthy: 4 | Failed: 0 | Disk: 0.0% | Mem: 0.0% | Data: 244
+2026-05-17 05:28:48,826 - __main__ - INFO - 
+========================================
+2026-05-17 05:28:48,826 - __main__ - INFO - Phase 2: 杀死Follower + 磁盘满
+2026-05-17 05:28:48,826 - __main__ - INFO - ========================================
+2026-05-17 05:28:48,826 - __main__ - WARNING - 故障注入: follower_death - node_3
+2026-05-17 05:28:48,826 - __main__ - WARNING - 故障注入: disk_full - None
+2026-05-17 05:28:50,325 - __main__ - INFO - [Health] Leader: node_2 | Healthy: 0 | Failed: 1 | Disk: 100.0% | Mem: 0.0% | Data: 286
+2026-05-17 05:28:51,827 - __main__ - INFO - 恢复事件: disk_recovery - system
+2026-05-17 05:28:51,827 - __main__ - INFO - 恢复事件: node_recovery - node_3
+2026-05-17 05:28:53,326 - __main__ - INFO - [Health] Leader: node_2 | Healthy: 4 | Failed: 0 | Disk: 66.2% | Mem: 0.0% | Data: 331
+2026-05-17 05:28:56,327 - __main__ - INFO - [Health] Leader: node_2 | Healthy: 4 | Failed: 0 | Disk: 66.2% | Mem: 0.0% | Data: 421
+2026-05-17 05:28:56,828 - __main__ - INFO - 
+========================================
+2026-05-17 05:28:56,828 - __main__ - INFO - Phase 3: 内存不足 + CPU过载
+2026-05-17 05:28:56,828 - __main__ - INFO - ========================================
+2026-05-17 05:28:56,828 - __main__ - WARNING - 故障注入: memory_exhausted - None
+2026-05-17 05:28:56,828 - __main__ - WARNING - 故障注入: cpu_overload - None
+2026-05-17 05:28:59,327 - __main__ - INFO - [Health] Leader: node_2 | Healthy: 2 | Failed: 0 | Disk: 66.2% | Mem: 100.0% | Data: 436
+2026-05-17 05:28:59,828 - __main__ - INFO - 恢复事件: memory_recovery - system
+2026-05-17 05:28:59,829 - __main__ - INFO - 恢复事件: cpu_recovery - system
+2026-05-17 05:29:02,330 - __main__ - INFO - [Health] Leader: node_2 | Healthy: 2 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 508
+2026-05-17 05:29:04,830 - __main__ - INFO - 
+========================================
+2026-05-17 05:29:04,830 - __main__ - INFO - Phase 4: 级联故障 - Leader死亡 + 网络分区
+2026-05-17 05:29:04,830 - __main__ - INFO - ========================================
+2026-05-17 05:29:05,331 - __main__ - INFO - [Health] Leader: None | Healthy: 1 | Failed: 1 | Disk: 66.2% | Mem: 67.7% | Data: 578
+2026-05-17 05:29:05,331 - __main__ - INFO - 新Leader选举: node_4
+2026-05-17 05:29:05,331 - __main__ - WARNING - 故障注入: leader_death - node_2
+2026-05-17 05:29:05,331 - __main__ - WARNING - 故障注入: network_partition - None
+2026-05-17 05:29:08,332 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 1 | Disk: 66.2% | Mem: 67.7% | Data: 662
+2026-05-17 05:29:08,332 - __main__ - INFO - 恢复事件: node_recovery - node_2
+2026-05-17 05:29:08,332 - __main__ - INFO - 
+故障注入序列完成
+2026-05-17 05:29:11,333 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 745
+2026-05-17 05:29:14,333 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 839
+2026-05-17 05:29:17,334 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 926
+2026-05-17 05:29:20,335 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1018
+2026-05-17 05:29:23,336 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1109
+2026-05-17 05:29:26,337 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1198
+2026-05-17 05:29:29,339 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1280
+2026-05-17 05:29:32,339 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1368
+2026-05-17 05:29:35,340 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1458
+2026-05-17 05:29:36,368 - __main__ - INFO - 新Leader选举: node_4
+2026-05-17 05:29:36,369 - __main__ - INFO - ================================================================================
+2026-05-17 05:29:36,369 - __main__ - INFO - 场景4: 级联故障注入测试
+2026-05-17 05:29:36,369 - __main__ - INFO - ================================================================================
+2026-05-17 05:29:36,369 - __main__ - INFO - 集群规模: 5节点
+2026-05-17 05:29:36,369 - __main__ - INFO - 目标持续时间: 3.0 分钟
+2026-05-17 05:29:36,369 - __main__ - INFO - ================================================================================
+2026-05-17 05:29:38,341 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1546
+2026-05-17 05:29:39,369 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 5 | Failed: 0 | Disk: 0.0% | Mem: 0.0% | Data: 86
+2026-05-17 05:29:39,370 - __main__ - INFO - 
+========================================
+2026-05-17 05:29:39,370 - __main__ - INFO - Phase 1: 杀死Leader节点
+2026-05-17 05:29:39,370 - __main__ - INFO - ========================================
+2026-05-17 05:29:39,871 - __main__ - INFO - 新Leader选举: node_0
+2026-05-17 05:29:39,871 - __main__ - WARNING - 故障注入: leader_death - node_4
+2026-05-17 05:29:41,342 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1629
+2026-05-17 05:29:41,872 - __main__ - INFO - 恢复事件: node_recovery - node_4
+2026-05-17 05:29:42,371 - __main__ - INFO - [Health] Leader: node_0 | Healthy: 4 | Failed: 0 | Disk: 0.0% | Mem: 0.0% | Data: 160
+2026-05-17 05:29:44,343 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1714
+2026-05-17 05:29:45,372 - __main__ - INFO - [Health] Leader: node_0 | Healthy: 4 | Failed: 0 | Disk: 0.0% | Mem: 0.0% | Data: 248
+2026-05-17 05:29:46,872 - __main__ - INFO - 
+========================================
+2026-05-17 05:29:46,872 - __main__ - INFO - Phase 2: 杀死Follower + 磁盘满
+2026-05-17 05:29:46,872 - __main__ - INFO - ========================================
+2026-05-17 05:29:46,872 - __main__ - WARNING - 故障注入: follower_death - node_3
+2026-05-17 05:29:46,872 - __main__ - WARNING - 故障注入: disk_full - None
+2026-05-17 05:29:47,344 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1803
+2026-05-17 05:29:48,373 - __main__ - INFO - [Health] Leader: node_0 | Healthy: 0 | Failed: 1 | Disk: 100.0% | Mem: 0.0% | Data: 290
+2026-05-17 05:29:49,873 - __main__ - INFO - 恢复事件: disk_recovery - system
+2026-05-17 05:29:49,873 - __main__ - INFO - 恢复事件: node_recovery - node_3
+2026-05-17 05:29:50,345 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1884
+2026-05-17 05:29:51,376 - __main__ - INFO - [Health] Leader: node_0 | Healthy: 4 | Failed: 1 | Disk: 69.2% | Mem: 0.0% | Data: 336
+2026-05-17 05:29:53,347 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 1972
+2026-05-17 05:29:54,376 - __main__ - INFO - [Health] Leader: node_0 | Healthy: 4 | Failed: 1 | Disk: 69.2% | Mem: 0.0% | Data: 422
+2026-05-17 05:29:54,874 - __main__ - INFO - 
+========================================
+2026-05-17 05:29:54,874 - __main__ - INFO - Phase 3: 内存不足 + CPU过载
+2026-05-17 05:29:54,874 - __main__ - INFO - ========================================
+2026-05-17 05:29:54,874 - __main__ - WARNING - 故障注入: memory_exhausted - None
+2026-05-17 05:29:54,874 - __main__ - WARNING - 故障注入: cpu_overload - None
+2026-05-17 05:29:56,348 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2061
+2026-05-17 05:29:57,378 - __main__ - INFO - [Health] Leader: node_0 | Healthy: 2 | Failed: 1 | Disk: 69.2% | Mem: 100.0% | Data: 437
+2026-05-17 05:29:57,875 - __main__ - INFO - 恢复事件: memory_recovery - system
+2026-05-17 05:29:57,875 - __main__ - INFO - 恢复事件: cpu_recovery - system
+2026-05-17 05:29:57,875 - __main__ - INFO - 恢复事件: node_recovery - node_3
+2026-05-17 05:29:59,350 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2150
+2026-05-17 05:30:00,378 - __main__ - INFO - [Health] Leader: node_0 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 510
+2026-05-17 05:30:02,352 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2240
+2026-05-17 05:30:02,875 - __main__ - INFO - 
+========================================
+2026-05-17 05:30:02,875 - __main__ - INFO - Phase 4: 级联故障 - Leader死亡 + 网络分区
+2026-05-17 05:30:02,875 - __main__ - INFO - ========================================
+2026-05-17 05:30:03,376 - __main__ - INFO - 新Leader选举: node_1
+2026-05-17 05:30:03,376 - __main__ - WARNING - 故障注入: leader_death - node_0
+2026-05-17 05:30:03,377 - __main__ - WARNING - 故障注入: network_partition - None
+2026-05-17 05:30:03,380 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 1 | Failed: 1 | Disk: 69.2% | Mem: 69.2% | Data: 577
+2026-05-17 05:30:05,353 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2333
+2026-05-17 05:30:06,377 - __main__ - INFO - 恢复事件: node_recovery - node_0
+2026-05-17 05:30:06,377 - __main__ - INFO - 
+故障注入序列完成
+2026-05-17 05:30:06,381 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 667
+2026-05-17 05:30:08,354 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2429
+2026-05-17 05:30:09,382 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 756
+2026-05-17 05:30:11,355 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2516
+2026-05-17 05:30:12,383 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 844
+2026-05-17 05:30:14,357 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2605
+2026-05-17 05:30:15,385 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 925
+2026-05-17 05:30:17,358 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2692
+2026-05-17 05:30:18,386 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1011
+2026-05-17 05:30:20,359 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2781
+2026-05-17 05:30:21,386 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1100
+2026-05-17 05:30:23,360 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2867
+2026-05-17 05:30:24,387 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1188
+2026-05-17 05:30:26,361 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 2956
+2026-05-17 05:30:27,388 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1274
+2026-05-17 05:30:29,362 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3041
+2026-05-17 05:30:30,390 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1364
+2026-05-17 05:30:32,363 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3131
+2026-05-17 05:30:33,390 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1453
+2026-05-17 05:30:35,365 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3220
+2026-05-17 05:30:36,391 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1541
+2026-05-17 05:30:38,366 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3309
+2026-05-17 05:30:39,392 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1629
+2026-05-17 05:30:41,367 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3391
+2026-05-17 05:30:42,393 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1717
+2026-05-17 05:30:44,369 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3479
+2026-05-17 05:30:45,394 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1807
+2026-05-17 05:30:47,370 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3569
+2026-05-17 05:30:48,395 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1891
+2026-05-17 05:30:50,373 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3652
+2026-05-17 05:30:51,396 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 1980
+2026-05-17 05:30:53,374 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3740
+2026-05-17 05:30:54,397 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2069
+2026-05-17 05:30:56,375 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3821
+2026-05-17 05:30:57,398 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2160
+2026-05-17 05:30:59,377 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 3908
+2026-05-17 05:31:00,400 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2242
+2026-05-17 05:31:02,379 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4000
+2026-05-17 05:31:03,401 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2329
+2026-05-17 05:31:05,380 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4084
+2026-05-17 05:31:06,402 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2413
+2026-05-17 05:31:08,381 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4177
+2026-05-17 05:31:09,404 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2503
+2026-05-17 05:31:11,382 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4265
+2026-05-17 05:31:12,405 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2593
+2026-05-17 05:31:14,383 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4352
+2026-05-17 05:31:15,406 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2681
+2026-05-17 05:31:17,385 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4440
+2026-05-17 05:31:18,407 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2772
+2026-05-17 05:31:20,387 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4528
+2026-05-17 05:31:21,410 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2860
+2026-05-17 05:31:23,389 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4614
+2026-05-17 05:31:24,411 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 2944
+2026-05-17 05:31:26,391 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4702
+2026-05-17 05:31:27,413 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3036
+2026-05-17 05:31:29,393 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4792
+2026-05-17 05:31:30,414 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3129
+2026-05-17 05:31:32,395 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4878
+2026-05-17 05:31:33,417 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3217
+2026-05-17 05:31:35,398 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 4970
+2026-05-17 05:31:36,418 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3302
+2026-05-17 05:31:38,400 - __main__ - INFO - [Health] Leader: node_4 | Healthy: 1 | Failed: 0 | Disk: 66.2% | Mem: 67.7% | Data: 5054
+2026-05-17 05:31:38,409 - __main__ - INFO - 测试报告已保存到: /workspace/agent_memory_system_v2/tests/round1/metrics/scenario4_cascading_failure_metrics.json
+2026-05-17 05:31:39,419 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3387
+2026-05-17 05:31:42,420 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3473
+2026-05-17 05:31:45,422 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3564
+2026-05-17 05:31:48,423 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3649
+2026-05-17 05:31:51,424 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3737
+2026-05-17 05:31:54,426 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3825
+2026-05-17 05:31:57,429 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 3912
+2026-05-17 05:32:00,430 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4004
+2026-05-17 05:32:03,431 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4090
+2026-05-17 05:32:06,433 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4182
+2026-05-17 05:32:09,435 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4271
+2026-05-17 05:32:12,437 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4360
+2026-05-17 05:32:15,438 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4448
+2026-05-17 05:32:18,439 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4534
+2026-05-17 05:32:21,441 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4624
+2026-05-17 05:32:24,444 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4707
+2026-05-17 05:32:27,445 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4791
+2026-05-17 05:32:30,446 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4876
+2026-05-17 05:32:33,448 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 4964
+2026-05-17 05:32:36,449 - __main__ - INFO - [Health] Leader: node_1 | Healthy: 2 | Failed: 0 | Disk: 69.2% | Mem: 69.2% | Data: 5047
+2026-05-17 05:32:36,458 - __main__ - INFO - 测试报告已保存到: /workspace/agent_memory_system_v2/tests/round1/metrics/scenario4_cascading_failure_metrics.json

@@ -3,14 +3,212 @@ Agent Memory System 主类
 整合所有模块，提供统一接口
 """
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Callable
 from contextlib import nullcontext as _nullcontext
 import asyncio
 import time
 import importlib
 import pkgutil
 import weakref
+import re
 from cachetools import TTLCache
+
+# DEFECT-R10-002 [P0] 修复: 输入验证工具函数
+def _validate_string_input(
+    value: Any,
+    field_name: str,
+    max_length: int = 10000,
+    allow_empty: bool = False,
+    allow_none: bool = False
+) -> str:
+    """
+    验证字符串输入
+
+    DEFECT-R10-002 [P0] 修复:
+        - 类型检查
+        - 长度验证
+        - 危险字符过滤
+        - 空值检查
+
+    Args:
+        value: 输入值
+        field_name: 字段名称（用于错误信息）
+        max_length: 最大长度
+        allow_empty: 是否允许空字符串
+        allow_none: 是否允许None
+
+    Returns:
+        验证后的字符串
+
+    Raises:
+        TypeError: 类型错误
+        ValueError: 值错误
+    """
+    if value is None:
+        if allow_none:
+            return ""
+        raise TypeError(f"{field_name} cannot be None")
+
+    if not isinstance(value, str):
+        raise TypeError(f"{field_name} must be a string, got {type(value).__name__}")
+
+    if not allow_empty and not value.strip():
+        raise ValueError(f"{field_name} cannot be empty or whitespace only")
+
+    if len(value) > max_length:
+        raise ValueError(f"{field_name} exceeds maximum length of {max_length} characters")
+
+    # DEFECT-R10-002 [P0] 修复: 危险字符过滤（防止注入攻击）
+    # 过滤控制字符（保留换行和制表符）
+    dangerous_chars = re.compile(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]')
+    cleaned = dangerous_chars.sub('', value)
+
+    if cleaned != value:
+        logger.warning(f"{field_name} contained dangerous characters that were removed")
+
+    return cleaned
+
+
+def _validate_integer_input(
+    value: Any,
+    field_name: str,
+    min_value: Optional[int] = None,
+    max_value: Optional[int] = None,
+    allow_none: bool = False
+) -> int:
+    """
+    验证整数输入
+
+    DEFECT-R10-003 [P0] 修复:
+        - 类型检查
+        - 边界验证
+        - 早期验证
+
+    Args:
+        value: 输入值
+        field_name: 字段名称
+        min_value: 最小值
+        max_value: 最大值
+        allow_none: 是否允许None
+
+    Returns:
+        验证后的整数
+
+    Raises:
+        TypeError: 类型错误
+        ValueError: 值错误
+    """
+    if value is None:
+        if allow_none:
+            return 0
+        raise TypeError(f"{field_name} cannot be None")
+
+    # DEFECT-R10-003 [P0] 修复: 类型检查
+    if isinstance(value, bool):
+        raise TypeError(f"{field_name} must be an integer, got boolean")
+
+    if not isinstance(value, int):
+        try:
+            value = int(value)
+        except (TypeError, ValueError):
+            raise TypeError(f"{field_name} must be an integer, got {type(value).__name__}")
+
+    # DEFECT-R10-003 [P0] 修复: 边界验证
+    if min_value is not None and value < min_value:
+        raise ValueError(f"{field_name} must be >= {min_value}, got {value}")
+
+    if max_value is not None and value > max_value:
+        raise ValueError(f"{field_name} must be <= {max_value}, got {value}")
+
+    return value
+
+
+def _validate_metadata(metadata: Any, field_name: str = "metadata") -> Dict[str, Any]:
+    """
+    验证元数据字典
+
+    DEFECT-R10-002 [P0] 修复: 元数据验证
+
+    Args:
+        metadata: 元数据值
+        field_name: 字段名称
+
+    Returns:
+        验证后的元数据字典
+    """
+    if metadata is None:
+        return {}
+
+    if not isinstance(metadata, dict):
+        raise TypeError(f"{field_name} must be a dictionary, got {type(metadata).__name__}")
+
+    # 验证元数据键值对
+    validated = {}
+    for key, value in metadata.items():
+        # 验证键
+        if not isinstance(key, str):
+            raise TypeError(f"{field_name} keys must be strings, got {type(key).__name__}")
+
+        # 过滤危险字符
+        safe_key = re.sub(r'[\x00-\x1F\x7F]', '', key)
+
+        # 验证值类型（允许基本类型）
+        if value is not None and not isinstance(value, (str, int, float, bool, list, dict)):
+            raise TypeError(f"{field_name}['{key}'] has unsupported type: {type(value).__name__}")
+
+        validated[safe_key] = value
+
+    return validated
+
+
+def _validate_memory_type(memory_type: str) -> str:
+    """
+    验证记忆类型
+
+    DEFECT-R10-002 [P0] 修复: 记忆类型验证
+
+    Args:
+        memory_type: 记忆类型字符串
+
+    Returns:
+        验证后的记忆类型
+    """
+    valid_types = {"short_term", "episodic", "semantic", "auto"}
+
+    if not isinstance(memory_type, str):
+        raise TypeError(f"memory_type must be a string, got {type(memory_type).__name__}")
+
+    memory_type = memory_type.lower().strip()
+
+    if memory_type not in valid_types:
+        raise ValueError(f"Invalid memory_type: '{memory_type}'. Valid types: {valid_types}")
+
+    return memory_type
+
+
+def _validate_importance(importance: str) -> str:
+    """
+    验证重要性级别
+
+    DEFECT-R10-002 [P0] 修复: 重要性级别验证
+
+    Args:
+        importance: 重要性级别字符串
+
+    Returns:
+        验证后的重要性级别
+    """
+    valid_levels = {"critical", "high", "medium", "low", "trivial", "auto"}
+
+    if not isinstance(importance, str):
+        raise TypeError(f"importance must be a string, got {type(importance).__name__}")
+
+    importance = importance.lower().strip()
+
+    if importance not in valid_levels:
+        raise ValueError(f"Invalid importance: '{importance}'. Valid levels: {valid_levels}")
+
+    return importance
 
 from memory_system.core_abstractions.memory_data_models import (
     MemoryItem,
@@ -257,16 +455,29 @@ class MemorySystem:
 
         Returns:
             记忆ID
-        """
-        # 参数验证
-        if not content or not content.strip():
-            raise ValueError("记忆内容不能为空")
-        if len(content) > MAX_CONTENT_LENGTH:
-            raise ValueError(f"记忆内容过长，最大允许 {MAX_CONTENT_LENGTH} 字符，当前: {len(content)}")
 
-        valid_types = {"short_term", "episodic", "semantic", "auto"}
-        if memory_type not in valid_types:
-            raise ValueError(f"无效的记忆类型: {memory_type}，可选值: {valid_types}")
+        Raises:
+            TypeError: 输入类型错误
+            ValueError: 输入值无效
+        """
+        # DEFECT-R10-002 [P0] 修复: 加强输入验证
+        # 验证内容
+        content = _validate_string_input(
+            content,
+            field_name="content",
+            max_length=MAX_CONTENT_LENGTH,
+            allow_empty=False,
+            allow_none=False
+        )
+
+        # DEFECT-R10-002 [P0] 修复: 验证记忆类型
+        memory_type = _validate_memory_type(memory_type)
+
+        # DEFECT-R10-002 [P0] 修复: 验证重要性级别
+        importance = _validate_importance(importance)
+
+        # DEFECT-R10-002 [P0] 修复: 验证元数据
+        metadata = _validate_metadata(metadata)
 
         if importance.upper() == "AUTO":
             if self.importance_scorer:
@@ -355,25 +566,38 @@ class MemorySystem:
         metadata: Optional[Dict[str, Any]] = None
     ) -> RememberResponse:
         """存储记忆并返回详细信息
-        
+
         Args:
             content: 记忆内容
             memory_type: 记忆类型 (short_term/episodic/semantic/auto)
             importance: 重要性 (critical/high/medium/low/trivial/auto)
             metadata: 附加元数据
-            
+
         Returns:
             RememberResponse 包含记忆ID、类型、重要性、置信度等信息
-        """
-        # 参数验证
-        if not content or not content.strip():
-            raise ValueError("记忆内容不能为空")
-        if len(content) > MAX_CONTENT_LENGTH:
-            raise ValueError(f"记忆内容过长，最大允许 {MAX_CONTENT_LENGTH} 字符，当前: {len(content)}")
 
-        valid_types = {"short_term", "episodic", "semantic", "auto"}
-        if memory_type not in valid_types:
-            raise ValueError(f"无效的记忆类型: {memory_type}，可选值: {valid_types}")
+        Raises:
+            TypeError: 输入类型错误
+            ValueError: 输入值无效
+        """
+        # DEFECT-R10-002 [P0] 修复: 加强输入验证
+        # 验证内容
+        content = _validate_string_input(
+            content,
+            field_name="content",
+            max_length=MAX_CONTENT_LENGTH,
+            allow_empty=False,
+            allow_none=False
+        )
+
+        # DEFECT-R10-002 [P0] 修复: 验证记忆类型
+        memory_type = _validate_memory_type(memory_type)
+
+        # DEFECT-R10-002 [P0] 修复: 验证重要性级别
+        importance = _validate_importance(importance)
+
+        # DEFECT-R10-002 [P0] 修复: 验证元数据
+        metadata = _validate_metadata(metadata)
 
         confidence = None
         if importance.upper() == "AUTO":
@@ -453,22 +677,55 @@ class MemorySystem:
 
         Returns:
             记忆ID列表
+
+        Raises:
+            TypeError: 输入类型错误
+            ValueError: 输入值无效
         """
-        if not contents:
+        # DEFECT-R10-002 [P0] 修复: 验证 contents 列表
+        if contents is None:
+            raise TypeError("contents cannot be None")
+
+        if not isinstance(contents, list):
+            raise TypeError(f"contents must be a list, got {type(contents).__name__}")
+
+        if len(contents) == 0:
             return []
 
+        # DEFECT-R10-003 [P0] 修复: 边界条件验证
         if len(contents) > MAX_BATCH_SIZE:
-            raise ValueError(f"批量操作数量超限，最大允许 {MAX_BATCH_SIZE} 条，当前: {len(contents)}")
+            raise ValueError(f"Batch size exceeds maximum of {MAX_BATCH_SIZE}, got {len(contents)}")
 
-        # 参数验证
-        valid_types = {"short_term", "episodic", "semantic", "auto"}
-        if memory_type not in valid_types:
-            raise ValueError(f"无效的记忆类型: {memory_type}")
+        # DEFECT-R10-002 [P0] 修复: 验证记忆类型
+        memory_type = _validate_memory_type(memory_type)
+
+        # DEFECT-R10-002 [P0] 修复: 验证重要性级别
+        importance = _validate_importance(importance)
+
+        # DEFECT-R10-002 [P0] 修复: 验证元数据
+        metadata = _validate_metadata(metadata)
+
+        # DEFECT-R10-002 [P0] 修复: 验证列表中的每个内容
+        validated_contents = []
+        for i, content in enumerate(contents):
+            try:
+                validated = _validate_string_input(
+                    content,
+                    field_name=f"contents[{i}]",
+                    max_length=MAX_CONTENT_LENGTH,
+                    allow_empty=False,
+                    allow_none=False
+                )
+                validated_contents.append(validated)
+            except (TypeError, ValueError) as e:
+                raise ValueError(f"Invalid content at index {i}: {e}") from e
+
+        contents = validated_contents
 
         try:
             importance_level = ImportanceLevel[importance.upper()]
         except KeyError:
-            raise ValueError(f"无效的重要性级别: {importance}")
+            raise ValueError(f"Invalid importance level: {importance}")
 
         with self.tracing.start_as_current_span(
             "memory_system.remember_batch",
@@ -571,14 +828,45 @@ class MemorySystem:
 
         Returns:
             检索结果
+
+        Raises:
+            TypeError: 输入类型错误
+            ValueError: 输入值无效
         """
-        # 参数验证
-        if not query or not query.strip():
-            raise ValueError("查询内容不能为空")
-        if len(query) > MAX_QUERY_LENGTH:
-            raise ValueError(f"查询内容过长，最大允许 {MAX_QUERY_LENGTH} 字符，当前: {len(query)}")
-        if max_results <= 0:
-            raise ValueError(f"max_results 必须为正整数，当前值: {max_results}")
+        # DEFECT-R10-002 [P0] 修复: 加强输入验证
+        # 验证查询内容
+        query = _validate_string_input(
+            query,
+            field_name="query",
+            max_length=MAX_QUERY_LENGTH,
+            allow_empty=False,
+            allow_none=False
+        )
+
+        # DEFECT-R10-003 [P0] 修复: 边界条件验证
+        max_results = _validate_integer_input(
+            max_results,
+            field_name="max_results",
+            min_value=1,
+            max_value=1000,  # 设置合理的上限
+            allow_none=False
+        )
+
+        # DEFECT-R10-002 [P0] 修复: 验证策略
+        if strategy is not None:
+            valid_strategies = {"fast", "adaptive", "thorough"}
+            strategy = _validate_string_input(
+                strategy,
+                field_name="strategy",
+                max_length=50,
+                allow_empty=False
+            )
+            if strategy not in valid_strategies:
+                raise ValueError(f"Invalid strategy: '{strategy}'. Valid strategies: {valid_strategies}")
+
+        # DEFECT-R10-002 [P0] 修复: 验证上下文
+        if context is not None:
+            context = _validate_metadata(context, field_name="context")
 
         with self.tracing.start_as_current_span(
             "memory_system.recall",

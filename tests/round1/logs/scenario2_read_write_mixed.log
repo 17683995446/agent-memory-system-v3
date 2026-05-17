@@ -1,0 +1,216 @@
+2026-05-17 05:19:29,628 - __main__ - INFO - ================================================================================
+2026-05-17 05:19:29,628 - __main__ - INFO - 场景2: 读写混合高并发测试
+2026-05-17 05:19:29,628 - __main__ - INFO - ================================================================================
+2026-05-17 05:19:29,628 - __main__ - INFO - 读客户端: 5,000
+2026-05-17 05:19:29,628 - __main__ - INFO - 写客户端: 5,000
+2026-05-17 05:19:29,628 - __main__ - INFO - 读写比例: 70:30
+2026-05-17 05:19:29,628 - __main__ - INFO - 目标持续时间: 5.0 分钟
+2026-05-17 05:19:29,628 - __main__ - INFO - ================================================================================
+2026-05-17 05:19:29,628 - __main__ - INFO - 预填充 10000 条测试数据...
+2026-05-17 05:19:30,923 - __main__ - INFO - 预填充完成: 10000 条数据
+2026-05-17 05:19:35,972 - __main__ - INFO - [Throughput] Read: 1,924/s | Write: 4,099/s | Total: 6,023/s | Ratio: 32%
+2026-05-17 05:19:40,975 - __main__ - INFO - [Throughput] Read: 217/s | Write: 1,772/s | Total: 1,989/s | Ratio: 11%
+2026-05-17 05:19:45,979 - __main__ - INFO - [Throughput] Read: 84/s | Write: 1,101/s | Total: 1,185/s | Ratio: 7%
+2026-05-17 05:19:50,985 - __main__ - INFO - [Throughput] Read: 47/s | Write: 931/s | Total: 978/s | Ratio: 5%
+2026-05-17 05:19:56,000 - __main__ - INFO - [Throughput] Read: 24/s | Write: 600/s | Total: 625/s | Ratio: 4%
+2026-05-17 05:20:01,007 - __main__ - INFO - [Throughput] Read: 50/s | Write: 606/s | Total: 656/s | Ratio: 8%
+2026-05-17 05:20:06,021 - __main__ - INFO - [Throughput] Read: 67/s | Write: 545/s | Total: 613/s | Ratio: 11%
+2026-05-17 05:20:11,026 - __main__ - INFO - [Throughput] Read: 64/s | Write: 476/s | Total: 540/s | Ratio: 12%
+2026-05-17 05:20:16,031 - __main__ - INFO - [Throughput] Read: 76/s | Write: 554/s | Total: 630/s | Ratio: 12%
+2026-05-17 05:20:21,042 - __main__ - INFO - [Throughput] Read: 68/s | Write: 438/s | Total: 506/s | Ratio: 13%
+2026-05-17 05:20:26,055 - __main__ - INFO - [Throughput] Read: 85/s | Write: 467/s | Total: 552/s | Ratio: 15%
+2026-05-17 05:20:31,070 - __main__ - INFO - [Throughput] Read: 78/s | Write: 468/s | Total: 546/s | Ratio: 14%
+2026-05-17 05:20:36,096 - __main__ - INFO - [Throughput] Read: 75/s | Write: 483/s | Total: 558/s | Ratio: 13%
+2026-05-17 05:20:41,114 - __main__ - INFO - [Throughput] Read: 81/s | Write: 420/s | Total: 502/s | Ratio: 16%
+2026-05-17 05:20:46,123 - __main__ - INFO - [Throughput] Read: 74/s | Write: 435/s | Total: 509/s | Ratio: 15%
+2026-05-17 05:20:51,135 - __main__ - INFO - [Throughput] Read: 69/s | Write: 399/s | Total: 467/s | Ratio: 15%
+2026-05-17 05:20:56,141 - __main__ - INFO - [Throughput] Read: 61/s | Write: 363/s | Total: 423/s | Ratio: 14%
+2026-05-17 05:21:01,146 - __main__ - INFO - [Throughput] Read: 77/s | Write: 383/s | Total: 460/s | Ratio: 17%
+2026-05-17 05:21:06,190 - __main__ - INFO - [Throughput] Read: 75/s | Write: 348/s | Total: 422/s | Ratio: 18%
+2026-05-17 05:21:11,216 - __main__ - INFO - [Throughput] Read: 67/s | Write: 344/s | Total: 411/s | Ratio: 16%
+2026-05-17 05:21:16,226 - __main__ - INFO - [Throughput] Read: 84/s | Write: 390/s | Total: 474/s | Ratio: 18%
+2026-05-17 05:21:21,242 - __main__ - INFO - [Throughput] Read: 74/s | Write: 364/s | Total: 438/s | Ratio: 17%
+2026-05-17 05:21:26,252 - __main__ - INFO - [Throughput] Read: 63/s | Write: 331/s | Total: 394/s | Ratio: 16%
+2026-05-17 05:21:31,273 - __main__ - INFO - [Throughput] Read: 64/s | Write: 345/s | Total: 409/s | Ratio: 16%
+2026-05-17 05:21:36,306 - __main__ - INFO - [Throughput] Read: 64/s | Write: 346/s | Total: 410/s | Ratio: 16%
+2026-05-17 05:21:41,322 - __main__ - INFO - [Throughput] Read: 60/s | Write: 324/s | Total: 384/s | Ratio: 16%
+2026-05-17 05:21:46,356 - __main__ - INFO - [Throughput] Read: 61/s | Write: 325/s | Total: 386/s | Ratio: 16%
+2026-05-17 05:21:51,364 - __main__ - INFO - [Throughput] Read: 60/s | Write: 336/s | Total: 396/s | Ratio: 15%
+2026-05-17 05:21:56,378 - __main__ - INFO - [Throughput] Read: 60/s | Write: 292/s | Total: 352/s | Ratio: 17%
+2026-05-17 05:22:01,399 - __main__ - INFO - [Throughput] Read: 59/s | Write: 303/s | Total: 362/s | Ratio: 16%
+2026-05-17 05:22:06,404 - __main__ - INFO - [Throughput] Read: 64/s | Write: 296/s | Total: 361/s | Ratio: 18%
+2026-05-17 05:22:11,413 - __main__ - INFO - [Throughput] Read: 59/s | Write: 315/s | Total: 374/s | Ratio: 16%
+2026-05-17 05:22:16,432 - __main__ - INFO - [Throughput] Read: 64/s | Write: 280/s | Total: 344/s | Ratio: 19%
+2026-05-17 05:22:21,451 - __main__ - INFO - [Throughput] Read: 72/s | Write: 336/s | Total: 408/s | Ratio: 18%
+2026-05-17 05:22:26,467 - __main__ - INFO - [Throughput] Read: 59/s | Write: 297/s | Total: 356/s | Ratio: 17%
+2026-05-17 05:22:31,475 - __main__ - INFO - [Throughput] Read: 64/s | Write: 308/s | Total: 372/s | Ratio: 17%
+2026-05-17 05:22:36,503 - __main__ - INFO - [Throughput] Read: 59/s | Write: 294/s | Total: 353/s | Ratio: 17%
+2026-05-17 05:22:41,511 - __main__ - INFO - [Throughput] Read: 68/s | Write: 286/s | Total: 354/s | Ratio: 19%
+2026-05-17 05:22:46,532 - __main__ - INFO - [Throughput] Read: 60/s | Write: 295/s | Total: 355/s | Ratio: 17%
+2026-05-17 05:22:51,572 - __main__ - INFO - [Throughput] Read: 59/s | Write: 281/s | Total: 340/s | Ratio: 17%
+2026-05-17 05:22:56,596 - __main__ - INFO - [Throughput] Read: 59/s | Write: 290/s | Total: 349/s | Ratio: 17%
+2026-05-17 05:23:01,611 - __main__ - INFO - [Throughput] Read: 49/s | Write: 259/s | Total: 308/s | Ratio: 16%
+2026-05-17 05:23:06,626 - __main__ - INFO - [Throughput] Read: 54/s | Write: 263/s | Total: 316/s | Ratio: 17%
+2026-05-17 05:23:11,655 - __main__ - INFO - [Throughput] Read: 57/s | Write: 275/s | Total: 332/s | Ratio: 17%
+2026-05-17 05:23:16,666 - __main__ - INFO - [Throughput] Read: 55/s | Write: 281/s | Total: 336/s | Ratio: 16%
+2026-05-17 05:23:21,719 - __main__ - INFO - [Throughput] Read: 54/s | Write: 250/s | Total: 304/s | Ratio: 18%
+2026-05-17 05:23:26,732 - __main__ - INFO - [Throughput] Read: 48/s | Write: 276/s | Total: 324/s | Ratio: 15%
+2026-05-17 05:23:31,764 - __main__ - INFO - [Throughput] Read: 41/s | Write: 237/s | Total: 278/s | Ratio: 15%
+2026-05-17 05:23:36,772 - __main__ - INFO - [Throughput] Read: 44/s | Write: 237/s | Total: 281/s | Ratio: 16%
+2026-05-17 05:23:41,812 - __main__ - INFO - [Throughput] Read: 47/s | Write: 282/s | Total: 329/s | Ratio: 14%
+2026-05-17 05:23:46,822 - __main__ - INFO - [Throughput] Read: 48/s | Write: 239/s | Total: 287/s | Ratio: 17%
+2026-05-17 05:23:51,850 - __main__ - INFO - [Throughput] Read: 39/s | Write: 219/s | Total: 258/s | Ratio: 15%
+2026-05-17 05:23:56,860 - __main__ - INFO - [Throughput] Read: 39/s | Write: 219/s | Total: 258/s | Ratio: 15%
+2026-05-17 05:24:01,887 - __main__ - INFO - [Throughput] Read: 39/s | Write: 228/s | Total: 267/s | Ratio: 15%
+2026-05-17 05:24:06,914 - __main__ - INFO - [Throughput] Read: 42/s | Write: 221/s | Total: 263/s | Ratio: 16%
+2026-05-17 05:24:11,931 - __main__ - INFO - [Throughput] Read: 41/s | Write: 220/s | Total: 261/s | Ratio: 16%
+2026-05-17 05:24:16,970 - __main__ - INFO - [Throughput] Read: 38/s | Write: 227/s | Total: 265/s | Ratio: 14%
+2026-05-17 05:24:21,997 - __main__ - INFO - [Throughput] Read: 34/s | Write: 206/s | Total: 240/s | Ratio: 14%
+2026-05-17 05:24:27,024 - __main__ - INFO - [Throughput] Read: 39/s | Write: 220/s | Total: 259/s | Ratio: 15%
+2026-05-17 05:24:30,977 - __main__ - INFO - 等待所有任务完成...
+2026-05-17 05:24:32,039 - __main__ - INFO - [Throughput] Read: 28/s | Write: 188/s | Total: 216/s | Ratio: 13%
+2026-05-17 05:29:28,200 - __main__ - ERROR - 测试执行失败: asyncio.run() cannot be called from a running event loop
+2026-05-17 05:58:31,625 - __main__ - INFO - ================================================================================
+2026-05-17 05:58:31,626 - __main__ - INFO - 场景2: 读写混合高并发测试
+2026-05-17 05:58:31,626 - __main__ - INFO - ================================================================================
+2026-05-17 05:58:31,626 - __main__ - INFO - 读客户端: 5,000
+2026-05-17 05:58:31,626 - __main__ - INFO - 写客户端: 5,000
+2026-05-17 05:58:31,626 - __main__ - INFO - 读写比例: 70:30
+2026-05-17 05:58:31,626 - __main__ - INFO - 目标持续时间: 5.0 分钟
+2026-05-17 05:58:31,626 - __main__ - INFO - ================================================================================
+2026-05-17 05:58:31,626 - __main__ - INFO - 预填充 10000 条测试数据...
+2026-05-17 05:58:32,947 - __main__ - INFO - 预填充完成: 10000 条数据
+2026-05-17 05:58:37,998 - __main__ - INFO - [Throughput] Read: 1,863/s | Write: 3,984/s | Total: 5,847/s | Ratio: 32%
+2026-05-17 05:58:43,005 - __main__ - INFO - [Throughput] Read: 236/s | Write: 1,783/s | Total: 2,019/s | Ratio: 12%
+2026-05-17 05:58:48,010 - __main__ - INFO - [Throughput] Read: 102/s | Write: 1,254/s | Total: 1,356/s | Ratio: 8%
+2026-05-17 05:58:53,022 - __main__ - INFO - [Throughput] Read: 50/s | Write: 902/s | Total: 953/s | Ratio: 5%
+2026-05-17 05:58:58,031 - __main__ - INFO - [Throughput] Read: 29/s | Write: 732/s | Total: 761/s | Ratio: 4%
+2026-05-17 05:59:03,044 - __main__ - INFO - [Throughput] Read: 50/s | Write: 516/s | Total: 566/s | Ratio: 9%
+2026-05-17 05:59:08,046 - __main__ - INFO - [Throughput] Read: 60/s | Write: 505/s | Total: 565/s | Ratio: 11%
+2026-05-17 05:59:13,062 - __main__ - INFO - [Throughput] Read: 69/s | Write: 534/s | Total: 603/s | Ratio: 11%
+2026-05-17 05:59:18,082 - __main__ - INFO - [Throughput] Read: 77/s | Write: 502/s | Total: 579/s | Ratio: 13%
+2026-05-17 05:59:23,096 - __main__ - INFO - [Throughput] Read: 84/s | Write: 481/s | Total: 564/s | Ratio: 15%
+2026-05-17 05:59:28,124 - __main__ - INFO - [Throughput] Read: 82/s | Write: 496/s | Total: 578/s | Ratio: 14%
+2026-05-17 05:59:33,143 - __main__ - INFO - [Throughput] Read: 91/s | Write: 463/s | Total: 554/s | Ratio: 16%
+2026-05-17 05:59:38,158 - __main__ - INFO - [Throughput] Read: 80/s | Write: 443/s | Total: 523/s | Ratio: 15%
+2026-05-17 05:59:43,172 - __main__ - INFO - [Throughput] Read: 86/s | Write: 458/s | Total: 545/s | Ratio: 16%
+2026-05-17 05:59:48,192 - __main__ - INFO - [Throughput] Read: 67/s | Write: 436/s | Total: 503/s | Ratio: 13%
+2026-05-17 05:59:53,221 - __main__ - INFO - [Throughput] Read: 65/s | Write: 347/s | Total: 412/s | Ratio: 16%
+2026-05-17 05:59:58,246 - __main__ - INFO - [Throughput] Read: 70/s | Write: 371/s | Total: 441/s | Ratio: 16%
+2026-05-17 06:00:03,255 - __main__ - INFO - [Throughput] Read: 75/s | Write: 417/s | Total: 492/s | Ratio: 15%
+2026-05-17 06:00:08,271 - __main__ - INFO - [Throughput] Read: 61/s | Write: 368/s | Total: 429/s | Ratio: 14%
+2026-05-17 06:00:13,285 - __main__ - INFO - [Throughput] Read: 71/s | Write: 316/s | Total: 386/s | Ratio: 18%
+2026-05-17 06:00:18,317 - __main__ - INFO - [Throughput] Read: 80/s | Write: 415/s | Total: 495/s | Ratio: 16%
+2026-05-17 06:00:23,342 - __main__ - INFO - [Throughput] Read: 67/s | Write: 337/s | Total: 404/s | Ratio: 17%
+2026-05-17 06:00:28,390 - __main__ - INFO - [Throughput] Read: 69/s | Write: 347/s | Total: 416/s | Ratio: 17%
+2026-05-17 06:00:33,412 - __main__ - INFO - [Throughput] Read: 58/s | Write: 309/s | Total: 367/s | Ratio: 16%
+2026-05-17 06:00:38,445 - __main__ - INFO - [Throughput] Read: 68/s | Write: 357/s | Total: 426/s | Ratio: 16%
+2026-05-17 06:00:43,468 - __main__ - INFO - [Throughput] Read: 53/s | Write: 316/s | Total: 369/s | Ratio: 14%
+2026-05-17 06:00:48,478 - __main__ - INFO - [Throughput] Read: 61/s | Write: 296/s | Total: 357/s | Ratio: 17%
+2026-05-17 06:00:53,487 - __main__ - INFO - [Throughput] Read: 67/s | Write: 313/s | Total: 379/s | Ratio: 18%
+2026-05-17 06:00:58,496 - __main__ - INFO - [Throughput] Read: 67/s | Write: 301/s | Total: 368/s | Ratio: 18%
+2026-05-17 06:01:03,505 - __main__ - INFO - [Throughput] Read: 69/s | Write: 305/s | Total: 373/s | Ratio: 18%
+2026-05-17 06:01:08,537 - __main__ - INFO - [Throughput] Read: 57/s | Write: 319/s | Total: 375/s | Ratio: 15%
+2026-05-17 06:01:13,556 - __main__ - INFO - [Throughput] Read: 60/s | Write: 296/s | Total: 356/s | Ratio: 17%
+2026-05-17 06:01:18,573 - __main__ - INFO - [Throughput] Read: 50/s | Write: 287/s | Total: 337/s | Ratio: 15%
+2026-05-17 06:01:23,597 - __main__ - INFO - [Throughput] Read: 56/s | Write: 293/s | Total: 349/s | Ratio: 16%
+2026-05-17 06:01:28,624 - __main__ - INFO - [Throughput] Read: 55/s | Write: 270/s | Total: 325/s | Ratio: 17%
+2026-05-17 06:01:33,635 - __main__ - INFO - [Throughput] Read: 48/s | Write: 270/s | Total: 318/s | Ratio: 15%
+2026-05-17 06:01:38,657 - __main__ - INFO - [Throughput] Read: 43/s | Write: 296/s | Total: 339/s | Ratio: 13%
+2026-05-17 06:01:43,691 - __main__ - INFO - [Throughput] Read: 55/s | Write: 266/s | Total: 320/s | Ratio: 17%
+2026-05-17 06:01:48,710 - __main__ - INFO - [Throughput] Read: 56/s | Write: 273/s | Total: 329/s | Ratio: 17%
+2026-05-17 06:01:53,734 - __main__ - INFO - [Throughput] Read: 54/s | Write: 276/s | Total: 330/s | Ratio: 16%
+2026-05-17 06:01:58,764 - __main__ - INFO - [Throughput] Read: 47/s | Write: 263/s | Total: 311/s | Ratio: 15%
+2026-05-17 06:02:03,772 - __main__ - INFO - [Throughput] Read: 50/s | Write: 263/s | Total: 313/s | Ratio: 16%
+2026-05-17 06:02:08,806 - __main__ - INFO - [Throughput] Read: 55/s | Write: 274/s | Total: 329/s | Ratio: 17%
+2026-05-17 06:02:13,818 - __main__ - INFO - [Throughput] Read: 45/s | Write: 271/s | Total: 316/s | Ratio: 14%
+2026-05-17 06:02:18,839 - __main__ - INFO - [Throughput] Read: 53/s | Write: 253/s | Total: 306/s | Ratio: 17%
+2026-05-17 06:02:23,865 - __main__ - INFO - [Throughput] Read: 49/s | Write: 253/s | Total: 302/s | Ratio: 16%
+2026-05-17 06:02:28,888 - __main__ - INFO - [Throughput] Read: 48/s | Write: 260/s | Total: 308/s | Ratio: 16%
+2026-05-17 06:02:33,929 - __main__ - INFO - [Throughput] Read: 43/s | Write: 244/s | Total: 287/s | Ratio: 15%
+2026-05-17 06:02:38,944 - __main__ - INFO - [Throughput] Read: 46/s | Write: 237/s | Total: 283/s | Ratio: 16%
+2026-05-17 06:02:43,950 - __main__ - INFO - [Throughput] Read: 46/s | Write: 253/s | Total: 299/s | Ratio: 15%
+2026-05-17 06:02:49,002 - __main__ - INFO - [Throughput] Read: 41/s | Write: 254/s | Total: 295/s | Ratio: 14%
+2026-05-17 06:02:54,036 - __main__ - INFO - [Throughput] Read: 39/s | Write: 235/s | Total: 274/s | Ratio: 14%
+2026-05-17 06:02:59,054 - __main__ - INFO - [Throughput] Read: 38/s | Write: 210/s | Total: 248/s | Ratio: 15%
+2026-05-17 06:03:04,089 - __main__ - INFO - [Throughput] Read: 36/s | Write: 235/s | Total: 271/s | Ratio: 13%
+2026-05-17 06:03:09,106 - __main__ - INFO - [Throughput] Read: 35/s | Write: 201/s | Total: 236/s | Ratio: 15%
+2026-05-17 06:03:14,107 - __main__ - INFO - [Throughput] Read: 35/s | Write: 215/s | Total: 250/s | Ratio: 14%
+2026-05-17 06:03:19,136 - __main__ - INFO - [Throughput] Read: 37/s | Write: 211/s | Total: 249/s | Ratio: 15%
+2026-05-17 06:03:24,160 - __main__ - INFO - [Throughput] Read: 33/s | Write: 196/s | Total: 229/s | Ratio: 14%
+2026-05-17 06:03:29,177 - __main__ - INFO - [Throughput] Read: 40/s | Write: 192/s | Total: 232/s | Ratio: 17%
+2026-05-17 06:03:33,018 - __main__ - INFO - 等待所有任务完成...
+2026-05-17 06:03:34,213 - __main__ - INFO - [Throughput] Read: 35/s | Write: 201/s | Total: 236/s | Ratio: 15%
+2026-05-17 06:08:27,943 - __main__ - ERROR - 测试执行失败: asyncio.run() cannot be called from a running event loop
+2026-05-17 06:08:48,093 - __main__ - INFO - ================================================================================
+2026-05-17 06:08:48,093 - __main__ - INFO - 场景2: 读写混合高并发测试
+2026-05-17 06:08:48,093 - __main__ - INFO - ================================================================================
+2026-05-17 06:08:48,093 - __main__ - INFO - 读客户端: 5,000
+2026-05-17 06:08:48,093 - __main__ - INFO - 写客户端: 5,000
+2026-05-17 06:08:48,093 - __main__ - INFO - 读写比例: 70:30
+2026-05-17 06:08:48,093 - __main__ - INFO - 目标持续时间: 5.0 分钟
+2026-05-17 06:08:48,093 - __main__ - INFO - ================================================================================
+2026-05-17 06:08:48,093 - __main__ - INFO - 预填充 10000 条测试数据...
+2026-05-17 06:08:49,395 - __main__ - INFO - 预填充完成: 10000 条数据
+2026-05-17 06:08:54,446 - __main__ - INFO - [Throughput] Read: 1,808/s | Write: 3,969/s | Total: 5,777/s | Ratio: 31%
+2026-05-17 06:08:59,448 - __main__ - INFO - [Throughput] Read: 203/s | Write: 1,761/s | Total: 1,964/s | Ratio: 10%
+2026-05-17 06:09:04,458 - __main__ - INFO - [Throughput] Read: 92/s | Write: 1,192/s | Total: 1,284/s | Ratio: 7%
+2026-05-17 06:09:09,463 - __main__ - INFO - [Throughput] Read: 47/s | Write: 873/s | Total: 920/s | Ratio: 5%
+2026-05-17 06:09:14,476 - __main__ - INFO - [Throughput] Read: 27/s | Write: 623/s | Total: 651/s | Ratio: 4%
+2026-05-17 06:09:19,485 - __main__ - INFO - [Throughput] Read: 32/s | Write: 595/s | Total: 627/s | Ratio: 5%
+2026-05-17 06:09:24,498 - __main__ - INFO - [Throughput] Read: 51/s | Write: 478/s | Total: 528/s | Ratio: 10%
+2026-05-17 06:09:29,523 - __main__ - INFO - [Throughput] Read: 58/s | Write: 488/s | Total: 546/s | Ratio: 11%
+2026-05-17 06:09:34,540 - __main__ - INFO - [Throughput] Read: 66/s | Write: 475/s | Total: 542/s | Ratio: 12%
+2026-05-17 06:09:39,566 - __main__ - INFO - [Throughput] Read: 73/s | Write: 459/s | Total: 531/s | Ratio: 14%
+2026-05-17 06:09:44,585 - __main__ - INFO - [Throughput] Read: 84/s | Write: 486/s | Total: 570/s | Ratio: 15%
+2026-05-17 06:09:49,606 - __main__ - INFO - [Throughput] Read: 89/s | Write: 480/s | Total: 569/s | Ratio: 16%
+2026-05-17 06:09:54,625 - __main__ - INFO - [Throughput] Read: 78/s | Write: 426/s | Total: 504/s | Ratio: 15%
+2026-05-17 06:09:59,638 - __main__ - INFO - [Throughput] Read: 89/s | Write: 448/s | Total: 537/s | Ratio: 17%
+2026-05-17 06:10:04,642 - __main__ - INFO - [Throughput] Read: 69/s | Write: 416/s | Total: 484/s | Ratio: 14%
+2026-05-17 06:10:09,664 - __main__ - INFO - [Throughput] Read: 66/s | Write: 439/s | Total: 506/s | Ratio: 13%
+2026-05-17 06:10:14,673 - __main__ - INFO - [Throughput] Read: 74/s | Write: 396/s | Total: 471/s | Ratio: 16%
+2026-05-17 06:10:19,683 - __main__ - INFO - [Throughput] Read: 71/s | Write: 364/s | Total: 435/s | Ratio: 16%
+2026-05-17 06:10:24,697 - __main__ - INFO - [Throughput] Read: 71/s | Write: 397/s | Total: 468/s | Ratio: 15%
+2026-05-17 06:10:29,707 - __main__ - INFO - [Throughput] Read: 73/s | Write: 360/s | Total: 433/s | Ratio: 17%
+2026-05-17 06:10:34,732 - __main__ - INFO - [Throughput] Read: 77/s | Write: 368/s | Total: 445/s | Ratio: 17%
+2026-05-17 06:10:39,746 - __main__ - INFO - [Throughput] Read: 69/s | Write: 360/s | Total: 429/s | Ratio: 16%
+2026-05-17 06:10:44,763 - __main__ - INFO - [Throughput] Read: 73/s | Write: 359/s | Total: 432/s | Ratio: 17%
+2026-05-17 06:10:49,780 - __main__ - INFO - [Throughput] Read: 72/s | Write: 352/s | Total: 423/s | Ratio: 17%
+2026-05-17 06:10:54,802 - __main__ - INFO - [Throughput] Read: 70/s | Write: 345/s | Total: 415/s | Ratio: 17%
+2026-05-17 06:10:59,815 - __main__ - INFO - [Throughput] Read: 75/s | Write: 346/s | Total: 421/s | Ratio: 18%
+2026-05-17 06:11:04,837 - __main__ - INFO - [Throughput] Read: 70/s | Write: 325/s | Total: 395/s | Ratio: 18%
+2026-05-17 06:11:09,850 - __main__ - INFO - [Throughput] Read: 68/s | Write: 340/s | Total: 408/s | Ratio: 17%
+2026-05-17 06:11:14,868 - __main__ - INFO - [Throughput] Read: 70/s | Write: 356/s | Total: 425/s | Ratio: 16%
+2026-05-17 06:11:19,877 - __main__ - INFO - [Throughput] Read: 62/s | Write: 314/s | Total: 376/s | Ratio: 16%
+2026-05-17 06:11:24,895 - __main__ - INFO - [Throughput] Read: 62/s | Write: 303/s | Total: 365/s | Ratio: 17%
+2026-05-17 06:11:29,915 - __main__ - INFO - [Throughput] Read: 65/s | Write: 325/s | Total: 390/s | Ratio: 17%
+2026-05-17 06:11:34,941 - __main__ - INFO - [Throughput] Read: 57/s | Write: 277/s | Total: 335/s | Ratio: 17%
+2026-05-17 06:11:39,952 - __main__ - INFO - [Throughput] Read: 57/s | Write: 324/s | Total: 381/s | Ratio: 15%
+2026-05-17 06:11:44,979 - __main__ - INFO - [Throughput] Read: 60/s | Write: 276/s | Total: 337/s | Ratio: 18%
+2026-05-17 06:11:50,009 - __main__ - INFO - [Throughput] Read: 61/s | Write: 302/s | Total: 363/s | Ratio: 17%
+2026-05-17 06:11:55,011 - __main__ - INFO - [Throughput] Read: 58/s | Write: 271/s | Total: 329/s | Ratio: 18%
+2026-05-17 06:12:00,043 - __main__ - INFO - [Throughput] Read: 62/s | Write: 308/s | Total: 370/s | Ratio: 17%
+2026-05-17 06:12:05,071 - __main__ - INFO - [Throughput] Read: 58/s | Write: 258/s | Total: 316/s | Ratio: 18%
+2026-05-17 06:12:10,095 - __main__ - INFO - [Throughput] Read: 62/s | Write: 303/s | Total: 365/s | Ratio: 17%
+2026-05-17 06:12:15,114 - __main__ - INFO - [Throughput] Read: 54/s | Write: 277/s | Total: 331/s | Ratio: 16%
+2026-05-17 06:12:20,125 - __main__ - INFO - [Throughput] Read: 50/s | Write: 277/s | Total: 327/s | Ratio: 15%
+2026-05-17 06:12:25,159 - __main__ - INFO - [Throughput] Read: 55/s | Write: 276/s | Total: 331/s | Ratio: 17%
+2026-05-17 06:12:30,187 - __main__ - INFO - [Throughput] Read: 53/s | Write: 284/s | Total: 337/s | Ratio: 16%
+2026-05-17 06:12:35,192 - __main__ - INFO - [Throughput] Read: 47/s | Write: 266/s | Total: 313/s | Ratio: 15%
+2026-05-17 06:12:40,212 - __main__ - INFO - [Throughput] Read: 52/s | Write: 264/s | Total: 316/s | Ratio: 16%
+2026-05-17 06:12:45,236 - __main__ - INFO - [Throughput] Read: 41/s | Write: 268/s | Total: 309/s | Ratio: 13%
+2026-05-17 06:12:50,256 - __main__ - INFO - [Throughput] Read: 44/s | Write: 233/s | Total: 277/s | Ratio: 16%
+2026-05-17 06:12:55,279 - __main__ - INFO - [Throughput] Read: 29/s | Write: 240/s | Total: 269/s | Ratio: 11%
+2026-05-17 06:13:00,303 - __main__ - INFO - [Throughput] Read: 42/s | Write: 242/s | Total: 284/s | Ratio: 15%
+2026-05-17 06:13:05,328 - __main__ - INFO - [Throughput] Read: 36/s | Write: 230/s | Total: 267/s | Ratio: 14%
+2026-05-17 06:13:10,369 - __main__ - INFO - [Throughput] Read: 39/s | Write: 254/s | Total: 293/s | Ratio: 13%
+2026-05-17 06:13:15,402 - __main__ - INFO - [Throughput] Read: 38/s | Write: 209/s | Total: 247/s | Ratio: 15%
+2026-05-17 06:13:20,455 - __main__ - INFO - [Throughput] Read: 33/s | Write: 221/s | Total: 254/s | Ratio: 13%
+2026-05-17 06:13:25,491 - __main__ - INFO - [Throughput] Read: 34/s | Write: 207/s | Total: 241/s | Ratio: 14%
+2026-05-17 06:13:30,521 - __main__ - INFO - [Throughput] Read: 32/s | Write: 225/s | Total: 257/s | Ratio: 12%
+2026-05-17 06:13:35,554 - __main__ - INFO - [Throughput] Read: 30/s | Write: 206/s | Total: 237/s | Ratio: 13%
+2026-05-17 06:13:40,616 - __main__ - INFO - [Throughput] Read: 34/s | Write: 224/s | Total: 258/s | Ratio: 13%
+2026-05-17 06:13:45,624 - __main__ - INFO - [Throughput] Read: 32/s | Write: 214/s | Total: 246/s | Ratio: 13%
+2026-05-17 06:13:49,447 - __main__ - INFO - 等待所有任务完成...
+2026-05-17 06:13:50,652 - __main__ - INFO - [Throughput] Read: 33/s | Write: 190/s | Total: 223/s | Ratio: 15%
+2026-05-17 06:18:45,525 - __main__ - INFO - 测试报告已保存到: /workspace/agent_memory_system_v2/tests/round1/metrics/scenario2_read_write_mixed_metrics.json

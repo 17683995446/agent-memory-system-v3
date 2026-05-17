@@ -1,0 +1,98 @@
+2026-05-17 05:37:49,565 - __main__ - INFO - ================================================================================
+2026-05-17 05:37:49,565 - __main__ - INFO - 场景1: 万级并发写入风暴测试
+2026-05-17 05:37:49,565 - __main__ - INFO - ================================================================================
+2026-05-17 05:37:49,565 - __main__ - INFO - 并发客户端: 10,000
+2026-05-17 05:37:49,565 - __main__ - INFO - 目标写入速率: 50,000 次/秒
+2026-05-17 05:37:49,565 - __main__ - INFO - 目标持续时间: 5.0 分钟
+2026-05-17 05:37:49,565 - __main__ - INFO - ================================================================================
+2026-05-17 05:37:54,610 - __main__ - INFO - [Throughput] Writes: 61,896 | Actual: 12,268/s | Target: 50,000/s | P50: 545.64ms | P99: 841.06ms | Deduplicated: 4,131
+2026-05-17 05:37:59,637 - __main__ - INFO - [Throughput] Writes: 126,088 | Actual: 12,519/s | Target: 50,000/s | P50: 548.57ms | P99: 822.41ms | Deduplicated: 13,793
+2026-05-17 05:38:04,935 - __main__ - INFO - [Consistency] Check #0 | Entries: 191,282 | Violations: 0 | Consistent: True
+2026-05-17 05:38:05,024 - __main__ - INFO - [Throughput] Writes: 191,298 | Actual: 12,375/s | Target: 50,000/s | P50: 542.54ms | P99: 821.34ms | Deduplicated: 26,997
+2026-05-17 05:38:10,081 - __main__ - INFO - [Throughput] Writes: 255,613 | Actual: 12,459/s | Target: 50,000/s | P50: 543.21ms | P99: 1065.59ms | Deduplicated: 41,361
+2026-05-17 05:38:15,170 - __main__ - INFO - [Throughput] Writes: 320,660 | Actual: 12,523/s | Target: 50,000/s | P50: 541.11ms | P99: 1032.35ms | Deduplicated: 56,841
+2026-05-17 05:38:20,643 - __main__ - INFO - [Consistency] Check #1 | Entries: 382,021 | Violations: 0 | Consistent: True
+2026-05-17 05:38:20,944 - __main__ - INFO - [Throughput] Writes: 382,021 | Actual: 12,174/s | Target: 50,000/s | P50: 541.29ms | P99: 1041.33ms | Deduplicated: 72,503
+2026-05-17 05:38:26,051 - __main__ - INFO - [Throughput] Writes: 446,555 | Actual: 12,239/s | Target: 50,000/s | P50: 540.82ms | P99: 1465.98ms | Deduplicated: 87,597
+2026-05-17 05:38:31,169 - __main__ - INFO - [Throughput] Writes: 510,731 | Actual: 12,276/s | Target: 50,000/s | P50: 538.45ms | P99: 1410.16ms | Deduplicated: 103,537
+2026-05-17 05:38:36,704 - __main__ - INFO - [Consistency] Check #2 | Entries: 567,523 | Violations: 0 | Consistent: True
+2026-05-17 05:38:36,930 - __main__ - INFO - [Throughput] Writes: 567,530 | Actual: 11,982/s | Target: 50,000/s | P50: 537.87ms | P99: 1373.18ms | Deduplicated: 118,311
+2026-05-17 05:38:42,092 - __main__ - INFO - [Throughput] Writes: 632,655 | Actual: 12,044/s | Target: 50,000/s | P50: 538.37ms | P99: 1704.30ms | Deduplicated: 133,671
+2026-05-17 05:38:47,361 - __main__ - INFO - [Throughput] Writes: 693,188 | Actual: 11,994/s | Target: 50,000/s | P50: 538.22ms | P99: 1685.10ms | Deduplicated: 149,275
+2026-05-17 05:38:53,080 - __main__ - INFO - [Consistency] Check #3 | Entries: 748,398 | Violations: 0 | Consistent: True
+2026-05-17 05:38:53,356 - __main__ - INFO - [Throughput] Writes: 748,398 | Actual: 11,732/s | Target: 50,000/s | P50: 538.87ms | P99: 1669.44ms | Deduplicated: 163,387
+2026-05-17 05:38:58,566 - __main__ - INFO - [Throughput] Writes: 811,344 | Actual: 11,758/s | Target: 50,000/s | P50: 539.84ms | P99: 2016.82ms | Deduplicated: 178,147
+2026-05-17 05:39:03,788 - __main__ - INFO - [Throughput] Writes: 874,303 | Actual: 11,779/s | Target: 50,000/s | P50: 539.35ms | P99: 1975.18ms | Deduplicated: 193,654
+2026-05-17 05:39:09,797 - __main__ - INFO - [Consistency] Check #4 | Entries: 925,762 | Violations: 0 | Consistent: True
+2026-05-17 05:39:10,131 - __main__ - INFO - [Throughput] Writes: 925,775 | Actual: 11,491/s | Target: 50,000/s | P50: 538.97ms | P99: 1937.44ms | Deduplicated: 207,153
+2026-05-17 05:39:15,400 - __main__ - INFO - [Throughput] Writes: 988,624 | Actual: 11,518/s | Target: 50,000/s | P50: 539.07ms | P99: 2454.78ms | Deduplicated: 222,105
+2026-05-17 05:39:20,699 - __main__ - INFO - [Throughput] Writes: 1,052,205 | Actual: 11,546/s | Target: 50,000/s | P50: 536.90ms | P99: 2424.54ms | Deduplicated: 237,962
+2026-05-17 05:39:26,848 - __main__ - INFO - [Consistency] Check #5 | Entries: 1,104,661 | Violations: 0 | Consistent: True
+2026-05-17 05:39:27,461 - __main__ - INFO - [Throughput] Writes: 1,104,675 | Actual: 11,284/s | Target: 50,000/s | P50: 533.25ms | P99: 2393.49ms | Deduplicated: 252,151
+2026-05-17 05:39:32,788 - __main__ - INFO - [Throughput] Writes: 1,167,554 | Actual: 11,311/s | Target: 50,000/s | P50: 530.84ms | P99: 2663.34ms | Deduplicated: 267,400
+2026-05-17 05:39:38,129 - __main__ - INFO - [Throughput] Writes: 1,229,971 | Actual: 11,329/s | Target: 50,000/s | P50: 529.47ms | P99: 2642.24ms | Deduplicated: 282,997
+2026-05-17 05:39:44,164 - __main__ - INFO - [Consistency] Check #6 | Entries: 1,273,942 | Violations: 0 | Consistent: True
+2026-05-17 05:39:44,613 - __main__ - INFO - [Throughput] Writes: 1,273,955 | Actual: 11,073/s | Target: 50,000/s | P50: 529.62ms | P99: 2617.79ms | Deduplicated: 294,601
+2026-05-17 05:39:49,985 - __main__ - INFO - [Throughput] Writes: 1,337,467 | Actual: 11,107/s | Target: 50,000/s | P50: 527.28ms | P99: 2980.50ms | Deduplicated: 309,910
+2026-05-17 05:39:55,383 - __main__ - INFO - [Throughput] Writes: 1,398,154 | Actual: 11,112/s | Target: 50,000/s | P50: 525.00ms | P99: 2958.98ms | Deduplicated: 325,105
+2026-05-17 05:40:01,823 - __main__ - INFO - [Consistency] Check #7 | Entries: 1,443,681 | Violations: 0 | Consistent: True
+2026-05-17 05:40:02,366 - __main__ - INFO - [Throughput] Writes: 1,443,697 | Actual: 10,871/s | Target: 50,000/s | P50: 523.76ms | P99: 2944.65ms | Deduplicated: 336,938
+2026-05-17 05:40:07,796 - __main__ - INFO - [Throughput] Writes: 1,505,853 | Actual: 10,894/s | Target: 50,000/s | P50: 522.14ms | P99: 3161.61ms | Deduplicated: 351,737
+2026-05-17 05:40:13,480 - __main__ - INFO - [Throughput] Writes: 1,566,354 | Actual: 10,884/s | Target: 50,000/s | P50: 521.33ms | P99: 3141.25ms | Deduplicated: 366,841
+2026-05-17 05:40:19,809 - __main__ - INFO - [Consistency] Check #8 | Entries: 1,610,331 | Violations: 0 | Consistent: True
+2026-05-17 05:40:20,379 - __main__ - INFO - [Throughput] Writes: 1,610,345 | Actual: 10,678/s | Target: 50,000/s | P50: 519.80ms | P99: 3121.95ms | Deduplicated: 378,426
+2026-05-17 05:40:26,033 - __main__ - INFO - [Throughput] Writes: 1,670,326 | Actual: 10,675/s | Target: 50,000/s | P50: 518.91ms | P99: 3551.72ms | Deduplicated: 393,596
+2026-05-17 05:40:31,535 - __main__ - INFO - [Throughput] Writes: 1,731,905 | Actual: 10,693/s | Target: 50,000/s | P50: 518.58ms | P99: 3525.78ms | Deduplicated: 408,364
+2026-05-17 05:40:38,300 - __main__ - INFO - [Consistency] Check #9 | Entries: 1,772,133 | Violations: 0 | Consistent: True
+2026-05-17 05:40:38,868 - __main__ - INFO - [Throughput] Writes: 1,772,133 | Actual: 10,467/s | Target: 50,000/s | P50: 517.77ms | P99: 3501.48ms | Deduplicated: 419,158
+2026-05-17 05:46:44,505 - __main__ - INFO - [Throughput] Writes: 1,832,447 | Actual: 3,427/s | Target: 50,000/s | P50: 517.47ms | P99: 3876.81ms | Deduplicated: 433,595
+2026-05-17 05:46:48,831 - __main__ - INFO - [Consistency] Check #10 | Entries: 1,832,447 | Violations: 0 | Consistent: True
+2026-05-17 05:46:48,982 - __main__ - INFO - 等待所有任务完成...
+2026-05-17 05:48:08,454 - __main__ - INFO - ================================================================================
+2026-05-17 05:48:08,454 - __main__ - INFO - 场景1: 万级并发写入风暴测试
+2026-05-17 05:48:08,454 - __main__ - INFO - ================================================================================
+2026-05-17 05:48:08,454 - __main__ - INFO - 并发客户端: 10,000
+2026-05-17 05:48:08,454 - __main__ - INFO - 目标写入速率: 50,000 次/秒
+2026-05-17 05:48:08,454 - __main__ - INFO - 目标持续时间: 5.0 分钟
+2026-05-17 05:48:08,455 - __main__ - INFO - ================================================================================
+2026-05-17 05:48:13,497 - __main__ - INFO - [Throughput] Writes: 59,964 | Actual: 11,891/s | Target: 50,000/s | P50: 573.02ms | P99: 855.82ms | Deduplicated: 3,973
+2026-05-17 05:48:18,522 - __main__ - INFO - [Throughput] Writes: 123,175 | Actual: 12,235/s | Target: 50,000/s | P50: 559.01ms | P99: 811.52ms | Deduplicated: 13,189
+2026-05-17 05:48:23,819 - __main__ - INFO - [Consistency] Check #0 | Entries: 187,318 | Violations: 0 | Consistent: True
+2026-05-17 05:48:23,903 - __main__ - INFO - [Throughput] Writes: 187,333 | Actual: 12,126/s | Target: 50,000/s | P50: 554.89ms | P99: 827.71ms | Deduplicated: 26,015
+2026-05-17 05:48:28,956 - __main__ - INFO - [Throughput] Writes: 252,317 | Actual: 12,307/s | Target: 50,000/s | P50: 552.48ms | P99: 1066.67ms | Deduplicated: 40,352
+2026-05-17 05:48:34,025 - __main__ - INFO - [Throughput] Writes: 316,475 | Actual: 12,377/s | Target: 50,000/s | P50: 548.15ms | P99: 1050.79ms | Deduplicated: 55,905
+2026-05-17 05:48:39,502 - __main__ - INFO - [Consistency] Check #1 | Entries: 377,674 | Violations: 0 | Consistent: True
+2026-05-17 05:48:39,772 - __main__ - INFO - [Throughput] Writes: 377,690 | Actual: 12,060/s | Target: 50,000/s | P50: 545.11ms | P99: 1056.08ms | Deduplicated: 71,745
+2026-05-17 05:48:44,871 - __main__ - INFO - [Throughput] Writes: 441,547 | Actual: 12,125/s | Target: 50,000/s | P50: 544.32ms | P99: 1463.53ms | Deduplicated: 86,945
+2026-05-17 05:48:49,991 - __main__ - INFO - [Throughput] Writes: 505,935 | Actual: 12,180/s | Target: 50,000/s | P50: 540.42ms | P99: 1394.53ms | Deduplicated: 102,565
+2026-05-17 05:48:55,554 - __main__ - INFO - [Consistency] Check #2 | Entries: 562,496 | Violations: 0 | Consistent: True
+2026-05-17 05:48:55,775 - __main__ - INFO - [Throughput] Writes: 562,499 | Actual: 11,887/s | Target: 50,000/s | P50: 539.67ms | P99: 1367.90ms | Deduplicated: 117,442
+2026-05-17 05:49:00,934 - __main__ - INFO - [Throughput] Writes: 627,104 | Actual: 11,950/s | Target: 50,000/s | P50: 540.45ms | P99: 1668.48ms | Deduplicated: 133,009
+2026-05-17 05:49:06,191 - __main__ - INFO - [Throughput] Writes: 688,802 | Actual: 11,930/s | Target: 50,000/s | P50: 540.40ms | P99: 1642.53ms | Deduplicated: 149,060
+2026-05-17 05:49:11,950 - __main__ - INFO - [Consistency] Check #3 | Entries: 742,808 | Violations: 0 | Consistent: True
+2026-05-17 05:49:12,191 - __main__ - INFO - [Throughput] Writes: 742,824 | Actual: 11,655/s | Target: 50,000/s | P50: 540.38ms | P99: 1625.09ms | Deduplicated: 162,821
+2026-05-17 05:49:17,410 - __main__ - INFO - [Throughput] Writes: 805,472 | Actual: 11,681/s | Target: 50,000/s | P50: 540.03ms | P99: 2167.28ms | Deduplicated: 177,858
+2026-05-17 05:49:22,661 - __main__ - INFO - [Throughput] Writes: 868,688 | Actual: 11,706/s | Target: 50,000/s | P50: 538.99ms | P99: 2045.68ms | Deduplicated: 193,533
+2026-05-17 05:49:28,707 - __main__ - INFO - [Consistency] Check #4 | Entries: 921,342 | Violations: 0 | Consistent: True
+2026-05-17 05:49:29,073 - __main__ - INFO - [Throughput] Writes: 921,356 | Actual: 11,429/s | Target: 50,000/s | P50: 539.95ms | P99: 1978.81ms | Deduplicated: 207,374
+2026-05-17 05:49:34,340 - __main__ - INFO - [Throughput] Writes: 984,402 | Actual: 11,462/s | Target: 50,000/s | P50: 540.31ms | P99: 2419.53ms | Deduplicated: 222,445
+2026-05-17 05:49:39,793 - __main__ - INFO - [Throughput] Writes: 1,046,074 | Actual: 11,453/s | Target: 50,000/s | P50: 540.08ms | P99: 2393.20ms | Deduplicated: 238,218
+2026-05-17 05:49:45,759 - __main__ - INFO - [Consistency] Check #5 | Entries: 1,098,755 | Violations: 0 | Consistent: True
+2026-05-17 05:49:46,401 - __main__ - INFO - [Throughput] Writes: 1,098,768 | Actual: 11,218/s | Target: 50,000/s | P50: 539.06ms | P99: 2367.07ms | Deduplicated: 251,682
+2026-05-17 05:49:51,713 - __main__ - INFO - [Throughput] Writes: 1,162,483 | Actual: 11,258/s | Target: 50,000/s | P50: 538.50ms | P99: 2626.81ms | Deduplicated: 266,704
+2026-05-17 05:49:57,053 - __main__ - INFO - [Throughput] Writes: 1,223,216 | Actual: 11,264/s | Target: 50,000/s | P50: 537.40ms | P99: 2580.16ms | Deduplicated: 282,153
+2026-05-17 05:50:03,131 - __main__ - INFO - [Consistency] Check #6 | Entries: 1,266,270 | Violations: 0 | Consistent: True
+2026-05-17 05:50:03,552 - __main__ - INFO - [Throughput] Writes: 1,266,286 | Actual: 11,002/s | Target: 50,000/s | P50: 537.16ms | P99: 2567.63ms | Deduplicated: 293,527
+2026-05-17 05:50:08,928 - __main__ - INFO - [Throughput] Writes: 1,328,006 | Actual: 11,023/s | Target: 50,000/s | P50: 535.85ms | P99: 3014.48ms | Deduplicated: 308,292
+2026-05-17 05:50:14,326 - __main__ - INFO - [Throughput] Writes: 1,390,637 | Actual: 11,048/s | Target: 50,000/s | P50: 533.85ms | P99: 2953.45ms | Deduplicated: 323,955
+2026-05-17 05:50:20,868 - __main__ - INFO - [Consistency] Check #7 | Entries: 1,435,436 | Violations: 0 | Consistent: True
+2026-05-17 05:50:21,382 - __main__ - INFO - [Throughput] Writes: 1,435,449 | Actual: 10,799/s | Target: 50,000/s | P50: 533.85ms | P99: 2928.12ms | Deduplicated: 336,004
+2026-05-17 05:50:26,816 - __main__ - INFO - [Throughput] Writes: 1,497,481 | Actual: 10,823/s | Target: 50,000/s | P50: 533.56ms | P99: 3298.53ms | Deduplicated: 350,901
+2026-05-17 05:50:32,270 - __main__ - INFO - [Throughput] Writes: 1,558,067 | Actual: 10,834/s | Target: 50,000/s | P50: 534.04ms | P99: 3271.09ms | Deduplicated: 366,155
+2026-05-17 05:50:38,934 - __main__ - INFO - [Consistency] Check #8 | Entries: 1,601,868 | Violations: 0 | Consistent: True
+2026-05-17 05:50:39,490 - __main__ - INFO - [Throughput] Writes: 1,601,880 | Actual: 10,606/s | Target: 50,000/s | P50: 534.20ms | P99: 3242.34ms | Deduplicated: 377,659
+2026-05-17 05:50:44,978 - __main__ - INFO - [Throughput] Writes: 1,663,212 | Actual: 10,626/s | Target: 50,000/s | P50: 534.89ms | P99: 3613.83ms | Deduplicated: 392,139
+2026-05-17 05:50:50,487 - __main__ - INFO - [Throughput] Writes: 1,720,363 | Actual: 10,617/s | Target: 50,000/s | P50: 534.15ms | P99: 3589.04ms | Deduplicated: 406,799
+2026-05-17 05:50:57,305 - __main__ - INFO - [Consistency] Check #9 | Entries: 1,765,849 | Violations: 0 | Consistent: True
+2026-05-17 05:50:57,930 - __main__ - INFO - [Throughput] Writes: 1,765,861 | Actual: 10,420/s | Target: 50,000/s | P50: 534.23ms | P99: 3561.79ms | Deduplicated: 418,346
+2026-05-17 05:51:03,526 - __main__ - INFO - [Throughput] Writes: 1,824,110 | Actual: 10,419/s | Target: 50,000/s | P50: 534.20ms | P99: 3950.33ms | Deduplicated: 433,063

@@ -1,0 +1,3187 @@
+{
+  "scenario_name": "\u7ea7\u8054\u6545\u969c\u6ce8\u5165",
+  "start_time": 1778995776.3691523,
+  "end_time": 1778995956.4501507,
+  "total_duration_sec": 180.08099842071533,
+  "total_failures_injected": 7,
+  "failures_by_type": {
+    "leader_death": 2,
+    "follower_death": 1,
+    "disk_full": 1,
+    "memory_exhausted": 1,
+    "cpu_overload": 1,
+    "network_partition": 1
+  },
+  "total_recoveries": 7,
+  "auto_recovery_success": 3,
+  "auto_recovery_failed": 4,
+  "avg_recovery_time_sec": 0.00021123886108398438,
+  "total_downtime_sec": 0.0,
+  "availability_percent": 42.857142857142854,
+  "data_corruption_detected": 0,
+  "data_loss_entries": 0,
+  "failure_sequence": [
+    {
+      "type": "leader_death",
+      "timestamp": 1778995779.3707573,
+      "target_node": "node_4",
+      "success": true
+    },
+    {
+      "type": "follower_death",
+      "timestamp": 1778995786.8727973,
+      "target_node": "node_3",
+      "success": true
+    },
+    {
+      "type": "disk_full",
+      "timestamp": 1778995786.8728616,
+      "target_node": null,
+      "success": true,
+      "disk_usage": 100.0
+    },
+    {
+      "type": "memory_exhausted",
+      "timestamp": 1778995794.8743212,
+      "target_node": null,
+      "success": true,
+      "memory_usage": 100.0
+    },
+    {
+      "type": "cpu_overload",
+      "timestamp": 1778995794.8743653,
+      "target_node": null,
+      "success": true,
+      "cpu_usage": 100.0
+    },
+    {
+      "type": "leader_death",
+      "timestamp": 1778995802.8759184,
+      "target_node": "node_0",
+      "success": true
+    },
+    {
+      "type": "network_partition",
+      "timestamp": 1778995803.377011,
+      "target_node": null,
+      "success": true,
+      "partitioned_nodes": [
+        "node_4",
+        "node_1"
+      ]
+    }
+  ],
+  "recovery_events": [
+    {
+      "type": "node_recovery",
+      "node_id": "node_4",
+      "timestamp": 1778995781.8721921,
+      "success": true
+    },
+    {
+      "type": "disk_recovery",
+      "timestamp": 1778995789.8733788,
+      "new_usage": 69.22294605507466
+    },
+    {
+      "type": "node_recovery",
+      "node_id": "node_3",
+      "timestamp": 1778995789.8734121,
+      "success": false
+    },
+    {
+      "type": "memory_recovery",
+      "timestamp": 1778995797.8750763,
+      "new_usage": 69.1926871189335
+    },
+    {
+      "type": "cpu_recovery",
+      "timestamp": 1778995797.8750837,
+      "new_usage": 59.31898109734831
+    },
+    {
+      "type": "node_recovery",
+      "node_id": "node_3",
+      "timestamp": 1778995797.875092,
+      "success": true
+    },
+    {
+      "type": "node_recovery",
+      "node_id": "node_0",
+      "timestamp": 1778995806.3777602,
+      "success": true
+    }
+  ],
+  "health_timeline": [
+    {
+      "timestamp": 1778995779.3694372,
+      "check_number": 0,
+      "leader_id": "node_4",
+      "healthy_nodes": 5,
+      "degraded_nodes": 0,
+      "failed_nodes": 0,
+      "recovering_nodes": 0,
+      "total_nodes": 5,
+      "disk_usage": 0.0,
+      "memory_usage": 0.0,
+      "cpu_usage": 0.0,
+      "data_entries": 86,
+      "nodes": {
+        "node_0": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_1": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "healthy",
+          "is_leader": true,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        }
+      }
+    },
+    {
+      "timestamp": 1778995782.3712513,
+      "check_number": 1,
+      "leader_id": "node_0",
+      "healthy_nodes": 4,
+      "degraded_nodes": 0,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 0.0,
+      "memory_usage": 0.0,
+      "cpu_usage": 0.0,
+      "data_entries": 160,
+      "nodes": {
+        "node_0": {
+          "state": "healthy",
+          "is_leader": true,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_1": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        }
+      }
+    },
+    {
+      "timestamp": 1778995785.372948,
+      "check_number": 2,
+      "leader_id": "node_0",
+      "healthy_nodes": 4,
+      "degraded_nodes": 0,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 0.0,
+      "memory_usage": 0.0,
+      "cpu_usage": 0.0,
+      "data_entries": 248,
+      "nodes": {
+        "node_0": {
+          "state": "healthy",
+          "is_leader": true,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_1": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        }
+      }
+    },
+    {
+      "timestamp": 1778995788.3739052,
+      "check_number": 3,
+      "leader_id": "node_0",
+      "healthy_nodes": 0,
+      "degraded_nodes": 4,
+      "failed_nodes": 1,
+      "recovering_nodes": 0,
+      "total_nodes": 5,
+      "disk_usage": 100.0,
+      "memory_usage": 0.0,
+      "cpu_usage": 0.0,
+      "data_entries": 290,
+      "nodes": {
+        "node_0": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 100.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 100.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_2": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 100.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_3": {
+          "state": "failed",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 100.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        }
+      }
+    },
+    {
+      "timestamp": 1778995791.3761928,
+      "check_number": 4,
+      "leader_id": "node_0",
+      "healthy_nodes": 4,
+      "degraded_nodes": 0,
+      "failed_nodes": 1,
+      "recovering_nodes": 0,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 0.0,
+      "cpu_usage": 0.0,
+      "data_entries": 336,
+      "nodes": {
+        "node_0": {
+          "state": "healthy",
+          "is_leader": true,
+          "disk": 58.16728775003135,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_1": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 53.2723267652794,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_3": {
+          "state": "failed",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 0.0
+        }
+      }
+    },
+    {
+      "timestamp": 1778995794.376673,
+      "check_number": 5,
+      "leader_id": "node_0",
+      "healthy_nodes": 4,
+      "degraded_nodes": 0,
+      "failed_nodes": 1,
+      "recovering_nodes": 0,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 0.0,
+      "cpu_usage": 0.0,
+      "data_entries": 422,
+      "nodes": {
+        "node_0": {
+          "state": "healthy",
+          "is_leader": true,
+          "disk": 58.16728775003135,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_1": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 53.2723267652794,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_3": {
+          "state": "failed",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 0.0
+        }
+      }
+    },
+    {
+      "timestamp": 1778995797.378254,
+      "check_number": 6,
+      "leader_id": "node_0",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 1,
+      "recovering_nodes": 0,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 100.0,
+      "cpu_usage": 100.0,
+      "data_entries": 437,
+      "nodes": {
+        "node_0": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 58.16728775003135,
+          "memory": 100.0,
+          "cpu": 100.0
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 53.2723267652794,
+          "memory": 100.0,
+          "cpu": 100.0
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 100.0
+        },
+        "node_3": {
+          "state": "failed",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 100.0
+        }
+      }
+    },
+    {
+      "timestamp": 1778995800.3789651,
+      "check_number": 7,
+      "leader_id": "node_0",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 510,
+      "nodes": {
+        "node_0": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995803.3802967,
+      "check_number": 8,
+      "leader_id": "node_1",
+      "healthy_nodes": 1,
+      "degraded_nodes": 2,
+      "failed_nodes": 1,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 577,
+      "nodes": {
+        "node_0": {
+          "state": "failed",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995806.3812582,
+      "check_number": 9,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 667,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995809.3827388,
+      "check_number": 10,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 756,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995812.3839412,
+      "check_number": 11,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 844,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995815.3852344,
+      "check_number": 12,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 925,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995818.3860703,
+      "check_number": 13,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1011,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995821.3866231,
+      "check_number": 14,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1100,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995824.3877783,
+      "check_number": 15,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1188,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995827.3888981,
+      "check_number": 16,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1274,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995830.3900876,
+      "check_number": 17,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1364,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995833.39092,
+      "check_number": 18,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1453,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995836.3918977,
+      "check_number": 19,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1541,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995839.392743,
+      "check_number": 20,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1629,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995842.3933783,
+      "check_number": 21,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1717,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995845.3941357,
+      "check_number": 22,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1807,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995848.395086,
+      "check_number": 23,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1891,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995851.396214,
+      "check_number": 24,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 1980,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995854.397557,
+      "check_number": 25,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2069,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995857.3987787,
+      "check_number": 26,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2160,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995860.4003499,
+      "check_number": 27,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2242,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995863.4014165,
+      "check_number": 28,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2329,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995866.4029062,
+      "check_number": 29,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2413,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995869.4045563,
+      "check_number": 30,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2503,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995872.4056509,
+      "check_number": 31,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2593,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995875.4067662,
+      "check_number": 32,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2681,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995878.407569,
+      "check_number": 33,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2772,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995881.4101148,
+      "check_number": 34,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2860,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995884.4113524,
+      "check_number": 35,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 2944,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995887.4130695,
+      "check_number": 36,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3036,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995890.4143357,
+      "check_number": 37,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3129,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995893.416981,
+      "check_number": 38,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3217,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995896.4182124,
+      "check_number": 39,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3302,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995899.4190307,
+      "check_number": 40,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3387,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995902.4203053,
+      "check_number": 41,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3473,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995905.422028,
+      "check_number": 42,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3564,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995908.4232247,
+      "check_number": 43,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3649,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995911.4244883,
+      "check_number": 44,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3737,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995914.4261792,
+      "check_number": 45,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3825,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995917.4290018,
+      "check_number": 46,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 3912,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995920.4304886,
+      "check_number": 47,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4004,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995923.431757,
+      "check_number": 48,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4090,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995926.433193,
+      "check_number": 49,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4182,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995929.435003,
+      "check_number": 50,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4271,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995932.4371452,
+      "check_number": 51,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4360,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995935.4381735,
+      "check_number": 52,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4448,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995938.439294,
+      "check_number": 53,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4534,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995941.4411018,
+      "check_number": 54,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4624,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995944.4440148,
+      "check_number": 55,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4707,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995947.4452636,
+      "check_number": 56,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4791,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995950.446896,
+      "check_number": 57,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4876,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995953.4479992,
+      "check_number": 58,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 4964,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    },
+    {
+      "timestamp": 1778995956.4499032,
+      "check_number": 59,
+      "leader_id": "node_1",
+      "healthy_nodes": 2,
+      "degraded_nodes": 2,
+      "failed_nodes": 0,
+      "recovering_nodes": 1,
+      "total_nodes": 5,
+      "disk_usage": 69.22294605507466,
+      "memory_usage": 69.1926871189335,
+      "cpu_usage": 59.31898109734831,
+      "data_entries": 5047,
+      "nodes": {
+        "node_0": {
+          "state": "recovering",
+          "is_leader": false,
+          "disk": 58.16728775003135,
+          "memory": 75.5348198099204,
+          "cpu": 59.33102984831363
+        },
+        "node_1": {
+          "state": "degraded",
+          "is_leader": true,
+          "disk": 53.2723267652794,
+          "memory": 79.67889109205466,
+          "cpu": 57.365709660137966
+        },
+        "node_2": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 62.90290298299342,
+          "memory": 0.0,
+          "cpu": 54.72676503469841
+        },
+        "node_3": {
+          "state": "healthy",
+          "is_leader": false,
+          "disk": 0.0,
+          "memory": 0.0,
+          "cpu": 0.0
+        },
+        "node_4": {
+          "state": "degraded",
+          "is_leader": false,
+          "disk": 55.822123382759,
+          "memory": 0.0,
+          "cpu": 41.49487775637858
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "defects_found": [
+    {
+      "id": "DEFECT-S4-001",
+      "severity": "P0",
+      "type": "recovery_failure",
+      "description": "\u81ea\u52a8\u6062\u590d\u5931\u8d25 4 \u6b21",
+      "failed_count": 4
+    }
+  ]
+}

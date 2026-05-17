@@ -1,0 +1,38 @@
+{
+  "scenario": "resource_exhaustion",
+  "file_handle_test": {
+    "target": 1000,
+    "achieved": 1000,
+    "errors": [],
+    "graceful_degradation": false
+  },
+  "memory_test": {
+    "target_mb": 500,
+    "peak_mb": 1129.8828125,
+    "objects_created": 500,
+    "errors": [],
+    "graceful_degradation": false
+  },
+  "connection_pool_test": {
+    "connections_attempted": 100,
+    "connections_successful": 100,
+    "errors": [],
+    "graceful_degradation": false
+  },
+  "pressure_test": {
+    "operations_under_pressure": [],
+    "errors": [
+      {
+        "phase": "system_init",
+        "error": "\u672a\u77e5\u7684\u5d4c\u5165\u63d0\u4f9b\u8005: sentence_transformer\uff0c\u5df2\u6ce8\u518c: ['sentence_transformers', 'bge']"
+      }
+    ],
+    "recovery_successful": false
+  },
+  "graceful_degradation_events": [],
+  "total_errors": 0,
+  "degradation_detected": false,
+  "recovery_successful": false,
+  "defects": [],
+  "defect_count": 0
+}

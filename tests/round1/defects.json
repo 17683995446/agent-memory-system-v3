@@ -1,0 +1,62 @@
+{
+  "report_info": {
+    "generated_at": "2026-05-17T06:20:00",
+    "round": "round1",
+    "total_defects": 2,
+    "total_scenarios": 5
+  },
+  "summary": {
+    "p0_count": 1,
+    "p1_count": 1,
+    "p2_count": 0,
+    "p3_count": 0
+  },
+  "defects_by_severity": {
+    "P0": [
+      {
+        "id": "DEFECT-S4-001",
+        "severity": "P0",
+        "type": "recovery_failure",
+        "description": "自动恢复失败 4 次",
+        "failed_count": 4,
+        "scenario": "级联故障注入",
+        "source_file": "scenario4_cascading_failure_metrics.json"
+      }
+    ],
+    "P1": [
+      {
+        "id": "DEFECT-S5-001",
+        "severity": "P1",
+        "type": "low_commit_rate",
+        "description": "事务提交率过低: 31.0%",
+        "threshold": "90%",
+        "actual": "31.0%",
+        "scenario": "分布式事务压力",
+        "source_file": "scenario5_distributed_transaction_metrics.json"
+      }
+    ],
+    "P2": [],
+    "P3": []
+  },
+  "all_defects": [
+    {
+      "id": "DEFECT-S5-001",
+      "severity": "P1",
+      "type": "low_commit_rate",
+      "description": "事务提交率过低: 31.0%",
+      "threshold": "90%",
+      "actual": "31.0%",
+      "scenario": "分布式事务压力",
+      "source_file": "scenario5_distributed_transaction_metrics.json"
+    },
+    {
+      "id": "DEFECT-S4-001",
+      "severity": "P0",
+      "type": "recovery_failure",
+      "description": "自动恢复失败 4 次",
+      "failed_count": 4,
+      "scenario": "级联故障注入",
+      "source_file": "scenario4_cascading_failure_metrics.json"
+    }
+  ]
+}

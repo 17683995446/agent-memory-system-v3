@@ -1,0 +1,459 @@
+{
+  "scenario_name": "Raft\u96c6\u7fa4\u8111\u88c2\u6062\u590d",
+  "start_time": 1778995768.762572,
+  "end_time": 1778995775.9431744,
+  "total_duration_sec": 7.180602312088013,
+  "cluster_size": 5,
+  "partition_groups": [
+    2,
+    3
+  ],
+  "split_start_time": 1778995770.2380807,
+  "split_end_time": 1778995773.9390185,
+  "split_duration_sec": 3.7009377479553223,
+  "writes_partition_1": 50,
+  "writes_partition_2": 0,
+  "total_writes_during_split": 50,
+  "recovery_start_time": 1778995773.9387724,
+  "recovery_end_time": 1778995773.9390178,
+  "recovery_duration_sec": 0.0002453327178955078,
+  "data_consistency_violations": 0,
+  "conflicts_detected": 0,
+  "conflicts_resolved": 0,
+  "data_loss_entries": 0,
+  "election_count": 2,
+  "leader_changes": 0,
+  "cluster_states": [
+    {
+      "phase": "split_created",
+      "timestamp": 1778995770.2381535,
+      "leader_id": "node_0",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partitioned_nodes": 5,
+      "group1_nodes": 2,
+      "group2_nodes": 3,
+      "election_count": 1,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "state": "leader",
+          "term": 1,
+          "commit_index": 99,
+          "log_size": 100,
+          "is_alive": true,
+          "is_partitioned": true,
+          "partition_group": 1
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "state": "follower",
+          "term": 1,
+          "commit_index": -1,
+          "log_size": 100,
+          "is_alive": true,
+          "is_partitioned": true,
+          "partition_group": 1
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "state": "follower",
+          "term": 2,
+          "commit_index": -1,
+          "log_size": 100,
+          "is_alive": true,
+          "is_partitioned": true,
+          "partition_group": 2
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "state": "leader",
+          "term": 2,
+          "commit_index": -1,
+          "log_size": 100,
+          "is_alive": true,
+          "is_partitioned": true,
+          "partition_group": 2
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "state": "follower",
+          "term": 2,
+          "commit_index": -1,
+          "log_size": 100,
+          "is_alive": true,
+          "is_partitioned": true,
+          "partition_group": 2
+        }
+      }
+    },
+    {
+      "phase": "partition_healed",
+      "timestamp": 1778995773.9390352,
+      "leader_id": "node_3",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partitioned_nodes": 0,
+      "group1_nodes": 0,
+      "group2_nodes": 0,
+      "election_count": 2,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "state": "follower",
+          "term": 3,
+          "commit_index": 149,
+          "log_size": 150,
+          "is_alive": true,
+          "is_partitioned": false,
+          "partition_group": 0
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "state": "follower",
+          "term": 3,
+          "commit_index": 149,
+          "log_size": 150,
+          "is_alive": true,
+          "is_partitioned": false,
+          "partition_group": 0
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "state": "follower",
+          "term": 3,
+          "commit_index": 149,
+          "log_size": 150,
+          "is_alive": true,
+          "is_partitioned": false,
+          "partition_group": 0
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "state": "leader",
+          "term": 3,
+          "commit_index": 149,
+          "log_size": 150,
+          "is_alive": true,
+          "is_partitioned": false,
+          "partition_group": 0
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "state": "follower",
+          "term": 3,
+          "commit_index": 149,
+          "log_size": 150,
+          "is_alive": true,
+          "is_partitioned": false,
+          "partition_group": 0
+        }
+      }
+    }
+  ],
+  "write_timeline": [
+    {
+      "timestamp": 1778995773.246802,
+      "partition_group": 1,
+      "entry_id": "p1_0000_1778995773241641",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.262053,
+      "partition_group": 1,
+      "entry_id": "p1_0001_1778995773256933",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.275255,
+      "partition_group": 1,
+      "entry_id": "p1_0002_1778995773272150",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.287449,
+      "partition_group": 1,
+      "entry_id": "p1_0003_1778995773285348",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.3027017,
+      "partition_group": 1,
+      "entry_id": "p1_0004_1778995773297555",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.3179498,
+      "partition_group": 1,
+      "entry_id": "p1_0005_1778995773312813",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.331247,
+      "partition_group": 1,
+      "entry_id": "p1_0006_1778995773328101",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.3444443,
+      "partition_group": 1,
+      "entry_id": "p1_0007_1778995773341348",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.3586738,
+      "partition_group": 1,
+      "entry_id": "p1_0008_1778995773354549",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.3738747,
+      "partition_group": 1,
+      "entry_id": "p1_0009_1778995773368770",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.387079,
+      "partition_group": 1,
+      "entry_id": "p1_0010_1778995773383975",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.399323,
+      "partition_group": 1,
+      "entry_id": "p1_0011_1778995773397207",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.4145172,
+      "partition_group": 1,
+      "entry_id": "p1_0012_1778995773409419",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.428715,
+      "partition_group": 1,
+      "entry_id": "p1_0013_1778995773424615",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.4439328,
+      "partition_group": 1,
+      "entry_id": "p1_0014_1778995773438816",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.459127,
+      "partition_group": 1,
+      "entry_id": "p1_0015_1778995773454027",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.4733667,
+      "partition_group": 1,
+      "entry_id": "p1_0016_1778995773469245",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.4885862,
+      "partition_group": 1,
+      "entry_id": "p1_0017_1778995773483478",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.5018036,
+      "partition_group": 1,
+      "entry_id": "p1_0018_1778995773498686",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.5160382,
+      "partition_group": 1,
+      "entry_id": "p1_0019_1778995773511927",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.5312479,
+      "partition_group": 1,
+      "entry_id": "p1_0020_1778995773526140",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.5454404,
+      "partition_group": 1,
+      "entry_id": "p1_0021_1778995773541340",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.558645,
+      "partition_group": 1,
+      "entry_id": "p1_0022_1778995773555541",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.5708492,
+      "partition_group": 1,
+      "entry_id": "p1_0023_1778995773568743",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.5840614,
+      "partition_group": 1,
+      "entry_id": "p1_0024_1778995773580953",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.5982687,
+      "partition_group": 1,
+      "entry_id": "p1_0025_1778995773594158",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.6134672,
+      "partition_group": 1,
+      "entry_id": "p1_0026_1778995773608367",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.6277132,
+      "partition_group": 1,
+      "entry_id": "p1_0027_1778995773623571",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.6429455,
+      "partition_group": 1,
+      "entry_id": "p1_0028_1778995773637833",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.6571324,
+      "partition_group": 1,
+      "entry_id": "p1_0029_1778995773653039",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.6723385,
+      "partition_group": 1,
+      "entry_id": "p1_0030_1778995773667230",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.6845424,
+      "partition_group": 1,
+      "entry_id": "p1_0031_1778995773682439",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.6967525,
+      "partition_group": 1,
+      "entry_id": "p1_0032_1778995773694644",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.7119875,
+      "partition_group": 1,
+      "entry_id": "p1_0033_1778995773706866",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.7261899,
+      "partition_group": 1,
+      "entry_id": "p1_0034_1778995773722089",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.739373,
+      "partition_group": 1,
+      "entry_id": "p1_0035_1778995773736279",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.7525606,
+      "partition_group": 1,
+      "entry_id": "p1_0036_1778995773749464",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.7657907,
+      "partition_group": 1,
+      "entry_id": "p1_0037_1778995773762659",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.7780027,
+      "partition_group": 1,
+      "entry_id": "p1_0038_1778995773775892",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.7911844,
+      "partition_group": 1,
+      "entry_id": "p1_0039_1778995773788091",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.8053927,
+      "partition_group": 1,
+      "entry_id": "p1_0040_1778995773801284",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.820607,
+      "partition_group": 1,
+      "entry_id": "p1_0041_1778995773815498",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.8358014,
+      "partition_group": 1,
+      "entry_id": "p1_0042_1778995773830703",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.8499894,
+      "partition_group": 1,
+      "entry_id": "p1_0043_1778995773845893",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.862188,
+      "partition_group": 1,
+      "entry_id": "p1_0044_1778995773860088",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.875375,
+      "partition_group": 1,
+      "entry_id": "p1_0045_1778995773872276",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.8875604,
+      "partition_group": 1,
+      "entry_id": "p1_0046_1778995773885468",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.902796,
+      "partition_group": 1,
+      "entry_id": "p1_0047_1778995773897650",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.9151807,
+      "partition_group": 1,
+      "entry_id": "p1_0048_1778995773913050",
+      "success": true
+    },
+    {
+      "timestamp": 1778995773.928405,
+      "partition_group": 1,
+      "entry_id": "p1_0049_1778995773925273",
+      "success": true
+    }
+  ],
+  "conflict_timeline": [],
+  "errors": [],
+  "defects_found": []
+}

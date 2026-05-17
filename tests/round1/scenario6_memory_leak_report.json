@@ -1,0 +1,31 @@
+{
+  "scenario": "memory_leak_detection",
+  "duration_seconds": 90,
+  "ops_per_second": 100,
+  "total_created": 8700,
+  "total_deleted": 4350,
+  "peak_memory_mb": 3.4819488525390625,
+  "leak_detected": false,
+  "leak_count": 0,
+  "leak_details": [],
+  "error_count": 0,
+  "errors": [],
+  "checkpoints": [
+    {
+      "iteration": 20,
+      "elapsed_seconds": 9.894474744796753,
+      "current_memory_mb": 0.2455282211303711,
+      "created": 1000,
+      "deleted": 500,
+      "leaks_found": 0
+    },
+    {
+      "iteration": 120,
+      "elapsed_seconds": 62.04505443572998,
+      "current_memory_mb": 0.27179527282714844,
+      "created": 6000,
+      "deleted": 3000,
+      "leaks_found": 0
+    }
+  ]
+}
