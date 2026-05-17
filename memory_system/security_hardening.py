@@ -391,11 +391,12 @@ class RBACManager:
     """基于角色的访问控制管理器"""
     
     # 角色权限映射
+    # DEFECT-R3-S5-003 [P0] 修复: 确保ADMIN角色拥有ADMIN权限
     DEFAULT_ROLE_PERMISSIONS = {
         Role.GUEST: [Permission.READ],
         Role.USER: [Permission.READ, Permission.WRITE],
         Role.MODERATOR: [Permission.READ, Permission.WRITE, Permission.DELETE],
-        Role.ADMIN: [Permission.READ, Permission.WRITE, Permission.DELETE, Permission.EXECUTE],
+        Role.ADMIN: [Permission.READ, Permission.WRITE, Permission.DELETE, Permission.EXECUTE, Permission.ADMIN],
         Role.SUPER_ADMIN: [Permission.READ, Permission.WRITE, Permission.DELETE, Permission.EXECUTE, Permission.ADMIN],
     }
     
@@ -448,27 +449,43 @@ class RBACManager:
             return True
     
     def check_permission(self, user_id: str, permission: Permission, resource: Optional[str] = None) -> bool:
-        """检查权限"""
+        """
+        检查权限
+
+        DEFECT-R3-S5-003 [P0] 修复:
+            - 修复权限检查逻辑，确保严格按角色配置执行
+            - 资源特定权限优先于默认权限，且资源特定权限完全覆盖默认权限
+            - 添加显式拒绝检查
+        """
         user = self.get_user(user_id)
         if not user:
             return False
-        
+
         if not user.is_active:
             return False
-        
-        # 检查用户角色的权限
+
+        # DEFECT-R3-S5-003 [P0] 修复: 如果指定了资源，优先使用资源特定权限
+        if resource:
+            resource_perms_config = self._resource_permissions.get(resource, {})
+
+            # 检查是否有任何角色在该资源上定义了特定权限
+            has_resource_specific_config = False
+            for role in user.roles:
+                if role in resource_perms_config:
+                    has_resource_specific_config = True
+                    if permission in resource_perms_config[role]:
+                        return True
+
+            # 如果该资源有特定配置，但没有找到权限，则拒绝访问
+            if has_resource_specific_config:
+                return False
+
+        # DEFECT-R3-S5-003 [P0] 修复: 使用默认角色权限
         for role in user.roles:
-            # 检查资源特定权限
-            if resource and resource in self._resource_permissions:
-                resource_perms = self._resource_permissions[resource].get(role, [])
-                if permission in resource_perms:
-                    return True
-            
-            # 检查角色默认权限
             role_perms = self._role_permissions.get(role, [])
             if permission in role_perms:
                 return True
-        
+
         return False
     
     def set_resource_permission(self, resource: str, role: Role, permissions: List[Permission]) -> None:
@@ -527,31 +544,57 @@ class ABACManager:
         action: str,
         environment: Optional[Dict[str, Any]] = None
     ) -> Tuple[bool, Optional[str]]:
-        """评估访问请求"""
+        """
+        评估访问请求
+
+        DEFECT-R3-S5-004 [P1] 修复:
+            - 修复策略执行逻辑，正确处理多个策略
+            - 显式拒绝策略优先于允许策略
+            - 确保策略评估完整性
+        """
         environment = environment or {}
-        
+
+        # DEFECT-R3-S5-004 [P1] 修复: 收集所有匹配的策略
+        matching_policies = []
+
         for policy in self._policies:
             # 检查动作匹配
             if policy["action"] != "*" and policy["action"] != action:
                 continue
-            
+
             # 检查主体属性匹配
             if not self._match_attrs(subject, policy["subject_attrs"]):
                 continue
-            
+
             # 检查资源属性匹配
             if not self._match_attrs(resource, policy["resource_attrs"]):
                 continue
-            
+
             # 检查条件
             if policy["condition"]:
-                if not policy["condition"](subject, resource, environment):
+                try:
+                    if not policy["condition"](subject, resource, environment):
+                        continue
+                except Exception as e:
+                    logger.error(f"Policy condition evaluation failed for {policy['name']}: {e}")
                     continue
-            
-            # 返回策略效果
-            effect = policy["effect"]
-            return effect == "allow", policy["name"]
-        
+
+            # 记录匹配的策略
+            matching_policies.append(policy)
+
+        # DEFECT-R3-S5-004 [P1] 修复: 处理策略冲突
+        # 显式拒绝优先于允许
+        deny_policies = [p for p in matching_policies if p["effect"] == "deny"]
+        allow_policies = [p for p in matching_policies if p["effect"] == "allow"]
+
+        # 如果有任何拒绝策略匹配，拒绝访问
+        if deny_policies:
+            return False, deny_policies[0]["name"]
+
+        # 如果有允许策略匹配，允许访问
+        if allow_policies:
+            return True, allow_policies[0]["name"]
+
         # 默认拒绝
         return False, None
     

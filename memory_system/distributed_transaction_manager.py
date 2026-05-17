@@ -624,6 +624,10 @@ class TwoPhaseCommitCoordinator:
         """
         执行提交
 
+        DEFECT-R3-S4-001 [P0] 修复:
+            - 确保所有参与者在提交前状态一致
+            - 验证所有参与者都已准备好
+            - 添加参与者状态同步检查
         DEFECT-S5-001 [P1] 修复:
             - 优化并发提交
             - 添加超时控制
@@ -632,21 +636,48 @@ class TwoPhaseCommitCoordinator:
         import time
         commit_start = time.time()
 
+        # DEFECT-R3-S4-001 [P0] 修复: 在提交前验证所有参与者状态一致
+        # 重新加载事务以获取最新状态
+        tx = await self.store.load_transaction(tx.tx_id)
+        if not tx:
+            logger.error(f"Transaction {tx.tx_id} not found during commit")
+            return False
+
+        # 验证事务状态为 PREPARED
+        if tx.status != TransactionStatus.PREPARED:
+            logger.error(f"Transaction {tx.tx_id} not in PREPARED state (current: {tx.status})")
+            return False
+
+        # 验证所有参与者都已准备好
+        if not tx.all_prepared():
+            unprepared = tx._participants - tx._prepared_participants
+            logger.error(f"Transaction {tx.tx_id} has unprepared participants: {unprepared}")
+            return False
+
+        # 验证所有参与者状态为 PREPARED
+        for participant_id in tx._participants:
+            participant = self._participants.get(participant_id)
+            if participant and participant.status != ParticipantStatus.PREPARED:
+                logger.error(f"Participant {participant_id} not in PREPARED state (current: {participant.status})")
+                return False
+
         tx.status = TransactionStatus.COMMITTING
         await self.store.save_transaction(tx)
 
         logger.info(f"Transaction {tx.tx_id} entering commit phase")
 
-        # DEFECT-S5-001 [P1] 修复: 并行向所有参与者发送提交请求，带并发控制
+        # DEFECT-R3-S4-001 [P0] 修复: 确保所有参与者提交成功
         commit_tasks = []
+        participant_ids = []
         for participant_id in tx._participants:
             participant = self._participants.get(participant_id)
             if participant:
-                # 使用信号量限制并发
                 task = self._commit_participant_with_semaphore(participant, tx.tx_id, tx.context)
                 commit_tasks.append(task)
+                participant_ids.append(participant_id)
 
         success = True
+        committed_participants = []
         if commit_tasks:
             try:
                 # DEFECT-S5-001 [P1] 修复: 带超时的并发提交
@@ -655,13 +686,22 @@ class TwoPhaseCommitCoordinator:
                     timeout=self._commit_timeout
                 )
 
-                # 检查是否有失败
-                failures = [r for r in results if isinstance(r, Exception) or r is False]
+                # 检查每个参与者的提交结果
+                for i, result in enumerate(results):
+                    participant_id = participant_ids[i]
+                    if isinstance(result, Exception):
+                        logger.error(f"Transaction {tx.tx_id} participant {participant_id} commit failed with exception: {result}")
+                        success = False
+                    elif result is False:
+                        logger.error(f"Transaction {tx.tx_id} participant {participant_id} commit returned False")
+                        success = False
+                    else:
+                        committed_participants.append(participant_id)
 
-                if failures:
-                    logger.error(f"Transaction {tx.tx_id} commit had failures: {failures}")
-                    success = False
-                    # 注意：2PC中提交阶段失败需要人工干预
+                if not success:
+                    # DEFECT-R3-S4-001 [P0] 修复: 如果有任何参与者提交失败，记录不一致状态
+                    logger.error(f"Transaction {tx.tx_id} commit had failures. Committed: {committed_participants}")
+                    # 注意：2PC中提交阶段失败需要人工干预，但我们需要记录哪些参与者已提交
 
             except asyncio.TimeoutError:
                 logger.error(f"Transaction {tx.tx_id} commit phase timed out")
@@ -669,7 +709,13 @@ class TwoPhaseCommitCoordinator:
                 async with self._stats_lock:
                     self._stats["commit_timeouts"] += 1
 
-        tx.status = TransactionStatus.COMMITTED if success else TransactionStatus.ABORTED
+        # DEFECT-R3-S4-001 [P0] 修复: 只有当所有参与者都成功提交时才标记为 COMMITTED
+        if success and len(committed_participants) == len(commit_tasks):
+            tx.status = TransactionStatus.COMMITTED
+        else:
+            tx.status = TransactionStatus.ABORTED
+            success = False
+
         await self.store.save_transaction(tx)
 
         # DEFECT-S5-001 [P1] 修复: 更新性能统计
