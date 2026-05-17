@@ -1,0 +1,81 @@
+{
+  "scenario_name": "\u5b8c\u6574\u707e\u96be\u6062\u590d\u6f14\u7ec3",
+  "start_time": 1778984789.3955102,
+  "end_time": 1778986420.7320201,
+  "total_duration_sec": 1631.3365099430084,
+  "target_rpo_seconds": 300.0,
+  "target_rto_seconds": 600.0,
+  "actual_rpo_seconds": 0,
+  "actual_rto_seconds": 5.7220458984375e-06,
+  "rpo_met": false,
+  "rto_met": true,
+  "disaster_events": 2,
+  "failover_events": 1,
+  "recovery_events": 1,
+  "total_data_entries": 6127,
+  "data_backed_up": 0,
+  "data_recovered": 2929,
+  "data_loss_count": 3198,
+  "data_loss_percentage": 52.195201566835316,
+  "primary_region": "us-east-1",
+  "secondary_region": "us-west-2",
+  "active_region": "us-east-1",
+  "disaster_timeline": [
+    {
+      "phase": 1,
+      "type": "primary_region_failure",
+      "timestamp": 1778984799.396415,
+      "success": true,
+      "region_id": "us-east-1",
+      "disaster_time": 1778984799.3961332,
+      "last_backup_time": null,
+      "data_loss_seconds": Infinity,
+      "failover_triggered": true,
+      "new_active_region": "us-west-2",
+      "failover_duration_seconds": 5.7220458984375e-06
+    },
+    {
+      "phase": 4,
+      "type": "secondary_disaster",
+      "timestamp": 1778984824.3995457,
+      "success": true,
+      "region_id": "us-east-1",
+      "disaster_time": 1778984824.3993857,
+      "last_backup_time": 1778984819.3961549,
+      "data_loss_seconds": 5.003230810165405,
+      "failover_triggered": true,
+      "new_active_region": "us-west-2",
+      "failover_duration_seconds": 5.245208740234375e-06
+    }
+  ],
+  "recovery_timeline": [
+    {
+      "phase": 2,
+      "type": "region_recovery",
+      "timestamp": 1778984809.3974242,
+      "success": true,
+      "region_id": "us-east-1",
+      "restore_duration_seconds": 5.888938903808594e-05,
+      "data_recovered": 1602
+    }
+  ],
+  "failover_timeline": [
+    {
+      "phase": 1,
+      "type": "automatic_failover",
+      "timestamp": 1778984799.396419,
+      "new_active_region": "us-west-2",
+      "failover_duration": 5.7220458984375e-06
+    },
+    {
+      "phase": 3,
+      "type": "failback_to_primary",
+      "timestamp": 1778984814.3985949,
+      "target_region": "us-east-1"
+    }
+  ],
+  "backup_duration_seconds": 0.0,
+  "restore_duration_seconds": 5.888938903808594e-05,
+  "verification_duration_seconds": 0.0,
+  "errors": []
+}

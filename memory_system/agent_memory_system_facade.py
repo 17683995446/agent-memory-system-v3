@@ -9,6 +9,7 @@ import asyncio
 import time
 import importlib
 import pkgutil
+import weakref
 from cachetools import TTLCache
 
 from memory_system.core_abstractions.memory_data_models import (
@@ -51,6 +52,12 @@ from memory_system.core_abstractions.system_constants_definitions import (
 )
 
 logger = get_logger(__name__)
+
+# DEFECT-001 [P0] 修复: 全局记忆对象弱引用缓存，用于跟踪和清理记忆对象
+_memory_object_cache: weakref.WeakSet = weakref.WeakSet()
+
+# DEFECT-001 [P0] 修复: 事件监听器注册表，用于自动清理
+_event_listener_registry: Dict[str, List[callable]] = {}
 
 
 class CachingEmbeddingProxy:
@@ -163,6 +170,17 @@ class MemorySystem:
             "start_time": time.time()
         }
         self._stats_lock = asyncio.Lock()  # 线程安全锁
+
+        # DEFECT-001 [P0] 修复: 注册到弱引用缓存，允许垃圾回收
+        _memory_object_cache.add(self)
+
+        # DEFECT-001 [P0] 修复: 初始化事件监听器列表
+        self._event_listeners: List[callable] = []
+
+        # DEFECT-001 [P0] 修复: 启动定期清理任务
+        self._cleanup_task: Optional[asyncio.Task] = None
+        self._cleanup_interval = 300  # 每5分钟清理一次
+        self._start_cleanup_task()
 
         # 设置系统信息
         self.metrics.set_system_info(
@@ -806,8 +824,85 @@ class MemorySystem:
         
         return {**direct_results, "associations": associations}
 
+    def _start_cleanup_task(self):
+        """DEFECT-001 [P0] 修复: 启动定期清理任务"""
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                self._cleanup_task = asyncio.create_task(self._cleanup_loop())
+        except RuntimeError:
+            # 没有事件循环，稍后启动
+            pass
+
+    async def _cleanup_loop(self):
+        """DEFECT-001 [P0] 修复: 定期清理循环"""
+        while True:
+            try:
+                await asyncio.sleep(self._cleanup_interval)
+                await self._perform_cleanup()
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.warning(f"Cleanup task error: {e}")
+
+    async def _perform_cleanup(self):
+        """DEFECT-001 [P0] 修复: 执行清理操作"""
+        # 清理过期的嵌入缓存
+        if hasattr(self._embedding_cache, 'expired'):
+            self._embedding_cache.expired()
+
+        # 清理短期记忆中的过期项
+        if self.short_term and hasattr(self.short_term, '_cleanup_expired'):
+            await self.short_term._cleanup_expired()
+
+        logger.debug("Memory system cleanup completed")
+
+    def _register_event_listener(self, listener: callable):
+        """DEFECT-001 [P0] 修复: 注册事件监听器"""
+        self._event_listeners.append(listener)
+        # 同时注册到全局注册表
+        listener_id = id(listener)
+        if listener_id not in _event_listener_registry:
+            _event_listener_registry[listener_id] = []
+        _event_listener_registry[listener_id].append(listener)
+
+    def _unregister_event_listener(self, listener: callable):
+        """DEFECT-001 [P0] 修复: 注销事件监听器"""
+        if listener in self._event_listeners:
+            self._event_listeners.remove(listener)
+        # 从全局注册表移除
+        listener_id = id(listener)
+        if listener_id in _event_listener_registry:
+            if listener in _event_listener_registry[listener_id]:
+                _event_listener_registry[listener_id].remove(listener)
+
+    def _clear_all_event_listeners(self):
+        """DEFECT-001 [P0] 修复: 清除所有事件监听器"""
+        for listener in self._event_listeners[:]:
+            self._unregister_event_listener(listener)
+        self._event_listeners.clear()
+
     async def close(self):
-        """关闭系统"""
+        """关闭系统 - DEFECT-001 [P0] 修复: 确保资源正确释放"""
+        # DEFECT-001 [P0] 修复: 停止清理任务
+        if self._cleanup_task:
+            self._cleanup_task.cancel()
+            try:
+                await self._cleanup_task
+            except asyncio.CancelledError:
+                pass
+            self._cleanup_task = None
+
+        # DEFECT-001 [P0] 修复: 清除所有事件监听器
+        self._clear_all_event_listeners()
+
+        # DEFECT-001 [P0] 修复: 从弱引用缓存中移除
+        if self in _memory_object_cache:
+            _memory_object_cache.discard(self)
+
+        # DEFECT-001 [P0] 修复: 清理嵌入缓存
+        self._embedding_cache.clear()
+
         if self.ttl_manager:
             await self.ttl_manager.stop()
         await self.storage.close()

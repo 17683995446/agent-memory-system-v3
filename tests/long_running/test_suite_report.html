@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Memory System V3.0 - 长时间运行测试套件 - 测试报告</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .summary-card.passed {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        .summary-card.failed {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .summary-card .value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .status-passed {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .status-failed {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .status-skipped {
+            color: #ff9800;
+            font-weight: bold;
+        }
+        .system-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .system-info pre {
+            margin: 0;
+            overflow-x: auto;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agent Memory System V3.0 - 长时间运行测试套件</h1>
+        <p class="timestamp">执行时间: 2026-05-17 03:22:46 - 
+           2026-05-17 04:17:20</p>
+        <p class="timestamp">总耗时: 54.58 分钟</p>
+        
+        <h2>执行摘要</h2>
+        <div class="summary">
+            <div class="summary-card">
+                <h3>总场景数</h3>
+                <div class="value">8</div>
+            </div>
+            <div class="summary-card passed">
+                <h3>通过</h3>
+                <div class="value">0</div>
+            </div>
+            <div class="summary-card failed">
+                <h3>失败</h3>
+                <div class="value">8</div>
+            </div>
+            <div class="summary-card">
+                <h3>跳过</h3>
+                <div class="value">0</div>
+            </div>
+        </div>
+        
+        <h2>系统信息</h2>
+        <div class="system-info">
+            <pre>{
+  "cpu": {
+    "physical_cores": 2,
+    "logical_cores": 2,
+    "cpu_percent": 3.5
+  },
+  "memory": {
+    "total_gb": 3.8318748474121094,
+    "available_gb": 2.5935935974121094,
+    "percent_used": 32.3
+  },
+  "disk": {
+    "total_gb": 39.11885070800781,
+    "free_gb": 26.254806518554688,
+    "percent_used": 32.9
+  },
+  "platform": "linux",
+  "python_version": "3.10.12 (main, Mar  3 2026, 11:56:32) [GCC 11.4.0]",
+  "timestamp": "2026-05-17T03:22:47.026522"
+}</pre>
+        </div>
+        
+        <h2>详细结果</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>场景ID</th>
+                    <th>场景名称</th>
+                    <th>状态</th>
+                    <th>耗时(秒)</th>
+                    <th>返回码</th>
+                    <th>报告文件</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td>24小时高负载Soak测试</td>
+                    <td class="status-failed">FAILED</td>
+                    <td>424.65</td>
+                    <td>-1</td>
+                    <td>N/A</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>极端并发写入风暴</td>
+                    <td class="status-failed">FAILED</td>
+                    <td>390.06</td>
+                    <td>-1</td>
+                    <td>N/A</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>级联故障恢复测试</td>
+                    <td class="status-failed">FAILED</td>
+                    <td>390.01</td>
+                    <td>-1</td>
+                    <td>N/A</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>内存压力与OOM测试</td>
+                    <td class="status-failed">FAILED</td>
+                    <td>390.03</td>
+                    <td>-1</td>
+                    <td>N/A</td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>磁盘故障与数据损坏</td>
+                    <td class="status-failed">FAILED</td>
+                    <td>492.49</td>
+                    <td>-1</td>
+                    <td>N/A</td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>时钟漂移与分布式一致性</td>
+                    <td class="status-failed">FAILED</td>
+                    <td>390.08</td>
+                    <td>-1</td>
+                    <td>N/A</td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td>网络分区脑裂测试</td>
+                    <td class="status-failed">FAILED</td>
+                    <td>390.01</td>
+                    <td>-1</td>
+                    <td>N/A</td>
+                </tr>
+
+                <tr>
+                    <td>8</td>
+                    <td>完整灾难恢复演练</td>
+                    <td class="status-failed">FAILED</td>
+                    <td>390.02</td>
+                    <td>-1</td>
+                    <td>N/A</td>
+                </tr>
+
+            </tbody>
+        </table>
+        
+        <h2>失败详情</h2>
+
+        <div style="background-color: #ffebee; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>场景 1: 24小时高负载Soak测试</h4>
+            <p><strong>错误:</strong> Test timeout after 390 seconds</p>
+            <pre style="background-color: #f5f5f5; padding: 10px; overflow-x: auto;">
+[TIMEOUT] Test exceeded 390 seconds</pre>
+        </div>
+
+        <div style="background-color: #ffebee; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>场景 2: 极端并发写入风暴</h4>
+            <p><strong>错误:</strong> Test timeout after 390 seconds</p>
+            <pre style="background-color: #f5f5f5; padding: 10px; overflow-x: auto;">
+[TIMEOUT] Test exceeded 390 seconds</pre>
+        </div>
+
+        <div style="background-color: #ffebee; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>场景 3: 级联故障恢复测试</h4>
+            <p><strong>错误:</strong> Test timeout after 390 seconds</p>
+            <pre style="background-color: #f5f5f5; padding: 10px; overflow-x: auto;">
+[TIMEOUT] Test exceeded 390 seconds</pre>
+        </div>
+
+        <div style="background-color: #ffebee; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>场景 4: 内存压力与OOM测试</h4>
+            <p><strong>错误:</strong> Test timeout after 390 seconds</p>
+            <pre style="background-color: #f5f5f5; padding: 10px; overflow-x: auto;">
+[TIMEOUT] Test exceeded 390 seconds</pre>
+        </div>
+
+        <div style="background-color: #ffebee; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>场景 5: 磁盘故障与数据损坏</h4>
+            <p><strong>错误:</strong> Test timeout after 390 seconds</p>
+            <pre style="background-color: #f5f5f5; padding: 10px; overflow-x: auto;">
+[TIMEOUT] Test exceeded 390 seconds</pre>
+        </div>
+
+        <div style="background-color: #ffebee; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>场景 6: 时钟漂移与分布式一致性</h4>
+            <p><strong>错误:</strong> Test timeout after 390 seconds</p>
+            <pre style="background-color: #f5f5f5; padding: 10px; overflow-x: auto;">
+[TIMEOUT] Test exceeded 390 seconds</pre>
+        </div>
+
+        <div style="background-color: #ffebee; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>场景 7: 网络分区脑裂测试</h4>
+            <p><strong>错误:</strong> Test timeout after 390 seconds</p>
+            <pre style="background-color: #f5f5f5; padding: 10px; overflow-x: auto;">
+[TIMEOUT] Test exceeded 390 seconds</pre>
+        </div>
+
+        <div style="background-color: #ffebee; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>场景 8: 完整灾难恢复演练</h4>
+            <p><strong>错误:</strong> Test timeout after 390 seconds</p>
+            <pre style="background-color: #f5f5f5; padding: 10px; overflow-x: auto;">
+[TIMEOUT] Test exceeded 390 seconds</pre>
+        </div>
+
+    </div>
+</body>
+</html>

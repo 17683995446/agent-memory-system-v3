@@ -1,0 +1,86 @@
+{
+  "scenario_name": "\u78c1\u76d8\u6545\u969c\u4e0e\u6570\u636e\u635f\u574f",
+  "start_time": 1778984789.3641968,
+  "end_time": 1778986787.2002256,
+  "total_duration_sec": 1997.8360288143158,
+  "disk_full_events": 0,
+  "disk_corruption_events": 0,
+  "checksum_failures": 0,
+  "data_corruptions_detected": 0,
+  "data_corruptions_repaired": 0,
+  "backup_operations": 3,
+  "restore_operations": 0,
+  "recovery_success_rate": 0.0,
+  "total_data_written_mb": 308.75246143341064,
+  "total_data_read_mb": 0.3576850891113281,
+  "disk_usage_timeline": [
+    {
+      "timestamp": 1778984794.3669438,
+      "used_space_mb": 57.55263042449951,
+      "free_space_mb": 966.4473695755005,
+      "usage_percent": 5.62037406489253,
+      "is_full": false,
+      "total_keys": 80641
+    },
+    {
+      "timestamp": 1778984799.3677764,
+      "used_space_mb": 113.57662105560303,
+      "free_space_mb": 910.423378944397,
+      "usage_percent": 11.091466899961233,
+      "is_full": false,
+      "total_keys": 158854
+    },
+    {
+      "timestamp": 1778984804.3685691,
+      "used_space_mb": 167.7003231048584,
+      "free_space_mb": 856.2996768951416,
+      "usage_percent": 16.376984678208828,
+      "is_full": false,
+      "total_keys": 234356
+    },
+    {
+      "timestamp": 1778984811.829902,
+      "used_space_mb": 221.4491481781006,
+      "free_space_mb": 802.5508518218994,
+      "usage_percent": 21.625893376767635,
+      "is_full": false,
+      "total_keys": 309346
+    },
+    {
+      "timestamp": 1778984816.8303628,
+      "used_space_mb": 273.29422664642334,
+      "free_space_mb": 750.7057733535767,
+      "usage_percent": 26.68888932093978,
+      "is_full": false,
+      "total_keys": 381538
+    },
+    {
+      "timestamp": 1778984826.7242866,
+      "used_space_mb": 300.6676597595215,
+      "free_space_mb": 723.3323402404785,
+      "usage_percent": 29.36207614839077,
+      "is_full": false,
+      "total_keys": 419809
+    },
+    {
+      "timestamp": 1778986741.0564718,
+      "used_space_mb": 308.6824588775635,
+      "free_space_mb": 715.3175411224365,
+      "usage_percent": 30.14477137476206,
+      "is_full": false,
+      "total_keys": 430923
+    },
+    {
+      "timestamp": 1778986750.9410255,
+      "used_space_mb": 308.75246143341064,
+      "free_space_mb": 715.2475385665894,
+      "usage_percent": 30.15160756185651,
+      "is_full": false,
+      "total_keys": 430985
+    }
+  ],
+  "corruption_events": [],
+  "recovery_events": [],
+  "checksum_verifications": [],
+  "errors": []
+}

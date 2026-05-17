@@ -9,8 +9,110 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field, ConfigDict
 import time
 import uuid
+import threading
 
 from memory_system.core_abstractions.mathematical_utility_functions import exp
+
+
+# DEFECT-006 [P1] 修复: 逻辑时钟实现，避免物理时钟漂移问题
+class LogicalClock:
+    """
+    逻辑时钟实现 (Lamport Timestamp)
+    用于替代物理时间戳，避免分布式系统中的时钟漂移问题
+    """
+    def __init__(self):
+        self._counter: int = 0
+        self._lock = threading.Lock()
+
+    def tick(self) -> int:
+        """递增本地逻辑时钟"""
+        with self._lock:
+            self._counter += 1
+            return self._counter
+
+    def update(self, received_time: int) -> int:
+        """根据接收到的逻辑时钟更新本地时钟"""
+        with self._lock:
+            self._counter = max(self._counter, received_time) + 1
+            return self._counter
+
+    def get_time(self) -> int:
+        """获取当前逻辑时钟值"""
+        with self._lock:
+            return self._counter
+
+
+# DEFECT-006 [P1] 修复: 混合时钟 - 结合物理时间和逻辑时钟
+class HybridClock:
+    """
+    混合时钟实现
+    结合物理时间(毫秒)和逻辑计数器，提供全序关系
+    格式: (physical_time_ms, logical_counter)
+    """
+    def __init__(self):
+        self._physical_time: int = 0
+        self._logical_counter: int = 0
+        self._lock = threading.Lock()
+
+    def now(self) -> tuple:
+        """获取当前混合时钟时间"""
+        with self._lock:
+            current_physical = int(time.time() * 1000)
+            if current_physical > self._physical_time:
+                self._physical_time = current_physical
+                self._logical_counter = 0
+            else:
+                self._logical_counter += 1
+            return (self._physical_time, self._logical_counter)
+
+    def update(self, received_time: tuple) -> tuple:
+        """根据接收到的混合时钟更新本地时钟"""
+        with self._lock:
+            current_physical = int(time.time() * 1000)
+            recv_physical, recv_logical = received_time
+
+            if recv_physical > self._physical_time:
+                self._physical_time = recv_physical
+                self._logical_counter = recv_logical + 1
+            elif recv_physical == self._physical_time:
+                self._logical_counter = max(self._logical_counter, recv_logical) + 1
+            else:
+                if current_physical > self._physical_time:
+                    self._physical_time = current_physical
+                    self._logical_counter = 0
+                else:
+                    self._logical_counter += 1
+
+            return (self._physical_time, self._logical_counter)
+
+    @staticmethod
+    def compare(t1: tuple, t2: tuple) -> int:
+        """比较两个混合时钟时间，返回 -1, 0, 1"""
+        if t1[0] < t2[0]:
+            return -1
+        elif t1[0] > t2[0]:
+            return 1
+        else:
+            if t1[1] < t2[1]:
+                return -1
+            elif t1[1] > t2[1]:
+                return 1
+            else:
+                return 0
+
+
+# 全局混合时钟实例
+_global_hybrid_clock = HybridClock()
+
+
+def get_hybrid_timestamp() -> tuple:
+    """DEFECT-006 [P1] 修复: 获取混合时间戳"""
+    return _global_hybrid_clock.now()
+
+
+def compare_hybrid_timestamps(t1: tuple, t2: tuple) -> int:
+    """DEFECT-006 [P1] 修复: 比较两个混合时间戳"""
+    return HybridClock.compare(t1, t2)
 
 
 class MemoryType(str, Enum):
@@ -31,13 +133,14 @@ class ImportanceLevel(int, Enum):
 
 class MemoryItem(BaseModel):
     """
-    记忆项数据模型
-    
+    记忆项数据模型 - DEFECT-006 [P1] 修复: 支持混合时间戳
+
     Attributes:
         content: 记忆内容
         memory_type: 记忆类型
         importance: 重要性等级
-        timestamp: 创建时间戳
+        timestamp: 创建时间戳 (物理时间，向后兼容)
+        hybrid_timestamp: 混合时间戳 (逻辑时钟，避免时钟漂移)
         access_count: 访问次数
         last_access: 最后访问时间
         embedding: 向量嵌入 (可选)
@@ -45,13 +148,17 @@ class MemoryItem(BaseModel):
         memory_id: 唯一标识符
     """
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    
+
     content: str = Field(..., description="记忆内容")
     memory_type: MemoryType = Field(default=MemoryType.SHORT_TERM)
     importance: ImportanceLevel = Field(default=ImportanceLevel.MEDIUM)
     timestamp: float = Field(default_factory=time.time)
+    # DEFECT-006 [P1] 修复: 添加混合时间戳字段
+    hybrid_timestamp: tuple = Field(default_factory=get_hybrid_timestamp)
     access_count: int = Field(default=0)
     last_access: float = Field(default_factory=time.time)
+    # DEFECT-006 [P1] 修复: 添加混合时间戳用于最后访问
+    last_access_hybrid: tuple = Field(default_factory=get_hybrid_timestamp)
     embedding: Optional[List[float]] = Field(default=None)
     metadata: Dict[str, Any] = Field(default_factory=dict)
     memory_id: str = Field(default_factory=lambda: uuid.uuid4().hex)
@@ -99,9 +206,11 @@ class MemoryItem(BaseModel):
         return float(score)
     
     def touch(self):
-        """更新访问统计"""
+        """更新访问统计 - DEFECT-006 [P1] 修复: 同时更新混合时间戳"""
         self.access_count += 1
         self.last_access = time.time()
+        # DEFECT-006 [P1] 修复: 更新混合时间戳
+        self.last_access_hybrid = get_hybrid_timestamp()
     
     def to_storage_dict(self) -> Dict[str, Any]:
         """转换为存储格式"""

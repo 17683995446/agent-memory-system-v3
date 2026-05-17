@@ -1,0 +1,411 @@
+2026-05-17 02:26:29,395 - __main__ - INFO - 开始完整灾难恢复演练
+2026-05-17 02:26:29,395 - __main__ - INFO - 目标RPO: 300.0秒
+2026-05-17 02:26:29,395 - __main__ - INFO - 目标RTO: 600.0秒
+2026-05-17 02:26:34,396 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 797, Writes: 797
+2026-05-17 02:26:34,396 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:26:34,396 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:26:39,396 - __main__ - INFO - Phase 1: 模拟主区域(us-east-1)灾难
+2026-05-17 02:26:39,396 - __main__ - INFO - Failover completed - New active: us-west-2, RPO: 0.00s, RTO: 0.00s
+2026-05-17 02:26:39,396 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 1600
+2026-05-17 02:26:39,396 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 0, Writes: 0
+2026-05-17 02:26:39,396 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:26:44,398 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 1600
+2026-05-17 02:26:44,398 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 790, Writes: 790
+2026-05-17 02:26:44,398 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:26:49,397 - __main__ - INFO - Phase 2: 恢复主区域
+2026-05-17 02:26:49,397 - __main__ - INFO - Region recovered - Data: 1602 entries
+2026-05-17 02:26:49,399 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: False, Data: 1602, Writes: 1600
+2026-05-17 02:26:49,399 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 1602, Writes: 1602
+2026-05-17 02:26:49,399 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:26:54,398 - __main__ - INFO - Phase 3: 切换回主区域
+2026-05-17 02:26:54,398 - __main__ - INFO - Failback to primary region completed
+2026-05-17 02:26:54,400 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 1602, Writes: 1600
+2026-05-17 02:26:54,400 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 2403, Writes: 2403
+2026-05-17 02:26:54,400 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:26:59,396 - __main__ - INFO - Backup created for us-east-1: 2403 entries
+2026-05-17 02:26:59,396 - __main__ - INFO - Backup created for us-west-2: 2403 entries
+2026-05-17 02:26:59,396 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 02:26:59,401 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 2404, Writes: 2402
+2026-05-17 02:26:59,401 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 2403, Writes: 2403
+2026-05-17 02:26:59,401 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:27:04,398 - __main__ - INFO - Phase 4: 模拟多区域故障
+2026-05-17 02:27:04,399 - __main__ - INFO - Secondary disaster simulation completed
+2026-05-17 02:27:04,402 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3198
+2026-05-17 02:27:04,402 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 2403, Writes: 2403
+2026-05-17 02:27:04,402 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:27:49,715 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3198
+2026-05-17 02:28:49,563 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 2922, Writes: 2922
+2026-05-17 02:29:00,012 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:29:08,764 - __main__ - INFO - Backup created for us-west-2: 2923 entries
+2026-05-17 02:29:10,950 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 02:29:13,357 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3198
+2026-05-17 02:29:15,218 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 2924, Writes: 2924
+2026-05-17 02:29:17,196 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:29:26,860 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3198
+2026-05-17 02:29:35,360 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 2927, Writes: 2927
+2026-05-17 02:31:27,615 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:35:20,237 - __main__ - INFO - Backup created for us-west-2: 2928 entries
+2026-05-17 02:37:47,444 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 02:40:08,036 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3198
+2026-05-17 02:42:13,563 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 2928, Writes: 2928
+2026-05-17 02:44:02,811 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:48:04,336 - __main__ - INFO - Backup created for us-west-2: 2929 entries
+2026-05-17 02:49:12,511 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 02:50:30,653 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3198
+2026-05-17 02:51:37,357 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 2929, Writes: 2929
+2026-05-17 02:52:32,607 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 02:59:01,045 - __main__ - INFO - 测试报告已保存到: /workspace/agent_memory_system_v2/tests/long_running/scenario8_disaster_recovery_report.json
+2026-05-17 04:10:49,006 - __main__ - INFO - 开始完整灾难恢复演练
+2026-05-17 04:10:49,007 - __main__ - INFO - 目标RPO: 300.0秒
+2026-05-17 04:10:49,007 - __main__ - INFO - 目标RTO: 600.0秒
+2026-05-17 04:10:54,007 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 825, Writes: 825
+2026-05-17 04:10:54,007 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:10:54,007 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:10:59,008 - __main__ - INFO - Phase 1: 模拟主区域(us-east-1)灾难
+2026-05-17 04:10:59,008 - __main__ - INFO - Failover completed - New active: us-west-2, RPO: 0.00s, RTO: 0.00s
+2026-05-17 04:10:59,008 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 1654
+2026-05-17 04:10:59,008 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 0, Writes: 0
+2026-05-17 04:10:59,008 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:04,009 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 1654
+2026-05-17 04:11:04,009 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 796, Writes: 796
+2026-05-17 04:11:04,009 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:09,008 - __main__ - INFO - Phase 2: 恢复主区域
+2026-05-17 04:11:09,009 - __main__ - INFO - Region recovered - Data: 1610 entries
+2026-05-17 04:11:09,010 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: False, Data: 1610, Writes: 1654
+2026-05-17 04:11:09,010 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 1610, Writes: 1610
+2026-05-17 04:11:09,010 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:14,009 - __main__ - INFO - Phase 3: 切换回主区域
+2026-05-17 04:11:14,010 - __main__ - INFO - Failback to primary region completed
+2026-05-17 04:11:14,011 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 1610, Writes: 1654
+2026-05-17 04:11:14,011 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 2418, Writes: 2418
+2026-05-17 04:11:14,011 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:19,007 - __main__ - INFO - Backup created for us-east-1: 2424 entries
+2026-05-17 04:11:19,007 - __main__ - INFO - Backup created for us-west-2: 2418 entries
+2026-05-17 04:11:19,007 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:11:19,012 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 2425, Writes: 2469
+2026-05-17 04:11:19,012 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 2418, Writes: 2418
+2026-05-17 04:11:19,012 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:24,010 - __main__ - INFO - Phase 4: 模拟多区域故障
+2026-05-17 04:11:24,010 - __main__ - INFO - Secondary disaster simulation completed
+2026-05-17 04:11:24,012 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:11:24,012 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 2419, Writes: 2419
+2026-05-17 04:11:24,012 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:29,013 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:11:29,013 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 3237, Writes: 3237
+2026-05-17 04:11:29,013 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:34,013 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:11:34,013 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 4053, Writes: 4053
+2026-05-17 04:11:34,013 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:39,014 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:11:39,014 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 4843, Writes: 4843
+2026-05-17 04:11:39,014 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:44,015 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:11:44,015 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 5655, Writes: 5655
+2026-05-17 04:11:44,015 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:49,008 - __main__ - INFO - Backup created for us-west-2: 6465 entries
+2026-05-17 04:11:49,008 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:11:49,016 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:11:49,016 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 6466, Writes: 6466
+2026-05-17 04:11:49,016 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:54,017 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:11:54,017 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 7285, Writes: 7285
+2026-05-17 04:11:54,017 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:11:59,017 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:11:59,017 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 8093, Writes: 8093
+2026-05-17 04:11:59,017 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:04,018 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:04,018 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 8882, Writes: 8882
+2026-05-17 04:12:04,018 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:09,019 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:09,019 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 9709, Writes: 9709
+2026-05-17 04:12:09,019 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:14,020 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:14,020 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 10513, Writes: 10513
+2026-05-17 04:12:14,020 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:19,009 - __main__ - INFO - Backup created for us-west-2: 11314 entries
+2026-05-17 04:12:19,009 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:12:19,021 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:19,021 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 11316, Writes: 11316
+2026-05-17 04:12:19,021 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:24,021 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:24,022 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 12132, Writes: 12132
+2026-05-17 04:12:24,022 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:29,022 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:29,022 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 12940, Writes: 12940
+2026-05-17 04:12:29,022 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:34,023 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:34,023 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 13739, Writes: 13739
+2026-05-17 04:12:34,023 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:39,023 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:39,023 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 14551, Writes: 14551
+2026-05-17 04:12:39,023 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:44,024 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:44,024 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 15336, Writes: 15336
+2026-05-17 04:12:44,024 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:49,011 - __main__ - INFO - Backup created for us-west-2: 16165 entries
+2026-05-17 04:12:49,011 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:12:49,024 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:49,024 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 16167, Writes: 16167
+2026-05-17 04:12:49,024 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:54,025 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:54,025 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 16967, Writes: 16967
+2026-05-17 04:12:54,025 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:12:59,026 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:12:59,026 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 17759, Writes: 17759
+2026-05-17 04:12:59,026 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:04,026 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:04,027 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 18548, Writes: 18548
+2026-05-17 04:13:04,027 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:09,027 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:09,027 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 19367, Writes: 19367
+2026-05-17 04:13:09,027 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:14,028 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:14,028 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 20163, Writes: 20163
+2026-05-17 04:13:14,028 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:19,011 - __main__ - INFO - Backup created for us-west-2: 20961 entries
+2026-05-17 04:13:19,011 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:13:19,029 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:19,029 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 20964, Writes: 20964
+2026-05-17 04:13:19,029 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:24,030 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:24,030 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 21769, Writes: 21769
+2026-05-17 04:13:24,030 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:29,031 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:29,031 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 22571, Writes: 22571
+2026-05-17 04:13:29,031 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:34,031 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:34,032 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 23369, Writes: 23369
+2026-05-17 04:13:34,032 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:39,032 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:39,033 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 24178, Writes: 24178
+2026-05-17 04:13:39,033 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:44,033 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:44,034 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 25005, Writes: 25005
+2026-05-17 04:13:44,034 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:49,013 - __main__ - INFO - Backup created for us-west-2: 25824 entries
+2026-05-17 04:13:49,013 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:13:49,034 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:49,034 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 25826, Writes: 25826
+2026-05-17 04:13:49,035 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:54,035 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:54,035 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 26642, Writes: 26642
+2026-05-17 04:13:54,036 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:13:59,036 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:13:59,036 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 27465, Writes: 27465
+2026-05-17 04:13:59,037 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:04,037 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:04,038 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 28305, Writes: 28305
+2026-05-17 04:14:04,038 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:09,039 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:09,039 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 29103, Writes: 29103
+2026-05-17 04:14:09,040 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:14,041 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:14,041 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 29914, Writes: 29914
+2026-05-17 04:14:14,042 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:19,014 - __main__ - INFO - Backup created for us-west-2: 30727 entries
+2026-05-17 04:14:19,014 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:14:19,042 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:19,042 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 30730, Writes: 30730
+2026-05-17 04:14:19,042 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:24,043 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:24,043 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 31528, Writes: 31528
+2026-05-17 04:14:24,044 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:29,045 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:29,045 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 32331, Writes: 32331
+2026-05-17 04:14:29,045 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:34,046 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:34,047 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 33148, Writes: 33148
+2026-05-17 04:14:34,047 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:39,048 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:39,048 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 33945, Writes: 33945
+2026-05-17 04:14:39,048 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:44,049 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:44,049 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 34766, Writes: 34766
+2026-05-17 04:14:44,049 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:49,016 - __main__ - INFO - Backup created for us-west-2: 35565 entries
+2026-05-17 04:14:49,016 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:14:49,050 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:49,050 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 35569, Writes: 35569
+2026-05-17 04:14:49,050 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:54,052 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:54,052 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 36392, Writes: 36392
+2026-05-17 04:14:54,052 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:14:59,052 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:14:59,053 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 37190, Writes: 37190
+2026-05-17 04:14:59,053 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:04,054 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:04,054 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 38004, Writes: 38004
+2026-05-17 04:15:04,055 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:09,056 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:09,056 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 38816, Writes: 38816
+2026-05-17 04:15:09,056 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:14,057 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:14,057 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 39622, Writes: 39622
+2026-05-17 04:15:14,058 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:19,018 - __main__ - INFO - Backup created for us-west-2: 40426 entries
+2026-05-17 04:15:19,018 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:15:19,058 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:19,058 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 40435, Writes: 40435
+2026-05-17 04:15:19,058 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:24,059 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:24,059 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 41240, Writes: 41240
+2026-05-17 04:15:24,059 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:29,060 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:29,060 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 42039, Writes: 42039
+2026-05-17 04:15:29,060 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:34,061 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:34,061 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 42867, Writes: 42867
+2026-05-17 04:15:34,062 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:39,062 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:39,063 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 43666, Writes: 43666
+2026-05-17 04:15:39,063 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:44,063 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:44,063 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 44471, Writes: 44471
+2026-05-17 04:15:44,064 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:49,020 - __main__ - INFO - Backup created for us-west-2: 45266 entries
+2026-05-17 04:15:49,020 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:15:49,065 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:49,065 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 45272, Writes: 45272
+2026-05-17 04:15:49,066 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:54,067 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:54,067 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 46082, Writes: 46082
+2026-05-17 04:15:54,068 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:15:59,069 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:15:59,069 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 46883, Writes: 46883
+2026-05-17 04:15:59,069 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:04,070 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:04,070 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 47700, Writes: 47700
+2026-05-17 04:16:04,071 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:09,072 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:09,072 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 48524, Writes: 48524
+2026-05-17 04:16:09,073 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:14,073 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:14,073 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 49345, Writes: 49345
+2026-05-17 04:16:14,073 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:19,023 - __main__ - INFO - Backup created for us-west-2: 50140 entries
+2026-05-17 04:16:19,023 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:16:19,074 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:19,074 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 50149, Writes: 50149
+2026-05-17 04:16:19,074 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:24,075 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:24,075 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 50946, Writes: 50946
+2026-05-17 04:16:24,076 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:29,076 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:29,076 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 51735, Writes: 51735
+2026-05-17 04:16:29,077 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:34,078 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:34,078 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 52550, Writes: 52550
+2026-05-17 04:16:34,078 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:39,080 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:39,080 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 53356, Writes: 53356
+2026-05-17 04:16:39,080 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:44,081 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:44,081 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 54145, Writes: 54145
+2026-05-17 04:16:44,081 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:49,025 - __main__ - INFO - Backup created for us-west-2: 54950 entries
+2026-05-17 04:16:49,025 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:16:49,082 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:49,082 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 54957, Writes: 54957
+2026-05-17 04:16:49,083 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:54,083 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:54,083 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 55743, Writes: 55743
+2026-05-17 04:16:54,084 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:16:59,084 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:16:59,084 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 56547, Writes: 56547
+2026-05-17 04:16:59,085 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:17:04,085 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:17:04,086 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 57353, Writes: 57353
+2026-05-17 04:17:04,086 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:17:09,087 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:17:09,087 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 58158, Writes: 58158
+2026-05-17 04:17:09,088 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:17:14,089 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3294
+2026-05-17 04:17:14,089 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 58967, Writes: 58967
+2026-05-17 04:17:14,089 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:19:50,206 - __main__ - INFO - 开始完整灾难恢复演练
+2026-05-17 04:19:50,206 - __main__ - INFO - 目标RPO: 300.0秒
+2026-05-17 04:19:50,207 - __main__ - INFO - 目标RTO: 600.0秒
+2026-05-17 04:19:55,207 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 816, Writes: 816
+2026-05-17 04:19:55,207 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:19:55,207 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:00,207 - __main__ - INFO - Phase 1: 模拟主区域(us-east-1)灾难
+2026-05-17 04:20:00,208 - __main__ - INFO - Failover completed - New active: us-west-2, RPO: 0.00s, RTO: 0.00s
+2026-05-17 04:20:00,208 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 1612
+2026-05-17 04:20:00,208 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 0, Writes: 0
+2026-05-17 04:20:00,208 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:05,209 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 1612
+2026-05-17 04:20:05,209 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 815, Writes: 815
+2026-05-17 04:20:05,209 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:10,208 - __main__ - INFO - Phase 2: 恢复主区域
+2026-05-17 04:20:10,208 - __main__ - INFO - Region recovered - Data: 1622 entries
+2026-05-17 04:20:10,209 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: False, Data: 1622, Writes: 1612
+2026-05-17 04:20:10,209 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 1622, Writes: 1622
+2026-05-17 04:20:10,209 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:15,209 - __main__ - INFO - Phase 3: 切换回主区域
+2026-05-17 04:20:15,209 - __main__ - INFO - Failback to primary region completed
+2026-05-17 04:20:15,210 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 1622, Writes: 1612
+2026-05-17 04:20:15,210 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 2408, Writes: 2408
+2026-05-17 04:20:15,210 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:20,207 - __main__ - INFO - Backup created for us-east-1: 2418 entries
+2026-05-17 04:20:20,207 - __main__ - INFO - Backup created for us-west-2: 2408 entries
+2026-05-17 04:20:20,207 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:20:20,211 - __main__ - INFO - Region us-east-1 - Healthy: True, Active: True, Data: 2419, Writes: 2409
+2026-05-17 04:20:20,211 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: False, Data: 2408, Writes: 2408
+2026-05-17 04:20:20,211 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:25,209 - __main__ - INFO - Phase 4: 模拟多区域故障
+2026-05-17 04:20:25,209 - __main__ - INFO - Secondary disaster simulation completed
+2026-05-17 04:20:25,212 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:20:25,212 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 2409, Writes: 2409
+2026-05-17 04:20:25,212 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:30,213 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:20:30,213 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 3204, Writes: 3204
+2026-05-17 04:20:30,213 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:35,213 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:20:35,213 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 4011, Writes: 4011
+2026-05-17 04:20:35,213 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:40,214 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:20:40,214 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 4828, Writes: 4828
+2026-05-17 04:20:40,214 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:45,214 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:20:45,214 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 5623, Writes: 5623
+2026-05-17 04:20:45,214 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:50,209 - __main__ - INFO - Backup created for us-west-2: 6422 entries
+2026-05-17 04:20:50,209 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:20:50,215 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:20:50,215 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 6423, Writes: 6423
+2026-05-17 04:20:50,215 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:20:55,216 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:20:55,216 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 7234, Writes: 7234
+2026-05-17 04:20:55,216 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:00,216 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:00,216 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 8056, Writes: 8056
+2026-05-17 04:21:00,216 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:05,217 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:05,218 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 8869, Writes: 8869
+2026-05-17 04:21:05,218 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:10,219 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:10,219 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 9671, Writes: 9671
+2026-05-17 04:21:10,219 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:15,219 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:15,219 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 10489, Writes: 10489
+2026-05-17 04:21:15,219 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:20,210 - __main__ - INFO - Backup created for us-west-2: 11298 entries
+2026-05-17 04:21:20,210 - __main__ - INFO - Backup created for eu-west-1: 0 entries
+2026-05-17 04:21:20,220 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:20,220 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 11300, Writes: 11300
+2026-05-17 04:21:20,220 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:25,220 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:25,220 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 12104, Writes: 12104
+2026-05-17 04:21:25,220 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:30,221 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:30,221 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 12917, Writes: 12917
+2026-05-17 04:21:30,221 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:35,222 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:35,222 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 13709, Writes: 13709
+2026-05-17 04:21:35,223 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:40,223 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:40,223 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 14509, Writes: 14509
+2026-05-17 04:21:40,223 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0
+2026-05-17 04:21:45,224 - __main__ - INFO - Region us-east-1 - Healthy: False, Active: False, Data: 0, Writes: 3204
+2026-05-17 04:21:45,224 - __main__ - INFO - Region us-west-2 - Healthy: True, Active: True, Data: 15305, Writes: 15305
+2026-05-17 04:21:45,224 - __main__ - INFO - Region eu-west-1 - Healthy: True, Active: False, Data: 0, Writes: 0

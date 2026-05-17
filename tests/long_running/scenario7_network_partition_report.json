@@ -1,0 +1,874 @@
+{
+  "scenario_name": "\u7f51\u7edc\u5206\u533a\u8111\u88c2\u6d4b\u8bd5",
+  "start_time": 1778984789.376776,
+  "end_time": 1778986746.1115854,
+  "total_duration_sec": 1956.7348093986511,
+  "cluster_size": 5,
+  "partition_count": 2,
+  "split_brain_events": 2,
+  "leaders_during_partition": 2,
+  "data_divergence_detected": 0,
+  "merge_operations": 2,
+  "conflicts_during_merge": 251,
+  "conflicts_resolved": 251,
+  "data_loss_events": 0,
+  "partition_events": [
+    {
+      "phase": 1,
+      "type": "partition_created",
+      "timestamp": 1778984794.3778799,
+      "success": true,
+      "group_a": [
+        "node_4",
+        "node_3"
+      ],
+      "group_b": [
+        "node_1",
+        "node_0",
+        "node_2"
+      ],
+      "leader_a": "node_4",
+      "leader_b": "node_0",
+      "split_brain": true
+    },
+    {
+      "phase": 3,
+      "type": "partition_created_again",
+      "timestamp": 1778984814.3804612,
+      "success": true,
+      "group_a": [
+        "node_2",
+        "node_1"
+      ],
+      "group_b": [
+        "node_4",
+        "node_3",
+        "node_0"
+      ],
+      "leader_a": "node_1",
+      "leader_b": "node_0",
+      "split_brain": true
+    }
+  ],
+  "merge_events": [
+    {
+      "phase": 2,
+      "type": "partition_healed",
+      "timestamp": 1778984809.3792794,
+      "success": true,
+      "merged_keys": 251,
+      "conflicts": 251,
+      "new_leader": "node_0"
+    },
+    {
+      "phase": 4,
+      "type": "final_heal",
+      "timestamp": 1778984824.3820882,
+      "success": true,
+      "merged_keys": 454,
+      "conflicts": 454,
+      "new_leader": "node_0"
+    }
+  ],
+  "leader_changes": [
+    {
+      "timestamp": 1778984794.377989,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_4"
+      ]
+    },
+    {
+      "timestamp": 1778984799.378767,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_4"
+      ]
+    },
+    {
+      "timestamp": 1778984804.3795233,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_4"
+      ]
+    },
+    {
+      "timestamp": 1778984809.38969,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_4"
+      ]
+    },
+    {
+      "timestamp": 1778984814.3907413,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_1"
+      ]
+    },
+    {
+      "timestamp": 1778984819.3914084,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_1"
+      ]
+    },
+    {
+      "timestamp": 1778984824.4212818,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_1"
+      ]
+    },
+    {
+      "timestamp": 1778984951.632591,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_1"
+      ]
+    },
+    {
+      "timestamp": 1778986741.0667727,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_1"
+      ]
+    },
+    {
+      "timestamp": 1778986746.1113706,
+      "type": "split_brain_detected",
+      "leaders": [
+        "node_0",
+        "node_1"
+      ]
+    }
+  ],
+  "conflict_resolution_log": [],
+  "consistency_checks": [
+    {
+      "timestamp": 1778984794.3779871,
+      "check_number": 0,
+      "state": "partitioned",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "1": [
+          "node_0",
+          "node_1",
+          "node_2"
+        ],
+        "0": [
+          "node_3",
+          "node_4"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_4"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": true,
+          "term": 2,
+          "data_count": 35,
+          "log_size": 35
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 35,
+          "log_size": 35
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 35,
+          "log_size": 35
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 35,
+          "log_size": 35
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 35,
+          "log_size": 35
+        }
+      },
+      "consistent": false,
+      "reason": "partitioned"
+    },
+    {
+      "timestamp": 1778984799.3787637,
+      "check_number": 1,
+      "state": "partitioned",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "1": [
+          "node_0",
+          "node_1",
+          "node_2"
+        ],
+        "0": [
+          "node_3",
+          "node_4"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_4"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": true,
+          "term": 2,
+          "data_count": 74,
+          "log_size": 74
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 74,
+          "log_size": 74
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 74,
+          "log_size": 74
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 60,
+          "log_size": 60
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 60,
+          "log_size": 60
+        }
+      },
+      "consistent": false,
+      "reason": "partitioned"
+    },
+    {
+      "timestamp": 1778984804.3795207,
+      "check_number": 2,
+      "state": "partitioned",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "1": [
+          "node_0",
+          "node_1",
+          "node_2"
+        ],
+        "0": [
+          "node_3",
+          "node_4"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_4"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": true,
+          "term": 2,
+          "data_count": 110,
+          "log_size": 110
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 110,
+          "log_size": 110
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 110,
+          "log_size": 110
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 102,
+          "log_size": 102
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 102,
+          "log_size": 102
+        }
+      },
+      "consistent": false,
+      "reason": "partitioned"
+    },
+    {
+      "timestamp": 1778984809.389687,
+      "check_number": 3,
+      "state": "normal",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "null": [
+          "node_0",
+          "node_1",
+          "node_2",
+          "node_3",
+          "node_4"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_4"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 3,
+          "data_count": 251,
+          "log_size": 152
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 251,
+          "log_size": 152
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 251,
+          "log_size": 152
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 251,
+          "log_size": 134
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 251,
+          "log_size": 134
+        }
+      },
+      "consistent": true,
+      "total_keys": 251,
+      "divergent_keys": 0
+    },
+    {
+      "timestamp": 1778984814.3907382,
+      "check_number": 4,
+      "state": "partitioned",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "1": [
+          "node_0",
+          "node_3",
+          "node_4"
+        ],
+        "0": [
+          "node_1",
+          "node_2"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_1"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": true,
+          "term": 4,
+          "data_count": 312,
+          "log_size": 213
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 313,
+          "log_size": 214
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 313,
+          "log_size": 214
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 312,
+          "log_size": 195
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 1,
+          "data_count": 312,
+          "log_size": 195
+        }
+      },
+      "consistent": false,
+      "reason": "partitioned"
+    },
+    {
+      "timestamp": 1778984819.3914044,
+      "check_number": 5,
+      "state": "partitioned",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "1": [
+          "node_0",
+          "node_3",
+          "node_4"
+        ],
+        "0": [
+          "node_1",
+          "node_2"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_1"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": true,
+          "term": 4,
+          "data_count": 343,
+          "log_size": 244
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 346,
+          "log_size": 247
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": 0,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 346,
+          "log_size": 247
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 343,
+          "log_size": 226
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": 1,
+          "is_leader": false,
+          "term": 1,
+          "data_count": 343,
+          "log_size": 226
+        }
+      },
+      "consistent": false,
+      "reason": "partitioned"
+    },
+    {
+      "timestamp": 1778984824.4212782,
+      "check_number": 6,
+      "state": "normal",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "null": [
+          "node_0",
+          "node_1",
+          "node_2",
+          "node_3",
+          "node_4"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_1"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 5,
+          "data_count": 454,
+          "log_size": 279
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 454,
+          "log_size": 289
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 454,
+          "log_size": 289
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 454,
+          "log_size": 261
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 1,
+          "data_count": 454,
+          "log_size": 261
+        }
+      },
+      "consistent": true,
+      "total_keys": 454,
+      "divergent_keys": 0
+    },
+    {
+      "timestamp": 1778984951.6155553,
+      "check_number": 7,
+      "state": "normal",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "null": [
+          "node_0",
+          "node_1",
+          "node_2",
+          "node_3",
+          "node_4"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_1"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 5,
+          "data_count": 494,
+          "log_size": 319
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 494,
+          "log_size": 329
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 494,
+          "log_size": 329
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 494,
+          "log_size": 301
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 1,
+          "data_count": 494,
+          "log_size": 301
+        }
+      },
+      "consistent": true,
+      "total_keys": 494,
+      "divergent_keys": 0
+    },
+    {
+      "timestamp": 1778986741.0667686,
+      "check_number": 8,
+      "state": "normal",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "null": [
+          "node_0",
+          "node_1",
+          "node_2",
+          "node_3",
+          "node_4"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_1"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 5,
+          "data_count": 498,
+          "log_size": 323
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 498,
+          "log_size": 333
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 498,
+          "log_size": 333
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 498,
+          "log_size": 305
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 1,
+          "data_count": 498,
+          "log_size": 305
+        }
+      },
+      "consistent": true,
+      "total_keys": 498,
+      "divergent_keys": 0
+    },
+    {
+      "timestamp": 1778986746.111367,
+      "check_number": 9,
+      "state": "normal",
+      "total_nodes": 5,
+      "alive_nodes": 5,
+      "partition_groups": {
+        "null": [
+          "node_0",
+          "node_1",
+          "node_2",
+          "node_3",
+          "node_4"
+        ]
+      },
+      "leaders": [
+        "node_0",
+        "node_1"
+      ],
+      "split_brain": true,
+      "nodes": {
+        "node_0": {
+          "node_id": "node_0",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 5,
+          "data_count": 499,
+          "log_size": 324
+        },
+        "node_1": {
+          "node_id": "node_1",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": true,
+          "term": 1,
+          "data_count": 499,
+          "log_size": 334
+        },
+        "node_2": {
+          "node_id": "node_2",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 499,
+          "log_size": 334
+        },
+        "node_3": {
+          "node_id": "node_3",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 0,
+          "data_count": 499,
+          "log_size": 306
+        },
+        "node_4": {
+          "node_id": "node_4",
+          "is_alive": true,
+          "partition_group": null,
+          "is_leader": false,
+          "term": 1,
+          "data_count": 499,
+          "log_size": 306
+        }
+      },
+      "consistent": true,
+      "total_keys": 499,
+      "divergent_keys": 0
+    }
+  ],
+  "errors": []
+}

@@ -5,6 +5,7 @@
 
 import asyncio
 import time
+import psutil
 from typing import Any, Dict, List, Optional, Callable, TYPE_CHECKING
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -25,7 +26,13 @@ class TTLConfig:
     default_ttl_days: float = 365.0  # 默认1年
     check_interval_hours: float = 24.0  # 检查间隔
     max_delete_per_run: int = 1000  # 每次最多删除数
-    
+
+    # DEFECT-004 [P0] 修复: 内存压力相关配置
+    memory_pressure_threshold: float = 0.70  # 内存压力阈值(70%)
+    memory_critical_threshold: float = 0.85  # 严重内存阈值(85%)
+    aggressive_cleanup_threshold: float = 0.90  # 激进清理阈值(90%)
+    write_rate_limit: int = 100  # 内存压力下每秒最大写入数
+
     # 按重要性设置不同TTL
     ttl_by_importance: Dict[int, float] = field(default_factory=lambda: {
         5: 730.0,   # CRITICAL: 2年
@@ -67,7 +74,7 @@ class MemoryTTLExpirationManager:
         self.storage = storage
         self.config = config or TTLConfig()
         self.on_expire = on_expire  # 过期回调
-        
+
         self._cleanup_task: Optional[asyncio.Task] = None
         self._running = False
         self._stats = {
@@ -75,23 +82,201 @@ class MemoryTTLExpirationManager:
             "last_cleanup_time": 0.0,
             "last_cleanup_count": 0,
         }
+
+        # DEFECT-004 [P0] 修复: 内存压力监控状态
+        self._memory_pressure_level: str = "normal"  # normal, warning, critical, emergency
+        self._last_memory_check: float = 0.0
+        self._write_tokens: int = 0  # 写入限流令牌
+        self._write_rate_limiter_task: Optional[asyncio.Task] = None
+        self._emergency_cleanup_in_progress: bool = False
     
     async def start(self) -> None:
-        """启动后台清理任务"""
+        """启动后台清理任务 - DEFECT-004 [P0] 修复: 启动内存监控"""
         if not self.config.enabled:
             logger.info("TTL 清理已禁用")
             return
-        
+
         if self._running:
             return
-        
+
         self._running = True
         self._cleanup_task = asyncio.create_task(self._cleanup_loop())
+
+        # DEFECT-004 [P0] 修复: 启动内存压力监控任务
+        self._memory_monitor_task = asyncio.create_task(self._memory_pressure_monitor())
+
+        # DEFECT-004 [P0] 修复: 启动写入限流器
+        self._write_rate_limiter_task = asyncio.create_task(self._write_rate_limiter())
+
         logger.info(f"TTL 清理任务已启动，检查间隔: {self.config.check_interval_hours}小时")
+
+    async def _memory_pressure_monitor(self):
+        """DEFECT-004 [P0] 修复: 内存压力监控循环"""
+        while self._running:
+            try:
+                await self._check_memory_pressure()
+                await asyncio.sleep(5)  # 每5秒检查一次
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.warning(f"Memory pressure monitor error: {e}")
+
+    async def _check_memory_pressure(self):
+        """DEFECT-004 [P0] 修复: 检查内存压力状态"""
+        try:
+            memory = psutil.virtual_memory()
+            memory_percent = memory.percent / 100.0
+
+            old_level = self._memory_pressure_level
+
+            if memory_percent >= self.config.aggressive_cleanup_threshold:
+                self._memory_pressure_level = "emergency"
+                if not self._emergency_cleanup_in_progress:
+                    logger.error(f"内存紧急状态: {memory_percent*100:.1f}%，启动紧急清理")
+                    asyncio.create_task(self._emergency_cleanup())
+            elif memory_percent >= self.config.memory_critical_threshold:
+                self._memory_pressure_level = "critical"
+                if old_level != "critical":
+                    logger.warning(f"内存严重压力: {memory_percent*100:.1f}%，限制写入并清理")
+                    asyncio.create_task(self._aggressive_cleanup())
+            elif memory_percent >= self.config.memory_pressure_threshold:
+                self._memory_pressure_level = "warning"
+                if old_level not in ["warning", "critical", "emergency"]:
+                    logger.warning(f"内存压力警告: {memory_percent*100:.1f}%，启用限流")
+            else:
+                self._memory_pressure_level = "normal"
+
+            self._last_memory_check = time.time()
+
+        except Exception as e:
+            logger.warning(f"Failed to check memory pressure: {e}")
+
+    async def _emergency_cleanup(self):
+        """DEFECT-004 [P0] 修复: 紧急内存清理"""
+        if self._emergency_cleanup_in_progress:
+            return
+
+        self._emergency_cleanup_in_progress = True
+        try:
+            logger.info("开始紧急内存清理...")
+
+            # 1. 立即清理过期记忆
+            deleted = await self.cleanup_expired()
+            logger.info(f"紧急清理: 删除 {deleted} 条过期记忆")
+
+            # 2. 如果内存仍然紧张，清理即将过期的记忆
+            memory = psutil.virtual_memory()
+            if memory.percent / 100.0 >= self.config.memory_critical_threshold:
+                await self._cleanup_near_expiry()
+
+            # 3. 强制垃圾回收建议
+            import gc
+            gc.collect()
+
+            logger.info("紧急内存清理完成")
+        except Exception as e:
+            logger.error(f"Emergency cleanup failed: {e}")
+        finally:
+            self._emergency_cleanup_in_progress = False
+
+    async def _aggressive_cleanup(self):
+        """DEFECT-004 [P0] 修复: 激进清理模式"""
+        try:
+            # 增加每次清理的数量
+            original_max_delete = self.config.max_delete_per_run
+            self.config.max_delete_per_run = original_max_delete * 2
+
+            deleted = await self.cleanup_expired()
+            logger.info(f"激进清理: 删除 {deleted} 条过期记忆")
+
+            self.config.max_delete_per_run = original_max_delete
+        except Exception as e:
+            logger.error(f"Aggressive cleanup failed: {e}")
+
+    async def _cleanup_near_expiry(self):
+        """DEFECT-004 [P0] 修复: 清理即将过期的记忆"""
+        try:
+            now = time.time()
+            # 清理未来7天内即将过期的记忆
+            near_expiry_threshold = now + (7 * 24 * 3600)
+
+            all_memories = await self.storage.search_by_time_range(0, near_expiry_threshold)
+            deleted_count = 0
+
+            for memory in all_memories:
+                ttl_days = self._get_ttl_for_memory(memory)
+                expire_time = memory.timestamp + (ttl_days * 24 * 3600)
+
+                # 如果即将过期(7天内)且不是关键记忆，提前删除
+                if expire_time - now < 7 * 24 * 3600 and memory.importance.value < 4:
+                    await self.storage.delete(memory.memory_id)
+                    deleted_count += 1
+                    if deleted_count >= self.config.max_delete_per_run:
+                        break
+
+            if deleted_count > 0:
+                logger.info(f"提前清理 {deleted_count} 条即将过期的记忆")
+        except Exception as e:
+            logger.error(f"Near-expiry cleanup failed: {e}")
+
+    async def _write_rate_limiter(self):
+        """DEFECT-004 [P0] 修复: 写入限流器，每秒补充令牌"""
+        while self._running:
+            try:
+                await asyncio.sleep(1)
+
+                if self._memory_pressure_level == "critical":
+                    self._write_tokens = self.config.write_rate_limit // 2
+                elif self._memory_pressure_level == "warning":
+                    self._write_tokens = self.config.write_rate_limit
+                else:
+                    self._write_tokens = self.config.write_rate_limit * 10  # 正常状态下不限流
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.warning(f"Write rate limiter error: {e}")
+
+    async def acquire_write_token(self) -> bool:
+        """DEFECT-004 [P0] 修复: 获取写入令牌，用于限流"""
+        if self._memory_pressure_level == "emergency":
+            return False  # 紧急状态下禁止写入
+
+        if self._memory_pressure_level in ["critical", "warning"]:
+            if self._write_tokens > 0:
+                self._write_tokens -= 1
+                return True
+            else:
+                # 等待令牌可用
+                for _ in range(10):  # 最多等待10秒
+                    await asyncio.sleep(1)
+                    if self._write_tokens > 0:
+                        self._write_tokens -= 1
+                        return True
+                return False
+        return True  # 正常状态下允许写入
     
     async def stop(self) -> None:
-        """停止后台清理任务"""
+        """停止后台清理任务 - DEFECT-004 [P0] 修复: 停止所有监控任务"""
         self._running = False
+
+        # DEFECT-004 [P0] 修复: 停止内存监控任务
+        if hasattr(self, '_memory_monitor_task') and self._memory_monitor_task:
+            self._memory_monitor_task.cancel()
+            try:
+                await self._memory_monitor_task
+            except asyncio.CancelledError:
+                pass
+            self._memory_monitor_task = None
+
+        # DEFECT-004 [P0] 修复: 停止写入限流器
+        if self._write_rate_limiter_task:
+            self._write_rate_limiter_task.cancel()
+            try:
+                await self._write_rate_limiter_task
+            except asyncio.CancelledError:
+                pass
+            self._write_rate_limiter_task = None
+
         if self._cleanup_task:
             self._cleanup_task.cancel()
             try:
@@ -229,11 +414,24 @@ class MemoryTTLExpirationManager:
         }
     
     def get_stats(self) -> Dict[str, Any]:
-        """获取清理统计"""
+        """获取清理统计 - DEFECT-004 [P0] 修复: 包含内存压力信息"""
+        try:
+            memory = psutil.virtual_memory()
+            memory_info = {
+                "memory_percent": memory.percent,
+                "memory_available_gb": memory.available / (1024**3),
+                "memory_pressure_level": self._memory_pressure_level,
+            }
+        except Exception:
+            memory_info = {"memory_percent": 0, "memory_pressure_level": "unknown"}
+
         return {
             **self._stats,
             "running": self._running,
             "enabled": self.config.enabled,
+            **memory_info,
+            "write_tokens_available": self._write_tokens,
+            "emergency_cleanup_in_progress": self._emergency_cleanup_in_progress,
         }
     
     async def preview_expired(self, limit: int = 100) -> List[str]:

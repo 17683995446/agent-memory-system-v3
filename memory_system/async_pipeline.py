@@ -228,8 +228,8 @@ class PipelineConfig:
 @dataclass
 class StageConfig:
     """
-    阶段配置
-    
+    阶段配置 - DEFECT-002 [P1] 修复: 优化批处理和并发配置
+
     Attributes:
         name: 阶段名称
         buffer_size: 缓冲区大小
@@ -248,14 +248,16 @@ class StageConfig:
         cache_size: 查询缓存大小
     """
     name: str
-    buffer_size: int = 100
-    num_workers: int = 1
+    # DEFECT-002 [P1] 修复: 增加默认缓冲区大小以支持更高并发
+    buffer_size: int = 500  # 从100增加到500
+    num_workers: int = 2  # 从1增加到2
     backpressure_strategy: BackpressureStrategy = BackpressureStrategy.BLOCK
     max_retries: int = 3
     retry_delay: float = 1.0
     timeout: float = 60.0
-    batch_size: int = 0
-    batch_timeout: float = 0.1
+    # DEFECT-002 [P1] 修复: 默认启用批处理，提高吞吐量
+    batch_size: int = 50  # 从0增加到50
+    batch_timeout: float = 0.05  # 从0.1减少到0.05，更快响应
     # 查询性能优化配置
     enable_indexing: bool = True
     index_fields: List[str] = field(default_factory=list)
@@ -284,8 +286,8 @@ class PipelineStage:
         is_batch_handler: bool = False,
     ):
         """
-        初始化阶段
-        
+        初始化阶段 - DEFECT-010 [P1] 修复: 添加队列积压监控
+
         Args:
             name: 阶段名称
             handler: 处理函数
@@ -296,38 +298,44 @@ class PipelineStage:
         self.handler = handler
         self.config = config or StageConfig(name=name)
         self.is_batch_handler = is_batch_handler
-        
+
         # 队列
         self.input_queue: asyncio.Queue[PipelineItem] = asyncio.Queue(
             maxsize=self.config.buffer_size
         )
         self.output_queue: Optional[asyncio.Queue[PipelineItem]] = None
-        
+
         # 工作线程
         self._workers: List[asyncio.Task] = []
         self._shutdown_event = asyncio.Event()
-        
+
         # 指标
         self.metrics = StageMetrics()
-        
+
         # 批处理缓冲区
         self._batch_buffer: List[PipelineItem] = []
         self._batch_timer: Optional[asyncio.Task] = None
-        
+
         # 查询性能优化 - 索引管理
         self._index: Dict[str, Dict[Any, Set[str]]] = {}  # field -> value -> item_ids
         self._item_store: Dict[str, PipelineItem] = {}  # item_id -> item
         self._index_lock = asyncio.Lock()
         self._index_build_pending = False
         self._last_index_build_time: float = 0.0
-        
+
         # 查询缓存
         self._query_cache: Dict[str, Tuple[PipelineItem, float]] = {}
         self._cache_lock = asyncio.Lock()
-        
+
         # 性能监控
         self._processing_times: Deque[float] = deque(maxlen=100)
         self._query_times: Deque[float] = deque(maxlen=100)
+
+        # DEFECT-010 [P1] 修复: 队列积压监控和自动清理
+        self._queue_monitor_task: Optional[asyncio.Task] = None
+        self._queue_backlog_threshold: int = int(self.config.buffer_size * 0.8)  # 80%阈值
+        self._last_queue_cleanup: float = 0.0
+        self._processed_count: int = 0  # 处理计数，用于检测吞吐量下降
     
     async def start(self, output_queue: Optional[asyncio.Queue] = None):
         """启动阶段 - DEFECT-002 [P0] 修复: 当 output_queue 参数为 None 时不覆盖已设置的 output_queue"""
@@ -336,7 +344,7 @@ class PipelineStage:
         if output_queue is not None:
             self.output_queue = output_queue
         self._shutdown_event.clear()
-        
+
         # 启动工作线程
         for i in range(self.config.num_workers):
             worker = asyncio.create_task(
@@ -344,13 +352,113 @@ class PipelineStage:
                 name=f"{self.name}_worker_{i}"
             )
             self._workers.append(worker)
-        
+
+        # DEFECT-010 [P1] 修复: 启动队列监控任务
+        self._queue_monitor_task = asyncio.create_task(self._queue_monitor_loop())
+
         logger.info(f"Stage {self.name} started with {self.config.num_workers} workers")
+
+    async def _queue_monitor_loop(self):
+        """DEFECT-010 [P1] 修复: 队列监控循环，检测积压并自动清理"""
+        while not self._shutdown_event.is_set():
+            try:
+                await asyncio.sleep(10)  # 每10秒检查一次
+
+                if self._shutdown_event.is_set():
+                    break
+
+                current_size = self.input_queue.qsize()
+
+                # 检测队列积压
+                if current_size > self._queue_backlog_threshold:
+                    logger.warning(
+                        f"Stage {self.name} queue backlog detected: {current_size}/{self.config.buffer_size} "
+                        f"({current_size/self.config.buffer_size*100:.1f}%)"
+                    )
+                    await self._handle_queue_backlog()
+
+                # 检测吞吐量下降
+                if self._processed_count > 0:
+                    # 如果队列持续增长但处理量不增加，可能存在吞吐量问题
+                    if current_size > self.config.buffer_size * 0.5:
+                        logger.debug(f"Stage {self.name} queue at {current_size}, checking throughput...")
+
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.warning(f"Queue monitor error in stage {self.name}: {e}")
+
+    async def _handle_queue_backlog(self):
+        """DEFECT-010 [P1] 修复: 处理队列积压"""
+        now = time.time()
+
+        # 避免过于频繁的清理
+        if now - self._last_queue_cleanup < 30:  # 最少间隔30秒
+            return
+
+        self._last_queue_cleanup = now
+
+        try:
+            logger.info(f"Stage {self.name} performing queue cleanup...")
+
+            # 策略1: 根据背压策略丢弃项目
+            if self.config.backpressure_strategy == BackpressureStrategy.DROP_OLDEST:
+                dropped = 0
+                target_size = int(self.config.buffer_size * 0.5)  # 清理到50%
+
+                while self.input_queue.qsize() > target_size:
+                    try:
+                        dropped_item = self.input_queue.get_nowait()
+                        self.input_queue.task_done()
+                        dropped += 1
+                    except asyncio.QueueEmpty:
+                        break
+
+                if dropped > 0:
+                    logger.warning(f"Stage {self.name} dropped {dropped} oldest items due to backlog")
+
+            # 策略2: 增加临时工作线程处理积压
+            elif self.config.backpressure_strategy == BackpressureStrategy.BLOCK:
+                # 临时增加并发处理
+                temp_workers = min(4, self.config.num_workers * 2)
+                logger.info(f"Stage {self.name} spawning {temp_workers} temporary workers to clear backlog")
+
+                temp_tasks = []
+                for i in range(temp_workers):
+                    task = asyncio.create_task(
+                        self._worker_loop(worker_id=f"temp_{i}"),
+                        name=f"{self.name}_temp_worker_{i}"
+                    )
+                    temp_tasks.append(task)
+
+                # 等待队列清空或超时
+                for _ in range(60):  # 最多等待60秒
+                    if self.input_queue.qsize() < self.config.buffer_size * 0.3:
+                        break
+                    await asyncio.sleep(1)
+
+                # 取消临时工作线程
+                for task in temp_tasks:
+                    task.cancel()
+
+                await asyncio.gather(*temp_tasks, return_exceptions=True)
+
+        except Exception as e:
+            logger.error(f"Queue backlog handling failed in stage {self.name}: {e}")
     
     async def stop(self):
-        """停止阶段 - P1修复: 确保所有资源被正确清理"""
+        """停止阶段 - DEFECT-010 [P1] 修复: 确保所有资源被正确清理，包括监控任务"""
         self._shutdown_event.set()
-        
+
+        # DEFECT-010 [P1] 修复: 停止队列监控任务
+        if self._queue_monitor_task:
+            self._queue_monitor_task.cancel()
+            try:
+                await self._queue_monitor_task
+            except asyncio.CancelledError:
+                pass
+            self._queue_monitor_task = None
+
         # P1修复: 取消批处理定时器
         if self._batch_timer:
             self._batch_timer.cancel()
@@ -359,12 +467,12 @@ class PipelineStage:
             except asyncio.CancelledError:
                 pass
             self._batch_timer = None
-        
+
         # P1修复: 等待所有工作线程完成
         if self._workers:
             await asyncio.gather(*self._workers, return_exceptions=True)
             self._workers.clear()
-        
+
         # P1修复: 清理输入队列
         while not self.input_queue.empty():
             try:
@@ -372,10 +480,10 @@ class PipelineStage:
                 self.input_queue.task_done()
             except asyncio.QueueEmpty:
                 break
-        
+
         # P1修复: 清理输出队列引用
         self.output_queue = None
-        
+
         logger.info(f"Stage {self.name} stopped and resources cleaned up")
     
     async def _worker_loop(self, worker_id: int):

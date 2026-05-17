@@ -1,0 +1,67 @@
+2026-05-17 02:26:29,364 - __main__ - INFO - 开始磁盘故障与数据损坏测试
+2026-05-17 02:26:29,364 - __main__ - INFO - 磁盘大小: 1024MB
+2026-05-17 02:26:29,364 - __main__ - INFO - 目标记忆数: 1,000,000
+2026-05-17 02:26:29,364 - __main__ - INFO - 并发客户端: 100
+2026-05-17 02:26:34,366 - __main__ - INFO - Disk Monitor - Used: 57.55MB (5.6%), Keys: 80,641, Full: False, Corrupted: 0
+2026-05-17 02:26:39,367 - __main__ - INFO - Disk Monitor - Used: 113.58MB (11.1%), Keys: 158,854, Full: False, Corrupted: 0
+2026-05-17 02:26:44,368 - __main__ - INFO - Disk Monitor - Used: 167.70MB (16.4%), Keys: 234,356, Full: False, Corrupted: 0
+2026-05-17 02:26:51,829 - __main__ - INFO - Disk Monitor - Used: 221.45MB (21.6%), Keys: 309,346, Full: False, Corrupted: 0
+2026-05-17 02:26:56,830 - __main__ - INFO - Disk Monitor - Used: 273.29MB (26.7%), Keys: 381,538, Full: False, Corrupted: 0
+2026-05-17 02:27:06,641 - __main__ - INFO - Backup completed - Keys: 419,659, Size: 300.53MB
+2026-05-17 02:27:06,727 - __main__ - INFO - Disk Monitor - Used: 300.67MB (29.4%), Keys: 419,809, Full: False, Corrupted: 0
+2026-05-17 02:59:01,070 - __main__ - INFO - Disk Monitor - Used: 308.68MB (30.1%), Keys: 430,923, Full: False, Corrupted: 0
+2026-05-17 02:59:10,931 - __main__ - INFO - Backup completed - Keys: 430,923, Size: 308.68MB
+2026-05-17 02:59:10,941 - __main__ - INFO - Disk Monitor - Used: 308.75MB (30.2%), Keys: 430,985, Full: False, Corrupted: 0
+2026-05-17 02:59:47,200 - __main__ - INFO - Backup completed - Keys: 430,985, Size: 308.75MB
+2026-05-17 02:59:47,200 - __main__ - INFO - 测试报告已保存到: /workspace/agent_memory_system_v2/tests/long_running/scenario5_disk_failure_report.json
+2026-05-17 03:49:30,220 - __main__ - INFO - 开始磁盘故障与数据损坏测试
+2026-05-17 03:49:30,220 - __main__ - INFO - 磁盘大小: 1024MB
+2026-05-17 03:49:30,220 - __main__ - INFO - 目标记忆数: 1,000,000
+2026-05-17 03:49:30,220 - __main__ - INFO - 并发客户端: 100
+2026-05-17 03:49:35,223 - __main__ - INFO - Disk Monitor - Used: 59.16MB (5.8%), Keys: 82,877, Full: False, Corrupted: 0
+2026-05-17 03:49:40,224 - __main__ - INFO - Disk Monitor - Used: 115.58MB (11.3%), Keys: 161,754, Full: False, Corrupted: 0
+2026-05-17 03:49:45,225 - __main__ - INFO - Disk Monitor - Used: 172.74MB (16.9%), Keys: 241,392, Full: False, Corrupted: 0
+2026-05-17 03:49:52,633 - __main__ - INFO - Disk Monitor - Used: 227.94MB (22.3%), Keys: 318,613, Full: False, Corrupted: 0
+2026-05-17 03:49:57,634 - __main__ - INFO - Disk Monitor - Used: 281.49MB (27.5%), Keys: 393,337, Full: False, Corrupted: 0
+2026-05-17 03:50:07,075 - __main__ - INFO - Backup completed - Keys: 430,625, Size: 308.28MB
+2026-05-17 03:50:07,087 - __main__ - INFO - Disk Monitor - Used: 308.42MB (30.1%), Keys: 430,775, Full: False, Corrupted: 0
+2026-05-17 03:50:12,089 - __main__ - INFO - Disk Monitor - Used: 363.48MB (35.5%), Keys: 507,686, Full: False, Corrupted: 0
+2026-05-17 03:50:17,090 - __main__ - INFO - Disk Monitor - Used: 374.44MB (36.6%), Keys: 522,917, Full: False, Corrupted: 0
+2026-05-17 03:50:22,090 - __main__ - INFO - Disk Monitor - Used: 422.61MB (41.3%), Keys: 590,185, Full: False, Corrupted: 0
+2026-05-17 03:50:27,092 - __main__ - INFO - Disk Monitor - Used: 474.92MB (46.4%), Keys: 663,019, Full: False, Corrupted: 0
+2026-05-17 03:50:32,092 - __main__ - INFO - Disk Monitor - Used: 519.13MB (50.7%), Keys: 724,668, Full: False, Corrupted: 0
+2026-05-17 03:50:55,367 - __main__ - INFO - Backup completed - Keys: 788,876, Size: 565.31MB
+2026-05-17 03:50:55,367 - __main__ - INFO - Disk Monitor - Used: 565.31MB (55.2%), Keys: 788,876, Full: False, Corrupted: 0
+2026-05-17 03:51:00,370 - __main__ - INFO - Disk Monitor - Used: 614.62MB (60.0%), Keys: 857,477, Full: False, Corrupted: 0
+2026-05-17 03:51:09,572 - __main__ - INFO - Disk Monitor - Used: 638.37MB (62.3%), Keys: 890,554, Full: False, Corrupted: 0
+2026-05-17 03:51:14,573 - __main__ - INFO - Disk Monitor - Used: 677.96MB (66.2%), Keys: 945,611, Full: False, Corrupted: 0
+2026-05-17 03:51:19,574 - __main__ - INFO - Disk Monitor - Used: 725.36MB (70.8%), Keys: 1,011,505, Full: False, Corrupted: 0
+2026-05-17 03:51:24,575 - __main__ - INFO - Disk Monitor - Used: 772.06MB (75.4%), Keys: 1,076,151, Full: False, Corrupted: 0
+2026-05-17 03:51:42,445 - __main__ - INFO - Backup completed - Keys: 1,086,343, Size: 779.45MB
+2026-05-17 03:51:50,921 - __main__ - INFO - Disk Monitor - Used: 779.59MB (76.1%), Keys: 1,086,493, Full: False, Corrupted: 0
+2026-05-17 03:51:55,922 - __main__ - INFO - Disk Monitor - Used: 825.28MB (80.6%), Keys: 1,149,771, Full: False, Corrupted: 0
+2026-05-17 04:19:49,361 - __main__ - INFO - 开始磁盘故障与数据损坏测试
+2026-05-17 04:19:49,362 - __main__ - INFO - 磁盘大小: 1024MB
+2026-05-17 04:19:49,362 - __main__ - INFO - 目标记忆数: 1,000,000
+2026-05-17 04:19:49,362 - __main__ - INFO - 并发客户端: 100
+2026-05-17 04:19:54,364 - __main__ - INFO - Disk Monitor - Used: 58.82MB (5.7%), Keys: 82,412, Full: False, Corrupted: 0
+2026-05-17 04:19:59,365 - __main__ - INFO - Disk Monitor - Used: 115.02MB (11.2%), Keys: 160,923, Full: False, Corrupted: 0
+2026-05-17 04:20:04,366 - __main__ - INFO - Disk Monitor - Used: 171.55MB (16.8%), Keys: 240,041, Full: False, Corrupted: 0
+2026-05-17 04:20:11,804 - __main__ - INFO - Disk Monitor - Used: 226.95MB (22.2%), Keys: 317,495, Full: False, Corrupted: 0
+2026-05-17 04:20:16,805 - __main__ - INFO - Disk Monitor - Used: 280.63MB (27.4%), Keys: 392,335, Full: False, Corrupted: 0
+2026-05-17 04:20:26,405 - __main__ - INFO - Backup completed - Keys: 430,727, Size: 308.16MB
+2026-05-17 04:20:26,419 - __main__ - INFO - Disk Monitor - Used: 308.29MB (30.1%), Keys: 430,877, Full: False, Corrupted: 0
+2026-05-17 04:20:31,423 - __main__ - INFO - Disk Monitor - Used: 362.91MB (35.4%), Keys: 507,039, Full: False, Corrupted: 0
+2026-05-17 04:20:36,425 - __main__ - INFO - Disk Monitor - Used: 374.26MB (36.5%), Keys: 522,865, Full: False, Corrupted: 0
+2026-05-17 04:20:41,430 - __main__ - INFO - Disk Monitor - Used: 422.46MB (41.3%), Keys: 590,118, Full: False, Corrupted: 0
+2026-05-17 04:20:46,431 - __main__ - INFO - Disk Monitor - Used: 475.04MB (46.4%), Keys: 663,358, Full: False, Corrupted: 0
+2026-05-17 04:20:51,431 - __main__ - INFO - Disk Monitor - Used: 519.12MB (50.7%), Keys: 724,711, Full: False, Corrupted: 0
+2026-05-17 04:21:14,144 - __main__ - INFO - Backup completed - Keys: 785,502, Size: 562.80MB
+2026-05-17 04:21:14,144 - __main__ - INFO - Disk Monitor - Used: 562.80MB (55.0%), Keys: 785,502, Full: False, Corrupted: 0
+2026-05-17 04:21:19,145 - __main__ - INFO - Disk Monitor - Used: 612.24MB (59.8%), Keys: 854,381, Full: False, Corrupted: 0
+2026-05-17 04:21:19,145 - __main__ - WARNING - 磁盘满故障注入 - 已使用: 612.24MB
+2026-05-17 04:21:28,368 - __main__ - INFO - Disk Monitor - Used: 612.24MB (59.8%), Keys: 854,381, Full: True, Corrupted: 0
+2026-05-17 04:21:33,371 - __main__ - INFO - Disk Monitor - Used: 612.24MB (59.8%), Keys: 854,381, Full: True, Corrupted: 0
+2026-05-17 04:21:38,372 - __main__ - INFO - Disk Monitor - Used: 612.24MB (59.8%), Keys: 854,381, Full: True, Corrupted: 0
+2026-05-17 04:21:43,372 - __main__ - INFO - Disk Monitor - Used: 612.24MB (59.8%), Keys: 854,381, Full: True, Corrupted: 0
+2026-05-17 04:21:43,373 - __main__ - INFO - 磁盘空间已清理

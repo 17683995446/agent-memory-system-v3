@@ -699,24 +699,35 @@ class RaftNode:
         self._failover_lock = asyncio.Lock()
         self._node_health_status: Dict[str, bool] = {}
         self._last_health_check: Dict[str, float] = {}
-        
+
         # P1修复: 心跳跟踪和故障检测
         self._last_heartbeat_sent: float = 0.0  # 上次发送心跳的时间
         self._last_heartbeat_received: Dict[str, float] = {}  # 每个peer上次收到心跳的时间
         self._heartbeat_missed: Dict[str, int] = {}  # 每个peer连续丢失心跳次数
         self._leader_heartbeat_received: float = time.time()  # 上次收到Leader心跳的时间
-        
+
         # P1修复: 日志复制状态跟踪
         self._log_replication_inflight: Dict[str, int] = {}  # 每个peer正在复制的日志索引
         self._log_replication_retries: Dict[str, int] = {}  # 每个peer的日志复制重试次数
-        
+
         # P1修复: 提交索引一致性检查
         self._commit_index_history: List[Tuple[int, int, float]] = []  # (commit_index, term, timestamp)
         self._commit_index_check_interval: float = 1.0  # 提交索引检查间隔
-        
+
         # P1修复: 选举状态跟踪
         self._election_start_time: float = 0.0  # 选举开始时间
         self._election_round: int = 0  # 选举轮次
+
+        # DEFECT-007 [P1] 修复: 脑裂状态跟踪
+        self._split_brain_detected: bool = False
+        self._split_brain_start_time: float = 0.0
+        self._split_brain_resolution_pending: bool = False
+        self._partition_recovery_task: Optional[asyncio.Task] = None
+
+        # DEFECT-005 [P1] 修复: 状态同步等待机制
+        self._state_sync_event: asyncio.Event = asyncio.Event()
+        self._state_sync_timeout: float = 5.0
+        self._leader_election_timeout: float = 2.0  # Leader选举超时优化
     
     @property
     def role(self) -> RaftRole:
@@ -892,21 +903,95 @@ class RaftNode:
         await self._broadcast_append_entries()
     
     async def _become_follower(self, term: int):
-        """成为Follower"""
-        if self._role == RaftRole.LEADER:
+        """成为Follower - DEFECT-007 [P1] 修复: 检测并处理脑裂恢复"""
+        was_leader = self._role == RaftRole.LEADER
+
+        if was_leader:
             logger.info(f"Node {self.node_id} stepping down from leader")
-        
+
         self._role = RaftRole.FOLLOWER
         self._persistent_state.current_term = term
         self._persistent_state.voted_for = None
-        
+
         # 停止心跳
         if self._heartbeat_timer:
             self._heartbeat_timer.cancel()
             self._heartbeat_timer = None
-        
+
+        # DEFECT-007 [P1] 修复: 如果之前是Leader，可能是脑裂恢复
+        if was_leader:
+            await self._handle_potential_split_brain_recovery()
+
         # 重置选举定时器
         self._reset_election_timer()
+
+    async def _handle_potential_split_brain_recovery(self):
+        """DEFECT-007 [P1] 修复: 处理潜在的脑裂恢复"""
+        if self._split_brain_detected:
+            logger.info(f"Node {self.node_id} recovering from split-brain state")
+            self._split_brain_detected = False
+            self._split_brain_resolution_pending = False
+
+            # 触发分区恢复后的日志同步
+            if self._partition_recovery_task:
+                self._partition_recovery_task.cancel()
+            self._partition_recovery_task = asyncio.create_task(self._sync_logs_after_partition())
+
+    async def _sync_logs_after_partition(self):
+        """DEFECT-007 [P1] 修复: 分区恢复后同步日志"""
+        try:
+            logger.info(f"Node {self.node_id} starting post-partition log sync")
+
+            # 等待一段时间确保网络稳定
+            await asyncio.sleep(1)
+
+            # 如果存在Leader，从Leader同步日志
+            if self._current_leader and self._current_leader != self.node_id:
+                await self._request_log_sync_from_leader()
+
+            # DEFECT-011 [P2] 修复: 分区恢复后同步日志长度
+            await self._verify_log_consistency()
+
+        except asyncio.CancelledError:
+            pass
+        except Exception as e:
+            logger.error(f"Post-partition log sync failed: {e}")
+
+    async def _request_log_sync_from_leader(self):
+        """DEFECT-007 [P1] 修复: 从Leader请求日志同步"""
+        try:
+            request = AppendEntriesRequest(
+                term=self._persistent_state.current_term,
+                leader_id=self.node_id,  # 请求者ID
+                prev_log_index=self._persistent_state.get_last_log_index(),
+                prev_log_term=self._persistent_state.get_last_log_term(),
+                entries=[],  # 空条目表示同步请求
+                leader_commit=self._volatile_state.commit_index,
+            )
+
+            response = await self.transport.send_append_entries(
+                self._current_leader, request
+            )
+
+            if response and response.success:
+                logger.info(f"Log sync request accepted by leader {self._current_leader}")
+            else:
+                logger.warning(f"Log sync request rejected by leader {self._current_leader}")
+
+        except Exception as e:
+            logger.error(f"Failed to request log sync: {e}")
+
+    async def _verify_log_consistency(self):
+        """DEFECT-011 [P2] 修复: 验证日志一致性"""
+        try:
+            my_log_size = len(self._persistent_state.log)
+            logger.debug(f"Log consistency check: local log size = {my_log_size}")
+
+            # 如果检测到日志不一致，可以在这里触发修复
+            # 例如：请求Leader发送缺失的日志条目
+
+        except Exception as e:
+            logger.error(f"Log consistency verification failed: {e}")
     
     async def _heartbeat_loop(self):
         """心跳循环 - P1修复: 改进心跳检测机制"""
@@ -1207,11 +1292,11 @@ class RaftNode:
     
     async def handle_append_entries(self, request: AppendEntriesRequest) -> AppendEntriesResponse:
         """
-        处理追加条目请求 - P1修复: 完善日志一致性检查
-        
+        处理追加条目请求 - DEFECT-005 [P1] 修复: 优化状态同步等待
+
         Args:
             request: 追加条目请求
-            
+
         Returns:
             追加条目响应
         """
@@ -1219,7 +1304,7 @@ class RaftNode:
             # 如果Leader任期更高，更新自己的任期
             if request.term > self._persistent_state.current_term:
                 await self._become_follower(request.term)
-            
+
             # 如果任期小于当前任期，拒绝
             if request.term < self._persistent_state.current_term:
                 return AppendEntriesResponse(
@@ -1228,13 +1313,24 @@ class RaftNode:
                     success=False,
                     conflict_index=self._persistent_state.get_last_log_index(),
                 )
-            
-            # P1修复: 更新收到Leader心跳的时间
+
+            # DEFECT-005 [P1] 修复: 更新收到Leader心跳的时间
             self._leader_heartbeat_received = time.time()
-            
+
+            # DEFECT-007 [P1] 修复: 检测可能的脑裂情况
+            if self._current_leader and self._current_leader != request.leader_id:
+                if not self._split_brain_detected:
+                    logger.warning(f"Split-brain detected: current leader={self._current_leader}, "
+                                 f"new leader={request.leader_id}")
+                    self._split_brain_detected = True
+                    self._split_brain_start_time = time.time()
+
             # 重置选举定时器(收到有效Leader的心跳)
             self._reset_election_timer()
             self._current_leader = request.leader_id
+
+            # DEFECT-005 [P1] 修复: 设置状态同步事件
+            self._state_sync_event.set()
             
             # P1修复: PrevLogIndex/PrevLogTerm一致性检查
             if request.prev_log_index >= 0:

@@ -1,0 +1,215 @@
+2026-05-17 02:20:57,211 - __main__ - INFO - 开始极端并发写入风暴测试
+2026-05-17 02:20:57,211 - __main__ - INFO - 并发客户端: 1000
+2026-05-17 02:20:57,211 - __main__ - INFO - 目标写入速率: 10,000 次/秒
+2026-05-17 02:20:57,211 - __main__ - INFO - 目标持续时间: 10.0 分钟
+2026-05-17 02:21:02,224 - __main__ - INFO - Throughput Monitor - Writes: 4,212, Actual TPS: 840.38, Target TPS: 10,000, Deduplicated: 175
+2026-05-17 02:21:07,225 - __main__ - INFO - Throughput Monitor - Writes: 8,473, Actual TPS: 846.12, Target TPS: 10,000, Deduplicated: 770
+2026-05-17 02:21:12,227 - __main__ - INFO - Throughput Monitor - Writes: 12,719, Actual TPS: 847.07, Target TPS: 10,000, Deduplicated: 1,614
+2026-05-17 02:21:17,228 - __main__ - INFO - Throughput Monitor - Writes: 16,938, Actual TPS: 846.18, Target TPS: 10,000, Deduplicated: 2,737
+2026-05-17 02:21:22,231 - __main__ - INFO - Throughput Monitor - Writes: 21,125, Actual TPS: 844.34, Target TPS: 10,000, Deduplicated: 4,016
+2026-05-17 02:21:27,265 - __main__ - INFO - Consistency Check #0 - Entries: 25,234, Violations: 0, Consistent: True
+2026-05-17 02:21:27,269 - __main__ - INFO - Throughput Monitor - Writes: 25,234, Actual TPS: 839.52, Target TPS: 10,000, Deduplicated: 5,392
+2026-05-17 02:21:32,272 - __main__ - INFO - Throughput Monitor - Writes: 29,392, Actual TPS: 838.32, Target TPS: 10,000, Deduplicated: 6,935
+2026-05-17 02:21:37,276 - __main__ - INFO - Throughput Monitor - Writes: 33,487, Actual TPS: 835.82, Target TPS: 10,000, Deduplicated: 8,596
+2026-05-17 02:21:42,280 - __main__ - INFO - Throughput Monitor - Writes: 37,715, Actual TPS: 836.83, Target TPS: 10,000, Deduplicated: 10,327
+2026-05-17 02:21:47,285 - __main__ - INFO - Throughput Monitor - Writes: 41,855, Actual TPS: 835.86, Target TPS: 10,000, Deduplicated: 12,024
+2026-05-17 02:21:52,291 - __main__ - INFO - Throughput Monitor - Writes: 45,993, Actual TPS: 835.03, Target TPS: 10,000, Deduplicated: 13,814
+2026-05-17 02:21:57,371 - __main__ - INFO - Consistency Check #1 - Entries: 50,195, Violations: 0, Consistent: True
+2026-05-17 02:21:57,380 - __main__ - INFO - Throughput Monitor - Writes: 50,195, Actual TPS: 834.24, Target TPS: 10,000, Deduplicated: 15,618
+2026-05-17 02:22:02,386 - __main__ - INFO - Throughput Monitor - Writes: 54,464, Actual TPS: 835.66, Target TPS: 10,000, Deduplicated: 17,394
+2026-05-17 02:22:07,393 - __main__ - INFO - Throughput Monitor - Writes: 58,684, Actual TPS: 836.17, Target TPS: 10,000, Deduplicated: 19,285
+2026-05-17 02:22:12,401 - __main__ - INFO - Throughput Monitor - Writes: 62,846, Actual TPS: 835.83, Target TPS: 10,000, Deduplicated: 21,066
+2026-05-17 02:22:17,409 - __main__ - INFO - Throughput Monitor - Writes: 66,979, Actual TPS: 835.17, Target TPS: 10,000, Deduplicated: 22,905
+2026-05-17 02:22:22,419 - __main__ - INFO - Throughput Monitor - Writes: 71,192, Actual TPS: 835.51, Target TPS: 10,000, Deduplicated: 24,696
+2026-05-17 02:22:27,492 - __main__ - INFO - Consistency Check #2 - Entries: 75,335, Violations: 0, Consistent: True
+2026-05-17 02:22:27,513 - __main__ - INFO - Throughput Monitor - Writes: 75,336, Actual TPS: 834.27, Target TPS: 10,000, Deduplicated: 26,520
+2026-05-17 02:22:32,525 - __main__ - INFO - Throughput Monitor - Writes: 79,513, Actual TPS: 834.22, Target TPS: 10,000, Deduplicated: 28,330
+2026-05-17 02:22:37,547 - __main__ - INFO - Throughput Monitor - Writes: 83,665, Actual TPS: 833.85, Target TPS: 10,000, Deduplicated: 30,033
+2026-05-17 02:22:42,557 - __main__ - INFO - Throughput Monitor - Writes: 87,811, Actual TPS: 833.55, Target TPS: 10,000, Deduplicated: 31,798
+2026-05-17 02:22:47,569 - __main__ - INFO - Throughput Monitor - Writes: 91,973, Actual TPS: 833.41, Target TPS: 10,000, Deduplicated: 33,585
+2026-05-17 02:22:52,582 - __main__ - INFO - Throughput Monitor - Writes: 96,241, Actual TPS: 834.19, Target TPS: 10,000, Deduplicated: 35,328
+2026-05-17 02:22:57,693 - __main__ - INFO - Consistency Check #3 - Entries: 100,402, Violations: 0, Consistent: True
+2026-05-17 02:22:57,708 - __main__ - INFO - Throughput Monitor - Writes: 100,403, Actual TPS: 833.24, Target TPS: 10,000, Deduplicated: 37,087
+2026-05-17 02:23:02,744 - __main__ - INFO - Throughput Monitor - Writes: 104,594, Actual TPS: 833.20, Target TPS: 10,000, Deduplicated: 38,821
+2026-05-17 02:23:07,760 - __main__ - INFO - Throughput Monitor - Writes: 108,763, Actual TPS: 833.12, Target TPS: 10,000, Deduplicated: 40,557
+2026-05-17 02:23:12,775 - __main__ - INFO - Throughput Monitor - Writes: 112,979, Actual TPS: 833.40, Target TPS: 10,000, Deduplicated: 42,370
+2026-05-17 02:23:17,801 - __main__ - INFO - Throughput Monitor - Writes: 117,171, Actual TPS: 833.43, Target TPS: 10,000, Deduplicated: 44,207
+2026-05-17 02:23:22,829 - __main__ - INFO - Throughput Monitor - Writes: 121,338, Actual TPS: 833.27, Target TPS: 10,000, Deduplicated: 45,972
+2026-05-17 02:23:27,926 - __main__ - INFO - Consistency Check #4 - Entries: 125,423, Violations: 0, Consistent: True
+2026-05-17 02:23:27,947 - __main__ - INFO - Throughput Monitor - Writes: 125,424, Actual TPS: 832.08, Target TPS: 10,000, Deduplicated: 47,714
+2026-05-17 02:23:32,988 - __main__ - INFO - Throughput Monitor - Writes: 129,519, Actual TPS: 831.54, Target TPS: 10,000, Deduplicated: 49,467
+2026-05-17 02:23:57,440 - __main__ - INFO - Throughput Monitor - Writes: 129,593, Actual TPS: 719.05, Target TPS: 10,000, Deduplicated: 49,505
+2026-05-17 02:23:58,124 - __main__ - INFO - Consistency Check #5 - Entries: 130,019, Violations: 0, Consistent: True
+2026-05-17 02:24:02,460 - __main__ - INFO - Throughput Monitor - Writes: 133,785, Actual TPS: 722.19, Target TPS: 10,000, Deduplicated: 51,354
+2026-05-17 02:24:07,478 - __main__ - INFO - Throughput Monitor - Writes: 138,138, Actual TPS: 726.02, Target TPS: 10,000, Deduplicated: 53,140
+2026-05-17 02:24:12,497 - __main__ - INFO - Throughput Monitor - Writes: 142,475, Actual TPS: 729.57, Target TPS: 10,000, Deduplicated: 54,965
+2026-05-17 02:24:17,517 - __main__ - INFO - Throughput Monitor - Writes: 146,838, Actual TPS: 733.07, Target TPS: 10,000, Deduplicated: 56,794
+2026-05-17 02:24:22,543 - __main__ - INFO - Throughput Monitor - Writes: 151,198, Actual TPS: 736.36, Target TPS: 10,000, Deduplicated: 58,645
+2026-05-17 02:24:27,565 - __main__ - INFO - Throughput Monitor - Writes: 155,563, Actual TPS: 739.53, Target TPS: 10,000, Deduplicated: 60,502
+2026-05-17 02:24:28,362 - __main__ - INFO - Consistency Check #6 - Entries: 156,052, Violations: 0, Consistent: True
+2026-05-17 02:24:32,587 - __main__ - INFO - Throughput Monitor - Writes: 159,722, Actual TPS: 741.60, Target TPS: 10,000, Deduplicated: 62,287
+2026-05-17 02:24:37,609 - __main__ - INFO - Throughput Monitor - Writes: 164,092, Actual TPS: 744.53, Target TPS: 10,000, Deduplicated: 64,166
+2026-05-17 02:24:42,632 - __main__ - INFO - Throughput Monitor - Writes: 168,467, Actual TPS: 747.34, Target TPS: 10,000, Deduplicated: 66,009
+2026-05-17 02:24:47,658 - __main__ - INFO - Throughput Monitor - Writes: 172,834, Actual TPS: 750.00, Target TPS: 10,000, Deduplicated: 67,818
+2026-05-17 02:24:52,684 - __main__ - INFO - Throughput Monitor - Writes: 177,151, Actual TPS: 752.32, Target TPS: 10,000, Deduplicated: 69,640
+2026-05-17 02:24:57,709 - __main__ - INFO - Throughput Monitor - Writes: 181,512, Actual TPS: 754.74, Target TPS: 10,000, Deduplicated: 71,511
+2026-05-17 02:24:58,644 - __main__ - INFO - Consistency Check #7 - Entries: 182,083, Violations: 0, Consistent: True
+2026-05-17 02:25:02,736 - __main__ - INFO - Throughput Monitor - Writes: 185,636, Actual TPS: 756.08, Target TPS: 10,000, Deduplicated: 73,284
+2026-05-17 02:25:07,762 - __main__ - INFO - Throughput Monitor - Writes: 190,001, Actual TPS: 758.33, Target TPS: 10,000, Deduplicated: 75,146
+2026-05-17 02:25:12,790 - __main__ - INFO - Throughput Monitor - Writes: 194,334, Actual TPS: 760.37, Target TPS: 10,000, Deduplicated: 76,930
+2026-05-17 02:25:17,819 - __main__ - INFO - Throughput Monitor - Writes: 198,703, Actual TPS: 762.46, Target TPS: 10,000, Deduplicated: 78,777
+2026-05-17 02:25:22,849 - __main__ - INFO - Throughput Monitor - Writes: 203,064, Actual TPS: 764.44, Target TPS: 10,000, Deduplicated: 80,603
+2026-05-17 02:25:27,879 - __main__ - INFO - Throughput Monitor - Writes: 207,419, Actual TPS: 766.32, Target TPS: 10,000, Deduplicated: 82,441
+2026-05-17 02:25:28,969 - __main__ - INFO - Consistency Check #8 - Entries: 208,088, Violations: 0, Consistent: True
+2026-05-17 02:25:32,911 - __main__ - INFO - Throughput Monitor - Writes: 211,473, Actual TPS: 767.04, Target TPS: 10,000, Deduplicated: 84,185
+2026-05-17 02:25:37,943 - __main__ - INFO - Throughput Monitor - Writes: 215,835, Actual TPS: 768.83, Target TPS: 10,000, Deduplicated: 86,094
+2026-05-17 02:25:42,975 - __main__ - INFO - Throughput Monitor - Writes: 220,193, Actual TPS: 770.54, Target TPS: 10,000, Deduplicated: 87,995
+2026-05-17 02:25:48,008 - __main__ - INFO - Throughput Monitor - Writes: 224,552, Actual TPS: 772.20, Target TPS: 10,000, Deduplicated: 89,963
+2026-05-17 02:25:53,042 - __main__ - INFO - Throughput Monitor - Writes: 228,911, Actual TPS: 773.79, Target TPS: 10,000, Deduplicated: 91,765
+2026-05-17 02:25:58,076 - __main__ - INFO - Throughput Monitor - Writes: 233,253, Actual TPS: 775.27, Target TPS: 10,000, Deduplicated: 93,651
+2026-05-17 02:25:59,324 - __main__ - INFO - Consistency Check #9 - Entries: 234,035, Violations: 0, Consistent: True
+2026-05-17 02:26:03,111 - __main__ - INFO - Throughput Monitor - Writes: 237,326, Actual TPS: 775.83, Target TPS: 10,000, Deduplicated: 95,364
+2026-05-17 02:26:08,147 - __main__ - INFO - Throughput Monitor - Writes: 241,717, Actual TPS: 777.39, Target TPS: 10,000, Deduplicated: 97,228
+2026-05-17 02:26:13,185 - __main__ - INFO - Throughput Monitor - Writes: 246,064, Actual TPS: 778.75, Target TPS: 10,000, Deduplicated: 99,050
+2026-05-17 02:26:18,222 - __main__ - INFO - Throughput Monitor - Writes: 250,417, Actual TPS: 780.09, Target TPS: 10,000, Deduplicated: 100,907
+2026-05-17 02:26:23,260 - __main__ - INFO - Throughput Monitor - Writes: 254,798, Actual TPS: 781.47, Target TPS: 10,000, Deduplicated: 102,799
+2026-05-17 02:26:28,313 - __main__ - INFO - Throughput Monitor - Writes: 259,023, Actual TPS: 782.31, Target TPS: 10,000, Deduplicated: 104,645
+2026-05-17 02:26:29,773 - __main__ - INFO - Consistency Check #10 - Entries: 259,865, Violations: 0, Consistent: True
+2026-05-17 02:26:33,355 - __main__ - INFO - Throughput Monitor - Writes: 262,839, Actual TPS: 781.92, Target TPS: 10,000, Deduplicated: 106,265
+2026-05-17 02:26:38,411 - __main__ - INFO - Throughput Monitor - Writes: 267,047, Actual TPS: 782.67, Target TPS: 10,000, Deduplicated: 108,017
+2026-05-17 02:26:43,452 - __main__ - INFO - Throughput Monitor - Writes: 271,211, Actual TPS: 783.30, Target TPS: 10,000, Deduplicated: 109,757
+2026-05-17 02:26:48,495 - __main__ - INFO - Throughput Monitor - Writes: 275,409, Actual TPS: 784.01, Target TPS: 10,000, Deduplicated: 111,483
+2026-05-17 02:26:53,538 - __main__ - INFO - Throughput Monitor - Writes: 279,565, Actual TPS: 784.58, Target TPS: 10,000, Deduplicated: 113,288
+2026-05-17 02:26:58,607 - __main__ - INFO - Throughput Monitor - Writes: 283,762, Actual TPS: 785.18, Target TPS: 10,000, Deduplicated: 115,103
+2026-05-17 02:27:00,399 - __main__ - INFO - Consistency Check #11 - Entries: 284,737, Violations: 0, Consistent: True
+2026-05-17 02:27:03,660 - __main__ - INFO - Throughput Monitor - Writes: 287,360, Actual TPS: 784.18, Target TPS: 10,000, Deduplicated: 116,615
+2026-05-17 02:29:11,932 - __main__ - INFO - Throughput Monitor - Writes: 290,324, Actual TPS: 586.87, Target TPS: 10,000, Deduplicated: 117,934
+2026-05-17 02:29:18,115 - __main__ - INFO - Consistency Check #12 - Entries: 290,324, Violations: 0, Consistent: True
+2026-05-17 02:42:22,995 - __main__ - INFO - Throughput Monitor - Writes: 290,325, Actual TPS: 231.30, Target TPS: 10,000, Deduplicated: 117,934
+2026-05-17 02:59:01,585 - __main__ - INFO - Consistency Check #13 - Entries: 290,325, Violations: 0, Consistent: True
+2026-05-17 02:59:01,635 - __main__ - INFO - Throughput Monitor - Writes: 290,325, Actual TPS: 127.09, Target TPS: 10,000, Deduplicated: 117,934
+2026-05-17 02:59:32,042 - __main__ - INFO - Consistency Check #14 - Entries: 291,021, Violations: 0, Consistent: True
+2026-05-17 02:59:34,341 - __main__ - INFO - 测试报告已保存到: /workspace/agent_memory_system_v2/tests/long_running/scenario2_write_storm_report.json
+2026-05-17 03:29:54,405 - __main__ - INFO - 开始极端并发写入风暴测试
+2026-05-17 03:29:54,406 - __main__ - INFO - 并发客户端: 1000
+2026-05-17 03:29:54,406 - __main__ - INFO - 目标写入速率: 10,000 次/秒
+2026-05-17 03:29:54,406 - __main__ - INFO - 目标持续时间: 10.0 分钟
+2026-05-17 03:29:59,410 - __main__ - INFO - Throughput Monitor - Writes: 4,452, Actual TPS: 889.58, Target TPS: 10,000, Deduplicated: 212
+2026-05-17 03:30:04,412 - __main__ - INFO - Throughput Monitor - Writes: 8,893, Actual TPS: 888.73, Target TPS: 10,000, Deduplicated: 850
+2026-05-17 03:30:09,414 - __main__ - INFO - Throughput Monitor - Writes: 13,320, Actual TPS: 887.53, Target TPS: 10,000, Deduplicated: 1,762
+2026-05-17 03:30:14,415 - __main__ - INFO - Throughput Monitor - Writes: 17,734, Actual TPS: 886.28, Target TPS: 10,000, Deduplicated: 2,966
+2026-05-17 03:30:19,418 - __main__ - INFO - Throughput Monitor - Writes: 22,137, Actual TPS: 885.07, Target TPS: 10,000, Deduplicated: 4,449
+2026-05-17 03:30:24,448 - __main__ - INFO - Consistency Check #0 - Entries: 26,529, Violations: 0, Consistent: True
+2026-05-17 03:30:24,451 - __main__ - INFO - Throughput Monitor - Writes: 26,529, Actual TPS: 882.97, Target TPS: 10,000, Deduplicated: 5,987
+2026-05-17 03:30:29,455 - __main__ - INFO - Throughput Monitor - Writes: 30,930, Actual TPS: 882.49, Target TPS: 10,000, Deduplicated: 7,722
+2026-05-17 03:30:34,459 - __main__ - INFO - Throughput Monitor - Writes: 35,329, Actual TPS: 882.06, Target TPS: 10,000, Deduplicated: 9,489
+2026-05-17 03:30:39,464 - __main__ - INFO - Throughput Monitor - Writes: 39,708, Actual TPS: 881.27, Target TPS: 10,000, Deduplicated: 11,319
+2026-05-17 03:30:44,468 - __main__ - INFO - Throughput Monitor - Writes: 44,093, Actual TPS: 880.76, Target TPS: 10,000, Deduplicated: 13,172
+2026-05-17 03:30:49,474 - __main__ - INFO - Throughput Monitor - Writes: 48,490, Actual TPS: 880.54, Target TPS: 10,000, Deduplicated: 15,027
+2026-05-17 03:30:54,526 - __main__ - INFO - Consistency Check #1 - Entries: 52,860, Violations: 0, Consistent: True
+2026-05-17 03:30:54,533 - __main__ - INFO - Throughput Monitor - Writes: 52,860, Actual TPS: 879.13, Target TPS: 10,000, Deduplicated: 16,901
+2026-05-17 03:30:59,539 - __main__ - INFO - Throughput Monitor - Writes: 57,237, Actual TPS: 878.77, Target TPS: 10,000, Deduplicated: 18,813
+2026-05-17 03:31:04,550 - __main__ - INFO - Throughput Monitor - Writes: 61,630, Actual TPS: 878.62, Target TPS: 10,000, Deduplicated: 20,664
+2026-05-17 03:31:09,557 - __main__ - INFO - Throughput Monitor - Writes: 66,021, Actual TPS: 878.51, Target TPS: 10,000, Deduplicated: 22,583
+2026-05-17 03:31:14,566 - __main__ - INFO - Throughput Monitor - Writes: 70,408, Actual TPS: 878.35, Target TPS: 10,000, Deduplicated: 24,509
+2026-05-17 03:31:19,576 - __main__ - INFO - Throughput Monitor - Writes: 74,794, Actual TPS: 878.18, Target TPS: 10,000, Deduplicated: 26,379
+2026-05-17 03:31:24,646 - __main__ - INFO - Consistency Check #2 - Entries: 79,144, Violations: 0, Consistent: True
+2026-05-17 03:31:24,656 - __main__ - INFO - Throughput Monitor - Writes: 79,144, Actual TPS: 876.94, Target TPS: 10,000, Deduplicated: 28,315
+2026-05-17 03:31:29,666 - __main__ - INFO - Throughput Monitor - Writes: 83,523, Actual TPS: 876.78, Target TPS: 10,000, Deduplicated: 30,218
+2026-05-17 03:31:34,678 - __main__ - INFO - Throughput Monitor - Writes: 87,902, Actual TPS: 876.63, Target TPS: 10,000, Deduplicated: 32,134
+2026-05-17 03:31:39,689 - __main__ - INFO - Throughput Monitor - Writes: 92,268, Actual TPS: 876.38, Target TPS: 10,000, Deduplicated: 33,964
+2026-05-17 03:31:44,702 - __main__ - INFO - Throughput Monitor - Writes: 96,654, Actual TPS: 876.32, Target TPS: 10,000, Deduplicated: 35,848
+2026-05-17 03:31:49,714 - __main__ - INFO - Throughput Monitor - Writes: 101,031, Actual TPS: 876.18, Target TPS: 10,000, Deduplicated: 37,806
+2026-05-17 03:31:54,813 - __main__ - INFO - Consistency Check #3 - Entries: 105,355, Violations: 0, Consistent: True
+2026-05-17 03:31:54,828 - __main__ - INFO - Throughput Monitor - Writes: 105,355, Actual TPS: 874.88, Target TPS: 10,000, Deduplicated: 39,680
+2026-05-17 03:31:59,842 - __main__ - INFO - Throughput Monitor - Writes: 109,751, Actual TPS: 874.96, Target TPS: 10,000, Deduplicated: 41,524
+2026-05-17 03:32:04,856 - __main__ - INFO - Throughput Monitor - Writes: 114,136, Actual TPS: 874.94, Target TPS: 10,000, Deduplicated: 43,440
+2026-05-17 03:32:09,873 - __main__ - INFO - Throughput Monitor - Writes: 118,515, Actual TPS: 874.86, Target TPS: 10,000, Deduplicated: 45,355
+2026-05-17 03:32:14,888 - __main__ - INFO - Throughput Monitor - Writes: 122,899, Actual TPS: 874.83, Target TPS: 10,000, Deduplicated: 47,294
+2026-05-17 03:32:19,906 - __main__ - INFO - Throughput Monitor - Writes: 127,288, Actual TPS: 874.83, Target TPS: 10,000, Deduplicated: 49,138
+2026-05-17 03:32:25,010 - __main__ - INFO - Consistency Check #4 - Entries: 131,584, Violations: 0, Consistent: True
+2026-05-17 03:32:25,029 - __main__ - INFO - Throughput Monitor - Writes: 131,585, Actual TPS: 873.60, Target TPS: 10,000, Deduplicated: 50,996
+2026-05-17 03:32:30,049 - __main__ - INFO - Throughput Monitor - Writes: 135,977, Actual TPS: 873.65, Target TPS: 10,000, Deduplicated: 52,951
+2026-05-17 03:32:35,068 - __main__ - INFO - Throughput Monitor - Writes: 140,362, Actual TPS: 873.65, Target TPS: 10,000, Deduplicated: 54,853
+2026-05-17 03:32:40,087 - __main__ - INFO - Throughput Monitor - Writes: 144,735, Actual TPS: 873.58, Target TPS: 10,000, Deduplicated: 56,770
+2026-05-17 03:32:45,106 - __main__ - INFO - Throughput Monitor - Writes: 149,122, Actual TPS: 873.59, Target TPS: 10,000, Deduplicated: 58,774
+2026-05-17 03:32:50,127 - __main__ - INFO - Throughput Monitor - Writes: 153,504, Actual TPS: 873.56, Target TPS: 10,000, Deduplicated: 60,646
+2026-05-17 03:32:55,254 - __main__ - INFO - Consistency Check #5 - Entries: 157,791, Violations: 0, Consistent: True
+2026-05-17 03:32:55,280 - __main__ - INFO - Throughput Monitor - Writes: 157,791, Actual TPS: 872.38, Target TPS: 10,000, Deduplicated: 62,574
+2026-05-17 03:33:00,303 - __main__ - INFO - Throughput Monitor - Writes: 162,173, Actual TPS: 872.38, Target TPS: 10,000, Deduplicated: 64,443
+2026-05-17 03:33:05,326 - __main__ - INFO - Throughput Monitor - Writes: 166,552, Actual TPS: 872.37, Target TPS: 10,000, Deduplicated: 66,356
+2026-05-17 03:33:10,350 - __main__ - INFO - Throughput Monitor - Writes: 170,942, Actual TPS: 872.40, Target TPS: 10,000, Deduplicated: 68,296
+2026-05-17 03:33:15,374 - __main__ - INFO - Throughput Monitor - Writes: 175,320, Actual TPS: 872.38, Target TPS: 10,000, Deduplicated: 70,187
+2026-05-17 03:33:20,399 - __main__ - INFO - Throughput Monitor - Writes: 179,706, Actual TPS: 872.39, Target TPS: 10,000, Deduplicated: 72,108
+2026-05-17 03:33:25,535 - __main__ - INFO - Consistency Check #6 - Entries: 183,972, Violations: 0, Consistent: True
+2026-05-17 03:33:25,565 - __main__ - INFO - Throughput Monitor - Writes: 183,973, Actual TPS: 871.25, Target TPS: 10,000, Deduplicated: 73,869
+2026-05-17 03:33:30,592 - __main__ - INFO - Throughput Monitor - Writes: 188,359, Actual TPS: 871.28, Target TPS: 10,000, Deduplicated: 75,805
+2026-05-17 03:33:35,619 - __main__ - INFO - Throughput Monitor - Writes: 192,743, Actual TPS: 871.30, Target TPS: 10,000, Deduplicated: 77,695
+2026-05-17 03:33:40,648 - __main__ - INFO - Throughput Monitor - Writes: 197,101, Actual TPS: 871.20, Target TPS: 10,000, Deduplicated: 79,480
+2026-05-17 03:33:45,677 - __main__ - INFO - Throughput Monitor - Writes: 201,486, Actual TPS: 871.21, Target TPS: 10,000, Deduplicated: 81,260
+2026-05-17 03:33:50,708 - __main__ - INFO - Throughput Monitor - Writes: 205,864, Actual TPS: 871.19, Target TPS: 10,000, Deduplicated: 83,200
+2026-05-17 03:33:55,870 - __main__ - INFO - Consistency Check #7 - Entries: 210,094, Violations: 0, Consistent: True
+2026-05-17 03:33:55,911 - __main__ - INFO - Throughput Monitor - Writes: 210,095, Actual TPS: 869.94, Target TPS: 10,000, Deduplicated: 85,029
+2026-05-17 03:34:00,942 - __main__ - INFO - Throughput Monitor - Writes: 214,475, Actual TPS: 869.95, Target TPS: 10,000, Deduplicated: 86,925
+2026-05-17 03:34:05,976 - __main__ - INFO - Throughput Monitor - Writes: 218,862, Actual TPS: 869.99, Target TPS: 10,000, Deduplicated: 88,806
+2026-05-17 03:34:11,013 - __main__ - INFO - Throughput Monitor - Writes: 223,252, Actual TPS: 870.02, Target TPS: 10,000, Deduplicated: 90,653
+2026-05-17 03:34:16,047 - __main__ - INFO - Throughput Monitor - Writes: 227,637, Actual TPS: 870.04, Target TPS: 10,000, Deduplicated: 92,507
+2026-05-17 03:34:21,081 - __main__ - INFO - Throughput Monitor - Writes: 232,026, Actual TPS: 870.07, Target TPS: 10,000, Deduplicated: 94,347
+2026-05-17 03:34:26,241 - __main__ - INFO - Consistency Check #8 - Entries: 236,231, Violations: 0, Consistent: True
+2026-05-17 03:34:26,279 - __main__ - INFO - Throughput Monitor - Writes: 236,231, Actual TPS: 868.90, Target TPS: 10,000, Deduplicated: 96,082
+2026-05-17 03:34:31,316 - __main__ - INFO - Throughput Monitor - Writes: 240,610, Actual TPS: 868.91, Target TPS: 10,000, Deduplicated: 97,973
+2026-05-17 03:34:36,355 - __main__ - INFO - Throughput Monitor - Writes: 244,995, Actual TPS: 868.93, Target TPS: 10,000, Deduplicated: 99,838
+2026-05-17 03:34:41,393 - __main__ - INFO - Throughput Monitor - Writes: 249,347, Actual TPS: 868.84, Target TPS: 10,000, Deduplicated: 101,714
+2026-05-17 03:34:46,435 - __main__ - INFO - Throughput Monitor - Writes: 253,735, Actual TPS: 868.87, Target TPS: 10,000, Deduplicated: 103,610
+2026-05-17 03:34:51,476 - __main__ - INFO - Throughput Monitor - Writes: 258,104, Actual TPS: 868.83, Target TPS: 10,000, Deduplicated: 105,540
+2026-05-17 03:34:56,670 - __main__ - INFO - Consistency Check #9 - Entries: 262,281, Violations: 0, Consistent: True
+2026-05-17 03:34:56,713 - __main__ - INFO - Throughput Monitor - Writes: 262,282, Actual TPS: 867.60, Target TPS: 10,000, Deduplicated: 107,396
+2026-05-17 03:35:01,752 - __main__ - INFO - Throughput Monitor - Writes: 266,672, Actual TPS: 867.66, Target TPS: 10,000, Deduplicated: 109,259
+2026-05-17 03:35:06,793 - __main__ - INFO - Throughput Monitor - Writes: 271,051, Actual TPS: 867.68, Target TPS: 10,000, Deduplicated: 111,123
+2026-05-17 03:35:11,835 - __main__ - INFO - Throughput Monitor - Writes: 275,432, Actual TPS: 867.70, Target TPS: 10,000, Deduplicated: 113,061
+2026-05-17 03:35:16,877 - __main__ - INFO - Throughput Monitor - Writes: 279,815, Actual TPS: 867.72, Target TPS: 10,000, Deduplicated: 114,934
+2026-05-17 03:35:21,921 - __main__ - INFO - Throughput Monitor - Writes: 284,202, Actual TPS: 867.75, Target TPS: 10,000, Deduplicated: 116,813
+2026-05-17 03:35:27,106 - __main__ - INFO - Consistency Check #10 - Entries: 288,356, Violations: 0, Consistent: True
+2026-05-17 03:35:27,152 - __main__ - INFO - Throughput Monitor - Writes: 288,356, Actual TPS: 866.60, Target TPS: 10,000, Deduplicated: 118,610
+2026-05-17 03:35:32,197 - __main__ - INFO - Throughput Monitor - Writes: 292,749, Actual TPS: 866.66, Target TPS: 10,000, Deduplicated: 120,509
+2026-05-17 03:35:37,244 - __main__ - INFO - Throughput Monitor - Writes: 297,133, Actual TPS: 866.69, Target TPS: 10,000, Deduplicated: 122,415
+2026-05-17 03:35:42,291 - __main__ - INFO - Throughput Monitor - Writes: 301,465, Actual TPS: 866.56, Target TPS: 10,000, Deduplicated: 124,325
+2026-05-17 03:35:47,340 - __main__ - INFO - Throughput Monitor - Writes: 305,864, Actual TPS: 866.63, Target TPS: 10,000, Deduplicated: 126,176
+2026-05-17 03:35:52,390 - __main__ - INFO - Throughput Monitor - Writes: 310,249, Actual TPS: 866.66, Target TPS: 10,000, Deduplicated: 128,123
+2026-05-17 03:35:57,591 - __main__ - INFO - Consistency Check #11 - Entries: 314,387, Violations: 0, Consistent: True
+2026-05-17 03:35:57,643 - __main__ - INFO - Throughput Monitor - Writes: 314,387, Actual TPS: 865.51, Target TPS: 10,000, Deduplicated: 129,875
+2026-05-17 03:36:02,695 - __main__ - INFO - Throughput Monitor - Writes: 318,764, Actual TPS: 865.53, Target TPS: 10,000, Deduplicated: 131,760
+2026-05-17 03:36:07,746 - __main__ - INFO - Throughput Monitor - Writes: 323,157, Actual TPS: 865.58, Target TPS: 10,000, Deduplicated: 133,598
+2026-05-17 03:36:12,798 - __main__ - INFO - Throughput Monitor - Writes: 327,541, Actual TPS: 865.61, Target TPS: 10,000, Deduplicated: 135,458
+2026-05-17 03:36:17,852 - __main__ - INFO - Throughput Monitor - Writes: 331,922, Actual TPS: 865.63, Target TPS: 10,000, Deduplicated: 137,324
+2026-05-17 03:36:22,906 - __main__ - INFO - Throughput Monitor - Writes: 336,309, Actual TPS: 865.66, Target TPS: 10,000, Deduplicated: 139,274
+2026-05-17 04:17:39,499 - __main__ - INFO - 开始极端并发写入风暴测试
+2026-05-17 04:17:39,503 - __main__ - INFO - 并发客户端: 1000
+2026-05-17 04:17:39,503 - __main__ - INFO - 目标写入速率: 10,000 次/秒
+2026-05-17 04:17:39,503 - __main__ - INFO - 目标持续时间: 10.0 分钟
+2026-05-17 04:17:44,508 - __main__ - INFO - Throughput Monitor - Writes: 4,264, Actual TPS: 851.97, Target TPS: 10,000, Deduplicated: 199
+2026-05-17 04:17:49,510 - __main__ - INFO - Throughput Monitor - Writes: 8,579, Actual TPS: 857.33, Target TPS: 10,000, Deduplicated: 795
+2026-05-17 04:17:54,511 - __main__ - INFO - Throughput Monitor - Writes: 12,986, Actual TPS: 865.28, Target TPS: 10,000, Deduplicated: 1,723
+2026-05-17 04:17:59,513 - __main__ - INFO - Throughput Monitor - Writes: 17,359, Actual TPS: 867.51, Target TPS: 10,000, Deduplicated: 2,908
+2026-05-17 04:18:04,516 - __main__ - INFO - Throughput Monitor - Writes: 21,728, Actual TPS: 868.66, Target TPS: 10,000, Deduplicated: 4,325
+2026-05-17 04:18:09,545 - __main__ - INFO - Consistency Check #0 - Entries: 26,099, Violations: 0, Consistent: True
+2026-05-17 04:18:09,548 - __main__ - INFO - Throughput Monitor - Writes: 26,100, Actual TPS: 868.68, Target TPS: 10,000, Deduplicated: 5,847
+2026-05-17 04:18:14,553 - __main__ - INFO - Throughput Monitor - Writes: 30,461, Actual TPS: 869.06, Target TPS: 10,000, Deduplicated: 7,572
+2026-05-17 04:18:19,557 - __main__ - INFO - Throughput Monitor - Writes: 34,825, Actual TPS: 869.45, Target TPS: 10,000, Deduplicated: 9,371
+2026-05-17 04:18:24,561 - __main__ - INFO - Throughput Monitor - Writes: 39,184, Actual TPS: 869.63, Target TPS: 10,000, Deduplicated: 11,237
+2026-05-17 04:18:29,566 - __main__ - INFO - Throughput Monitor - Writes: 43,543, Actual TPS: 869.77, Target TPS: 10,000, Deduplicated: 13,057
+2026-05-17 04:18:34,571 - __main__ - INFO - Throughput Monitor - Writes: 47,883, Actual TPS: 869.53, Target TPS: 10,000, Deduplicated: 14,883
+2026-05-17 04:18:39,627 - __main__ - INFO - Consistency Check #1 - Entries: 52,229, Violations: 0, Consistent: True
+2026-05-17 04:18:39,634 - __main__ - INFO - Throughput Monitor - Writes: 52,229, Actual TPS: 868.59, Target TPS: 10,000, Deduplicated: 16,671
+2026-05-17 04:18:44,641 - __main__ - INFO - Throughput Monitor - Writes: 56,566, Actual TPS: 868.40, Target TPS: 10,000, Deduplicated: 18,488
+2026-05-17 04:18:49,648 - __main__ - INFO - Throughput Monitor - Writes: 60,935, Actual TPS: 868.70, Target TPS: 10,000, Deduplicated: 20,370
+2026-05-17 04:18:54,657 - __main__ - INFO - Throughput Monitor - Writes: 65,291, Actual TPS: 868.76, Target TPS: 10,000, Deduplicated: 22,215
+2026-05-17 04:18:59,665 - __main__ - INFO - Throughput Monitor - Writes: 69,630, Actual TPS: 868.61, Target TPS: 10,000, Deduplicated: 24,083
+2026-05-17 04:19:04,676 - __main__ - INFO - Throughput Monitor - Writes: 73,989, Actual TPS: 868.69, Target TPS: 10,000, Deduplicated: 26,024
+2026-05-17 04:19:09,747 - __main__ - INFO - Consistency Check #2 - Entries: 78,300, Violations: 0, Consistent: True
+2026-05-17 04:19:09,759 - __main__ - INFO - Throughput Monitor - Writes: 78,300, Actual TPS: 867.54, Target TPS: 10,000, Deduplicated: 27,846
+2026-05-17 04:19:14,769 - __main__ - INFO - Throughput Monitor - Writes: 82,660, Actual TPS: 867.68, Target TPS: 10,000, Deduplicated: 29,724
+2026-05-17 04:19:19,780 - __main__ - INFO - Throughput Monitor - Writes: 87,030, Actual TPS: 867.89, Target TPS: 10,000, Deduplicated: 31,586
+2026-05-17 04:19:24,794 - __main__ - INFO - Throughput Monitor - Writes: 91,354, Actual TPS: 867.63, Target TPS: 10,000, Deduplicated: 33,410
+2026-05-17 04:19:29,807 - __main__ - INFO - Throughput Monitor - Writes: 95,699, Actual TPS: 867.60, Target TPS: 10,000, Deduplicated: 35,234
+2026-05-17 04:19:34,819 - __main__ - INFO - Throughput Monitor - Writes: 100,053, Actual TPS: 867.64, Target TPS: 10,000, Deduplicated: 37,134

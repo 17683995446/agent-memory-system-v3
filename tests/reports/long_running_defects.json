@@ -1,0 +1,575 @@
+{
+  "report_metadata": {
+    "title": "Agent Memory System V3.0 - 长时间极端测试缺陷报告",
+    "generated_at": "2026-05-17T03:00:00Z",
+    "test_duration_total_minutes": 180,
+    "total_scenarios": 8,
+    "total_defects_found": 12,
+    "critical_defects": 4,
+    "high_defects": 5,
+    "medium_defects": 3
+  },
+  "executive_summary": {
+    "overall_status": "CRITICAL",
+    "summary": "在8个长时间极端测试场景中，共发现12个深层缺陷，其中4个为P0级严重缺陷，需要立即修复。主要问题集中在内存泄漏、数据丢失、Raft一致性故障和灾难恢复失败等方面。",
+    "recommendations": [
+      "立即修复内存泄漏问题（DEFECT-001）",
+      "重构Raft状态机一致性检查逻辑（DEFECT-003）",
+      "实现完整的内存压缩和优雅降级机制（DEFECT-004）",
+      "修复灾难恢复中的数据丢失问题（DEFECT-008）"
+    ]
+  },
+  "defects": [
+    {
+      "defect_id": "DEFECT-001",
+      "title": "Soak测试中发现严重内存泄漏",
+      "type": "内存泄漏",
+      "severity": "P0",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景1: 24小时Soak测试",
+      "detection_time": "2026-05-17T02:22:53Z",
+      "description": "在10分钟Soak测试期间，系统内存从初始值增长到1636.29MB，检测到1528.82MB的内存增长，表明存在严重的内存泄漏问题。",
+      "impact": "系统在长时间运行后会发生OOM崩溃，无法支持7x24小时连续运行",
+      "reproduction_steps": [
+        "1. 启动Agent Memory System",
+        "2. 运行Soak测试: python3 scenario1_soak_test.py --duration 10",
+        "3. 监控内存使用趋势",
+        "4. 观察内存持续增长而不释放"
+      ],
+      "evidence": {
+        "memory_growth_mb": 1528.82,
+        "final_memory_mb": 1636.29,
+        "test_duration_minutes": 10,
+        "operations_count": 333834,
+        "error_count": 423
+      },
+      "stack_trace": "N/A - 内存泄漏无法通过堆栈跟踪定位",
+      "root_cause_analysis": [
+        "1. 记忆对象在TTL过期后未被正确清理",
+        "2. 向量时钟历史记录无限增长",
+        "3. Raft日志压缩机制未触发",
+        "4. 异步任务回调引用未释放"
+      ],
+      "suggested_fix": [
+        "1. 实现定期内存清理任务，每小时执行一次全量GC",
+        "2. 限制向量时钟历史记录大小，保留最近1000条",
+        "3. 修复Raft日志压缩触发条件",
+        "4. 使用weakref替代强引用存储回调函数"
+      ],
+      "related_components": ["MemoryStore", "VectorClock", "RaftNode", "AsyncScheduler"]
+    },
+    {
+      "defect_id": "DEFECT-002",
+      "title": "极端并发下吞吐量严重不达标",
+      "type": "性能缺陷",
+      "severity": "P1",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景2: 极端并发写入风暴",
+      "detection_time": "2026-05-17T02:29:11Z",
+      "description": "在1000并发客户端测试中，实际TPS仅为586.87，远低于目标10,000 TPS，仅达到目标的5.87%。",
+      "impact": "系统无法处理高并发写入，会成为整个Agent系统的瓶颈",
+      "reproduction_steps": [
+        "1. 启动系统并配置1000并发客户端",
+        "2. 运行写入风暴测试: python3 scenario2_write_storm.py --clients 1000 --duration 5",
+        "3. 监控实际TPS与目标TPS的差距"
+      ],
+      "evidence": {
+        "target_tps": 10000,
+        "actual_tps": 586.87,
+        "achievement_rate": "5.87%",
+        "total_writes": 290325,
+        "deduplicated_writes": 117934
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 单线程Raft共识成为瓶颈",
+        "2. 去重检查使用O(n)算法",
+        "3. 缺少批量写入优化",
+        "4. 锁竞争严重"
+      ],
+      "suggested_fix": [
+        "1. 实现多分区Raft，支持水平扩展",
+        "2. 使用布隆过滤器优化去重检查",
+        "3. 实现批量写入API，减少网络往返",
+        "4. 使用无锁数据结构替代互斥锁"
+      ],
+      "related_components": ["RaftConsensus", "DeduplicationEngine", "WriteBuffer", "LockManager"]
+    },
+    {
+      "defect_id": "DEFECT-003",
+      "title": "级联故障恢复测试代码缺陷导致崩溃",
+      "type": "代码缺陷",
+      "severity": "P0",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景3: 级联故障恢复",
+      "detection_time": "2026-05-17T02:59:06Z",
+      "description": "级联故障恢复测试在生成报告时崩溃，错误为'CascadingFailureTestRunner' object has no attribute 'recovery_times'。",
+      "impact": "无法完成级联故障测试，Raft集群恢复能力未经验证",
+      "reproduction_steps": [
+        "1. 运行级联故障测试: python3 scenario3_cascading_failure.py",
+        "2. 等待测试执行完成",
+        "3. 观察测试崩溃并生成AttributeError"
+      ],
+      "evidence": {
+        "error_type": "AttributeError",
+        "error_message": "'CascadingFailureTestRunner' object has no attribute 'recovery_times'",
+        "line_number": 528,
+        "file": "scenario3_cascading_failure.py"
+      },
+      "stack_trace": "File \"/workspace/agent_memory_system_v2/tests/long_running/scenario3_cascading_failure.py\", line 528, in _generate_report\n    if self.recovery_times:\nAttributeError: 'CascadingFailureTestRunner' object has no attribute 'recovery_times'",
+      "root_cause_analysis": [
+        "1. __init__方法中未初始化recovery_times属性",
+        "2. 报告生成逻辑未处理空值情况",
+        "3. 缺少单元测试覆盖报告生成逻辑"
+      ],
+      "suggested_fix": [
+        "1. 在__init__中添加self.recovery_times = []",
+        "2. 使用getattr(self, 'recovery_times', [])或hasattr检查",
+        "3. 添加报告生成的单元测试"
+      ],
+      "related_components": ["TestFramework", "CascadingFailureTestRunner"]
+    },
+    {
+      "defect_id": "DEFECT-004",
+      "title": "内存压力测试下系统无响应",
+      "type": "稳定性缺陷",
+      "severity": "P0",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景4: 内存压力测试",
+      "detection_time": "2026-05-17T02:21:07Z",
+      "description": "在512MB内存限制下，系统在触发OOM后进入无响应状态，内存压缩机制未生效，无法优雅降级。",
+      "impact": "系统在资源受限环境下会完全失效，无法提供降级服务",
+      "reproduction_steps": [
+        "1. 配置512MB内存限制",
+        "2. 运行内存压力测试: python3 scenario4_memory_pressure.py --memory-limit 512",
+        "3. 观察OOM触发后系统行为"
+      ],
+      "evidence": {
+        "memory_limit_mb": 512,
+        "peak_memory_mb": 553.05,
+        "active_entries": 35654,
+        "compressed_entries": 0,
+        "gc_count": 1,
+        "oom_count": 1
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 内存压缩算法未实现或配置错误",
+        "2. OOM处理逻辑存在死锁",
+        "3. 缺少内存使用阈值监控",
+        "4. 优雅降级策略未实现"
+      ],
+      "suggested_fix": [
+        "1. 实现基于LRU的记忆压缩算法",
+        "2. 修复OOM处理中的死锁问题",
+        "3. 添加内存使用率达到80%/90%/95%的分级告警",
+        "4. 实现只读降级模式，拒绝新写入但允许查询"
+      ],
+      "related_components": ["MemoryManager", "OOMHandler", "CompressionEngine", "GracefulDegradation"]
+    },
+    {
+      "defect_id": "DEFECT-005",
+      "title": "Raft集群一致性频繁波动",
+      "type": "一致性缺陷",
+      "severity": "P1",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景3: 级联故障恢复",
+      "detection_time": "2026-05-17T02:21:12Z",
+      "description": "在Leader节点故障后，集群一致性状态频繁在True和False之间波动，表明Raft状态机存在稳定性问题。",
+      "impact": "集群在故障恢复期间可能提供不一致的数据，违反线性一致性保证",
+      "reproduction_steps": [
+        "1. 启动5节点Raft集群",
+        "2. 杀死当前Leader节点",
+        "3. 观察新Leader选举后的一致性状态",
+        "4. 记录一致性状态的波动情况"
+      ],
+      "evidence": {
+        "leader_failures": 1,
+        "elections": 1,
+        "consistency_fluctuations": 25,
+        "consistent_checks": 12,
+        "inconsistent_checks": 38
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 新Leader与Followers的日志同步存在延迟",
+        "2. 一致性检查逻辑过于严格或不正确",
+        "3. 网络分区检测与Raft状态机状态不同步",
+        "4. 提交索引推进不稳定"
+      ],
+      "suggested_fix": [
+        "1. 优化日志同步机制，使用流水线复制",
+        "2. 修正一致性检查算法，考虑Raft的commit机制",
+        "3. 确保网络分区检测与Raft状态同步",
+        "4. 添加提交索引单调性验证"
+      ],
+      "related_components": ["RaftConsensus", "LogReplication", "ConsistencyChecker"]
+    },
+    {
+      "defect_id": "DEFECT-006",
+      "title": "时钟漂移导致时间戳冲突",
+      "type": "分布式一致性缺陷",
+      "severity": "P1",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景6: 时钟漂移测试",
+      "detection_time": "2026-05-17T02:59:01Z",
+      "description": "在5节点时钟漂移测试中，检测到57个时间戳冲突和138个向量时钟分歧，虽然因果一致性未违反，但系统对时钟漂移的容忍度不足。",
+      "impact": "在跨数据中心部署时，时钟不同步可能导致事务冲突增加，影响性能",
+      "reproduction_steps": [
+        "1. 配置5节点集群，各节点时钟漂移±5秒",
+        "2. 运行时钟漂移测试: python3 scenario6_clock_drift.py",
+        "3. 监控时间戳冲突和向量时钟分歧"
+      ],
+      "evidence": {
+        "max_clock_drift_sec": 5.24,
+        "total_transactions": 67339,
+        "committed": 67322,
+        "aborted": 57,
+        "timestamp_conflicts": 57,
+        "vector_clock_divergence": 138,
+        "causal_violations": 0
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 使用时间戳排序而非向量时钟排序",
+        "2. 时钟同步协议（如NTP）依赖过重",
+        "3. 缺乏逻辑时钟回退机制",
+        "4. 冲突解决策略过于保守"
+      ],
+      "suggested_fix": [
+        "1. 优先使用向量时钟进行因果排序",
+        "2. 实现混合逻辑时钟（HLC）",
+        "3. 添加时钟不确定性窗口处理",
+        "4. 优化冲突解决策略，减少不必要的中止"
+      ],
+      "related_components": ["VectorClock", "TimestampOracle", "TransactionManager", "ConflictResolver"]
+    },
+    {
+      "defect_id": "DEFECT-007",
+      "title": "网络分区后脑裂状态持续存在",
+      "type": "分布式一致性缺陷",
+      "severity": "P1",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景7: 网络分区脑裂",
+      "detection_time": "2026-05-17T02:59:06Z",
+      "description": "网络分区恢复后，系统仍然报告split_brain: True，尽管数据一致性检查通过。这表明脑裂检测逻辑存在缺陷。",
+      "impact": "监控和告警系统会持续误报脑裂状态，影响运维判断",
+      "reproduction_steps": [
+        "1. 启动5节点集群",
+        "2. 创建网络分区，使集群分裂为两个分区",
+        "3. 等待各自选举Leader",
+        "4. 恢复网络分区",
+        "5. 观察split_brain标志仍为True"
+      ],
+      "evidence": {
+        "partition_count": 2,
+        "split_brain_events": 2,
+        "merge_operations": 2,
+        "conflicts_resolved": 251,
+        "post_merge_split_brain_flag": true
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 脑裂检测标志在分区恢复后未重置",
+        "2. Leader变更事件未正确清理旧状态",
+        "3. 多个Leader的检测逻辑过于简单"
+      ],
+      "suggested_fix": [
+        "1. 在分区恢复后重置split_brain标志",
+        "2. 添加Leader变更的清理回调",
+        "3. 实现更精确的脑裂检测，考虑任期号"
+      ],
+      "related_components": ["NetworkPartitionDetector", "SplitBrainResolver", "ClusterMonitor"]
+    },
+    {
+      "defect_id": "DEFECT-008",
+      "title": "灾难恢复导致严重数据丢失",
+      "type": "数据安全缺陷",
+      "severity": "P0",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景8: 灾难恢复演练",
+      "detection_time": "2026-05-17T02:59:01Z",
+      "description": "在多区域灾难恢复演练中，发生52.2%的数据丢失（3198/6127条记录），RPO目标300秒未达成。",
+      "impact": "在真实灾难场景下，系统会丢失超过一半的数据，无法满足业务连续性要求",
+      "reproduction_steps": [
+        "1. 配置3区域部署（us-east-1, us-west-2, eu-west-1）",
+        "2. 运行灾难恢复测试: python3 scenario8_disaster_recovery.py",
+        "3. 模拟主区域故障",
+        "4. 观察数据丢失情况"
+      ],
+      "evidence": {
+        "target_rpo_sec": 300,
+        "actual_rpo_sec": 0,
+        "rpo_met": false,
+        "total_data_entries": 6127,
+        "data_recovered": 2929,
+        "data_loss_count": 3198,
+        "data_loss_percentage": 52.2
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 跨区域复制延迟过高",
+        "2. 故障转移时未完成同步的数据丢失",
+        "3. 备份机制未正确配置或执行",
+        "4. 恢复流程缺少数据完整性校验"
+      ],
+      "suggested_fix": [
+        "1. 实现同步复制模式选项",
+        "2. 添加故障转移前的优雅停机，确保数据同步",
+        "3. 修复备份机制，确保定期备份执行",
+        "4. 添加恢复后的数据完整性校验和报告"
+      ],
+      "related_components": ["DisasterRecovery", "CrossRegionReplication", "BackupManager", "FailoverController"]
+    },
+    {
+      "defect_id": "DEFECT-009",
+      "title": "磁盘故障测试未完成",
+      "type": "测试框架缺陷",
+      "severity": "P2",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景5: 磁盘故障测试",
+      "detection_time": "2026-05-17T02:59:10Z",
+      "description": "磁盘故障测试在运行约33分钟后被中断，未完成完整的磁盘满和数据损坏注入测试。",
+      "impact": "磁盘故障恢复能力未得到充分验证",
+      "reproduction_steps": [
+        "1. 运行磁盘故障测试: python3 scenario5_disk_failure.py",
+        "2. 观察测试运行时间",
+        "3. 测试在33分钟后仍未完成"
+      ],
+      "evidence": {
+        "test_duration_minutes": 33,
+        "disk_used_mb": 308.75,
+        "disk_capacity_mb": 1024,
+        "keys_written": 430985,
+        "test_completed": false
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 测试目标数据量过大（100万条）",
+        "2. 磁盘写入速度成为瓶颈",
+        "3. 测试缺少超时机制"
+      ],
+      "suggested_fix": [
+        "1. 减少测试目标数据量到10万条",
+        "2. 优化磁盘写入批量大小",
+        "3. 添加测试超时和进度报告"
+      ],
+      "related_components": ["TestFramework", "DiskFailureSimulator"]
+    },
+    {
+      "defect_id": "DEFECT-010",
+      "title": "写入风暴测试吞吐量持续下降",
+      "type": "性能退化缺陷",
+      "severity": "P2",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景2: 极端并发写入风暴",
+      "detection_time": "2026-05-17T02:42:22Z",
+      "description": "写入风暴测试中，吞吐量从初始的840 TPS持续下降到231 TPS，表明系统存在性能退化问题。",
+      "impact": "系统在长时间高负载下性能会持续下降，最终无法满足SLA要求",
+      "reproduction_steps": [
+        "1. 运行写入风暴测试超过40分钟",
+        "2. 持续监控TPS趋势",
+        "3. 观察TPS持续下降"
+      ],
+      "evidence": {
+        "initial_tps": 840.38,
+        "final_tps": 231.30,
+        "degradation_percentage": 72.5,
+        "test_duration_minutes": 42
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 索引结构随着数据增长而退化",
+        "2. 垃圾回收压力持续增加",
+        "3. 磁盘I/O碎片化",
+        "4. 缓存命中率下降"
+      ],
+      "suggested_fix": [
+        "1. 实现索引定期重建机制",
+        "2. 优化GC策略，使用分代收集",
+        "3. 实现数据预取和缓存预热",
+        "4. 定期进行数据压缩和碎片整理"
+      ],
+      "related_components": ["IndexManager", "GarbageCollector", "CacheManager", "StorageEngine"]
+    },
+    {
+      "defect_id": "DEFECT-011",
+      "title": "Raft日志大小不一致",
+      "type": "一致性缺陷",
+      "severity": "P2",
+      "status": "OPEN",
+      "discovered_in_scenario": "场景7: 网络分区脑裂",
+      "detection_time": "2026-05-17T02:26:49Z",
+      "description": "在网络分区恢复后，不同节点的Raft日志大小不一致（如node_0 log_size=324, node_1 log_size=334），表明日志复制存在延迟或丢失。",
+      "impact": "节点间状态不一致可能导致后续故障时的数据丢失",
+      "reproduction_steps": [
+        "1. 创建网络分区",
+        "2. 在两个分区分别写入数据",
+        "3. 恢复网络分区",
+        "4. 检查各节点日志大小"
+      ],
+      "evidence": {
+        "node_0_log_size": 324,
+        "node_1_log_size": 334,
+        "difference": 10,
+        "expected": "all equal"
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 日志复制在分区恢复后未完全同步",
+        "2. 某些节点可能错过了部分日志条目",
+        "3. 日志压缩时机不一致"
+      ],
+      "suggested_fix": [
+        "1. 在分区恢复后强制执行日志同步",
+        "2. 添加日志完整性校验",
+        "3. 实现日志追赶机制"
+      ],
+      "related_components": ["RaftLog", "LogReplication", "NodeSynchronizer"]
+    },
+    {
+      "defect_id": "DEFECT-012",
+      "title": "测试框架缺少超时处理",
+      "type": "测试框架缺陷",
+      "severity": "P2",
+      "status": "OPEN",
+      "discovered_in_scenario": "多个场景",
+      "detection_time": "2026-05-17T02:59:00Z",
+      "description": "多个长时间运行测试（场景1、4、5）缺少适当的超时处理，导致测试可能无限期运行。",
+      "impact": "测试资源浪费，CI/CD流程阻塞",
+      "reproduction_steps": [
+        "1. 运行任意长时间测试场景",
+        "2. 观察测试缺少超时机制",
+        "3. 测试可能无限期运行"
+      ],
+      "evidence": {
+        "affected_scenarios": ["scenario1", "scenario4", "scenario5"],
+        "max_observed_duration_minutes": 33
+      },
+      "stack_trace": "N/A",
+      "root_cause_analysis": [
+        "1. 测试框架设计时未考虑超时",
+        "2. 缺少进度监控和报告",
+        "3. 异步任务未设置超时"
+      ],
+      "suggested_fix": [
+        "1. 为所有长时间测试添加默认超时（如30分钟）",
+        "2. 添加进度报告机制",
+        "3. 使用asyncio.wait_for包装异步操作"
+      ],
+      "related_components": ["TestFramework", "LongRunningTestRunner"]
+    }
+  ],
+  "scenario_summaries": [
+    {
+      "scenario_id": 1,
+      "name": "24小时Soak测试",
+      "status": "FAILED",
+      "duration_minutes": 10,
+      "defects_found": ["DEFECT-001"],
+      "key_findings": "检测到严重内存泄漏，1528MB内存增长"
+    },
+    {
+      "scenario_id": 2,
+      "name": "极端并发写入风暴",
+      "status": "FAILED",
+      "duration_minutes": 42,
+      "defects_found": ["DEFECT-002", "DEFECT-010"],
+      "key_findings": "吞吐量仅达到目标的5.87%，且持续下降"
+    },
+    {
+      "scenario_id": 3,
+      "name": "级联故障恢复",
+      "status": "CRASHED",
+      "duration_minutes": 38,
+      "defects_found": ["DEFECT-003", "DEFECT-005"],
+      "key_findings": "测试代码崩溃，Raft一致性频繁波动"
+    },
+    {
+      "scenario_id": 4,
+      "name": "内存压力测试",
+      "status": "FAILED",
+      "duration_minutes": 30,
+      "defects_found": ["DEFECT-004"],
+      "key_findings": "OOM后系统无响应，优雅降级未生效"
+    },
+    {
+      "scenario_id": 5,
+      "name": "磁盘故障测试",
+      "status": "INCOMPLETE",
+      "duration_minutes": 33,
+      "defects_found": ["DEFECT-009"],
+      "key_findings": "测试未完成，磁盘写入速度成为瓶颈"
+    },
+    {
+      "scenario_id": 6,
+      "name": "时钟漂移测试",
+      "status": "PASSED_WITH_WARNINGS",
+      "duration_minutes": 33,
+      "defects_found": ["DEFECT-006"],
+      "key_findings": "因果一致性保持，但时间戳冲突较多"
+    },
+    {
+      "scenario_id": 7,
+      "name": "网络分区脑裂",
+      "status": "PASSED_WITH_WARNINGS",
+      "duration_minutes": 33,
+      "defects_found": ["DEFECT-007", "DEFECT-011"],
+      "key_findings": "数据合并成功，但脑裂标志未清除，日志大小不一致"
+    },
+    {
+      "scenario_id": 8,
+      "name": "灾难恢复演练",
+      "status": "FAILED",
+      "duration_minutes": 27,
+      "defects_found": ["DEFECT-008"],
+      "key_findings": "52.2%数据丢失，RPO目标未达成"
+    }
+  ],
+  "component_impact_analysis": {
+    "RaftConsensus": {
+      "defects": ["DEFECT-003", "DEFECT-005", "DEFECT-007", "DEFECT-011"],
+      "risk_level": "HIGH",
+      "recommendation": "优先修复Raft相关缺陷，这是系统的核心组件"
+    },
+    "MemoryManager": {
+      "defects": ["DEFECT-001", "DEFECT-004"],
+      "risk_level": "CRITICAL",
+      "recommendation": "立即修复内存泄漏和OOM处理"
+    },
+    "DisasterRecovery": {
+      "defects": ["DEFECT-008"],
+      "risk_level": "CRITICAL",
+      "recommendation": "重新设计跨区域复制和故障转移机制"
+    },
+    "PerformanceEngine": {
+      "defects": ["DEFECT-002", "DEFECT-010"],
+      "risk_level": "HIGH",
+      "recommendation": "优化并发处理和性能退化问题"
+    },
+    "TestFramework": {
+      "defects": ["DEFECT-003", "DEFECT-009", "DEFECT-012"],
+      "risk_level": "MEDIUM",
+      "recommendation": "修复测试框架缺陷以获取更准确的测试结果"
+    }
+  },
+  "appendix": {
+    "test_environment": {
+      "os": "Linux",
+      "python_version": "3.10",
+      "cpu_cores": 8,
+      "memory_gb": 16,
+      "disk_type": "SSD"
+    },
+    "test_configurations": {
+      "scenario1": {"duration_minutes": 10, "fault_injection_rate": 0.05},
+      "scenario2": {"clients": 1000, "target_tps": 10000, "duration_minutes": 5},
+      "scenario3": {"cluster_size": 5, "failure_sequence": ["leader", "follower"]},
+      "scenario4": {"memory_limit_mb": 512, "target_entries": 1000000},
+      "scenario5": {"disk_size_mb": 1024, "target_entries": 1000000},
+      "scenario6": {"node_count": 5, "max_drift_sec": 5},
+      "scenario7": {"cluster_size": 5, "partition_phases": 2},
+      "scenario8": {"regions": ["us-east-1", "us-west-2", "eu-west-1"], "target_rpo_sec": 300, "target_rto_sec": 600}
+    }
+  }
+}

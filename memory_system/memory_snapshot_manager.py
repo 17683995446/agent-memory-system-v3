@@ -23,7 +23,7 @@ logger = get_logger(__name__)
 
 @dataclass
 class MemorySnapshotMetadata:
-    """快照元数据"""
+    """快照元数据 - DEFECT-008 [P0] 修复: 添加完整性校验字段"""
     snapshot_id: str
     created_at: float
     memory_count: int
@@ -31,6 +31,12 @@ class MemorySnapshotMetadata:
     description: str = ""
     tags: List[str] = field(default_factory=list)
     version: str = "2.1.0"
+    # DEFECT-008 [P0] 修复: 添加数据完整性校验字段
+    checksum: str = ""  # 快照内容校验和
+    compression: str = "none"  # 压缩方式
+    encryption: str = "none"  # 加密方式
+    incremental_base: Optional[str] = None  # 增量备份的基础快照ID
+    changed_memory_ids: List[str] = field(default_factory=list)  # 变更的记忆ID列表
 
 
 @dataclass
@@ -69,6 +75,11 @@ class MemorySnapshotManager:
         self.short_term = short_term
         self.snapshot_dir = Path(snapshot_dir)
         self.snapshot_dir.mkdir(parents=True, exist_ok=True)
+
+        # DEFECT-008 [P0] 修复: 增量备份状态跟踪
+        self._last_snapshot_data: Optional[Dict[str, Any]] = None
+        self._last_snapshot_id: Optional[str] = None
+        self._memory_change_tracker: Dict[str, str] = {}  # memory_id -> change_type (added/updated/deleted)
 
     @staticmethod
     def _validate_snapshot_id(snapshot_id: str) -> None:
@@ -111,9 +122,10 @@ class MemorySnapshotManager:
     async def create_snapshot(
         self,
         description: str = "",
-        tags: Optional[List[str]] = None
+        tags: Optional[List[str]] = None,
+        incremental: bool = False
     ) -> str:
-        """创建快照"""
+        """创建快照 - DEFECT-008 [P0] 修复: 支持增量备份和完整性校验"""
         import time as time_mod
 
         # 获取所有长期记忆
@@ -127,27 +139,61 @@ class MemorySnapshotManager:
             except Exception as e:
                 logger.warning(f"获取短期记忆失败: {e}")
 
+        # DEFECT-008 [P0] 修复: 准备记忆数据并计算校验和
+        long_term_dicts = [m.to_storage_dict() for m in long_term]
+        short_term_dicts = [m.to_storage_dict() for m in short_term_items]
+
+        # 计算内容校验和
+        content_for_hash = json.dumps({
+            "long_term": sorted(long_term_dicts, key=lambda x: x.get('memory_id', '')),
+            "short_term": sorted(short_term_dicts, key=lambda x: x.get('memory_id', ''))
+        }, sort_keys=True, default=str)
+        content_hash = hashlib.sha256(content_for_hash.encode()).hexdigest()
+
+        # DEFECT-008 [P0] 修复: 增量备份逻辑
+        incremental_base = None
+        changed_ids = []
+
+        if incremental and self._last_snapshot_data:
+            # 计算变更的记忆
+            current_ids = {m.get('memory_id') for m in long_term_dicts}
+            last_ids = set(self._last_snapshot_data.get('memory_ids', []))
+
+            changed_ids = list(current_ids - last_ids)  # 新增的记忆
+            # 检查更新的记忆（简化：假设所有存在的记忆都可能更新）
+            for m in long_term_dicts:
+                if m.get('memory_id') in last_ids:
+                    changed_ids.append(m.get('memory_id'))
+
+            incremental_base = self._last_snapshot_id
+            logger.info(f"增量快照: 检测到 {len(changed_ids)} 条变更记忆")
+
         # 生成快照ID
-        content_hash = hashlib.sha256(
-            json.dumps([m.to_storage_dict() for m in long_term], sort_keys=True, default=str).encode()
-        ).hexdigest()[:12]
-        snapshot_id = f"snap_{int(time_mod.time())}_{content_hash}"
+        snapshot_id = f"snap_{int(time_mod.time())}_{content_hash[:12]}"
+
+        # 创建快照元数据
+        metadata = MemorySnapshotMetadata(
+            snapshot_id=snapshot_id,
+            created_at=time_mod.time(),
+            memory_count=len(long_term),
+            short_term_count=len(short_term_items),
+            description=description,
+            tags=tags or [],
+            checksum=content_hash,  # DEFECT-008 [P0] 修复: 存储校验和
+            compression="none",
+            encryption="none",
+            incremental_base=incremental_base,  # DEFECT-008 [P0] 修复: 增量备份基础
+            changed_memory_ids=changed_ids,  # DEFECT-008 [P0] 修复: 变更的记忆ID
+        )
 
         # 创建快照
         snapshot = MemorySnapshot(
-            metadata=MemorySnapshotMetadata(
-                snapshot_id=snapshot_id,
-                created_at=time_mod.time(),
-                memory_count=len(long_term),
-                short_term_count=len(short_term_items),
-                description=description,
-                tags=tags or [],
-            ),
-            memories=[m.to_storage_dict() for m in long_term],
-            short_term_memories=[m.to_storage_dict() for m in short_term_items],
+            metadata=metadata,
+            memories=long_term_dicts,
+            short_term_memories=short_term_dicts,
         )
 
-        # 保存到文件
+        # DEFECT-008 [P0] 修复: 保存到文件，包含完整元数据
         filepath = self.snapshot_dir / f"{snapshot_id}.json"
         data = {
             "metadata": asdict(snapshot.metadata),
@@ -160,11 +206,20 @@ class MemorySnapshotManager:
                 json.dump(data, f, ensure_ascii=False, indent=2, default=str)
         await asyncio.to_thread(_write)
 
-        logger.info(f"已创建快照 {snapshot_id}: {len(long_term)} 条长期记忆, {len(short_term_items)} 条短期记忆")
+        # DEFECT-008 [P0] 修复: 更新增量备份状态
+        self._last_snapshot_data = {
+            'memory_ids': [m.get('memory_id') for m in long_term_dicts],
+            'checksum': content_hash,
+            'timestamp': time_mod.time()
+        }
+        self._last_snapshot_id = snapshot_id
+
+        logger.info(f"已创建快照 {snapshot_id}: {len(long_term)} 条长期记忆, {len(short_term_items)} 条短期记忆, "
+                   f"校验和: {content_hash[:16]}...")
         return snapshot_id
 
     async def restore_snapshot(self, snapshot_id: str) -> int:
-        """恢复快照，返回恢复的记忆数量"""
+        """恢复快照，返回恢复的记忆数量 - DEFECT-008 [P0] 修复: 添加完整性校验"""
         self._validate_snapshot_id(snapshot_id)
         filepath = self.snapshot_dir / f"{snapshot_id}.json"
         if not filepath.exists():
@@ -177,6 +232,37 @@ class MemorySnapshotManager:
 
         from memory_system.core_abstractions.memory_data_models import MemoryItem
 
+        # DEFECT-008 [P0] 修复: 验证快照完整性
+        metadata = data.get("metadata", {})
+        stored_checksum = metadata.get("checksum", "")
+
+        if stored_checksum:
+            # 重新计算校验和进行验证
+            current_content = json.dumps({
+                "long_term": sorted(data.get("memories", []), key=lambda x: x.get('memory_id', '')),
+                "short_term": sorted(data.get("short_term_memories", []), key=lambda x: x.get('memory_id', ''))
+            }, sort_keys=True, default=str)
+            computed_checksum = hashlib.sha256(current_content.encode()).hexdigest()
+
+            if computed_checksum != stored_checksum:
+                logger.error(f"快照完整性校验失败: 期望 {stored_checksum[:16]}..., 实际 {computed_checksum[:16]}...")
+                raise ValueError(f"快照 {snapshot_id} 完整性校验失败，数据可能已损坏")
+            else:
+                logger.info(f"快照完整性校验通过: {stored_checksum[:16]}...")
+
+        # DEFECT-008 [P0] 修复: 处理增量备份
+        incremental_base = metadata.get("incremental_base")
+        changed_ids = metadata.get("changed_memory_ids", [])
+
+        if incremental_base:
+            logger.info(f"检测到增量快照，基础快照: {incremental_base}")
+            # 先恢复基础快照
+            try:
+                await self.restore_snapshot(incremental_base)
+            except Exception as e:
+                logger.error(f"恢复基础快照失败: {e}")
+                raise
+
         # 1. 先创建当前状态的备份快照，用于回滚
         backup_id = None
         try:
@@ -185,38 +271,71 @@ class MemorySnapshotManager:
             logger.warning("恢复前创建备份快照失败，继续恢复流程: %s", e)
 
         try:
-            # 2. 清空当前记忆
-            existing = await self.storage.search_by_time_range(0, time.time())
-            for item in existing:
-                await self.storage.delete(item.memory_id)
+            # DEFECT-008 [P0] 修复: 如果不是增量备份，清空当前记忆
+            if not incremental_base:
+                # 2. 清空当前记忆
+                existing = await self.storage.search_by_time_range(0, time.time())
+                for item in existing:
+                    await self.storage.delete(item.memory_id)
 
-            # 清空短期记忆
-            if self.short_term:
-                try:
-                    await self.short_term.clear()
-                except Exception as e:
-                    logger.warning("清空短期记忆失败: %s", e)
+                # 清空短期记忆
+                if self.short_term:
+                    try:
+                        await self.short_term.clear()
+                    except Exception as e:
+                        logger.warning("清空短期记忆失败: %s", e)
 
             # 3. 恢复长期记忆
             restored = 0
+            failed_memories = []
+
             for mem_dict in data["memories"]:
                 try:
+                    # DEFECT-008 [P0] 修复: 验证记忆数据完整性
+                    if not mem_dict.get('memory_id'):
+                        logger.warning("跳过无效记忆数据: 缺少memory_id")
+                        failed_memories.append(mem_dict)
+                        continue
+
                     item = MemoryItem.from_storage_dict(mem_dict)
                     await self.storage.add(item)
                     restored += 1
                 except Exception as e:
                     logger.warning(f"恢复记忆失败: {e}")
+                    failed_memories.append(mem_dict)
+
+            # DEFECT-008 [P0] 修复: 报告恢复失败情况
+            if failed_memories:
+                failure_rate = len(failed_memories) / len(data["memories"]) if data["memories"] else 0
+                logger.warning(f"恢复过程中 {len(failed_memories)} 条记忆失败，失败率: {failure_rate*100:.2f}%")
+
+                # 如果失败率过高，抛出异常
+                if failure_rate > 0.5:
+                    raise ValueError(f"恢复失败率过高: {failure_rate*100:.1f}%，中止恢复")
 
             # 4. 恢复短期记忆
+            short_term_restored = 0
             for mem_dict in data.get("short_term_memories", []):
                 try:
+                    if not mem_dict.get('memory_id'):
+                        continue
                     item = MemoryItem.from_storage_dict(mem_dict)
                     if self.short_term is not None:
                         await self.short_term.add(item)
+                        short_term_restored += 1
                 except Exception as e:
                     logger.warning("恢复短期记忆失败，跳过 [%s]: %s", mem_dict.get('memory_id', 'unknown'), e)
 
-            logger.info(f"已恢复快照 {snapshot_id}: {restored} 条记忆")
+            # DEFECT-008 [P0] 修复: 验证恢复结果
+            final_count = await self.storage.count("episodic") + await self.storage.count("semantic")
+            expected_count = metadata.get("memory_count", 0)
+
+            if final_count < expected_count * 0.95:  # 允许5%的误差
+                logger.warning(f"恢复后记忆数量不足: 期望 {expected_count}, 实际 {final_count}")
+            else:
+                logger.info(f"恢复验证通过: {final_count}/{expected_count} 条记忆")
+
+            logger.info(f"已恢复快照 {snapshot_id}: {restored} 条长期记忆, {short_term_restored} 条短期记忆")
             return restored
 
         except Exception as e:

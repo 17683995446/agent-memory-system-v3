@@ -1,0 +1,140 @@
+2026-05-17 02:26:29,375 - __main__ - INFO - 开始网络分区脑裂测试
+2026-05-17 02:26:29,376 - __main__ - INFO - 集群规模: 5节点
+2026-05-17 02:26:29,376 - __main__ - INFO - 初始Leader: node_0
+2026-05-17 02:26:34,377 - __main__ - INFO - Phase 1: 创建网络分区
+2026-05-17 02:26:34,377 - __main__ - INFO - Split-brain detected - Leader A: node_4, Leader B: node_0
+2026-05-17 02:26:34,377 - __main__ - INFO - Partition created: Group A=['node_4', 'node_3'], Group B=['node_1', 'node_0', 'node_2']
+2026-05-17 02:26:34,377 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_0', 'node_4'], Split-brain: True, Consistent: False
+2026-05-17 02:26:39,378 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_0', 'node_4'], Split-brain: True, Consistent: False
+2026-05-17 02:26:44,379 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_0', 'node_4'], Split-brain: True, Consistent: False
+2026-05-17 02:26:49,378 - __main__ - INFO - Phase 2: 恢复网络分区
+2026-05-17 02:26:49,379 - __main__ - INFO - Partition healed - Merged keys: 251, Conflicts: 251, New Leader: node_0
+2026-05-17 02:26:49,389 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_0', 'node_4'], Split-brain: True, Consistent: True
+2026-05-17 02:26:54,380 - __main__ - INFO - Phase 3: 再次创建分区
+2026-05-17 02:26:54,390 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_0', 'node_1'], Split-brain: True, Consistent: False
+2026-05-17 02:26:59,391 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_0', 'node_1'], Split-brain: True, Consistent: False
+2026-05-17 02:27:04,380 - __main__ - INFO - Phase 4: 最终恢复
+2026-05-17 02:27:04,421 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_0', 'node_1'], Split-brain: True, Consistent: True
+2026-05-17 02:29:11,661 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_0', 'node_1'], Split-brain: True, Consistent: True
+2026-05-17 02:59:01,066 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_0', 'node_1'], Split-brain: True, Consistent: True
+2026-05-17 02:59:06,111 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_0', 'node_1'], Split-brain: True, Consistent: True
+2026-05-17 02:59:06,128 - __main__ - INFO - 测试报告已保存到: /workspace/agent_memory_system_v2/tests/long_running/scenario7_network_partition_report.json
+2026-05-17 04:04:17,009 - __main__ - INFO - 开始网络分区脑裂测试
+2026-05-17 04:04:17,010 - __main__ - INFO - 集群规模: 5节点
+2026-05-17 04:04:17,010 - __main__ - INFO - 初始Leader: node_1
+2026-05-17 04:04:22,010 - __main__ - INFO - Phase 1: 创建网络分区
+2026-05-17 04:04:22,010 - __main__ - INFO - Split-brain detected - Leader A: node_3, Leader B: node_1
+2026-05-17 04:04:22,010 - __main__ - INFO - Partition created: Group A=['node_0', 'node_3'], Group B=['node_1', 'node_4', 'node_2']
+2026-05-17 04:04:22,010 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:04:27,011 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:04:32,012 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:04:37,011 - __main__ - INFO - Phase 2: 恢复网络分区
+2026-05-17 04:04:37,011 - __main__ - INFO - Partition healed - Merged keys: 224, Conflicts: 224, New Leader: node_1
+2026-05-17 04:04:37,019 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:04:42,012 - __main__ - INFO - Phase 3: 再次创建分区
+2026-05-17 04:04:42,020 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:04:47,022 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:04:52,013 - __main__ - INFO - Phase 4: 最终恢复
+2026-05-17 04:04:52,034 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:04:57,048 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:02,066 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:07,084 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:12,102 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:17,124 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:22,147 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:27,172 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:32,198 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:37,225 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:42,255 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:47,286 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:52,318 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:05:57,356 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:02,392 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:07,430 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:12,469 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:17,509 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:22,552 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:27,596 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:32,642 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:37,691 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:42,739 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:47,791 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:52,844 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:06:57,897 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:02,952 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:08,011 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:13,074 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:18,135 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:23,198 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:28,264 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:33,329 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:38,397 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:43,466 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:48,536 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:53,609 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:07:58,686 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:03,761 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:08,840 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:13,918 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:18,999 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:24,081 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:29,164 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:34,248 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:39,335 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:44,423 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:49,513 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:54,627 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:08:59,725 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:04,819 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:09,915 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:15,013 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:20,113 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:25,215 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:30,317 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:35,426 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:40,536 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:45,644 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:50,755 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:09:55,868 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:00,982 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:06,096 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:11,213 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:16,330 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:21,450 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:26,570 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:31,696 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:36,821 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:10:41,948 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:19:49,524 - __main__ - INFO - 开始网络分区脑裂测试
+2026-05-17 04:19:49,527 - __main__ - INFO - 集群规模: 5节点
+2026-05-17 04:19:49,527 - __main__ - INFO - 初始Leader: node_3
+2026-05-17 04:19:54,528 - __main__ - INFO - Phase 1: 创建网络分区
+2026-05-17 04:19:54,528 - __main__ - INFO - Split-brain detected - Leader A: node_2, Leader B: node_3
+2026-05-17 04:19:54,528 - __main__ - INFO - Partition created: Group A=['node_4', 'node_2'], Group B=['node_3', 'node_1', 'node_0']
+2026-05-17 04:19:54,528 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_2', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:19:59,529 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_2', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:20:04,530 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_2', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:20:09,529 - __main__ - INFO - Phase 2: 恢复网络分区
+2026-05-17 04:20:09,529 - __main__ - INFO - Partition healed - Merged keys: 231, Conflicts: 231, New Leader: node_3
+2026-05-17 04:20:09,537 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_2', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:20:14,530 - __main__ - INFO - Phase 3: 再次创建分区
+2026-05-17 04:20:14,538 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:20:19,539 - __main__ - INFO - Cluster Monitor - State: partitioned, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: False
+2026-05-17 04:20:24,531 - __main__ - INFO - Phase 4: 最终恢复
+2026-05-17 04:20:24,562 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:20:29,578 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:20:34,595 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:20:39,612 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:20:44,631 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:20:49,651 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:20:54,676 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:20:59,701 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:04,727 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:09,754 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:14,781 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:19,810 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:24,859 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:29,891 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:34,925 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:39,960 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True
+2026-05-17 04:21:45,000 - __main__ - INFO - Cluster Monitor - State: normal, Leaders: ['node_1', 'node_3'], Split-brain: True, Consistent: True

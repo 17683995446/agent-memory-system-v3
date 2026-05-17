@@ -1,0 +1,707 @@
+{
+  "scenario_name": "\u65f6\u949f\u6f02\u79fb\u4e0e\u5206\u5e03\u5f0f\u4e00\u81f4\u6027",
+  "start_time": 1778984789.3762293,
+  "end_time": 1778986771.112526,
+  "total_duration_sec": 1981.7362966537476,
+  "max_clock_drift_sec": 5.0,
+  "node_count": 5,
+  "total_transactions": 67339,
+  "committed_transactions": 67322,
+  "aborted_transactions": 57,
+  "timestamp_conflicts": 57,
+  "conflicts_resolved": 57,
+  "causal_consistency_violations": 0,
+  "vector_clock_divergence": 138,
+  "reconciliation_events": 0,
+  "clock_drift_timeline": [
+    {
+      "timestamp": 1778984794.378322,
+      "max_drift_seconds": 4.926948070526123,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 3.6558510813477394,
+          "node_timestamp": 1778984798.034174,
+          "real_timestamp": 1778984794.378322,
+          "difference": 3.6558520793914795
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778984796.8654923,
+          "real_timestamp": 1778984794.378322,
+          "difference": 2.487170457839966
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 2.6424978904652967,
+          "node_timestamp": 1778984797.0208225,
+          "real_timestamp": 1778984794.378322,
+          "difference": 2.642500638961792
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778984798.295158,
+          "real_timestamp": 1778984794.378322,
+          "difference": 3.9168360233306885
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -1.010115518183282,
+          "node_timestamp": 1778984793.3682098,
+          "real_timestamp": 1778984794.378322,
+          "difference": -1.0101120471954346
+        }
+      ]
+    },
+    {
+      "timestamp": 1778984799.4313881,
+      "max_drift_seconds": 4.926948070526123,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 3.6558510813477394,
+          "node_timestamp": 1778984803.0872397,
+          "real_timestamp": 1778984799.4313881,
+          "difference": 3.6558516025543213
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778984801.9185584,
+          "real_timestamp": 1778984799.4313881,
+          "difference": 2.4871702194213867
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 2.6424978904652967,
+          "node_timestamp": 1778984802.0738888,
+          "real_timestamp": 1778984799.4313881,
+          "difference": 2.642500638961792
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778984803.3482242,
+          "real_timestamp": 1778984799.4313881,
+          "difference": 3.9168360233306885
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -1.010115518183282,
+          "node_timestamp": 1778984798.421276,
+          "real_timestamp": 1778984799.4313881,
+          "difference": -1.0101120471954346
+        }
+      ]
+    },
+    {
+      "timestamp": 1778984804.4324243,
+      "max_drift_seconds": 4.926947832107544,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 3.6558510813477394,
+          "node_timestamp": 1778984808.0882764,
+          "real_timestamp": 1778984804.4324243,
+          "difference": 3.6558520793914795
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778984806.9195945,
+          "real_timestamp": 1778984804.4324243,
+          "difference": 2.4871702194213867
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 2.6424978904652967,
+          "node_timestamp": 1778984807.074925,
+          "real_timestamp": 1778984804.4324243,
+          "difference": 2.642500638961792
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778984808.34926,
+          "real_timestamp": 1778984804.4324243,
+          "difference": 3.9168357849121094
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -1.010115518183282,
+          "node_timestamp": 1778984803.4223123,
+          "real_timestamp": 1778984804.4324243,
+          "difference": -1.0101120471954346
+        }
+      ]
+    },
+    {
+      "timestamp": 1778984809.6215823,
+      "max_drift_seconds": 4.926948070526123,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 3.6558510813477394,
+          "node_timestamp": 1778984813.2774339,
+          "real_timestamp": 1778984809.6215823,
+          "difference": 3.6558516025543213
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778984812.1087523,
+          "real_timestamp": 1778984809.6215823,
+          "difference": 2.4871699810028076
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 2.6424978904652967,
+          "node_timestamp": 1778984812.2640827,
+          "real_timestamp": 1778984809.6215823,
+          "difference": 2.642500400543213
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778984813.538418,
+          "real_timestamp": 1778984809.6215823,
+          "difference": 3.9168357849121094
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -1.010115518183282,
+          "node_timestamp": 1778984808.61147,
+          "real_timestamp": 1778984809.6215823,
+          "difference": -1.0101122856140137
+        }
+      ]
+    },
+    {
+      "timestamp": 1778984814.6229084,
+      "max_drift_seconds": 4.926947593688965,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 3.6558510813477394,
+          "node_timestamp": 1778984818.2787607,
+          "real_timestamp": 1778984814.6229084,
+          "difference": 3.6558523178100586
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778984817.110079,
+          "real_timestamp": 1778984814.6229084,
+          "difference": 2.487170696258545
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 2.6424978904652967,
+          "node_timestamp": 1778984817.2654097,
+          "real_timestamp": 1778984814.6229084,
+          "difference": 2.6425013542175293
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778984818.5397449,
+          "real_timestamp": 1778984814.6229084,
+          "difference": 3.9168365001678467
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -1.010115518183282,
+          "node_timestamp": 1778984813.6127973,
+          "real_timestamp": 1778984814.6229084,
+          "difference": -1.0101110935211182
+        }
+      ]
+    },
+    {
+      "timestamp": 1778984819.986173,
+      "max_drift_seconds": 4.508261680603027,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 3.6558510813477394,
+          "node_timestamp": 1778984823.642025,
+          "real_timestamp": 1778984819.986173,
+          "difference": 3.6558520793914795
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778984822.4733434,
+          "real_timestamp": 1778984819.986173,
+          "difference": 2.487170457839966
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 0.15877759844788475,
+          "node_timestamp": 1778984820.1449537,
+          "real_timestamp": 1778984819.986173,
+          "difference": 0.15878081321716309
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778984823.9030092,
+          "real_timestamp": 1778984819.986173,
+          "difference": 3.9168362617492676
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -0.5914295073973443,
+          "node_timestamp": 1778984819.3947475,
+          "real_timestamp": 1778984819.986173,
+          "difference": -0.5914254188537598
+        }
+      ]
+    },
+    {
+      "timestamp": 1778984824.9872801,
+      "max_drift_seconds": 4.5082619190216064,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 3.6558510813477394,
+          "node_timestamp": 1778984828.6431322,
+          "real_timestamp": 1778984824.9872801,
+          "difference": 3.6558520793914795
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778984827.4744508,
+          "real_timestamp": 1778984824.9872801,
+          "difference": 2.487170696258545
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 0.15877759844788475,
+          "node_timestamp": 1778984825.1460614,
+          "real_timestamp": 1778984824.9872801,
+          "difference": 0.1587812900543213
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778984828.9041166,
+          "real_timestamp": 1778984824.9872801,
+          "difference": 3.9168365001678467
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -0.5914295073973443,
+          "node_timestamp": 1778984824.3958547,
+          "real_timestamp": 1778984824.9872801,
+          "difference": -0.5914254188537598
+        }
+      ]
+    },
+    {
+      "timestamp": 1778986741.0903502,
+      "max_drift_seconds": 4.508261442184448,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 3.6558510813477394,
+          "node_timestamp": 1778986744.7462032,
+          "real_timestamp": 1778986741.0903502,
+          "difference": 3.655853033065796
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778986743.5775228,
+          "real_timestamp": 1778986741.0903502,
+          "difference": 2.4871726036071777
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 0.15877759844788475,
+          "node_timestamp": 1778986741.2491343,
+          "real_timestamp": 1778986741.0903502,
+          "difference": 0.1587841510772705
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778986745.0071902,
+          "real_timestamp": 1778986741.0903502,
+          "difference": 3.916840076446533
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -0.5914295073973443,
+          "node_timestamp": 1778986740.4989288,
+          "real_timestamp": 1778986741.0903502,
+          "difference": -0.591421365737915
+        }
+      ]
+    },
+    {
+      "timestamp": 1778986746.0949702,
+      "max_drift_seconds": 5.24014949798584,
+      "node_times": [
+        {
+          "node_id": "node_0",
+          "drift_seconds": 4.648730607708297,
+          "node_timestamp": 1778986750.7437034,
+          "real_timestamp": 1778986746.0949702,
+          "difference": 4.648733139038086
+        },
+        {
+          "node_id": "node_1",
+          "drift_seconds": 2.487167809661531,
+          "node_timestamp": 1778986748.582147,
+          "real_timestamp": 1778986746.0949702,
+          "difference": 2.4871766567230225
+        },
+        {
+          "node_id": "node_2",
+          "drift_seconds": 4.380392815805132,
+          "node_timestamp": 1778986750.4753735,
+          "real_timestamp": 1778986746.0949702,
+          "difference": 4.380403280258179
+        },
+        {
+          "node_id": "node_3",
+          "drift_seconds": 3.9168326629322685,
+          "node_timestamp": 1778986750.011815,
+          "real_timestamp": 1778986746.0949702,
+          "difference": 3.9168448448181152
+        },
+        {
+          "node_id": "node_4",
+          "drift_seconds": -0.5914295073973443,
+          "node_timestamp": 1778986745.5035539,
+          "real_timestamp": 1778986746.0949702,
+          "difference": -0.5914163589477539
+        }
+      ]
+    }
+  ],
+  "conflict_events": [
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_71_687_1778986741090538",
+      "timestamp": 1778986741.0905933
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_39_699_1778986741090651",
+      "timestamp": 1778986741.090669
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_0_684_1778986741090922",
+      "timestamp": 1778986741.0909417
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_4_698_1778986741090951",
+      "timestamp": 1778986741.0909693
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_68_651_1778986741090978",
+      "timestamp": 1778986741.090994
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_48_685_1778986741091003",
+      "timestamp": 1778986741.091017
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_6_679_1778986741091132",
+      "timestamp": 1778986741.0911472
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_29_674_1778986741091156",
+      "timestamp": 1778986741.091169
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_70_675_1778986741091224",
+      "timestamp": 1778986741.0912375
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_12_671_1778986741091295",
+      "timestamp": 1778986741.0913088
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_83_683_1778986741091340",
+      "timestamp": 1778986741.0913575
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_86_677_1778986741091429",
+      "timestamp": 1778986741.0914414
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_92_682_1778986741091450",
+      "timestamp": 1778986741.0914624
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_18_674_1778986741091470",
+      "timestamp": 1778986741.0914865
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_62_674_1778986741091514",
+      "timestamp": 1778986741.091529
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_50_682_1778986741091536",
+      "timestamp": 1778986741.0915499
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_91_673_1778986741091611",
+      "timestamp": 1778986741.0916264
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_58_652_1778986741091634",
+      "timestamp": 1778986741.0916488
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_52_688_1778986741091655",
+      "timestamp": 1778986741.0916703
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_51_670_1778986741091699",
+      "timestamp": 1778986741.0917099
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_78_692_1778986741091722",
+      "timestamp": 1778986741.0917408
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_98_673_1778986741091772",
+      "timestamp": 1778986741.0917873
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_87_681_1778986741091793",
+      "timestamp": 1778986741.0918055
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_96_680_1778986741091910",
+      "timestamp": 1778986741.0919256
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_7_666_1778986741091931",
+      "timestamp": 1778986741.0919456
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_89_663_1778986741091977",
+      "timestamp": 1778986741.0919898
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_57_656_1778986741113447",
+      "timestamp": 1778986741.113466
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_65_675_1778986741113567",
+      "timestamp": 1778986741.1135855
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_5_665_1778986741113594",
+      "timestamp": 1778986741.1136107
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_61_671_1778986741113619",
+      "timestamp": 1778986741.1136317
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_49_661_1778986741113665",
+      "timestamp": 1778986741.113681
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_73_693_1778986741113689",
+      "timestamp": 1778986741.1137059
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_82_674_1778986741113713",
+      "timestamp": 1778986741.11374
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_95_692_1778986741113773",
+      "timestamp": 1778986741.1137884
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_46_678_1778986741113797",
+      "timestamp": 1778986741.1138146
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_25_654_1778986741113822",
+      "timestamp": 1778986741.1198804
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_43_674_1778986741119915",
+      "timestamp": 1778986741.1199398
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_93_665_1778986741120029",
+      "timestamp": 1778986741.120046
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_10_665_1778986741120054",
+      "timestamp": 1778986741.1200688
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_2_692_1778986741120077",
+      "timestamp": 1778986741.1200922
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_32_671_1778986741120172",
+      "timestamp": 1778986741.120188
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_9_664_1778986741120196",
+      "timestamp": 1778986741.1202092
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_63_698_1778986741120216",
+      "timestamp": 1778986741.1204917
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_64_679_1778986741120502",
+      "timestamp": 1778986741.1205187
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_76_654_1778986741120554",
+      "timestamp": 1778986741.1205719
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_42_681_1778986741120580",
+      "timestamp": 1778986741.1205955
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_56_687_1778986741120603",
+      "timestamp": 1778986741.120617
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_1_676_1778986741120647",
+      "timestamp": 1778986741.1206641
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_23_657_1778986741120697",
+      "timestamp": 1778986741.1207125
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_26_670_1778986741120779",
+      "timestamp": 1778986741.1207907
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_44_666_1778986741120798",
+      "timestamp": 1778986741.1208148
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_28_681_1778986741120822",
+      "timestamp": 1778986741.1208444
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_16_664_1778986741120882",
+      "timestamp": 1778986741.120895
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_15_675_1778986741120903",
+      "timestamp": 1778986741.1209178
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_45_678_1778986741120924",
+      "timestamp": 1778986741.1209362
+    },
+    {
+      "type": "timestamp_conflict",
+      "tx_id": "tx_99_667_1778986741120943",
+      "timestamp": 1778986741.1209574
+    }
+  ],
+  "consistency_checks": [
+    {
+      "timestamp": 1778984799.4308555,
+      "check_number": 0,
+      "vector_clock_divergences": 10,
+      "causal_violations": 0,
+      "total_keys_checked": 62404
+    },
+    {
+      "timestamp": 1778984809.6209676,
+      "check_number": 1,
+      "vector_clock_divergences": 20,
+      "causal_violations": 0,
+      "total_keys_checked": 125230
+    },
+    {
+      "timestamp": 1778984819.982302,
+      "check_number": 2,
+      "vector_clock_divergences": 30,
+      "causal_violations": 0,
+      "total_keys_checked": 187663
+    },
+    {
+      "timestamp": 1778986740.9365864,
+      "check_number": 3,
+      "vector_clock_divergences": 39,
+      "causal_violations": 0,
+      "total_keys_checked": 235668
+    },
+    {
+      "timestamp": 1778986751.3475628,
+      "check_number": 4,
+      "vector_clock_divergences": 39,
+      "causal_violations": 0,
+      "total_keys_checked": 235791
+    }
+  ],
+  "errors": []
+}
