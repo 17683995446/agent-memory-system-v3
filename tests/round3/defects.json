@@ -1,0 +1,63 @@
+{
+  "test_round": "Round 3 - Complex Integration & Chaos Engineering",
+  "test_start": "2026-05-17T08:19:58.688201",
+  "test_end": "2026-05-17T08:20:53.953741",
+  "total_defects": 3,
+  "severity_counts": {
+    "P0": 2,
+    "P1": 1,
+    "P2": 0,
+    "P3": 0
+  },
+  "defects": [
+    {
+      "defect_id": "R3-S4-001",
+      "scenario": "data_consistency",
+      "severity": "P0",
+      "title": "2PC事务一致性失败",
+      "description": "两阶段提交事务未能保证所有参与者状态一致",
+      "steps": [
+        "1. 创建事务",
+        "2. 添加参与者",
+        "3. 执行2PC",
+        "4. 验证状态"
+      ],
+      "expected": "所有参与者应处于一致的提交状态",
+      "actual": "状态不一致: Not all participants committed",
+      "error": "Not all participants committed",
+      "timestamp": "2026-05-17T08:20:53.148701"
+    },
+    {
+      "defect_id": "R3-S5-003",
+      "scenario": "security_penetration",
+      "severity": "P0",
+      "title": "权限绕过漏洞",
+      "description": "RBAC权限控制存在漏洞，可能导致未授权访问",
+      "steps": [
+        "1. 创建不同角色用户",
+        "2. 测试权限检查",
+        "3. 验证结果"
+      ],
+      "expected": "权限检查应严格按角色配置执行",
+      "actual": "权限检查失败: Only 6/7 permission checks passed",
+      "error": "Only 6/7 permission checks passed",
+      "timestamp": "2026-05-17T08:20:53.952889"
+    },
+    {
+      "defect_id": "R3-S5-004",
+      "scenario": "security_penetration",
+      "severity": "P1",
+      "title": "ABAC策略绕过漏洞",
+      "description": "基于属性的访问控制策略可能被绕过",
+      "steps": [
+        "1. 添加ABAC策略",
+        "2. 测试合规访问",
+        "3. 测试违规访问"
+      ],
+      "expected": "策略应正确允许合规访问并拒绝违规访问",
+      "actual": "策略执行失败: ABAC evaluation failed: allowed=False, allowed_wrong=False",
+      "error": "ABAC evaluation failed: allowed=False, allowed_wrong=False",
+      "timestamp": "2026-05-17T08:20:53.952984"
+    }
+  ]
+}

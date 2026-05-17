@@ -1,0 +1,13 @@
+{
+  "test_round": "round2",
+  "test_type": "长时间压力与资源耗尽测试",
+  "execution_time": "2026-05-17T08:00:24.096810",
+  "total_defects": 0,
+  "defects": [],
+  "summary": {
+    "p0_count": 0,
+    "p1_count": 0,
+    "p2_count": 0,
+    "p3_count": 0
+  }
+}

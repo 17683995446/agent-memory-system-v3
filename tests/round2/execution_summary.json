@@ -1,0 +1,37 @@
+{
+  "test_round": "round2",
+  "test_type": "长时间压力与资源耗尽测试",
+  "execution_time": "2026-05-17T08:00:24.097042",
+  "total_duration_minutes": 48.836575690905256,
+  "scenarios_executed": 5,
+  "scenarios_passed": 2,
+  "scenarios_failed": 3,
+  "defects_found": 0,
+  "scenario_results": [
+    {
+      "name": "场景1: 48小时Soak测试（压缩版）",
+      "success": false,
+      "duration_minutes": 12.0
+    },
+    {
+      "name": "场景2: 内存压力测试",
+      "success": false,
+      "duration_minutes": 10.0
+    },
+    {
+      "name": "场景3: 磁盘压力测试",
+      "success": true,
+      "duration_minutes": 8.188529006640117
+    },
+    {
+      "name": "场景4: CPU过载测试",
+      "success": false,
+      "duration_minutes": 10.0
+    },
+    {
+      "name": "场景5: 连接池耗尽测试",
+      "success": true,
+      "duration_minutes": 8.03898988564809
+    }
+  ]
+}

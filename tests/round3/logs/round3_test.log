@@ -1,0 +1,210 @@
+2026-05-17 08:19:58,688 - __main__ - INFO - 
+================================================================================
+2026-05-17 08:19:58,688 - __main__ - INFO - Agent Memory System V3.0 - 第3轮实践测试开始
+2026-05-17 08:19:58,688 - __main__ - INFO - ================================================================================
+2026-05-17 08:19:58,688 - __main__ - INFO - 
+================================================================================
+2026-05-17 08:19:58,688 - __main__ - INFO - 场景1: 多模块集成测试 - Pipeline + TaskScheduler + EventBus
+2026-05-17 08:19:58,688 - __main__ - INFO - ================================================================================
+2026-05-17 08:19:58,688 - memory_system.event_driven_core - INFO - EventBus [in_memory] started
+2026-05-17 08:19:58,688 - memory_system.task_scheduler - INFO - TaskScheduler started with 4 workers
+2026-05-17 08:19:58,688 - __main__ - INFO - 
+[Test 1.1] Pipeline处理触发EventBus事件
+2026-05-17 08:19:58,688 - memory_system.event_driven_core - INFO - Subscribed handler to event type: pipeline.item.processed
+2026-05-17 08:19:58,689 - memory_system.async_pipeline - INFO - Stage processing started with 2 workers
+2026-05-17 08:19:58,689 - memory_system.async_pipeline - INFO - Pipeline started with 1 stages
+2026-05-17 08:19:58,689 - __main__ - INFO -   Event received: pipeline.item.processed
+2026-05-17 08:19:58,689 - __main__ - INFO -   Event received: pipeline.item.processed
+2026-05-17 08:19:58,689 - __main__ - INFO -   Event received: pipeline.item.processed
+2026-05-17 08:19:58,690 - __main__ - INFO -   Event received: pipeline.item.processed
+2026-05-17 08:19:58,690 - __main__ - INFO -   Event received: pipeline.item.processed
+2026-05-17 08:19:59,190 - __main__ - INFO -   [PASS] All events received correctly
+2026-05-17 08:19:59,691 - memory_system.async_pipeline - INFO - Stage processing stopped and resources cleaned up
+2026-05-17 08:19:59,691 - memory_system.async_pipeline - INFO - Index cleared for stage processing
+2026-05-17 08:19:59,691 - memory_system.async_pipeline - INFO - Pipeline stopped and all resources cleaned up
+2026-05-17 08:19:59,691 - __main__ - INFO - 
+[Test 1.2] TaskScheduler调度Pipeline任务
+2026-05-17 08:19:59,695 - memory_system.async_pipeline - INFO - Stage transform started with 1 workers
+2026-05-17 08:19:59,695 - memory_system.async_pipeline - INFO - Pipeline started with 1 stages
+2026-05-17 08:19:59,695 - memory_system.async_pipeline - INFO - Stage transform started with 1 workers
+2026-05-17 08:19:59,696 - memory_system.async_pipeline - INFO - Pipeline started with 1 stages
+2026-05-17 08:19:59,696 - memory_system.async_pipeline - INFO - Stage transform started with 1 workers
+2026-05-17 08:19:59,696 - memory_system.async_pipeline - INFO - Pipeline started with 1 stages
+2026-05-17 08:20:00,196 - memory_system.async_pipeline - INFO - Stage transform stopped and resources cleaned up
+2026-05-17 08:20:00,197 - memory_system.async_pipeline - INFO - Index cleared for stage transform
+2026-05-17 08:20:00,197 - memory_system.async_pipeline - INFO - Stage transform stopped and resources cleaned up
+2026-05-17 08:20:00,197 - memory_system.async_pipeline - INFO - Index cleared for stage transform
+2026-05-17 08:20:00,197 - memory_system.async_pipeline - INFO - Stage transform stopped and resources cleaned up
+2026-05-17 08:20:00,197 - memory_system.async_pipeline - INFO - Index cleared for stage transform
+2026-05-17 08:20:00,197 - memory_system.async_pipeline - INFO - Pipeline stopped and all resources cleaned up
+2026-05-17 08:20:00,197 - memory_system.async_pipeline - INFO - Pipeline stopped and all resources cleaned up
+2026-05-17 08:20:00,197 - memory_system.async_pipeline - INFO - Pipeline stopped and all resources cleaned up
+2026-05-17 08:20:01,691 - __main__ - INFO -   [PASS] All pipeline tasks completed
+2026-05-17 08:20:01,691 - __main__ - INFO - 
+[Test 1.3] 跨模块数据流验证
+2026-05-17 08:20:01,692 - memory_system.async_pipeline - INFO - Stage enrich started with 1 workers
+2026-05-17 08:20:01,692 - memory_system.async_pipeline - INFO - Pipeline started with 1 stages
+2026-05-17 08:20:02,193 - memory_system.async_pipeline - INFO - Stage enrich stopped and resources cleaned up
+2026-05-17 08:20:02,193 - memory_system.async_pipeline - INFO - Index cleared for stage enrich
+2026-05-17 08:20:02,193 - memory_system.async_pipeline - INFO - Pipeline stopped and all resources cleaned up
+2026-05-17 08:20:02,193 - memory_system.event_driven_core - WARNING - No handlers for event type: data.enriched
+2026-05-17 08:20:02,696 - __main__ - INFO -   [PASS] Cross-module data flow verified
+2026-05-17 08:20:32,697 - memory_system.task_scheduler - WARNING - Timeout waiting for tasks to complete
+2026-05-17 08:20:32,697 - memory_system.task_scheduler - INFO - TaskScheduler stopped
+2026-05-17 08:20:32,698 - memory_system.event_driven_core - INFO - EventBus [in_memory] stopped
+2026-05-17 08:20:32,698 - __main__ - INFO - 
+================================================================================
+2026-05-17 08:20:32,698 - __main__ - INFO - 场景2: 混沌工程测试 - 随机故障注入
+2026-05-17 08:20:32,698 - __main__ - INFO - ================================================================================
+2026-05-17 08:20:32,698 - __main__ - INFO - 
+[Test 2.1] CPU压力测试
+2026-05-17 08:20:32,698 - memory_system.chaos_engineering - INFO - Created chaos experiment: cpu-stress-test (ID: 1a86d9b4-ae03-4749-9810-eff692ab4ab8)
+2026-05-17 08:20:32,715 - memory_system.chaos_engineering - INFO - Fault injection started: CPUFaultInjector
+2026-05-17 08:20:32,736 - memory_system.chaos_engineering - INFO - Started chaos experiment: cpu-stress-test
+2026-05-17 08:20:38,010 - memory_system.chaos_engineering - INFO - Fault injection stopped after 5.30s
+2026-05-17 08:20:38,010 - memory_system.chaos_engineering - INFO - Stopped chaos experiment: cpu-stress-test
+2026-05-17 08:20:38,743 - __main__ - INFO -   [PASS] CPU stress test completed
+2026-05-17 08:20:38,743 - __main__ - INFO - 
+[Test 2.2] 内存压力测试
+2026-05-17 08:20:38,743 - memory_system.chaos_engineering - INFO - Created chaos experiment: memory-pressure-test (ID: 2b2defa5-13ee-467a-a38a-5f83721cb482)
+2026-05-17 08:20:38,796 - memory_system.chaos_engineering - INFO - Fault injection started: MemoryFaultInjector
+2026-05-17 08:20:38,796 - memory_system.chaos_engineering - INFO - Started chaos experiment: memory-pressure-test
+2026-05-17 08:20:43,882 - memory_system.chaos_engineering - INFO - Fault injection stopped after 5.09s
+2026-05-17 08:20:43,882 - memory_system.chaos_engineering - INFO - Stopped chaos experiment: memory-pressure-test
+2026-05-17 08:20:44,802 - __main__ - INFO -   [PASS] Memory pressure test completed
+2026-05-17 08:20:44,802 - __main__ - INFO - 
+[Test 2.3] 随机故障组合测试
+2026-05-17 08:20:44,802 - memory_system.chaos_engineering - INFO - Created chaos experiment: random-fault-0 (ID: 4fa41bce-765b-4d12-b8d5-c534052baf7e)
+2026-05-17 08:20:44,802 - memory_system.chaos_engineering - INFO - Created chaos experiment: random-fault-1 (ID: 5af58552-b513-4001-88b2-cc12c393056c)
+2026-05-17 08:20:44,808 - memory_system.chaos_engineering - INFO - Fault injection started: CPUFaultInjector
+2026-05-17 08:20:44,813 - memory_system.chaos_engineering - INFO - Started chaos experiment: random-fault-0
+2026-05-17 08:20:49,093 - memory_system.chaos_engineering - INFO - Fault injection started: MemoryFaultInjector
+2026-05-17 08:20:49,093 - memory_system.chaos_engineering - INFO - Started chaos experiment: random-fault-1
+2026-05-17 08:20:50,060 - memory_system.chaos_engineering - INFO - Fault injection stopped after 5.25s
+2026-05-17 08:20:50,060 - memory_system.chaos_engineering - INFO - Stopped chaos experiment: random-fault-0
+2026-05-17 08:20:53,096 - __main__ - INFO -   [PASS] Random fault combination test completed
+2026-05-17 08:20:53,096 - __main__ - INFO - 
+[Test 2.4] 系统韧性评分
+2026-05-17 08:20:53,096 - __main__ - INFO -   Resilience Score: 99.375/100
+2026-05-17 08:20:53,096 - __main__ - INFO -     - Availability: 24.875/25
+2026-05-17 08:20:53,096 - __main__ - INFO -     - Latency: 25/25
+2026-05-17 08:20:53,096 - __main__ - INFO -     - Error Rate: 24.5/25
+2026-05-17 08:20:53,096 - __main__ - INFO -     - Recoverability: 25/25
+2026-05-17 08:20:53,096 - __main__ - INFO -   [PASS] System resilience score acceptable
+2026-05-17 08:20:53,147 - memory_system.chaos_engineering - INFO - Fault injection stopped after 4.05s
+2026-05-17 08:20:53,147 - memory_system.chaos_engineering - INFO - Stopped chaos experiment: random-fault-1
+2026-05-17 08:20:53,147 - memory_system.chaos_engineering - INFO - Emergency stop executed for 1 experiments
+2026-05-17 08:20:53,147 - memory_system.chaos_engineering - INFO - Emergency stop executed for 0 experiments
+2026-05-17 08:20:53,147 - memory_system.chaos_engineering - INFO - Chaos engineering framework shutdown
+2026-05-17 08:20:53,147 - __main__ - INFO - 
+================================================================================
+2026-05-17 08:20:53,147 - __main__ - INFO - 场景3: 依赖故障传播测试 - 熔断与降级
+2026-05-17 08:20:53,147 - __main__ - INFO - ================================================================================
+2026-05-17 08:20:53,147 - __main__ - INFO - 
+[Test 3.1] 熔断机制测试
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 1: Service unavailable
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 2: Service unavailable
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 3: Circuit breaker is OPEN
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 4: Circuit breaker is OPEN
+2026-05-17 08:20:53,147 - __main__ - INFO -   [PASS] Circuit breaker opened correctly
+2026-05-17 08:20:53,147 - __main__ - INFO - 
+[Test 3.2] 降级策略测试
+2026-05-17 08:20:53,147 - __main__ - INFO -   Primary failed, using fallback: Primary service down
+2026-05-17 08:20:53,147 - __main__ - INFO -   [PASS] Fallback strategy working correctly
+2026-05-17 08:20:53,147 - __main__ - INFO - 
+[Test 3.3] 依赖故障传播隔离
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 1: ServiceB_OK (dep: degraded - ServiceA failed)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 2: ServiceB_OK (dep: ServiceA_OK)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 3: ServiceB_OK (dep: ServiceA_OK)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 4: ServiceB_OK (dep: ServiceA_OK)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 5: ServiceB_OK (dep: ServiceA_OK)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 6: ServiceB_OK (dep: ServiceA_OK)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 7: ServiceB_OK (dep: degraded - ServiceA failed)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 8: ServiceB_OK (dep: ServiceA_OK)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 9: ServiceB_OK (dep: ServiceA_OK)
+2026-05-17 08:20:53,147 - __main__ - INFO -   Call 10: ServiceB_OK (dep: ServiceA_OK)
+2026-05-17 08:20:53,147 - __main__ - INFO -   [PASS] Fault isolation working correctly
+2026-05-17 08:20:53,148 - __main__ - INFO - 
+================================================================================
+2026-05-17 08:20:53,148 - __main__ - INFO - 场景4: 数据一致性验证测试
+2026-05-17 08:20:53,148 - __main__ - INFO - ================================================================================
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - 2PC Coordinator started
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - DistributedTransactionManager started
+2026-05-17 08:20:53,148 - __main__ - INFO - 
+[Test 4.1] 2PC分布式事务一致性
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - Transaction b42afa9a-55f1-42f8-b456-e6536d649a2b started
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - Transaction b42afa9a-55f1-42f8-b456-e6536d649a2b entering prepare phase
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - Transaction b42afa9a-55f1-42f8-b456-e6536d649a2b prepared successfully
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - Transaction b42afa9a-55f1-42f8-b456-e6536d649a2b entering commit phase
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - Transaction b42afa9a-55f1-42f8-b456-e6536d649a2b committed in 0.000s
+2026-05-17 08:20:53,148 - __main__ - ERROR -   [FAIL] Test 4.1 failed: Not all participants committed
+2026-05-17 08:20:53,148 - __main__ - ERROR - [DEFECT] R3-S4-001: 2PC事务一致性失败
+2026-05-17 08:20:53,148 - __main__ - INFO - 
+[Test 4.2] Saga补偿事务一致性
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - Saga 61291ccf-ce76-476d-aab0-464a21afc884 started with 2 steps
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - Saga 61291ccf-ce76-476d-aab0-464a21afc884 executing step reserve_inventory
+2026-05-17 08:20:53,148 - memory_system.distributed_transaction_manager - INFO - Saga 61291ccf-ce76-476d-aab0-464a21afc884 executing step process_payment
+2026-05-17 08:20:53,449 - memory_system.distributed_transaction_manager - ERROR - Saga 61291ccf-ce76-476d-aab0-464a21afc884 failed at step: Payment processing failed
+2026-05-17 08:20:53,449 - memory_system.distributed_transaction_manager - INFO - Starting compensation for 1 steps
+2026-05-17 08:20:53,449 - memory_system.distributed_transaction_manager - INFO - Compensating step reserve_inventory
+2026-05-17 08:20:53,950 - __main__ - INFO -   [PASS] Saga compensation executed correctly
+2026-05-17 08:20:53,950 - __main__ - INFO - 
+[Test 3.3] 并发冲突检测
+2026-05-17 08:20:53,950 - __main__ - INFO -   Conflict detected: Version conflict: expected 1, got 2
+2026-05-17 08:20:53,950 - __main__ - INFO -   [PASS] Concurrent conflict detected correctly
+2026-05-17 08:20:53,950 - memory_system.distributed_transaction_manager - INFO - 2PC Coordinator stopped
+2026-05-17 08:20:53,950 - memory_system.distributed_transaction_manager - INFO - DistributedTransactionManager stopped
+2026-05-17 08:20:53,950 - __main__ - INFO - 
+================================================================================
+2026-05-17 08:20:53,950 - __main__ - INFO - 场景5: 安全渗透测试
+2026-05-17 08:20:53,950 - __main__ - INFO - ================================================================================
+2026-05-17 08:20:53,952 - __main__ - INFO - 
+[Test 5.1] SQL注入检测
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: '; DROP TABLE users; --...
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: 1' OR '1'='1...
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: 1; DELETE FROM users WHERE '1'...
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: ' UNION SELECT * FROM password...
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: admin'--...
+2026-05-17 08:20:53,952 - __main__ - INFO -   [PASS] SQL injection detection rate: 100.0%
+2026-05-17 08:20:53,952 - __main__ - INFO - 
+[Test 5.2] XSS攻击检测
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: <script>alert('xss')</script>...
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: <img src=x onerror=alert('xss')>...
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: javascript:alert('xss')...
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: <iframe src='evil.com'></iframe>...
+2026-05-17 08:20:53,952 - __main__ - INFO -   Detected: <body onload=alert('xss')>...
+2026-05-17 08:20:53,952 - __main__ - INFO -   [PASS] XSS detection rate: 100.0%
+2026-05-17 08:20:53,952 - __main__ - INFO - 
+[Test 5.3] 权限绕过测试
+2026-05-17 08:20:53,952 - __main__ - WARNING -   [FAIL] Expected True, got False
+2026-05-17 08:20:53,952 - __main__ - INFO -   [OK] User f573792f... permission write: True
+2026-05-17 08:20:53,952 - __main__ - INFO -   [OK] User bba63fe7... permission write: True
+2026-05-17 08:20:53,952 - __main__ - INFO -   [OK] User bba63fe7... permission delete: False
+2026-05-17 08:20:53,952 - __main__ - INFO -   [OK] User f21e556f... permission write: False
+2026-05-17 08:20:53,952 - __main__ - INFO -   [OK] User f21e556f... permission read: True
+2026-05-17 08:20:53,952 - __main__ - INFO -   [OK] User nonexist... permission read: False
+2026-05-17 08:20:53,952 - __main__ - ERROR -   [FAIL] Test 5.3 failed: Only 6/7 permission checks passed
+2026-05-17 08:20:53,952 - __main__ - ERROR - [DEFECT] R3-S5-003: 权限绕过漏洞
+2026-05-17 08:20:53,952 - __main__ - INFO - 
+[Test 5.4] ABAC策略绕过测试
+2026-05-17 08:20:53,952 - __main__ - ERROR -   [FAIL] Test 5.4 failed: ABAC evaluation failed: allowed=False, allowed_wrong=False
+2026-05-17 08:20:53,952 - __main__ - ERROR - [DEFECT] R3-S5-004: ABAC策略绕过漏洞
+2026-05-17 08:20:53,953 - __main__ - INFO - 
+[Test 5.5] 输入验证绕过测试
+2026-05-17 08:20:53,953 - __main__ - INFO -   [OK] email validation: not_an_email... -> False
+2026-05-17 08:20:53,953 - __main__ - INFO -   [OK] email validation: test@example.com... -> True
+2026-05-17 08:20:53,953 - __main__ - INFO -   [OK] uuid validation: not-a-uuid... -> False
+2026-05-17 08:20:53,953 - __main__ - INFO -   [OK] uuid validation: 02d6f83f-81d7-4dbb-9... -> True
+2026-05-17 08:20:53,953 - __main__ - INFO -   [PASS] Input validation bypass tests passed
+2026-05-17 08:20:53,953 - __main__ - INFO - 
+================================================================================
+2026-05-17 08:20:53,953 - __main__ - INFO - 测试执行摘要
+2026-05-17 08:20:53,953 - __main__ - INFO - ================================================================================
+2026-05-17 08:20:53,953 - __main__ - INFO - 总测试数: 18
+2026-05-17 08:20:53,953 - __main__ - INFO - 通过: 15
+2026-05-17 08:20:53,953 - __main__ - INFO - 失败: 3
+2026-05-17 08:20:53,953 - __main__ - INFO - 通过率: 83.3%
+2026-05-17 08:20:53,953 - __main__ - INFO - 缺陷数: 3
+2026-05-17 08:20:53,953 - __main__ - INFO - Defect report saved to: /workspace/agent_memory_system_v2/tests/round3/defects.json
+2026-05-17 08:20:53,953 - __main__ - INFO - 
+第3轮测试完成!

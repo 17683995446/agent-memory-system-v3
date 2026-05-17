@@ -1,0 +1,53 @@
+2026-05-17 07:11:34,288 - __main__ - INFO - 开始48小时Soak测试（压缩到10.0分钟）
+2026-05-17 07:11:34,288 - __main__ - INFO - 目标记忆数: 2,000,000
+2026-05-17 07:11:34,288 - __main__ - INFO - 并发客户端: 200
+2026-05-17 07:11:34,288 - __main__ - INFO - 目标吞吐量: 1000 ops/sec
+2026-05-17 07:11:34,290 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:11:34,295 - __main__ - INFO - Health Check - Memory: 107.67MB, Handles: 100, Threads: 1, Ops: 102, Throughput: 102.00 ops/sec
+2026-05-17 07:11:34,914 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:11:34,914 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:11:35,025 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:11:35,027 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:11:35,027 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:11:39,917 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:11:55,994 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:12:04,298 - __main__ - WARNING - Potential memory leak detected: 750.04MB growth
+2026-05-17 07:12:04,298 - __main__ - WARNING - Potential handle leak detected: 81630 handles growth
+2026-05-17 07:12:04,298 - __main__ - INFO - Health Check - Memory: 857.71MB, Handles: 81730, Threads: 1, Ops: 162,880, Throughput: 5427.65 ops/sec
+2026-05-17 07:12:14,416 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:12:26,958 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:12:34,302 - __main__ - WARNING - Potential memory leak detected: 1059.67MB growth
+2026-05-17 07:12:34,302 - __main__ - WARNING - Potential handle leak detected: 118185 handles growth
+2026-05-17 07:12:34,302 - __main__ - INFO - Health Check - Memory: 1167.34MB, Handles: 118285, Threads: 1, Ops: 235,976, Throughput: 3932.06 ops/sec
+2026-05-17 07:12:38,246 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:13:04,400 - __main__ - WARNING - Potential memory leak detected: 1297.63MB growth
+2026-05-17 07:13:04,400 - __main__ - WARNING - Potential handle leak detected: 146411 handles growth
+2026-05-17 07:13:04,400 - __main__ - INFO - Health Check - Memory: 1405.30MB, Handles: 146511, Threads: 1, Ops: 292,738, Throughput: 3248.61 ops/sec
+2026-05-17 07:13:27,785 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:13:34,401 - __main__ - WARNING - Potential memory leak detected: 1521.24MB growth
+2026-05-17 07:13:34,401 - __main__ - WARNING - Potential handle leak detected: 170593 handles growth
+2026-05-17 07:13:34,401 - __main__ - INFO - Health Check - Memory: 1628.91MB, Handles: 170693, Threads: 1, Ops: 340,959, Throughput: 2838.65 ops/sec
+2026-05-17 07:13:51,483 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:14:04,405 - __main__ - WARNING - Potential memory leak detected: 1704.55MB growth
+2026-05-17 07:14:04,405 - __main__ - WARNING - Potential handle leak detected: 191487 handles growth
+2026-05-17 07:14:04,405 - __main__ - INFO - Health Check - Memory: 1812.22MB, Handles: 191587, Threads: 1, Ops: 382,499, Throughput: 2548.01 ops/sec
+2026-05-17 07:14:34,408 - __main__ - WARNING - Potential memory leak detected: 1868.00MB growth
+2026-05-17 07:14:34,409 - __main__ - WARNING - Potential handle leak detected: 210605 handles growth
+2026-05-17 07:14:34,409 - __main__ - INFO - Health Check - Memory: 1975.67MB, Handles: 210705, Threads: 1, Ops: 420,715, Throughput: 2335.75 ops/sec
+2026-05-17 07:15:04,411 - __main__ - WARNING - Potential memory leak detected: 2010.55MB growth
+2026-05-17 07:15:04,411 - __main__ - WARNING - Potential handle leak detected: 227754 handles growth
+2026-05-17 07:15:04,411 - __main__ - INFO - Health Check - Memory: 2118.23MB, Handles: 227854, Threads: 1, Ops: 454,864, Throughput: 2164.76 ops/sec
+2026-05-17 07:15:34,418 - __main__ - WARNING - Potential memory leak detected: 2149.19MB growth
+2026-05-17 07:15:34,418 - __main__ - WARNING - Potential handle leak detected: 244095 handles growth
+2026-05-17 07:15:34,418 - __main__ - INFO - Health Check - Memory: 2256.86MB, Handles: 244195, Threads: 1, Ops: 487,548, Throughput: 2030.35 ops/sec
+2026-05-17 07:16:04,208 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:16:04,425 - __main__ - WARNING - Potential memory leak detected: 2279.11MB growth
+2026-05-17 07:16:04,426 - __main__ - WARNING - Potential handle leak detected: 259602 handles growth
+2026-05-17 07:16:04,426 - __main__ - INFO - Health Check - Memory: 2386.78MB, Handles: 259702, Threads: 1, Ops: 518,229, Throughput: 1918.39 ops/sec
+2026-05-17 07:16:13,542 - __main__ - WARNING - Write worker error: Injected fault: Random operation failure
+2026-05-17 07:16:34,433 - __main__ - WARNING - Potential memory leak detected: 2391.94MB growth
+2026-05-17 07:16:34,437 - __main__ - WARNING - Potential handle leak detected: 273511 handles growth
+2026-05-17 07:16:34,438 - __main__ - INFO - Health Check - Memory: 2499.61MB, Handles: 273611, Threads: 1, Ops: 545,990, Throughput: 1819.09 ops/sec
+2026-05-17 07:17:11,721 - __main__ - WARNING - Potential memory leak detected: 2413.12MB growth
+2026-05-17 07:17:13,590 - __main__ - WARNING - Potential handle leak detected: 276328 handles growth
+2026-05-17 07:17:15,971 - __main__ - INFO - Health Check - Memory: 2520.80MB, Handles: 276428, Threads: 1, Ops: 551,544, Throughput: 1640.05 ops/sec

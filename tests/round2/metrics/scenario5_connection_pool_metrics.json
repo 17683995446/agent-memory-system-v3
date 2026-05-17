@@ -1,0 +1,2661 @@
+{
+  "scenario_name": "\u8fde\u63a5\u6c60\u8017\u5c3d\u6d4b\u8bd5",
+  "start_time": 1779004342.1354845,
+  "end_time": 1779004824.0447001,
+  "total_duration_sec": 481.90921568870544,
+  "pool_size": 50,
+  "pool_exhaustion_events": 1,
+  "wait_queue_max_length": 0,
+  "wait_queue_avg_wait_ms": 0.0,
+  "graceful_degradations": 0,
+  "connections_recycled": 0,
+  "connection_timeouts": 0,
+  "requests_served": 3880521,
+  "requests_rejected": 0,
+  "pool_utilization_timeline": [
+    {
+      "timestamp": 1779004344.1368,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 1,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004346.137501,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004348.13793,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 1,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004350.138308,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 0,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004352.1385508,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 1,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004354.1392918,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004356.1405592,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004358.1417003,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004360.1420264,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 0,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004362.1421888,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004364.1424434,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 0,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004366.1434026,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004368.1436055,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004370.1440053,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004372.1444829,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 0,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004374.144739,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004376.1453035,
+      "total_connections": 50,
+      "active_connections": 39,
+      "available_connections": 11,
+      "utilization_percent": 78.0
+    },
+    {
+      "timestamp": 1779004378.145636,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004380.1467931,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004382.1472363,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004384.1483493,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004386.149108,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004388.1499367,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004390.1502762,
+      "total_connections": 50,
+      "active_connections": 39,
+      "available_connections": 2,
+      "utilization_percent": 78.0
+    },
+    {
+      "timestamp": 1779004392.151387,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004394.152142,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004396.1529331,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004398.1532164,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004400.1536763,
+      "total_connections": 50,
+      "active_connections": 37,
+      "available_connections": 3,
+      "utilization_percent": 74.0
+    },
+    {
+      "timestamp": 1779004402.1539078,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 0,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004404.1550756,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004406.1556995,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004408.1560724,
+      "total_connections": 50,
+      "active_connections": 39,
+      "available_connections": 1,
+      "utilization_percent": 78.0
+    },
+    {
+      "timestamp": 1779004410.1568964,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004412.1572537,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004414.1578007,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004416.1584365,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004418.1597116,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004420.159994,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 1,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004422.1610975,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004424.161502,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004426.161803,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 1,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004428.1627138,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004430.1629937,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 2,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004432.1633663,
+      "total_connections": 50,
+      "active_connections": 37,
+      "available_connections": 3,
+      "utilization_percent": 74.0
+    },
+    {
+      "timestamp": 1779004434.163593,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004436.1638136,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004438.1644013,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004440.1654701,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004442.166477,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004444.1669042,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 0,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004446.1674442,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004448.167927,
+      "total_connections": 50,
+      "active_connections": 37,
+      "available_connections": 0,
+      "utilization_percent": 74.0
+    },
+    {
+      "timestamp": 1779004450.1681294,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 1,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004452.1686275,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004454.169135,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004456.1701221,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004458.170646,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004460.1710951,
+      "total_connections": 50,
+      "active_connections": 35,
+      "available_connections": 15,
+      "utilization_percent": 70.0
+    },
+    {
+      "timestamp": 1779004462.1723719,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004464.1728888,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004466.1735706,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004468.1740851,
+      "total_connections": 50,
+      "active_connections": 37,
+      "available_connections": 0,
+      "utilization_percent": 74.0
+    },
+    {
+      "timestamp": 1779004470.1751719,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004472.176417,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004474.1769414,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004476.1780107,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004478.1784866,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 10,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004480.179671,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004482.1802497,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004484.1808298,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004486.181762,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004488.1822846,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004490.182713,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004492.1832466,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004494.1834328,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004496.1837008,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 1,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004498.1848521,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004500.185275,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 0,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004502.1859305,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004504.1862705,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 1,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004506.1868076,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004508.187885,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004510.1887388,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004512.189027,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004514.1892812,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 2,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004516.1895902,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 0,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004518.1903448,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004520.1910896,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004522.191382,
+      "total_connections": 50,
+      "active_connections": 34,
+      "available_connections": 3,
+      "utilization_percent": 68.0
+    },
+    {
+      "timestamp": 1779004524.1919057,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 2,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004526.1921132,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004528.1928618,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004530.193895,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004532.1947646,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004534.195718,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004536.1961987,
+      "total_connections": 50,
+      "active_connections": 35,
+      "available_connections": 15,
+      "utilization_percent": 70.0
+    },
+    {
+      "timestamp": 1779004538.1968699,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004540.1973376,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004542.198145,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004544.1986113,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004546.199275,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004548.19981,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004550.200806,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004552.2018907,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004554.203048,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004556.2033343,
+      "total_connections": 50,
+      "active_connections": 36,
+      "available_connections": 2,
+      "utilization_percent": 72.0
+    },
+    {
+      "timestamp": 1779004558.204566,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004560.2054496,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004562.2061996,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004564.2075894,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004566.208338,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004568.2086146,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 1,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004570.2093644,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004572.2102797,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004574.2105308,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 1,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004576.2107823,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004578.211052,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 2,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004580.2122686,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004582.2131376,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004584.2137601,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004586.2140174,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004588.2143195,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 0,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004590.2146423,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 0,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004592.2149415,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 0,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004594.2151828,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 0,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004596.2154298,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004598.2156577,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004600.216887,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004602.21762,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004604.2184734,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004606.219032,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004608.2203326,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004610.2207968,
+      "total_connections": 50,
+      "active_connections": 38,
+      "available_connections": 12,
+      "utilization_percent": 76.0
+    },
+    {
+      "timestamp": 1779004612.2211306,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 0,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004614.2215338,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004616.2222319,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004618.2225482,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 0,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004620.2230747,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004622.2233586,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004624.22412,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004626.2244139,
+      "total_connections": 50,
+      "active_connections": 38,
+      "available_connections": 0,
+      "utilization_percent": 76.0
+    },
+    {
+      "timestamp": 1779004628.225517,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004630.2260551,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004632.227003,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004634.2277749,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004636.2287285,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004638.2296028,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004640.2300632,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004642.2311926,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004644.231748,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004646.2323592,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 8,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004648.2328665,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004650.233726,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004652.2343588,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 10,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004654.235384,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004656.2358456,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004658.2368038,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004660.2378883,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004662.238695,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004664.2397504,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004666.2409225,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004668.2411637,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004670.2422352,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004672.2424293,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004674.2428095,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004676.2431467,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 1,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004678.2444053,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004680.24528,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004682.246462,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004684.2466753,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004686.2473931,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004688.2479265,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004690.2481089,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004692.2484264,
+      "total_connections": 50,
+      "active_connections": 37,
+      "available_connections": 2,
+      "utilization_percent": 74.0
+    },
+    {
+      "timestamp": 1779004694.2488558,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 0,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004696.249222,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 0,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004698.2500534,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004700.2508006,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004702.2510395,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004704.2514458,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004706.2521029,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004708.2525015,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 0,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004710.2531478,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004712.2542832,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004714.2554724,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004716.2559254,
+      "total_connections": 50,
+      "active_connections": 39,
+      "available_connections": 0,
+      "utilization_percent": 78.0
+    },
+    {
+      "timestamp": 1779004718.256375,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004720.2573445,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004722.2586534,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004724.2589104,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004726.2595942,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004728.2608802,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004730.2612474,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 0,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004732.2619472,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004734.2625346,
+      "total_connections": 50,
+      "active_connections": 39,
+      "available_connections": 11,
+      "utilization_percent": 78.0
+    },
+    {
+      "timestamp": 1779004736.2632494,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004738.2635307,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004740.2638783,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 0,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004742.2650833,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004744.2659433,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004746.2662246,
+      "total_connections": 50,
+      "active_connections": 42,
+      "available_connections": 0,
+      "utilization_percent": 84.0
+    },
+    {
+      "timestamp": 1779004748.267122,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004750.268166,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004752.268487,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 0,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004754.268814,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 0,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004756.2697618,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004758.2709906,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004760.271755,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004762.2722106,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004764.2725828,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 0,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004766.2735648,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004768.2738798,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 1,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004770.274913,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004772.2750976,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004774.275842,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004776.2761807,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 0,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004778.2764978,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004780.2771647,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 9,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004782.2782505,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004784.279024,
+      "total_connections": 50,
+      "active_connections": 43,
+      "available_connections": 7,
+      "utilization_percent": 86.0
+    },
+    {
+      "timestamp": 1779004786.27983,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004788.2810643,
+      "total_connections": 50,
+      "active_connections": 48,
+      "available_connections": 2,
+      "utilization_percent": 96.0
+    },
+    {
+      "timestamp": 1779004790.2816355,
+      "total_connections": 50,
+      "active_connections": 38,
+      "available_connections": 0,
+      "utilization_percent": 76.0
+    },
+    {
+      "timestamp": 1779004792.282592,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004794.2830718,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 1,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004796.2832937,
+      "total_connections": 50,
+      "active_connections": 49,
+      "available_connections": 0,
+      "utilization_percent": 98.0
+    },
+    {
+      "timestamp": 1779004798.2844028,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004800.2850692,
+      "total_connections": 50,
+      "active_connections": 46,
+      "available_connections": 4,
+      "utilization_percent": 92.0
+    },
+    {
+      "timestamp": 1779004802.2855017,
+      "total_connections": 50,
+      "active_connections": 41,
+      "available_connections": 0,
+      "utilization_percent": 82.0
+    },
+    {
+      "timestamp": 1779004804.2863593,
+      "total_connections": 50,
+      "active_connections": 45,
+      "available_connections": 5,
+      "utilization_percent": 90.0
+    },
+    {
+      "timestamp": 1779004806.2867458,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 0,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004808.2879856,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004810.288189,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004812.2885394,
+      "total_connections": 50,
+      "active_connections": 40,
+      "available_connections": 0,
+      "utilization_percent": 80.0
+    },
+    {
+      "timestamp": 1779004814.2893229,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 6,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004816.2903864,
+      "total_connections": 50,
+      "active_connections": 50,
+      "available_connections": 0,
+      "utilization_percent": 100.0
+    },
+    {
+      "timestamp": 1779004818.2913537,
+      "total_connections": 50,
+      "active_connections": 47,
+      "available_connections": 3,
+      "utilization_percent": 94.0
+    },
+    {
+      "timestamp": 1779004820.2917125,
+      "total_connections": 50,
+      "active_connections": 44,
+      "available_connections": 1,
+      "utilization_percent": 88.0
+    },
+    {
+      "timestamp": 1779004822.2925756,
+      "total_connections": 50,
+      "active_connections": 0,
+      "available_connections": 50,
+      "utilization_percent": 0.0
+    }
+  ],
+  "wait_queue_timeline": [
+    {
+      "timestamp": 1779004344.1368012,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004346.137502,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004348.1379318,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004350.1383097,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004352.138552,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004354.1392932,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004356.1405606,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004358.141702,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004360.1420279,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004362.1421902,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004364.142445,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004366.1434038,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004368.143607,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004370.1440067,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004372.144484,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004374.14474,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004376.1453052,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004378.1456373,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004380.1467946,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004382.1472375,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004384.1483505,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004386.1491094,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004388.1499379,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004390.1502774,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004392.1513884,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004394.1521437,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004396.1529343,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004398.1532178,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004400.153678,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004402.153909,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004404.1550772,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004406.155701,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004408.1560743,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004410.1568975,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004412.1572554,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004414.1578019,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004416.1584384,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004418.1597128,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004420.159995,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004422.1610987,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004424.1615033,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004426.1618042,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004428.1627154,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004430.1629949,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004432.1633677,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004434.1635942,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004436.1638153,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004438.1644027,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004440.1654718,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004442.1664786,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004444.1669056,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004446.1674457,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004448.167929,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004450.1681309,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004452.168629,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004454.1691363,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004456.1701238,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004458.1706479,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004460.1710963,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004462.1723735,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004464.1728904,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004466.1735716,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004468.1740863,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004470.175173,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004472.176419,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004474.1769426,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004476.1780121,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004478.1784878,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004480.1796725,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004482.180251,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004484.180831,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004486.181764,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004488.1822858,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004490.1827147,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004492.1832478,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004494.1834347,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004496.1837025,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004498.1848538,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004500.1852767,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004502.1859324,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004504.1862721,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004506.1868088,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004508.187887,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004510.18874,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004512.189028,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004514.1892831,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004516.189592,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004518.1903462,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004520.1910913,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004522.1913838,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004524.1919076,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004526.1921144,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004528.1928642,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004530.1938965,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004532.1947658,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004534.1957197,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004536.1962001,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004538.1968713,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004540.1973393,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004542.1981466,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004544.1986127,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004546.1992764,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004548.1998117,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004550.2008073,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004552.2018921,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004554.2030494,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004556.203336,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004558.2045677,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004560.205451,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004562.2062008,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004564.2075908,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004566.2083392,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004568.208616,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004570.209366,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004572.2102807,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004574.2105322,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004576.2107835,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004578.2110534,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004580.21227,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004582.2131386,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004584.2137616,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004586.214019,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004588.214321,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004590.2146437,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004592.2149427,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004594.2151845,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004596.2154312,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004598.215659,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004600.2168896,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004602.2176216,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004604.2184749,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004606.2190337,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004608.2203338,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004610.2207983,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004612.2211323,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004614.221535,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004616.2222338,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004618.2225494,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004620.2230759,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004622.2233603,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004624.224121,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004626.2244153,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004628.2255182,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004630.2260568,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004632.2270048,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004634.2277763,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004636.2287302,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004638.229605,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004640.2300658,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004642.2311943,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004644.2317495,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004646.2323604,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004648.232868,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004650.233727,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004652.23436,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004654.2353852,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004656.2358472,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004658.2368054,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004660.2378898,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004662.2386963,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004664.239752,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004666.240924,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004668.2411652,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004670.2422369,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004672.2424304,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004674.2428112,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004676.2431483,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004678.244407,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004680.2452812,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004682.2464635,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004684.2466767,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004686.2473946,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004688.247929,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004690.2481098,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004692.2484279,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004694.2488573,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004696.2492235,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004698.2500546,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004700.2508018,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004702.251041,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004704.251447,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004706.2521043,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004708.2525032,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004710.2531495,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004712.254285,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004714.2554739,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004716.255927,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004718.2563767,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004720.2573457,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004722.258655,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004724.258912,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004726.2595959,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004728.2608817,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004730.261249,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004732.2619483,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004734.2625356,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004736.2632508,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004738.263532,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004740.2638798,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004742.2650847,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004744.2659457,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004746.2662263,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004748.2671235,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004750.2681677,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004752.2684884,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004754.2688153,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004756.269763,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004758.270992,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004760.2717562,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004762.2722123,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004764.272584,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004766.2735665,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004768.2738814,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004770.2749147,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004772.2750988,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004774.2758434,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004776.2761822,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004778.2764997,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004780.2771664,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004782.2782521,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004784.2790253,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004786.2798314,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004788.2810655,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004790.281637,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004792.2825935,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004794.283073,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004796.2832947,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004798.2844045,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004800.2850711,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004802.2855034,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004804.2863605,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004806.2867475,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004808.2879882,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004810.2881904,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004812.2885406,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004814.2893243,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004816.2903879,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004818.2913554,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004820.2917142,
+      "wait_queue_size": 0
+    },
+    {
+      "timestamp": 1779004822.292577,
+      "wait_queue_size": 0
+    }
+  ],
+  "degradation_events": [],
+  "errors": []
+}

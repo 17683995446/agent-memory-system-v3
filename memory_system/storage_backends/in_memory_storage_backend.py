@@ -5,10 +5,11 @@
 
 from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
 import logging
+import time
+import asyncio
+from collections import deque
 
 logger = logging.getLogger(__name__)
-import asyncio
-import time
 
 from memory_system.core_abstractions.abstract_component_interfaces import StorageBackend
 from memory_system.core_abstractions.memory_data_models import MemoryItem, MemoryType, MemoryLink
@@ -30,10 +31,13 @@ class MemoryStorage(StorageBackend):
         - 适合测试和小规模场景
         - 不支持持久化
 
-    DEFECT-R9-003 [P1] 修复:
-        - 增强异常处理
-        - 添加数据一致性检查
-        - 添加恢复机制
+    DEFECT-R2-002 [P1] 修复:
+        - 定期清理过期句柄
+        - 句柄泄漏防护
+
+    DEFECT-R2-006 [P2] 修复:
+        - 渐进式清理策略
+        - 避免过于激进的清理
     """
 
     def __init__(self, max_memories: int = DEFAULT_MAX_MEMORIES):
@@ -54,6 +58,25 @@ class MemoryStorage(StorageBackend):
         self._last_error: Optional[Exception] = None
         self._recovery_attempts = 0
         self._is_recovering = False
+
+        # DEFECT-R2-002 [P1] 修复: 句柄跟踪和清理
+        self._handle_registry: Dict[str, Dict[str, Any]] = {}  # 句柄注册表
+        self._handle_cleanup_task: Optional[asyncio.Task] = None
+        self._handle_ttl_seconds: float = 300.0  # 句柄默认TTL 5分钟
+        self._last_handle_cleanup: float = time.time()
+        self._active_handles: Set[str] = set()
+
+        # DEFECT-R2-006 [P2] 修复: 渐进式清理配置
+        self._cleanup_config = {
+            "enabled": True,
+            "gradual_cleanup": True,  # 启用渐进式清理
+            "cleanup_batch_size": 10,  # 每次清理批次大小
+            "cleanup_interval_seconds": 60,  # 清理间隔
+            "eviction_threshold_percent": 0.95,  # 开始清理的阈值(95%)
+            "target_capacity_percent": 0.85,  # 目标容量(85%)
+        }
+        self._cleanup_task: Optional[asyncio.Task] = None
+        self._cleanup_history: deque = deque(maxlen=100)  # 清理历史
     
     async def add(self, item: MemoryItem) -> str:
         """
@@ -563,31 +586,180 @@ class MemoryStorage(StorageBackend):
             return candidates[offset:offset + limit]
     
     async def _evict_oldest(self):
-        """淘汰最旧的记忆（调用方需持有 self._lock）"""
+        """DEFECT-R2-006 [P2] 修复: 渐进式淘汰最旧的记忆"""
         if not self._memories:
             return
 
-        # 找到最旧的记忆
-        oldest_id = min(
+        # DEFECT-R2-006: 渐进式清理 - 计算需要清理的数量
+        current_count = len(self._memories)
+        target_count = int(self.max_memories * self._cleanup_config["target_capacity_percent"])
+        evict_count = min(
+            current_count - target_count,
+            self._cleanup_config["cleanup_batch_size"]
+        )
+        evict_count = max(1, evict_count)  # 至少清理1个
+
+        # 按时间戳排序，找出最旧的
+        sorted_ids = sorted(
             self._memories.keys(),
             key=lambda k: self._memories[k].timestamp
         )
-        memory = self._memories[oldest_id]
-        del self._memories[oldest_id]
 
-        # 从索引中移除
-        if memory.memory_type == MemoryType.EPISODIC and oldest_id in self._episodic_ids:
-            self._episodic_ids.remove(oldest_id)
-        elif memory.memory_type == MemoryType.SEMANTIC and oldest_id in self._semantic_ids:
-            self._semantic_ids.remove(oldest_id)
+        evicted = 0
+        for oldest_id in sorted_ids[:evict_count]:
+            if oldest_id not in self._memories:
+                continue
 
-        # 清理倒排索引
-        if oldest_id in self._doc_lengths:
-            del self._doc_lengths[oldest_id]
-        for token in list(self._inverted_index.keys()):
-            self._inverted_index[token].discard(oldest_id)
-            if not self._inverted_index[token]:
-                del self._inverted_index[token]
+            memory = self._memories[oldest_id]
+            del self._memories[oldest_id]
+
+            # 从索引中移除
+            if memory.memory_type == MemoryType.EPISODIC and oldest_id in self._episodic_ids:
+                self._episodic_ids.remove(oldest_id)
+            elif memory.memory_type == MemoryType.SEMANTIC and oldest_id in self._semantic_ids:
+                self._semantic_ids.remove(oldest_id)
+
+            # 清理倒排索引
+            if oldest_id in self._doc_lengths:
+                del self._doc_lengths[oldest_id]
+            for token in list(self._inverted_index.keys()):
+                self._inverted_index[token].discard(oldest_id)
+                if not self._inverted_index[token]:
+                    del self._inverted_index[token]
+
+            evicted += 1
+
+        # 记录清理历史
+        self._cleanup_history.append({
+            "timestamp": time.time(),
+            "evicted_count": evicted,
+            "current_count": len(self._memories),
+        })
+
+        if evicted > 0:
+            logger.debug(f"Gradual eviction: removed {evicted} memories, remaining: {len(self._memories)}")
+
+    async def _gradual_cleanup(self):
+        """DEFECT-R2-006 [P2] 修复: 渐进式清理循环"""
+        while self._cleanup_config["enabled"]:
+            try:
+                await asyncio.sleep(self._cleanup_config["cleanup_interval_seconds"])
+
+                async with self._lock:
+                    current_count = len(self._memories)
+                    threshold = int(self.max_memories * self._cleanup_config["eviction_threshold_percent"])
+
+                    if current_count > threshold:
+                        logger.info(f"Memory count ({current_count}) exceeds threshold ({threshold}), starting gradual cleanup")
+                        await self._evict_oldest()
+
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.warning(f"Gradual cleanup error: {e}")
+
+    # DEFECT-R2-002 [P1] 修复: 句柄管理方法
+    def _register_handle(self, handle_id: str, handle_type: str, metadata: Optional[Dict] = None) -> str:
+        """注册句柄到注册表"""
+        self._handle_registry[handle_id] = {
+            "handle_id": handle_id,
+            "handle_type": handle_type,
+            "created_at": time.time(),
+            "last_accessed": time.time(),
+            "metadata": metadata or {},
+            "active": True,
+        }
+        self._active_handles.add(handle_id)
+        return handle_id
+
+    def _update_handle_access(self, handle_id: str):
+        """更新句柄访问时间"""
+        if handle_id in self._handle_registry:
+            self._handle_registry[handle_id]["last_accessed"] = time.time()
+
+    def _release_handle(self, handle_id: str):
+        """释放句柄"""
+        if handle_id in self._handle_registry:
+            self._handle_registry[handle_id]["active"] = False
+            self._active_handles.discard(handle_id)
+
+    async def _cleanup_expired_handles(self):
+        """DEFECT-R2-002 [P1] 修复: 清理过期句柄"""
+        now = time.time()
+        expired_handles = []
+
+        for handle_id, info in list(self._handle_registry.items()):
+            if not info.get("active", False):
+                expired_handles.append(handle_id)
+                continue
+
+            # 检查TTL
+            last_accessed = info.get("last_accessed", info.get("created_at", now))
+            if now - last_accessed > self._handle_ttl_seconds:
+                expired_handles.append(handle_id)
+
+        for handle_id in expired_handles:
+            self._release_handle(handle_id)
+            if handle_id in self._handle_registry:
+                del self._handle_registry[handle_id]
+
+        if expired_handles:
+            logger.debug(f"Cleaned up {len(expired_handles)} expired handles")
+
+        self._last_handle_cleanup = now
+
+    async def _handle_cleanup_loop(self):
+        """DEFECT-R2-002 [P1] 修复: 句柄清理循环"""
+        while True:
+            try:
+                await asyncio.sleep(60)  # 每分钟检查一次
+                await self._cleanup_expired_handles()
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.warning(f"Handle cleanup error: {e}")
+
+    def get_handle_stats(self) -> Dict[str, Any]:
+        """获取句柄统计信息"""
+        now = time.time()
+        active_count = sum(1 for info in self._handle_registry.values() if info.get("active", False))
+        expired_count = len(self._handle_registry) - active_count
+
+        # 计算平均句柄年龄
+        ages = [now - info.get("created_at", now) for info in self._handle_registry.values()]
+        avg_age = sum(ages) / len(ages) if ages else 0
+
+        return {
+            "total_handles": len(self._handle_registry),
+            "active_handles": active_count,
+            "expired_handles": expired_count,
+            "average_handle_age_seconds": avg_age,
+            "last_cleanup": self._last_handle_cleanup,
+        }
+
+    async def start_cleanup_tasks(self):
+        """DEFECT-R2-002 [P1] 修复: 启动清理任务"""
+        if self._cleanup_config["enabled"] and self._cleanup_config["gradual_cleanup"]:
+            self._cleanup_task = asyncio.create_task(self._gradual_cleanup())
+        self._handle_cleanup_task = asyncio.create_task(self._handle_cleanup_loop())
+
+    async def stop_cleanup_tasks(self):
+        """DEFECT-R2-002 [P1] 修复: 停止清理任务"""
+        if self._cleanup_task:
+            self._cleanup_task.cancel()
+            try:
+                await self._cleanup_task
+            except asyncio.CancelledError:
+                pass
+            self._cleanup_task = None
+
+        if self._handle_cleanup_task:
+            self._handle_cleanup_task.cancel()
+            try:
+                await self._handle_cleanup_task
+            except asyncio.CancelledError:
+                pass
+            self._handle_cleanup_task = None
 
     async def search_by_keyword(
         self,

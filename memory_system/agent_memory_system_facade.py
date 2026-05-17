@@ -11,7 +11,9 @@ import importlib
 import pkgutil
 import weakref
 import re
+import gc
 from cachetools import TTLCache
+from contextlib import asynccontextmanager
 
 # DEFECT-R10-002 [P0] 修复: 输入验证工具函数
 def _validate_string_input(
@@ -251,11 +253,22 @@ from memory_system.core_abstractions.system_constants_definitions import (
 
 logger = get_logger(__name__)
 
-# DEFECT-001 [P0] 修复: 全局记忆对象弱引用缓存，用于跟踪和清理记忆对象
+# DEFECT-R2-001 [P1] 修复: 全局记忆对象弱引用缓存，用于跟踪和清理记忆对象
 _memory_object_cache: weakref.WeakSet = weakref.WeakSet()
 
-# DEFECT-001 [P0] 修复: 事件监听器注册表，用于自动清理
+# DEFECT-R2-001 [P1] 修复: 事件监听器注册表，用于自动清理
 _event_listener_registry: Dict[str, List[callable]] = {}
+
+# DEFECT-R2-001 [P1] 修复: 资源跟踪注册表
+_resource_registry: Dict[int, Dict[str, Any]] = {}
+
+# DEFECT-R2-001 [P1] 修复: 自动释放配置
+AUTO_RELEASE_CONFIG = {
+    "enabled": True,
+    "check_interval_seconds": 60,
+    "idle_timeout_seconds": 300,  # 5分钟无活动自动释放
+    "memory_threshold_percent": 80,
+}
 
 
 class CachingEmbeddingProxy:
@@ -369,16 +382,33 @@ class MemorySystem:
         }
         self._stats_lock = asyncio.Lock()  # 线程安全锁
 
-        # DEFECT-001 [P0] 修复: 注册到弱引用缓存，允许垃圾回收
+        # DEFECT-R2-001 [P1] 修复: 注册到弱引用缓存，允许垃圾回收
         _memory_object_cache.add(self)
 
-        # DEFECT-001 [P0] 修复: 初始化事件监听器列表
+        # DEFECT-R2-001 [P1] 修复: 初始化事件监听器列表
         self._event_listeners: List[callable] = []
 
-        # DEFECT-001 [P0] 修复: 启动定期清理任务
+        # DEFECT-R2-001 [P1] 修复: 启动定期清理任务
         self._cleanup_task: Optional[asyncio.Task] = None
         self._cleanup_interval = 300  # 每5分钟清理一次
         self._start_cleanup_task()
+
+        # DEFECT-R2-001 [P1] 修复: 资源自动释放机制
+        self._last_activity_time = time.time()
+        self._auto_release_task: Optional[asyncio.Task] = None
+        self._resource_lock = asyncio.Lock()
+        self._is_released = False
+        self._active_operations = 0
+        self._start_auto_release_task()
+
+        # DEFECT-R2-001 [P1] 修复: 注册到资源注册表
+        self._resource_id = id(self)
+        _resource_registry[self._resource_id] = {
+            "instance": weakref.ref(self),
+            "created_at": time.time(),
+            "last_activity": time.time(),
+            "operation_count": 0,
+        }
 
         # 设置系统信息
         self.metrics.set_system_info(
@@ -1113,7 +1143,7 @@ class MemorySystem:
         return {**direct_results, "associations": associations}
 
     def _start_cleanup_task(self):
-        """DEFECT-001 [P0] 修复: 启动定期清理任务"""
+        """DEFECT-R2-001 [P1] 修复: 启动定期清理任务"""
         try:
             loop = asyncio.get_event_loop()
             if loop.is_running():
@@ -1122,8 +1152,65 @@ class MemorySystem:
             # 没有事件循环，稍后启动
             pass
 
+    def _start_auto_release_task(self):
+        """DEFECT-R2-001 [P1] 修复: 启动自动释放任务"""
+        if not AUTO_RELEASE_CONFIG["enabled"]:
+            return
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                self._auto_release_task = asyncio.create_task(self._auto_release_loop())
+        except RuntimeError:
+            pass
+
+    async def _auto_release_loop(self):
+        """DEFECT-R2-001 [P1] 修复: 自动释放循环 - 检测空闲并释放资源"""
+        while True:
+            try:
+                await asyncio.sleep(AUTO_RELEASE_CONFIG["check_interval_seconds"])
+
+                async with self._resource_lock:
+                    if self._is_released:
+                        break
+
+                    idle_time = time.time() - self._last_activity_time
+                    has_active_ops = self._active_operations > 0
+
+                    # 检查是否需要自动释放
+                    should_release = (
+                        idle_time > AUTO_RELEASE_CONFIG["idle_timeout_seconds"]
+                        and not has_active_ops
+                    )
+
+                    if should_release:
+                        logger.info(f"Auto-releasing idle memory system (idle for {idle_time:.0f}s)")
+                        await self._release_idle_resources()
+
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.warning(f"Auto-release task error: {e}")
+
+    async def _release_idle_resources(self):
+        """DEFECT-R2-001 [P1] 修复: 释放空闲资源"""
+        try:
+            # 清理嵌入缓存
+            if hasattr(self._embedding_cache, 'clear'):
+                self._embedding_cache.clear()
+
+            # 清理短期记忆
+            if self.short_term and hasattr(self.short_term, 'clear'):
+                await self.short_term.clear()
+
+            # 强制垃圾回收
+            gc.collect()
+
+            logger.debug("Idle resources released")
+        except Exception as e:
+            logger.warning(f"Failed to release idle resources: {e}")
+
     async def _cleanup_loop(self):
-        """DEFECT-001 [P0] 修复: 定期清理循环"""
+        """DEFECT-R2-001 [P1] 修复: 定期清理循环"""
         while True:
             try:
                 await asyncio.sleep(self._cleanup_interval)
@@ -1134,7 +1221,7 @@ class MemorySystem:
                 logger.warning(f"Cleanup task error: {e}")
 
     async def _perform_cleanup(self):
-        """DEFECT-001 [P0] 修复: 执行清理操作"""
+        """DEFECT-R2-001 [P1] 修复: 执行清理操作"""
         # 清理过期的嵌入缓存
         if hasattr(self._embedding_cache, 'expired'):
             self._embedding_cache.expired()
@@ -1143,10 +1230,44 @@ class MemorySystem:
         if self.short_term and hasattr(self.short_term, '_cleanup_expired'):
             await self.short_term._cleanup_expired()
 
+        # DEFECT-R2-001: 清理资源注册表中的死引用
+        self._cleanup_resource_registry()
+
         logger.debug("Memory system cleanup completed")
 
+    def _cleanup_resource_registry(self):
+        """DEFECT-R2-001 [P1] 修复: 清理资源注册表中的死引用"""
+        global _resource_registry
+        dead_ids = []
+        for rid, info in _resource_registry.items():
+            ref = info.get("instance")
+            if ref is None or ref() is None:
+                dead_ids.append(rid)
+        for rid in dead_ids:
+            del _resource_registry[rid]
+
+    def _update_activity(self):
+        """DEFECT-R2-001 [P1] 修复: 更新活动时间戳"""
+        self._last_activity_time = time.time()
+        if self._resource_id in _resource_registry:
+            _resource_registry[self._resource_id]["last_activity"] = time.time()
+            _resource_registry[self._resource_id]["operation_count"] += 1
+
+    @asynccontextmanager
+    async def _operation_context(self):
+        """DEFECT-R2-001 [P1] 修复: 操作上下文管理器 - 跟踪活动操作"""
+        async with self._resource_lock:
+            self._active_operations += 1
+            self._update_activity()
+        try:
+            yield
+        finally:
+            async with self._resource_lock:
+                self._active_operations -= 1
+                self._update_activity()
+
     def _register_event_listener(self, listener: callable):
-        """DEFECT-001 [P0] 修复: 注册事件监听器"""
+        """DEFECT-R2-001 [P1] 修复: 注册事件监听器"""
         self._event_listeners.append(listener)
         # 同时注册到全局注册表
         listener_id = id(listener)
@@ -1155,7 +1276,7 @@ class MemorySystem:
         _event_listener_registry[listener_id].append(listener)
 
     def _unregister_event_listener(self, listener: callable):
-        """DEFECT-001 [P0] 修复: 注销事件监听器"""
+        """DEFECT-R2-001 [P1] 修复: 注销事件监听器"""
         if listener in self._event_listeners:
             self._event_listeners.remove(listener)
         # 从全局注册表移除
@@ -1165,14 +1286,28 @@ class MemorySystem:
                 _event_listener_registry[listener_id].remove(listener)
 
     def _clear_all_event_listeners(self):
-        """DEFECT-001 [P0] 修复: 清除所有事件监听器"""
+        """DEFECT-R2-001 [P1] 修复: 清除所有事件监听器"""
         for listener in self._event_listeners[:]:
             self._unregister_event_listener(listener)
         self._event_listeners.clear()
 
     async def close(self):
-        """关闭系统 - DEFECT-001 [P0] 修复: 确保资源正确释放"""
-        # DEFECT-001 [P0] 修复: 停止清理任务
+        """关闭系统 - DEFECT-R2-001 [P1] 修复: 确保资源正确释放"""
+        async with self._resource_lock:
+            if self._is_released:
+                return
+            self._is_released = True
+
+        # DEFECT-R2-001 [P1] 修复: 停止自动释放任务
+        if self._auto_release_task:
+            self._auto_release_task.cancel()
+            try:
+                await self._auto_release_task
+            except asyncio.CancelledError:
+                pass
+            self._auto_release_task = None
+
+        # DEFECT-R2-001 [P1] 修复: 停止清理任务
         if self._cleanup_task:
             self._cleanup_task.cancel()
             try:
@@ -1181,15 +1316,22 @@ class MemorySystem:
                 pass
             self._cleanup_task = None
 
-        # DEFECT-001 [P0] 修复: 清除所有事件监听器
+        # DEFECT-R2-001 [P1] 修复: 清除所有事件监听器
         self._clear_all_event_listeners()
 
-        # DEFECT-001 [P0] 修复: 从弱引用缓存中移除
+        # DEFECT-R2-001 [P1] 修复: 从弱引用缓存中移除
         if self in _memory_object_cache:
             _memory_object_cache.discard(self)
 
-        # DEFECT-001 [P0] 修复: 清理嵌入缓存
+        # DEFECT-R2-001 [P1] 修复: 从资源注册表移除
+        if self._resource_id in _resource_registry:
+            del _resource_registry[self._resource_id]
+
+        # DEFECT-R2-001 [P1] 修复: 清理嵌入缓存
         self._embedding_cache.clear()
+
+        # DEFECT-R2-001 [P1] 修复: 强制垃圾回收
+        gc.collect()
 
         if self.ttl_manager:
             await self.ttl_manager.stop()

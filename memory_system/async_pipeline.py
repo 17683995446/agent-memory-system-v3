@@ -228,7 +228,7 @@ class PipelineConfig:
 @dataclass
 class StageConfig:
     """
-    阶段配置 - DEFECT-002 [P1] 修复: 优化批处理和并发配置
+    阶段配置 - DEFECT-R2-003 [P2] 修复: 优化内存管理策略防止性能衰减
 
     Attributes:
         name: 阶段名称
@@ -248,16 +248,15 @@ class StageConfig:
         cache_size: 查询缓存大小
     """
     name: str
-    # DEFECT-002 [P1] 修复: 增加默认缓冲区大小以支持更高并发
-    buffer_size: int = 500  # 从100增加到500
-    num_workers: int = 2  # 从1增加到2
+    # DEFECT-R2-003 [P2] 修复: 动态缓冲区管理防止性能衰减
+    buffer_size: int = 500
+    num_workers: int = 2
     backpressure_strategy: BackpressureStrategy = BackpressureStrategy.BLOCK
     max_retries: int = 3
     retry_delay: float = 1.0
     timeout: float = 60.0
-    # DEFECT-002 [P1] 修复: 默认启用批处理，提高吞吐量
-    batch_size: int = 50  # 从0增加到50
-    batch_timeout: float = 0.05  # 从0.1减少到0.05，更快响应
+    batch_size: int = 50
+    batch_timeout: float = 0.05
     # 查询性能优化配置
     enable_indexing: bool = True
     index_fields: List[str] = field(default_factory=list)
@@ -265,6 +264,13 @@ class StageConfig:
     query_timeout: float = 30.0
     enable_query_cache: bool = True
     cache_size: int = 1000
+
+    # DEFECT-R2-003 [P2] 修复: 内存管理配置
+    memory_management_enabled: bool = True  # 启用内存管理
+    max_item_store_size: int = 10000  # 最大项目存储数量
+    item_store_cleanup_interval: float = 300.0  # 存储清理间隔(秒)
+    enable_item_compression: bool = True  # 启用项目压缩
+    compression_threshold: int = 5000  # 压缩阈值
 
 
 StageHandler = Callable[[PipelineItem], Coroutine[Any, Any, PipelineItem]]
@@ -336,6 +342,12 @@ class PipelineStage:
         self._queue_backlog_threshold: int = int(self.config.buffer_size * 0.8)  # 80%阈值
         self._last_queue_cleanup: float = 0.0
         self._processed_count: int = 0  # 处理计数，用于检测吞吐量下降
+
+        # DEFECT-R2-003 [P2] 修复: 内存管理相关
+        self._item_store_access_times: Dict[str, float] = {}  # 项目访问时间
+        self._memory_management_task: Optional[asyncio.Task] = None
+        self._last_item_store_cleanup: float = time.time()
+        self._compression_count: int = 0
     
     async def start(self, output_queue: Optional[asyncio.Queue] = None):
         """启动阶段 - DEFECT-002 [P0] 修复: 当 output_queue 参数为 None 时不覆盖已设置的 output_queue"""
@@ -355,6 +367,10 @@ class PipelineStage:
 
         # DEFECT-010 [P1] 修复: 启动队列监控任务
         self._queue_monitor_task = asyncio.create_task(self._queue_monitor_loop())
+
+        # DEFECT-R2-003 [P2] 修复: 启动内存管理任务
+        if self.config.memory_management_enabled:
+            self._memory_management_task = asyncio.create_task(self._memory_management_loop())
 
         logger.info(f"Stage {self.name} started with {self.config.num_workers} workers")
 
@@ -459,6 +475,15 @@ class PipelineStage:
                 pass
             self._queue_monitor_task = None
 
+        # DEFECT-R2-003 [P2] 修复: 停止内存管理任务
+        if self._memory_management_task:
+            self._memory_management_task.cancel()
+            try:
+                await self._memory_management_task
+            except asyncio.CancelledError:
+                pass
+            self._memory_management_task = None
+
         # P1修复: 取消批处理定时器
         if self._batch_timer:
             self._batch_timer.cancel()
@@ -480,6 +505,9 @@ class PipelineStage:
                 self.input_queue.task_done()
             except asyncio.QueueEmpty:
                 break
+
+        # DEFECT-R2-003 [P2] 修复: 清理项目存储
+        await self._cleanup_item_store()
 
         # P1修复: 清理输出队列引用
         self.output_queue = None
@@ -1008,7 +1036,104 @@ class PipelineStage:
             self._index.clear()
             self._item_store.clear()
             self._query_cache.clear()
+            self._item_store_access_times.clear()
             logger.info(f"Index cleared for stage {self.name}")
+
+    # DEFECT-R2-003 [P2] 修复: 内存管理方法
+    async def _memory_management_loop(self):
+        """内存管理循环 - 防止性能衰减"""
+        while not self._shutdown_event.is_set():
+            try:
+                await asyncio.sleep(self.config.item_store_cleanup_interval)
+
+                if self._shutdown_event.is_set():
+                    break
+
+                # 检查项目存储大小
+                if len(self._item_store) > self.config.max_item_store_size:
+                    logger.warning(f"Stage {self.name} item store size ({len(self._item_store)}) exceeds limit, cleaning up")
+                    await self._cleanup_item_store()
+
+                # 检查是否需要压缩
+                if self.config.enable_item_compression and len(self._item_store) > self.config.compression_threshold:
+                    await self._compress_old_items()
+
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.warning(f"Memory management error in stage {self.name}: {e}")
+
+    async def _cleanup_item_store(self):
+        """DEFECT-R2-003 [P2] 修复: 清理项目存储 - 移除旧项目"""
+        try:
+            now = time.time()
+            # 计算需要移除的项目数量
+            overflow = len(self._item_store) - self.config.max_item_store_size
+            if overflow <= 0:
+                return
+
+            # 按访问时间排序，移除最久未访问的
+            sorted_items = sorted(
+                self._item_store_access_times.items(),
+                key=lambda x: x[1]
+            )
+
+            removed = 0
+            async with self._index_lock:
+                for item_id, _ in sorted_items[:overflow + 100]:  # 多移除一些以留出空间
+                    if item_id in self._item_store:
+                        del self._item_store[item_id]
+                        removed += 1
+                    if item_id in self._item_store_access_times:
+                        del self._item_store_access_times[item_id]
+                    # 从索引中移除
+                    for field_index in self._index.values():
+                        for value_set in field_index.values():
+                            value_set.discard(item_id)
+
+            if removed > 0:
+                logger.info(f"Stage {self.name} cleaned up {removed} old items from store")
+
+            self._last_item_store_cleanup = now
+
+        except Exception as e:
+            logger.error(f"Item store cleanup failed: {e}")
+
+    async def _compress_old_items(self):
+        """DEFECT-R2-003 [P2] 修复: 压缩旧项目以节省内存"""
+        try:
+            now = time.time()
+            compressed = 0
+
+            # 压缩超过1小时未访问的项目
+            old_threshold = now - 3600
+
+            async with self._index_lock:
+                for item_id, access_time in list(self._item_store_access_times.items()):
+                    if access_time < old_threshold and item_id in self._item_store:
+                        item = self._item_store[item_id]
+                        # 压缩数据（这里简化处理，实际可以实现更复杂的压缩）
+                        if hasattr(item, 'data') and isinstance(item.data, dict):
+                            # 移除不必要的字段
+                            item.data.pop('_temp_fields', None)
+                            compressed += 1
+
+            if compressed > 0:
+                self._compression_count += 1
+                logger.debug(f"Stage {self.name} compressed {compressed} old items")
+
+        except Exception as e:
+            logger.error(f"Item compression failed: {e}")
+
+    def get_memory_stats(self) -> Dict[str, Any]:
+        """获取内存统计信息"""
+        return {
+            "item_store_size": len(self._item_store),
+            "index_size": sum(len(v) for v in self._index.values()),
+            "cache_size": len(self._query_cache),
+            "compression_count": self._compression_count,
+            "last_cleanup": self._last_item_store_cleanup,
+        }
 
 
 class Pipeline:

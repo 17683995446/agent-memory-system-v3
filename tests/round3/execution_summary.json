@@ -1,0 +1,124 @@
+{
+  "test_round": "Round 3",
+  "test_name": "Complex Integration & Chaos Engineering",
+  "start_time": "2026-05-17T08:19:58.688625",
+  "scenarios": [
+    {
+      "scenario": "multi_module_integration",
+      "tests": [
+        {
+          "name": "pipeline_event_trigger",
+          "status": "passed"
+        },
+        {
+          "name": "scheduler_pipeline_tasks",
+          "status": "passed"
+        },
+        {
+          "name": "cross_module_data_flow",
+          "status": "passed"
+        }
+      ],
+      "passed": 3,
+      "failed": 0
+    },
+    {
+      "scenario": "chaos_engineering",
+      "tests": [
+        {
+          "name": "cpu_stress",
+          "status": "passed"
+        },
+        {
+          "name": "memory_pressure",
+          "status": "passed"
+        },
+        {
+          "name": "random_fault_combo",
+          "status": "passed"
+        },
+        {
+          "name": "resilience_score",
+          "status": "passed"
+        }
+      ],
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "scenario": "dependency_failure",
+      "tests": [
+        {
+          "name": "circuit_breaker",
+          "status": "passed"
+        },
+        {
+          "name": "fallback_strategy",
+          "status": "passed"
+        },
+        {
+          "name": "fault_isolation",
+          "status": "passed"
+        }
+      ],
+      "passed": 3,
+      "failed": 0
+    },
+    {
+      "scenario": "data_consistency",
+      "tests": [
+        {
+          "name": "2pc_consistency",
+          "status": "failed",
+          "error": "Not all participants committed"
+        },
+        {
+          "name": "saga_compensation",
+          "status": "passed"
+        },
+        {
+          "name": "conflict_detection",
+          "status": "passed"
+        }
+      ],
+      "passed": 2,
+      "failed": 1
+    },
+    {
+      "scenario": "security_penetration",
+      "tests": [
+        {
+          "name": "sql_injection_detection",
+          "status": "passed"
+        },
+        {
+          "name": "xss_detection",
+          "status": "passed"
+        },
+        {
+          "name": "permission_bypass",
+          "status": "failed",
+          "error": "Only 6/7 permission checks passed"
+        },
+        {
+          "name": "abac_policy",
+          "status": "failed",
+          "error": "ABAC evaluation failed: allowed=False, allowed_wrong=False"
+        },
+        {
+          "name": "input_validation",
+          "status": "passed"
+        }
+      ],
+      "passed": 3,
+      "failed": 2
+    }
+  ],
+  "end_time": "2026-05-17T08:20:53.953302",
+  "summary": {
+    "total_tests": 18,
+    "passed": 15,
+    "failed": 3,
+    "pass_rate": "83.3%"
+  }
+}

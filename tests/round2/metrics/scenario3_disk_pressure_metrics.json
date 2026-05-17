@@ -1,0 +1,729 @@
+{
+  "scenario_name": "\u78c1\u76d8\u538b\u529b\u6d4b\u8bd5",
+  "start_time": 1779003250.8560777,
+  "end_time": 1779003741.6598482,
+  "total_duration_sec": 490.8037705421448,
+  "disk_full_events": 0,
+  "write_failures": 0,
+  "write_success_after_retry": 0,
+  "cleanup_operations": 1,
+  "recovery_success_count": 1,
+  "total_data_written_mb": 0.07206916809082031,
+  "total_data_read_mb": 5.033429145812988,
+  "disk_usage_timeline": [
+    {
+      "timestamp": 1779003255.8583906,
+      "used_space_mb": 59.09995651245117,
+      "free_space_mb": 452.9000434875488,
+      "usage_percent": 11.54296025633812,
+      "is_full": false,
+      "total_keys": 82847
+    },
+    {
+      "timestamp": 1779003260.859011,
+      "used_space_mb": 115.3776273727417,
+      "free_space_mb": 396.6223726272583,
+      "usage_percent": 22.534692846238613,
+      "is_full": false,
+      "total_keys": 161503
+    },
+    {
+      "timestamp": 1779003265.859855,
+      "used_space_mb": 172.2617311477661,
+      "free_space_mb": 339.7382688522339,
+      "usage_percent": 33.64486936479807,
+      "is_full": false,
+      "total_keys": 240876
+    },
+    {
+      "timestamp": 1779003270.8605673,
+      "used_space_mb": 227.45831298828125,
+      "free_space_mb": 284.54168701171875,
+      "usage_percent": 44.42545175552368,
+      "is_full": false,
+      "total_keys": 318078
+    },
+    {
+      "timestamp": 1779003275.8617206,
+      "used_space_mb": 280.72164821624756,
+      "free_space_mb": 231.27835178375244,
+      "usage_percent": 54.82844691723585,
+      "is_full": false,
+      "total_keys": 392355
+    },
+    {
+      "timestamp": 1779003280.8637307,
+      "used_space_mb": 332.8313579559326,
+      "free_space_mb": 179.16864204406738,
+      "usage_percent": 65.00612460076809,
+      "is_full": false,
+      "total_keys": 465033
+    },
+    {
+      "timestamp": 1779003286.093202,
+      "used_space_mb": 384.94071102142334,
+      "free_space_mb": 127.05928897857666,
+      "usage_percent": 75.18373262137175,
+      "is_full": false,
+      "total_keys": 537990
+    },
+    {
+      "timestamp": 1779003291.094294,
+      "used_space_mb": 437.9300174713135,
+      "free_space_mb": 74.06998252868652,
+      "usage_percent": 85.53320653736591,
+      "is_full": false,
+      "total_keys": 612026
+    },
+    {
+      "timestamp": 1779003296.0953255,
+      "used_space_mb": 484.83747577667236,
+      "free_space_mb": 27.162524223327637,
+      "usage_percent": 94.69481948763132,
+      "is_full": false,
+      "total_keys": 677414
+    },
+    {
+      "timestamp": 1779003308.4758906,
+      "used_space_mb": 0.066741943359375,
+      "free_space_mb": 511.9332580566406,
+      "usage_percent": 0.01303553581237793,
+      "is_full": false,
+      "total_keys": 58
+    },
+    {
+      "timestamp": 1779003313.476914,
+      "used_space_mb": 58.801310539245605,
+      "free_space_mb": 453.1986894607544,
+      "usage_percent": 11.484630964696407,
+      "is_full": false,
+      "total_keys": 82143
+    },
+    {
+      "timestamp": 1779003318.4776664,
+      "used_space_mb": 115.84160423278809,
+      "free_space_mb": 396.1583957672119,
+      "usage_percent": 22.625313326716423,
+      "is_full": false,
+      "total_keys": 161589
+    },
+    {
+      "timestamp": 1779003323.4788387,
+      "used_space_mb": 169.62268161773682,
+      "free_space_mb": 342.3773183822632,
+      "usage_percent": 33.12943000346422,
+      "is_full": false,
+      "total_keys": 236905
+    },
+    {
+      "timestamp": 1779003328.4799345,
+      "used_space_mb": 223.91291618347168,
+      "free_space_mb": 288.0870838165283,
+      "usage_percent": 43.73299144208431,
+      "is_full": false,
+      "total_keys": 312538
+    },
+    {
+      "timestamp": 1779003333.5700448,
+      "used_space_mb": 0.06196784973144531,
+      "free_space_mb": 511.93803215026855,
+      "usage_percent": 0.012103095650672913,
+      "is_full": false,
+      "total_keys": 62
+    },
+    {
+      "timestamp": 1779003338.5715475,
+      "used_space_mb": 58.50271511077881,
+      "free_space_mb": 453.4972848892212,
+      "usage_percent": 11.426311545073986,
+      "is_full": false,
+      "total_keys": 81557
+    },
+    {
+      "timestamp": 1779003343.5723855,
+      "used_space_mb": 113.7489128112793,
+      "free_space_mb": 398.2510871887207,
+      "usage_percent": 22.216584533452988,
+      "is_full": false,
+      "total_keys": 158528
+    },
+    {
+      "timestamp": 1779003348.575409,
+      "used_space_mb": 169.22662544250488,
+      "free_space_mb": 342.7733745574951,
+      "usage_percent": 33.052075281739235,
+      "is_full": false,
+      "total_keys": 235736
+    },
+    {
+      "timestamp": 1779003353.5761454,
+      "used_space_mb": 222.62510585784912,
+      "free_space_mb": 289.3748941421509,
+      "usage_percent": 43.48146598786116,
+      "is_full": false,
+      "total_keys": 310166
+    },
+    {
+      "timestamp": 1779003358.5767272,
+      "used_space_mb": 274.2604446411133,
+      "free_space_mb": 237.73955535888672,
+      "usage_percent": 53.56649309396744,
+      "is_full": false,
+      "total_keys": 381998
+    },
+    {
+      "timestamp": 1779003363.5770786,
+      "used_space_mb": 326.2892017364502,
+      "free_space_mb": 185.7107982635498,
+      "usage_percent": 63.72835971415043,
+      "is_full": false,
+      "total_keys": 454529
+    },
+    {
+      "timestamp": 1779003368.5776904,
+      "used_space_mb": 381.3946199417114,
+      "free_space_mb": 130.60538005828857,
+      "usage_percent": 74.49113670736551,
+      "is_full": false,
+      "total_keys": 531188
+    },
+    {
+      "timestamp": 1779003373.5790143,
+      "used_space_mb": 430.46910858154297,
+      "free_space_mb": 81.53089141845703,
+      "usage_percent": 84.07599776983261,
+      "is_full": false,
+      "total_keys": 599590
+    },
+    {
+      "timestamp": 1779003378.5884707,
+      "used_space_mb": 477.73086071014404,
+      "free_space_mb": 34.26913928985596,
+      "usage_percent": 93.30680873245001,
+      "is_full": false,
+      "total_keys": 665131
+    },
+    {
+      "timestamp": 1779003387.4541738,
+      "used_space_mb": 0.0701751708984375,
+      "free_space_mb": 511.92982482910156,
+      "usage_percent": 0.013706088066101074,
+      "is_full": false,
+      "total_keys": 60
+    },
+    {
+      "timestamp": 1779003392.4553819,
+      "used_space_mb": 58.496832847595215,
+      "free_space_mb": 453.5031671524048,
+      "usage_percent": 11.42516266554594,
+      "is_full": false,
+      "total_keys": 81426
+    },
+    {
+      "timestamp": 1779003397.4565017,
+      "used_space_mb": 115.0319356918335,
+      "free_space_mb": 396.9680643081665,
+      "usage_percent": 22.46717493981123,
+      "is_full": false,
+      "total_keys": 160126
+    },
+    {
+      "timestamp": 1779003402.4587164,
+      "used_space_mb": 171.57854747772217,
+      "free_space_mb": 340.42145252227783,
+      "usage_percent": 33.51143505424261,
+      "is_full": false,
+      "total_keys": 238791
+    },
+    {
+      "timestamp": 1779003407.571534,
+      "used_space_mb": 224.92205905914307,
+      "free_space_mb": 287.07794094085693,
+      "usage_percent": 43.93008965998888,
+      "is_full": false,
+      "total_keys": 313015
+    },
+    {
+      "timestamp": 1779003412.5723066,
+      "used_space_mb": 280.9115810394287,
+      "free_space_mb": 231.0884189605713,
+      "usage_percent": 54.86554317176342,
+      "is_full": false,
+      "total_keys": 390872
+    },
+    {
+      "timestamp": 1779003417.573642,
+      "used_space_mb": 332.02049255371094,
+      "free_space_mb": 179.97950744628906,
+      "usage_percent": 64.84775245189667,
+      "is_full": false,
+      "total_keys": 461958
+    },
+    {
+      "timestamp": 1779003422.574208,
+      "used_space_mb": 381.1278953552246,
+      "free_space_mb": 130.8721046447754,
+      "usage_percent": 74.4390420615673,
+      "is_full": false,
+      "total_keys": 530271
+    },
+    {
+      "timestamp": 1779003427.574427,
+      "used_space_mb": 433.82034492492676,
+      "free_space_mb": 78.17965507507324,
+      "usage_percent": 84.73053611814976,
+      "is_full": false,
+      "total_keys": 603310
+    },
+    {
+      "timestamp": 1779003436.4201376,
+      "used_space_mb": 0.07087516784667969,
+      "free_space_mb": 511.9291248321533,
+      "usage_percent": 0.013842806220054626,
+      "is_full": false,
+      "total_keys": 60
+    },
+    {
+      "timestamp": 1779003441.4205034,
+      "used_space_mb": 58.18197822570801,
+      "free_space_mb": 453.818021774292,
+      "usage_percent": 11.363667622208595,
+      "is_full": false,
+      "total_keys": 80982
+    },
+    {
+      "timestamp": 1779003446.4215655,
+      "used_space_mb": 113.58327102661133,
+      "free_space_mb": 398.4167289733887,
+      "usage_percent": 22.184232622385025,
+      "is_full": false,
+      "total_keys": 158096
+    },
+    {
+      "timestamp": 1779003451.4223125,
+      "used_space_mb": 170.6897439956665,
+      "free_space_mb": 341.3102560043335,
+      "usage_percent": 33.337840624153614,
+      "is_full": false,
+      "total_keys": 237754
+    },
+    {
+      "timestamp": 1779003456.4236126,
+      "used_space_mb": 226.61328887939453,
+      "free_space_mb": 285.38671112060547,
+      "usage_percent": 44.260407984256744,
+      "is_full": false,
+      "total_keys": 315598
+    },
+    {
+      "timestamp": 1779003461.4248621,
+      "used_space_mb": 280.63797760009766,
+      "free_space_mb": 231.36202239990234,
+      "usage_percent": 54.81210500001907,
+      "is_full": false,
+      "total_keys": 390944
+    },
+    {
+      "timestamp": 1779003466.4251099,
+      "used_space_mb": 333.23815059661865,
+      "free_space_mb": 178.76184940338135,
+      "usage_percent": 65.08557628840208,
+      "is_full": false,
+      "total_keys": 464015
+    },
+    {
+      "timestamp": 1779003471.4254084,
+      "used_space_mb": 383.47111320495605,
+      "free_space_mb": 128.52888679504395,
+      "usage_percent": 74.89670179784298,
+      "is_full": false,
+      "total_keys": 533685
+    },
+    {
+      "timestamp": 1779003476.425654,
+      "used_space_mb": 437.10521030426025,
+      "free_space_mb": 74.89478969573975,
+      "usage_percent": 85.37211138755083,
+      "is_full": false,
+      "total_keys": 608198
+    },
+    {
+      "timestamp": 1779003481.4262161,
+      "used_space_mb": 484.13372135162354,
+      "free_space_mb": 27.866278648376465,
+      "usage_percent": 94.55736745148897,
+      "is_full": false,
+      "total_keys": 673492
+    },
+    {
+      "timestamp": 1779003494.1282027,
+      "used_space_mb": 0.0679473876953125,
+      "free_space_mb": 511.9320526123047,
+      "usage_percent": 0.013270974159240723,
+      "is_full": false,
+      "total_keys": 58
+    },
+    {
+      "timestamp": 1779003499.129292,
+      "used_space_mb": 58.437506675720215,
+      "free_space_mb": 453.5624933242798,
+      "usage_percent": 11.413575522601604,
+      "is_full": false,
+      "total_keys": 81425
+    },
+    {
+      "timestamp": 1779003504.1305192,
+      "used_space_mb": 114.92785453796387,
+      "free_space_mb": 397.07214546203613,
+      "usage_percent": 22.446846589446068,
+      "is_full": false,
+      "total_keys": 160174
+    },
+    {
+      "timestamp": 1779003509.3382897,
+      "used_space_mb": 171.33190822601318,
+      "free_space_mb": 340.6680917739868,
+      "usage_percent": 33.4632633253932,
+      "is_full": false,
+      "total_keys": 238630
+    },
+    {
+      "timestamp": 1779003514.3395314,
+      "used_space_mb": 225.29296875,
+      "free_space_mb": 286.70703125,
+      "usage_percent": 44.002532958984375,
+      "is_full": false,
+      "total_keys": 313784
+    },
+    {
+      "timestamp": 1779003519.339888,
+      "used_space_mb": 277.6637363433838,
+      "free_space_mb": 234.3362636566162,
+      "usage_percent": 54.231198504567146,
+      "is_full": false,
+      "total_keys": 386659
+    },
+    {
+      "timestamp": 1779003524.3409283,
+      "used_space_mb": 332.6207332611084,
+      "free_space_mb": 179.3792667388916,
+      "usage_percent": 64.96498696506023,
+      "is_full": false,
+      "total_keys": 463127
+    },
+    {
+      "timestamp": 1779003529.3411372,
+      "used_space_mb": 381.8071336746216,
+      "free_space_mb": 130.19286632537842,
+      "usage_percent": 74.57170579582453,
+      "is_full": false,
+      "total_keys": 531519
+    },
+    {
+      "timestamp": 1779003534.6540642,
+      "used_space_mb": 432.44851779937744,
+      "free_space_mb": 79.55148220062256,
+      "usage_percent": 84.4626011326909,
+      "is_full": false,
+      "total_keys": 601910
+    },
+    {
+      "timestamp": 1779003539.655138,
+      "used_space_mb": 483.5177917480469,
+      "free_space_mb": 28.482208251953125,
+      "usage_percent": 94.4370687007904,
+      "is_full": false,
+      "total_keys": 672946
+    },
+    {
+      "timestamp": 1779003552.520213,
+      "used_space_mb": 0.0702047348022461,
+      "free_space_mb": 511.92979526519775,
+      "usage_percent": 0.01371186226606369,
+      "is_full": false,
+      "total_keys": 58
+    },
+    {
+      "timestamp": 1779003557.5211134,
+      "used_space_mb": 59.14549255371094,
+      "free_space_mb": 452.85450744628906,
+      "usage_percent": 11.551854014396667,
+      "is_full": false,
+      "total_keys": 82175
+    },
+    {
+      "timestamp": 1779003562.5219886,
+      "used_space_mb": 114.49967765808105,
+      "free_space_mb": 397.50032234191895,
+      "usage_percent": 22.363218292593956,
+      "is_full": false,
+      "total_keys": 159359
+    },
+    {
+      "timestamp": 1779003567.5226834,
+      "used_space_mb": 170.45210647583008,
+      "free_space_mb": 341.5478935241699,
+      "usage_percent": 33.29142704606056,
+      "is_full": false,
+      "total_keys": 237241
+    },
+    {
+      "timestamp": 1779003572.5238905,
+      "used_space_mb": 224.56075191497803,
+      "free_space_mb": 287.439248085022,
+      "usage_percent": 43.859521858394146,
+      "is_full": false,
+      "total_keys": 312895
+    },
+    {
+      "timestamp": 1779003577.5313876,
+      "used_space_mb": 277.25846576690674,
+      "free_space_mb": 234.74153423309326,
+      "usage_percent": 54.15204409509897,
+      "is_full": false,
+      "total_keys": 386178
+    },
+    {
+      "timestamp": 1779003582.5326023,
+      "used_space_mb": 234.2313632965088,
+      "free_space_mb": 277.7686367034912,
+      "usage_percent": 45.74831314384937,
+      "is_full": false,
+      "total_keys": 326151
+    },
+    {
+      "timestamp": 1779003587.5337617,
+      "used_space_mb": 285.95795726776123,
+      "free_space_mb": 226.04204273223877,
+      "usage_percent": 55.851163528859615,
+      "is_full": false,
+      "total_keys": 398140
+    },
+    {
+      "timestamp": 1779003592.534055,
+      "used_space_mb": 340.0282030105591,
+      "free_space_mb": 171.97179698944092,
+      "usage_percent": 66.41175840049982,
+      "is_full": false,
+      "total_keys": 473437
+    },
+    {
+      "timestamp": 1779003597.5419147,
+      "used_space_mb": 388.67529487609863,
+      "free_space_mb": 123.32470512390137,
+      "usage_percent": 75.91314353048801,
+      "is_full": false,
+      "total_keys": 541090
+    },
+    {
+      "timestamp": 1779003602.542533,
+      "used_space_mb": 436.0431900024414,
+      "free_space_mb": 75.9568099975586,
+      "usage_percent": 85.16468554735184,
+      "is_full": false,
+      "total_keys": 606985
+    },
+    {
+      "timestamp": 1779003607.5479386,
+      "used_space_mb": 488.89240074157715,
+      "free_space_mb": 23.10759925842285,
+      "usage_percent": 95.48679701983929,
+      "is_full": false,
+      "total_keys": 680307
+    },
+    {
+      "timestamp": 1779003619.74224,
+      "used_space_mb": 0.06610584259033203,
+      "free_space_mb": 511.93389415740967,
+      "usage_percent": 0.012911297380924225,
+      "is_full": false,
+      "total_keys": 58
+    },
+    {
+      "timestamp": 1779003624.7426217,
+      "used_space_mb": 58.72100639343262,
+      "free_space_mb": 453.2789936065674,
+      "usage_percent": 11.468946561217308,
+      "is_full": false,
+      "total_keys": 81869
+    },
+    {
+      "timestamp": 1779003629.7429469,
+      "used_space_mb": 115.65007972717285,
+      "free_space_mb": 396.34992027282715,
+      "usage_percent": 22.587906196713448,
+      "is_full": false,
+      "total_keys": 161170
+    },
+    {
+      "timestamp": 1779003634.7432747,
+      "used_space_mb": 169.68181324005127,
+      "free_space_mb": 342.31818675994873,
+      "usage_percent": 33.140979148447514,
+      "is_full": false,
+      "total_keys": 236213
+    },
+    {
+      "timestamp": 1779003639.7435312,
+      "used_space_mb": 223.98361587524414,
+      "free_space_mb": 288.01638412475586,
+      "usage_percent": 43.74679997563362,
+      "is_full": false,
+      "total_keys": 311944
+    },
+    {
+      "timestamp": 1779003644.7437642,
+      "used_space_mb": 276.3721532821655,
+      "free_space_mb": 235.62784671783447,
+      "usage_percent": 53.978936187922955,
+      "is_full": false,
+      "total_keys": 384934
+    },
+    {
+      "timestamp": 1779003649.8891773,
+      "used_space_mb": 328.4238796234131,
+      "free_space_mb": 183.5761203765869,
+      "usage_percent": 64.14528898894787,
+      "is_full": false,
+      "total_keys": 457324
+    },
+    {
+      "timestamp": 1779003654.8903997,
+      "used_space_mb": 381.9194746017456,
+      "free_space_mb": 130.0805253982544,
+      "usage_percent": 74.59364738315344,
+      "is_full": false,
+      "total_keys": 531772
+    },
+    {
+      "timestamp": 1779003659.8913732,
+      "used_space_mb": 429.50619411468506,
+      "free_space_mb": 82.49380588531494,
+      "usage_percent": 83.88792853802443,
+      "is_full": false,
+      "total_keys": 598094
+    },
+    {
+      "timestamp": 1779003664.898088,
+      "used_space_mb": 480.8348798751831,
+      "free_space_mb": 31.165120124816895,
+      "usage_percent": 93.9130624756217,
+      "is_full": false,
+      "total_keys": 669529
+    },
+    {
+      "timestamp": 1779003669.8990393,
+      "used_space_mb": 511.9996156692505,
+      "free_space_mb": 0.00038433074951171875,
+      "usage_percent": 99.99992493540049,
+      "is_full": true,
+      "total_keys": 712625
+    },
+    {
+      "timestamp": 1779003678.1684139,
+      "used_space_mb": 0.013010025024414062,
+      "free_space_mb": 511.9869899749756,
+      "usage_percent": 0.0025410205125808716,
+      "is_full": false,
+      "total_keys": 13
+    },
+    {
+      "timestamp": 1779003683.1693876,
+      "used_space_mb": 58.18881034851074,
+      "free_space_mb": 453.81118965148926,
+      "usage_percent": 11.365002021193504,
+      "is_full": false,
+      "total_keys": 81144
+    },
+    {
+      "timestamp": 1779003688.1739023,
+      "used_space_mb": 114.6010627746582,
+      "free_space_mb": 397.3989372253418,
+      "usage_percent": 22.38302007317543,
+      "is_full": false,
+      "total_keys": 159699
+    },
+    {
+      "timestamp": 1779003693.1749713,
+      "used_space_mb": 170.81525230407715,
+      "free_space_mb": 341.18474769592285,
+      "usage_percent": 33.36235396564007,
+      "is_full": false,
+      "total_keys": 237943
+    },
+    {
+      "timestamp": 1779003698.175641,
+      "used_space_mb": 225.5932264328003,
+      "free_space_mb": 286.4067735671997,
+      "usage_percent": 44.06117703765631,
+      "is_full": false,
+      "total_keys": 314176
+    },
+    {
+      "timestamp": 1779003703.1782608,
+      "used_space_mb": 278.43057918548584,
+      "free_space_mb": 233.56942081451416,
+      "usage_percent": 54.3809724971652,
+      "is_full": false,
+      "total_keys": 387778
+    },
+    {
+      "timestamp": 1779003708.1791322,
+      "used_space_mb": 329.4934720993042,
+      "free_space_mb": 182.5065279006958,
+      "usage_percent": 64.35419376939535,
+      "is_full": false,
+      "total_keys": 458866
+    },
+    {
+      "timestamp": 1779003713.180064,
+      "used_space_mb": 378.0688362121582,
+      "free_space_mb": 133.9311637878418,
+      "usage_percent": 73.84156957268715,
+      "is_full": false,
+      "total_keys": 526442
+    },
+    {
+      "timestamp": 1779003718.1805203,
+      "used_space_mb": 430.1144666671753,
+      "free_space_mb": 81.8855333328247,
+      "usage_percent": 84.00673177093267,
+      "is_full": false,
+      "total_keys": 598643
+    },
+    {
+      "timestamp": 1779003723.181066,
+      "used_space_mb": 476.3765687942505,
+      "free_space_mb": 35.62343120574951,
+      "usage_percent": 93.04229859262705,
+      "is_full": false,
+      "total_keys": 662889
+    },
+    {
+      "timestamp": 1779003728.1822479,
+      "used_space_mb": 511.999475479126,
+      "free_space_mb": 0.0005245208740234375,
+      "usage_percent": 99.99989755451679,
+      "is_full": true,
+      "total_keys": 712408
+    },
+    {
+      "timestamp": 1779003736.6564782,
+      "used_space_mb": 0.07206916809082031,
+      "free_space_mb": 511.9279308319092,
+      "usage_percent": 0.014076009392738342,
+      "is_full": false,
+      "total_keys": 59
+    }
+  ],
+  "write_failure_events": [],
+  "recovery_events": [
+    {
+      "timestamp": 1779003578.7290828,
+      "type": "cleanup_recovery",
+      "cleaned_keys": 115854,
+      "freed_mb": 83.28177642822266
+    }
+  ],
+  "errors": []
+}
