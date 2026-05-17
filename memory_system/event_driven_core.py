@@ -219,7 +219,7 @@ class EventBus(ABC):
         pass
     
     @abstractmethod
-    async def publish(self, event: DomainEvent, topic: Optional[str] = None) -> bool:
+    async def publish(self, event: DomainEvent, topic: Optional[str] = None, **kwargs) -> bool:
         """
         发布事件到指定主题
         
@@ -290,6 +290,7 @@ class InMemoryEventBus(EventBus):
         self._event_queue: asyncio.PriorityQueue = asyncio.PriorityQueue(maxsize=max_queue_size)
         self._consumer_task: Optional[asyncio.Task] = None
         self._shutdown_event = asyncio.Event()
+        self._sequence: int = 0
         
     async def connect(self) -> None:
         """启动消费者任务"""
@@ -310,7 +311,8 @@ class InMemoryEventBus(EventBus):
         try:
             # 使用优先级队列，数值越小优先级越高
             priority = event.priority.value
-            await self._event_queue.put((priority, time.time(), event))
+            self._sequence += 1
+            await self._event_queue.put((priority, self._sequence, time.time(), event))
             logger.debug(f"Published event {event.event_id} to memory queue")
             return True
         except asyncio.QueueFull:
@@ -333,7 +335,7 @@ class InMemoryEventBus(EventBus):
         while not self._shutdown_event.is_set():
             try:
                 # 等待事件，超时1秒检查关闭信号
-                priority, _, event = await asyncio.wait_for(
+                priority, _, _, event = await asyncio.wait_for(
                     self._event_queue.get(), timeout=1.0
                 )
                 await self._process_event(event)
@@ -441,7 +443,7 @@ class KafkaEventBus(EventBus):
         self,
         event: DomainEvent,
         topic: Optional[str] = None,
-        key: Optional[str] = None
+        **kwargs
     ) -> bool:
         """发布事件到Kafka主题"""
         if not self._producer:
@@ -449,6 +451,7 @@ class KafkaEventBus(EventBus):
             return False
         
         topic = topic or f"ams-events-{event.event_type}"
+        key = kwargs.get('key')
         
         try:
             # 使用聚合ID作为分区键，保证顺序性

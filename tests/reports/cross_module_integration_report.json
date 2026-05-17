@@ -1,0 +1,154 @@
+{
+  "test_run_timestamp": "2026-05-17T17:45:04.314519+00:00",
+  "total_tests": 23,
+  "passed": 17,
+  "failed": 5,
+  "errors": 1,
+  "pass_rate": "73.9%",
+  "total_duration_ms": 4403.97,
+  "defects": [
+    {
+      "test_id": "T07",
+      "test_name": "ConfigCenter + 所有模块: 动态配置变更传播",
+      "status": "ERROR",
+      "severity": "P1",
+      "error_type": "AttributeError",
+      "error_message": "'ConfigCenter' object has no attribute 'list_keys'",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/cross_module_integration_test.py\", line 100, in wrapper\n    await func()\n  File \"/data/user/work/cross_module_integration_test.py\", line 570, in test_config_center_all_modules\n    keys = await config_center.list_keys(\"application\")\nAttributeError: 'ConfigCenter' object has no attribute 'list_keys'\n",
+      "details": {
+        "file": "memory_system/config_center.py",
+        "line": 608,
+        "affected_class": "ConfigCenter",
+        "missing_method": "list_keys",
+        "fix_suggestion": "在ConfigCenter类中添加list_keys(namespace, prefix='')方法，委托给self.storage.list_keys()"
+      },
+      "location": {
+        "file": "memory_system/config_center.py",
+        "line": 608,
+        "affected_class": "ConfigCenter",
+        "missing_method": "list_keys",
+        "fix_suggestion": "在ConfigCenter类中添加list_keys(namespace, prefix='')方法，委托给self.storage.list_keys()"
+      }
+    },
+    {
+      "test_id": "D01",
+      "test_name": "[缺陷检测] ConfigCenter缺少InMemoryConfigStorage实现",
+      "status": "FAIL",
+      "severity": "P1",
+      "error_type": "AssertionError",
+      "error_message": "config_center.py缺少InMemoryConfigStorage类。该模块只有FileConfigStorage和EtcdConfigStorage，缺少用于测试和开发的内存实现，导致跨模块集成测试困难。",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/cross_module_integration_test.py\", line 1087, in test_defect_config_center_no_inmemory_storage\n    from memory_system.config_center import InMemoryConfigStorage\nImportError: cannot import name 'InMemoryConfigStorage' from 'memory_system.config_center' (/workspace/agent_memory_system_v2/memory_system/config_center.py)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/data/use",
+      "details": {
+        "file": "memory_system/config_center.py",
+        "line": 1,
+        "affected_class": "module",
+        "missing_class": "InMemoryConfigStorage",
+        "fix_suggestion": "添加InMemoryConfigStorage类实现ConfigStorageBackend接口，使用dict存储配置"
+      },
+      "location": {
+        "file": "memory_system/config_center.py",
+        "line": 1,
+        "affected_class": "module",
+        "missing_class": "InMemoryConfigStorage",
+        "fix_suggestion": "添加InMemoryConfigStorage类实现ConfigStorageBackend接口，使用dict存储配置"
+      }
+    },
+    {
+      "test_id": "D02",
+      "test_name": "[缺陷检测] QuorumManager缺少has_quorum(Set)方法",
+      "status": "FAIL",
+      "severity": "P0",
+      "error_type": "AssertionError",
+      "error_message": "QuorumManager缺少has_quorum(available_nodes: Set[str])方法。现有API只有is_read_quorum(responses: int)，需要调用者自行计算节点数量。这与其他模块（如PartitionManager）传递节点集合的模式不一致。可用方法: ['calculate_quorum_size', 'can_serve_reads', 'can_serve_writes', 'get_quorum_status', 'is_read_quorum', 'is_write_quorum', 'read_quorum', 'total_nodes', 'write_quorum']",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/cross_module_integration_test.py\", line 100, in wrapper\n    await func()\n  File \"/data/user/work/cross_module_integration_test.py\", line 1111, in test_defect_quorum_manager_api_mismatch\n    raise AssertionError(\nAssertionError: QuorumManager缺少has_quorum(available_nodes: Set[str])方法。现有API只有is_read_quorum(responses: int)，需要调用者自行计算节点数量。这与其他模块（如PartitionManager）传递节点集合的模式不一致。可用方法: ['calculate_quorum_size', 'can_serve_reads', 'can_serve_writes",
+      "details": {
+        "file": "memory_system/partition_tolerance.py",
+        "line": 376,
+        "affected_class": "QuorumManager",
+        "missing_method": "has_quorum",
+        "fix_suggestion": "添加has_quorum(available_nodes: Set[str]) -> bool方法，内部调用len(available_nodes)后委托给is_read_quorum"
+      },
+      "location": {
+        "file": "memory_system/partition_tolerance.py",
+        "line": 376,
+        "affected_class": "QuorumManager",
+        "missing_method": "has_quorum",
+        "fix_suggestion": "添加has_quorum(available_nodes: Set[str]) -> bool方法，内部调用len(available_nodes)后委托给is_read_quorum"
+      }
+    },
+    {
+      "test_id": "D04",
+      "test_name": "[缺陷检测] Facade依赖cachetols但未在requirements中声明",
+      "status": "FAIL",
+      "severity": "P0",
+      "error_type": "AssertionError",
+      "error_message": "Facade依赖cachetools但未安装: No module named 'cachetools'。AgentMemorySystem在导入时直接依赖cachetools.TTLCache，但该依赖未在requirements.txt中声明，导致模块无法导入。",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/cross_module_integration_test.py\", line 1147, in test_defect_facade_missing_dependency\n    from memory_system.agent_memory_system_facade import AgentMemorySystem\n  File \"/workspace/agent_memory_system_v2/memory_system/agent_memory_system_facade.py\", line 15, in <module>\n    from cachetools import TTLCache\nModuleNotFoundError: No module named 'cachetools'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (mos",
+      "details": {
+        "file": "memory_system/agent_memory_system_facade.py",
+        "line": 15,
+        "affected_class": "module-level import",
+        "missing_dependency": "cachetools",
+        "fix_suggestion": "1) 添加cachetools到requirements.txt; 2) 或使用try/except延迟导入，提供fallback实现"
+      },
+      "location": {
+        "file": "memory_system/agent_memory_system_facade.py",
+        "line": 15,
+        "affected_class": "module-level import",
+        "missing_dependency": "cachetools",
+        "fix_suggestion": "1) 添加cachetools到requirements.txt; 2) 或使用try/except延迟导入，提供fallback实现"
+      }
+    },
+    {
+      "test_id": "D05",
+      "test_name": "[缺陷检测] EmbeddingFactory依赖pydantic但未在requirements中声明",
+      "status": "FAIL",
+      "severity": "P1",
+      "error_type": "AssertionError",
+      "error_message": "EmbeddingFactory依赖pydantic但未安装: No module named 'pydantic'。嵌入工厂在导入时依赖pydantic进行配置验证，但该依赖未在requirements.txt中声明。",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/cross_module_integration_test.py\", line 1169, in test_defect_embedding_factory_missing_dependency\n    from memory_system.embedding_factory import EmbeddingFactory\n  File \"/workspace/agent_memory_system_v2/memory_system/embedding_factory.py\", line 10, in <module>\n    from memory_system.core_abstractions.abstract_component_interfaces import EmbeddingProvider\n  File \"/workspace/agent_memory_system_v2/memory_system/core_abstractions/__init__",
+      "details": {
+        "file": "memory_system/embedding_factory.py",
+        "line": 10,
+        "affected_class": "module-level import",
+        "missing_dependency": "pydantic",
+        "fix_suggestion": "1) 添加pydantic到requirements.txt; 2) 或使用dataclasses替代pydantic模型"
+      },
+      "location": {
+        "file": "memory_system/embedding_factory.py",
+        "line": 10,
+        "affected_class": "module-level import",
+        "missing_dependency": "pydantic",
+        "fix_suggestion": "1) 添加pydantic到requirements.txt; 2) 或使用dataclasses替代pydantic模型"
+      }
+    },
+    {
+      "test_id": "D08",
+      "test_name": "[缺陷检测] ConfigCenter缺少list_keys方法且delete参数顺序不一致",
+      "status": "FAIL",
+      "severity": "P1",
+      "error_type": "AssertionError",
+      "error_message": "ConfigCenter facade缺少list_keys(namespace, prefix)方法，但底层Storage(FileConfigStorage/EtcdConfigStorage)都有此方法。外部模块无法通过ConfigCenter枚举配置键。 | ConfigCenter.delete(['key', 'namespace'])与Storage.delete(['namespace', 'key'])参数顺序不一致。ConfigCenter: delete(key, namespace), Storage: delete(namespace, key)。这会导致直接调用Storage方法的开发者混淆参数顺序。 | ConfigCenter.get()返回类型(Any)与Storage.get()返回类型(Optional[ConfigItem])不一致。ConfigCenter.get()返回Any(值本身)，Storage.get()返回Optional[ConfigItem]。类型不一致导致跨模块集成时需要额外的适配层。",
+      "traceback": "Traceback (most recent call last):\n  File \"/data/user/work/cross_module_integration_test.py\", line 100, in wrapper\n    await func()\n  File \"/data/user/work/cross_module_integration_test.py\", line 1303, in test_defect_config_center_api_inconsistency\n    raise AssertionError(\" | \".join(defects))\nAssertionError: ConfigCenter facade缺少list_keys(namespace, prefix)方法，但底层Storage(FileConfigStorage/EtcdConfigStorage)都有此方法。外部模块无法通过ConfigCenter枚举配置键。 | ConfigCenter.delete(['key', 'namespace'])与Storage.delet",
+      "details": {
+        "file": "memory_system/config_center.py",
+        "line": 781,
+        "affected_class": "ConfigCenter",
+        "api_inconsistency": "delete/get参数顺序和返回类型与Storage后端不一致",
+        "fix_suggestion": "统一ConfigCenter和Storage的delete(namespace, key)参数顺序，或提供适配层"
+      },
+      "location": {
+        "file": "memory_system/config_center.py",
+        "line": 781,
+        "affected_class": "ConfigCenter",
+        "api_inconsistency": "delete/get参数顺序和返回类型与Storage后端不一致",
+        "fix_suggestion": "统一ConfigCenter和Storage的delete(namespace, key)参数顺序，或提供适配层"
+      }
+    }
+  ],
+  "severity_breakdown": {
+    "P0": 2,
+    "P1": 4,
+    "P2": 0
+  }
+}

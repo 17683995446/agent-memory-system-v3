@@ -24,7 +24,6 @@ import asyncio
 import json
 import logging
 import random
-import struct
 import time
 from dataclasses import dataclass, field
 from enum import Enum, auto
@@ -32,13 +31,9 @@ from typing import (
     Any,
     Callable,
     Dict,
-    Generic,
     List,
     Optional,
-    Protocol,
     Set,
-    TypeVar,
-    Union,
 )
 from collections import deque
 from abc import ABC, abstractmethod
@@ -677,10 +672,10 @@ class RaftNode:
         # 定时器
         self._election_timer: Optional[asyncio.Task] = None
         self._heartbeat_timer: Optional[asyncio.Task] = None
-        self._shutdown_event = asyncio.Event()
+        self._shutdown_event: Optional[asyncio.Event] = None
         
         # 锁
-        self._state_lock = asyncio.Lock()
+        self._state_lock: Optional[asyncio.Lock] = None
         
         # 等待提交的提案
         self._pending_proposals: Dict[str, asyncio.Future] = {}
@@ -696,7 +691,7 @@ class RaftNode:
         
         # 故障转移状态
         self._failover_state = FailoverState()
-        self._failover_lock = asyncio.Lock()
+        self._failover_lock: Optional[asyncio.Lock] = None
         self._node_health_status: Dict[str, bool] = {}
         self._last_health_check: Dict[str, float] = {}
 
@@ -725,10 +720,24 @@ class RaftNode:
         self._partition_recovery_task: Optional[asyncio.Task] = None
 
         # DEFECT-005 [P1] 修复: 状态同步等待机制
-        self._state_sync_event: asyncio.Event = asyncio.Event()
+        self._state_sync_event: Optional[asyncio.Event] = None
         self._state_sync_timeout: float = 5.0
         self._leader_election_timeout: float = 2.0  # Leader选举超时优化
-    
+
+        # DA-011 [P1] 修复: 跟踪复制任务
+        self._replication_tasks: Set[asyncio.Task] = set()
+
+    def _ensure_async_primitives(self):
+        """Ensure asyncio primitives are initialized (lazy init for Python 3.10+ compatibility)"""
+        if self._state_lock is None:
+            self._state_lock = asyncio.Lock()
+        if self._shutdown_event is None:
+            self._shutdown_event = asyncio.Event()
+        if self._failover_lock is None:
+            self._failover_lock = asyncio.Lock()
+        if self._state_sync_event is None:
+            self._state_sync_event = asyncio.Event()
+
     @property
     def role(self) -> RaftRole:
         """获取当前角色"""
@@ -1030,12 +1039,14 @@ class RaftNode:
                     await self._broadcast_append_entries()
     
     async def _broadcast_append_entries(self):
-        """广播追加条目请求"""
+        """广播追加条目请求 - DA-011 [P1] 修复: 跟踪复制任务"""
         if self._role != RaftRole.LEADER:
             return
         
         for peer in self.config.peers:
-            asyncio.create_task(self._send_append_entries_to_peer(peer))
+            task = asyncio.create_task(self._send_append_entries_to_peer(peer))
+            self._replication_tasks.add(task)
+            task.add_done_callback(self._replication_tasks.discard)
     
     async def _send_append_entries_to_peer(self, peer_id: str):
         """发送追加条目到指定peer - P1修复: 完善日志复制协议"""
@@ -1491,22 +1502,21 @@ class RaftNode:
             NotLeaderError: 如果当前节点不是Leader
             ProposalTimeoutError: 如果提案超时
         """
+        self._ensure_async_primitives()
         if self._role != RaftRole.LEADER:
             raise NotLeaderError(self._current_leader)
         
-        # 创建日志条目
-        entry = LogEntry(
-            term=self._persistent_state.current_term,
-            index=self._persistent_state.get_last_log_index() + 1,
-            command=command,
-        )
-        
-        # 添加到本地日志
+        # DA-003 [P0] 修复: 在锁内创建日志条目和追加，避免竞态条件
         async with self._state_lock:
+            entry = LogEntry(
+                term=self._persistent_state.current_term,
+                index=self._persistent_state.get_last_log_index() + 1,
+                command=command,
+            )
             self._persistent_state.log.append(entry)
         
         # 创建Future等待提交
-        future: asyncio.Future = asyncio.get_event_loop().create_future()
+        future: asyncio.Future = asyncio.get_running_loop().create_future()
         self._pending_proposals[entry.entry_id] = future
         
         # 立即广播
@@ -1522,6 +1532,7 @@ class RaftNode:
     async def start(self):
         """启动Raft节点 - P1修复: 初始化心跳时间; DEFECT-005 修复: 单节点直接成为Leader"""
         logger.info(f"Starting Raft node {self.node_id}")
+        self._ensure_async_primitives()
         self._shutdown_event.clear()
 
         # P1修复: 初始化心跳时间
@@ -1584,6 +1595,13 @@ class RaftNode:
         self._log_replication_inflight.clear()
         self._log_replication_retries.clear()
         self._commit_index_history.clear()
+
+        # DA-011 [P1] 修复: 取消所有复制任务
+        for task in self._replication_tasks:
+            task.cancel()
+        if self._replication_tasks:
+            await asyncio.gather(*self._replication_tasks, return_exceptions=True)
+        self._replication_tasks.clear()
     
     async def get_status(self) -> Dict[str, Any]:
         """获取节点状态 - P1修复: 增加状态信息"""

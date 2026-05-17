@@ -4,7 +4,17 @@
 """
 
 from typing import Any, Dict, Optional
-from pydantic import BaseModel, Field, field_validator
+try:
+    from pydantic import BaseModel, Field, field_validator
+    HAS_PYDANTIC = True
+except ImportError:
+    HAS_PYDANTIC = False
+    BaseModel = object
+    Field = lambda **kwargs: kwargs
+    def field_validator(*args, **kwargs):
+        def decorator(func):
+            return func
+        return decorator
 import yaml
 import json
 import os

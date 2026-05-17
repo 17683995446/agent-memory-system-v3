@@ -155,7 +155,7 @@ class AlertInstance:
     def fingerprint(self) -> str:
         """生成告警指纹(用于去重)"""
         content = f"{self.name}:{sorted(self.labels.items())}"
-        return hashlib.md5(content.encode()).hexdigest()[:16]
+        return hashlib.sha256(content.encode()).hexdigest()[:16]
     
     def to_dict(self) -> Dict[str, Any]:
         return {

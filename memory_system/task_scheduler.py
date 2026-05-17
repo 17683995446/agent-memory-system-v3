@@ -214,7 +214,7 @@ class Task:
     
     def create_future(self) -> asyncio.Future:
         """创建Future对象用于等待结果"""
-        self._future = asyncio.get_event_loop().create_future()
+        self._future = asyncio.get_running_loop().create_future()
         return self._future
     
     def set_result(self, result: Any):
@@ -370,26 +370,26 @@ class TaskQueue:
         return None
     
     def _get_fair(self) -> Optional[Task]:
-        """基于公平调度的获取"""
-        # 找到任务数最少的组
-        min_count = float('inf')
-        selected_group = None
+        """基于公平调度的获取 - DA-020 [P2] 优化: 使用堆降低时间复杂度"""
+        # 使用堆找到任务数最少的组
+        min_groups = []
+        for group_id, count in self._group_task_count.items():
+            if count > 0:  # 只考虑有任务的组
+                heapq.heappush(min_groups, (count, group_id))
         
+        if not min_groups:
+            return None
+        
+        _, selected_group = min_groups[0]
+        
+        # 在选中的组中找最高优先级的任务
         for priority in sorted(TaskPriority, key=lambda p: p.value):
-            for task in self._queues[priority]:
-                count = self._group_task_count[task.group_id]
-                if count < min_count:
-                    min_count = count
-                    selected_group = task.group_id
-        
-        if selected_group:
-            for priority in sorted(TaskPriority, key=lambda p: p.value):
-                for i, task in enumerate(self._queues[priority]):
-                    if task.group_id == selected_group:
-                        self._queues[priority].rotate(-i)
-                        task = self._queues[priority].popleft()
-                        self._group_task_count[task.group_id] -= 1
-                        return task
+            for i, task in enumerate(self._queues[priority]):
+                if task.group_id == selected_group:
+                    self._queues[priority].rotate(-i)
+                    task = self._queues[priority].popleft()
+                    self._group_task_count[task.group_id] -= 1
+                    return task
         
         return None
     

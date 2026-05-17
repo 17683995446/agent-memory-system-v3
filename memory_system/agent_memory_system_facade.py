@@ -12,7 +12,12 @@ import pkgutil
 import weakref
 import re
 import gc
-from cachetools import TTLCache
+try:
+    from cachetools import TTLCache
+    HAS_CACHETOOLS = True
+except ImportError:
+    HAS_CACHETOOLS = False
+    TTLCache = None
 from contextlib import asynccontextmanager
 
 # DEFECT-R10-002 [P0] 修复: 输入验证工具函数
@@ -276,9 +281,10 @@ class CachingEmbeddingProxy:
     
     包装真实嵌入提供者，添加 TTL 缓存层。
     用于 recall() 路径中的嵌入缓存，避免重复计算。
+    当 cachetools 不可用时，使用普通 dict 作为缓存（无 TTL 过期）。
     """
     
-    def __init__(self, embedding: EmbeddingProvider, cache: TTLCache):
+    def __init__(self, embedding: EmbeddingProvider, cache: Any):
         self._embedding = embedding
         self._cache = cache
     
@@ -369,10 +375,14 @@ class MemorySystem:
         self.importance_scorer = importance_scorer
 
         # 嵌入缓存
-        self._embedding_cache: TTLCache = TTLCache(
-            maxsize=EMBEDDING_CACHE_MAX_SIZE, 
-            ttl=EMBEDDING_CACHE_TTL_SECONDS
-        )
+        if HAS_CACHETOOLS and TTLCache is not None:
+            self._embedding_cache: Any = TTLCache(
+                maxsize=EMBEDDING_CACHE_MAX_SIZE, 
+                ttl=EMBEDDING_CACHE_TTL_SECONDS
+            )
+        else:
+            # D04 [P0 Integration] 修复: cachetools 不可用时使用普通 dict 作为后备
+            self._embedding_cache: Any = {}
 
         # 统计信息
         self._stats = {
@@ -1222,7 +1232,7 @@ class MemorySystem:
 
     async def _perform_cleanup(self):
         """DEFECT-R2-001 [P1] 修复: 执行清理操作"""
-        # 清理过期的嵌入缓存
+        # 清理过期的嵌入缓存（仅 TTLCache 支持 expired()）
         if hasattr(self._embedding_cache, 'expired'):
             self._embedding_cache.expired()
 

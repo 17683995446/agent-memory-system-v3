@@ -241,6 +241,7 @@ class FileConfigStorage(ConfigStorage):
         self._watchers: Dict[str, List[Callable]] = {}
         self._watch_task: Optional[asyncio.Task] = None
         self._file_mtimes: Dict[str, float] = {}
+        self._running: bool = True
     
     def _get_namespace_path(self, namespace: str) -> Path:
         """获取命名空间路径"""
@@ -361,7 +362,7 @@ class FileConfigStorage(ConfigStorage):
     
     async def _watch_loop(self) -> None:
         """监视循环"""
-        while True:
+        while self._running:
             try:
                 await self._check_changes()
                 await asyncio.sleep(5)
@@ -369,6 +370,16 @@ class FileConfigStorage(ConfigStorage):
                 break
             except Exception as e:
                 logger.exception(f"Watch loop error: {e}")
+    
+    async def stop(self) -> None:
+        """停止配置存储"""
+        self._running = False
+        if self._watch_task:
+            self._watch_task.cancel()
+            try:
+                await self._watch_task
+            except asyncio.CancelledError:
+                pass
     
     async def _check_changes(self) -> None:
         """检查配置变化"""
@@ -414,7 +425,7 @@ class EtcdConfigStorage(ConfigStorage):
     基于Etcd的分布式配置存储
     """
     
-    def __init__(self, endpoints: List[str] = None):
+    def __init__(self, endpoints: Optional[List[str]] = None):
         self.endpoints = endpoints or ["localhost:2379"]
         self._client: Optional[Any] = None
     
@@ -537,6 +548,65 @@ class EtcdConfigStorage(ConfigStorage):
                 asyncio.create_task(callback(change_event))
         
         self._client.add_watch_prefix_callback(prefix, on_event)
+
+
+class InMemoryConfigStorage(ConfigStorage):
+    """内存配置存储（用于测试和开发）
+
+    D01 [P1 Integration] 修复: 添加 InMemoryConfigStorage 实现，
+    使 ConfigCenter 可以在没有外部依赖的情况下用于测试和开发。
+    """
+
+    def __init__(self):
+        self._data: Dict[str, Dict[str, ConfigItem]] = {}
+        self._version_counter: int = 0
+
+    async def connect(self) -> None:
+        """连接（内存存储无需连接）"""
+        pass
+
+    async def get(self, namespace: str, key: str) -> Optional[ConfigItem]:
+        """获取配置"""
+        ns_data = self._data.get(namespace, {})
+        return ns_data.get(key)
+
+    async def set(self, namespace: str, item: ConfigItem) -> bool:
+        """设置配置"""
+        self._version_counter += 1
+        if namespace not in self._data:
+            self._data[namespace] = {}
+        item.version = self._version_counter
+        item.updated_at = datetime.now(timezone.utc)
+        self._data[namespace][item.key] = item
+        return True
+
+    async def delete(self, namespace: str, key: str) -> bool:
+        """删除配置"""
+        ns_data = self._data.get(namespace, {})
+        if key in ns_data:
+            del ns_data[key]
+            return True
+        return False
+
+    async def list_keys(self, namespace: str, prefix: str = "") -> List[str]:
+        """列出命名空间下所有配置键"""
+        keys = list(self._data.get(namespace, {}).keys())
+        if prefix:
+            keys = [k for k in keys if k.startswith(prefix)]
+        return keys
+
+    async def get_all(self, namespace: str) -> Dict[str, Any]:
+        """获取命名空间下所有配置"""
+        ns_data = self._data.get(namespace, {})
+        return {k: v.value for k, v in ns_data.items()}
+
+    async def watch(
+        self,
+        namespace: str,
+        callback: Callable[[ConfigChangeEvent], Coroutine[Any, Any, None]]
+    ) -> None:
+        """内存存储不支持监视（空实现）"""
+        pass
 
 
 # ============================================================================
@@ -807,6 +877,10 @@ class ConfigCenter:
     async def get_all(self, namespace: str = "default") -> Dict[str, Any]:
         """获取命名空间下所有配置"""
         return await self.storage.get_all(namespace)
+    
+    async def list_keys(self, namespace: str = "default") -> List[str]:
+        """列出命名空间下所有配置键"""
+        return await self.storage.list_keys(namespace)
     
     async def subscribe(
         self,

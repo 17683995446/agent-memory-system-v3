@@ -228,6 +228,11 @@ class EventStore(ABC):
         pass
 
 
+class ConcurrencyException(Exception):
+    """并发冲突异常"""
+    pass
+
+
 class InMemoryEventStore(EventStore):
     """内存事件存储实现"""
     
@@ -350,6 +355,8 @@ class PostgreSQLEventStore(EventStore):
         expected_version: Optional[int] = None
     ) -> bool:
         """追加事件"""
+        if self._pool is None:
+            raise RuntimeError("PostgreSQL event store not connected. Call connect() first.")
         async with self._pool.acquire() as conn:
             async with conn.transaction():
                 # 检查版本
@@ -389,6 +396,8 @@ class PostgreSQLEventStore(EventStore):
         to_version: Optional[int] = None
     ) -> List[StoredEvent]:
         """获取聚合事件"""
+        if self._pool is None:
+            raise RuntimeError("PostgreSQL event store not connected. Call connect() first.")
         async with self._pool.acquire() as conn:
             if to_version:
                 rows = await conn.fetch(
@@ -417,6 +426,8 @@ class PostgreSQLEventStore(EventStore):
         limit: int = 100
     ) -> List[StoredEvent]:
         """获取所有事件"""
+        if self._pool is None:
+            raise RuntimeError("PostgreSQL event store not connected. Call connect() first.")
         async with self._pool.acquire() as conn:
             rows = await conn.fetch(
                 """
@@ -431,6 +442,8 @@ class PostgreSQLEventStore(EventStore):
     
     async def get_current_version(self, aggregate_id: AggregateId) -> int:
         """获取当前版本"""
+        if self._pool is None:
+            raise RuntimeError("PostgreSQL event store not connected. Call connect() first.")
         async with self._pool.acquire() as conn:
             version = await conn.fetchval(
                 "SELECT MAX(version) FROM events WHERE aggregate_id = $1",
@@ -452,9 +465,6 @@ class PostgreSQLEventStore(EventStore):
         )
 
 
-class ConcurrencyException(Exception):
-    """并发冲突异常"""
-    pass
 
 
 # ============================================================================

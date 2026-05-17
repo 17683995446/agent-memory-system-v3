@@ -6,10 +6,81 @@
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, ConfigDict
 import time
 import uuid
 import threading
+
+# D05 [P1 Integration] 修复: pydantic 作为可选依赖
+try:
+    from pydantic import BaseModel, Field, ConfigDict
+    HAS_PYDANTIC = True
+except ImportError:
+    HAS_PYDANTIC = False
+    BaseModel = None
+    Field = None
+    ConfigDict = None
+
+    # D05 [P1 Integration] 修复: 提供后备实现，使模块在无 pydantic 时仍可导入
+    class _FieldDescriptor:
+        """Field 后备描述符 - 记录字段元数据"""
+        def __init__(self, default=..., default_factory=None, description=None):
+            self.default = default
+            self.default_factory = default_factory
+            self.description = description
+
+        def __set_name__(self, owner, name):
+            self.name = name
+
+        def __get__(self, obj, objtype=None):
+            if obj is None:
+                return self
+            return obj.__dict__.get(self.name, self._get_default())
+
+        def __set__(self, obj, value):
+            obj.__dict__[self.name] = value
+
+        def _get_default(self):
+            if self.default is not ...:
+                return self.default
+            if self.default_factory is not None:
+                return self.default_factory()
+            return None
+
+    def Field(default=..., default_factory=None, description=None, **kwargs):
+        """Field 后备实现"""
+        return _FieldDescriptor(default=default, default_factory=default_factory, description=description)
+
+    def ConfigDict(**kwargs):
+        """ConfigDict 后备实现 - 返回一个空 dict，作为类属性存储"""
+        return {}
+
+    class _FallbackBaseModel:
+        """BaseModel 后备实现 - 提供基本的 model_dump 支持"""
+        model_config = {}
+
+        def model_dump(self):
+            result = {}
+            for k, v in self.__dict__.items():
+                if not k.startswith('_'):
+                    val = v
+                    # 处理枚举值
+                    if hasattr(val, 'value'):
+                        val = val.value
+                    result[k] = val
+            return result
+
+        def __init__(self, **kwargs):
+            # 收集所有 _FieldDescriptor 字段
+            for cls in type(self).__mro__:
+                for name, value in vars(cls).items():
+                    if isinstance(value, _FieldDescriptor) and name not in kwargs:
+                        kwargs[name] = value._get_default()
+            self.__dict__.update(kwargs)
+
+        def __init_subclass__(cls, **kwargs):
+            super().__init_subclass__(**kwargs)
+
+    BaseModel = _FallbackBaseModel
 
 from memory_system.core_abstractions.mathematical_utility_functions import exp
 

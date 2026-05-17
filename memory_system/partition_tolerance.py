@@ -27,8 +27,8 @@ from enum import Enum, auto
 from collections import defaultdict
 import threading
 
-from hybrid_logical_clock import HybridLogicalClock, HLCTimestamp
-from vector_clock import VectorClock, VectorClockRelation
+from memory_system.hybrid_logical_clock import HybridLogicalClock, HLCTimestamp
+from memory_system.vector_clock import VectorClock, VectorClockRelation
 
 
 class PartitionState(Enum):
@@ -461,6 +461,18 @@ class QuorumManager:
         """
         return available_nodes >= self._write_quorum
     
+    def has_quorum(self, available_nodes: Set[str]) -> bool:
+        """
+        检查可用节点是否达到多数派
+        
+        Args:
+            available_nodes: 可用节点集合
+            
+        Returns:
+            True如果可用节点数达到写多数派
+        """
+        return len(available_nodes) >= self._write_quorum
+
     def calculate_quorum_size(self, total_nodes: int) -> int:
         """
         计算多数派大小

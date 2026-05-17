@@ -269,7 +269,6 @@ class SagaStep:
                 if attempt == self.max_retries - 1:
                     raise
                 await asyncio.sleep(0.1 * (2 ** attempt))
-        raise Exception(f"Step {self.step_id} failed after {self.max_retries} retries")
     
     async def compensate(self, context: TransactionContext, action_result: Any):
         """执行补偿"""
@@ -425,17 +424,18 @@ class TwoPhaseCommitCoordinator:
                 active_txs = await self.store.get_active_transactions()
                 
                 for tx in active_txs:
-                    if tx.is_timed_out():
-                        logger.warning(f"Transaction {tx.tx_id} timed out, aborting")
-                        await self.abort(tx.tx_id)
-                    elif tx.status == TransactionStatus.PREPARED:
-                        # 如果已准备但未提交，尝试提交
-                        logger.info(f"Resuming commit for transaction {tx.tx_id}")
-                        await self._do_commit(tx)
-                    elif tx.status == TransactionStatus.PREPARING:
-                        # 如果在准备阶段超时，中止
-                        logger.info(f"Aborting incomplete transaction {tx.tx_id}")
-                        await self.abort(tx.tx_id)
+                    # DA-013 [P1] 修复: 使用per-transaction锁保护恢复操作
+                    lock = self._tx_locks.setdefault(tx.tx_id, asyncio.Lock())
+                    async with lock:
+                        if tx.is_timed_out():
+                            logger.warning(f"Transaction {tx.tx_id} timed out, aborting")
+                            await self.abort(tx.tx_id)
+                        elif tx.status == TransactionStatus.PREPARED:
+                            logger.info(f"Resuming commit for transaction {tx.tx_id}")
+                            await self._do_commit(tx)
+                        elif tx.status == TransactionStatus.PREPARING:
+                            logger.info(f"Aborting incomplete transaction {tx.tx_id}")
+                            await self.abort(tx.tx_id)
                         
             except asyncio.CancelledError:
                 break

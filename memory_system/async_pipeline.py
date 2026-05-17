@@ -347,7 +347,6 @@ class PipelineStage:
         self._item_store_access_times: Dict[str, float] = {}  # 项目访问时间
         self._memory_management_task: Optional[asyncio.Task] = None
         self._last_item_store_cleanup: float = time.time()
-        self._compression_count: int = 0
     
     async def start(self, output_queue: Optional[asyncio.Queue] = None):
         """启动阶段 - DEFECT-002 [P0] 修复: 当 output_queue 参数为 None 时不覆盖已设置的 output_queue"""
@@ -434,6 +433,9 @@ class PipelineStage:
                     logger.warning(f"Stage {self.name} dropped {dropped} oldest items due to backlog")
 
             # 策略2: 增加临时工作线程处理积压
+            # DA-012 [P2] 注意: 临时工作线程与常规工作线程共享同一个 output_queue，
+            # 这是设计意图。临时工作线程帮助清除积压，输出去重由下游消费者处理。
+            # 临时工作线程在积压清除后或超时后被取消，确保不会无限运行。
             elif self.config.backpressure_strategy == BackpressureStrategy.BLOCK:
                 # 临时增加并发处理
                 temp_workers = min(4, self.config.num_workers * 2)
@@ -1119,7 +1121,6 @@ class PipelineStage:
                             compressed += 1
 
             if compressed > 0:
-                self._compression_count += 1
                 logger.debug(f"Stage {self.name} compressed {compressed} old items")
 
         except Exception as e:
@@ -1131,7 +1132,6 @@ class PipelineStage:
             "item_store_size": len(self._item_store),
             "index_size": sum(len(v) for v in self._index.values()),
             "cache_size": len(self._query_cache),
-            "compression_count": self._compression_count,
             "last_cleanup": self._last_item_store_cleanup,
         }
 

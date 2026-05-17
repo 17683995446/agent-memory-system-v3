@@ -5,7 +5,22 @@ Agent Memory System V2.29.0 重构项目 - R-04
 """
 
 from typing import Optional, List, Dict, Any, Union
-from pydantic import BaseModel, Field, field_validator, model_validator
+try:
+    from pydantic import BaseModel, Field, field_validator, model_validator
+    HAS_PYDANTIC = True
+except ImportError:
+    HAS_PYDANTIC = False
+    # Provide fallback stubs
+    BaseModel = object
+    Field = lambda **kwargs: kwargs
+    def field_validator(*args, **kwargs):
+        def decorator(func):
+            return func
+        return decorator
+    def model_validator(*args, **kwargs):
+        def decorator(func):
+            return func
+        return decorator
 from enum import Enum
 import re
 

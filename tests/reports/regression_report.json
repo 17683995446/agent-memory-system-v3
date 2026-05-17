@@ -1,0 +1,1648 @@
+{
+  "title": "Agent Memory System V3.0 - Regression Verification Report",
+  "timestamp": "2026-05-17T18:26:32.301963+00:00",
+  "project_root": "/workspace/agent_memory_system_v2",
+  "total_tests": 174,
+  "passed": 170,
+  "failed": 4,
+  "pass_rate": "97.7%",
+  "phases": {
+    "Phase1_Compilation": {
+      "total": 117,
+      "passed": 117,
+      "failed": 0
+    },
+    "Phase2_Import": {
+      "total": 18,
+      "passed": 14,
+      "failed": 4
+    },
+    "Phase3_P0_Fixes": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "Phase3_P1_Fixes": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0
+    },
+    "Phase3_P2_Fixes": {
+      "total": 16,
+      "passed": 16,
+      "failed": 0
+    },
+    "Phase4_Integration": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0
+    }
+  },
+  "failures": [
+    {
+      "name": "Import: memory_system.partition_tolerance",
+      "phase": "Phase2_Import",
+      "passed": false,
+      "expected": "Module imports successfully",
+      "actual": "Import error: ModuleNotFoundError",
+      "error": "No module named 'hybrid_logical_clock'",
+      "timestamp": "2026-05-17T18:26:30.766489+00:00"
+    },
+    {
+      "name": "Import: memory_system.session_consistency",
+      "phase": "Phase2_Import",
+      "passed": false,
+      "expected": "Module imports successfully",
+      "actual": "Import error: ModuleNotFoundError",
+      "error": "No module named 'hybrid_logical_clock'",
+      "timestamp": "2026-05-17T18:26:30.768773+00:00"
+    },
+    {
+      "name": "Import: memory_system.consistency_manager",
+      "phase": "Phase2_Import",
+      "passed": false,
+      "expected": "Module imports successfully",
+      "actual": "Import error: ModuleNotFoundError",
+      "error": "No module named 'hybrid_logical_clock'",
+      "timestamp": "2026-05-17T18:26:30.769098+00:00"
+    },
+    {
+      "name": "Import: memory_system.agent_memory_system_facade",
+      "phase": "Phase2_Import",
+      "passed": false,
+      "expected": "Module imports successfully",
+      "actual": "Import error: ModuleNotFoundError",
+      "error": "No module named 'pydantic'",
+      "timestamp": "2026-05-17T18:26:30.778682+00:00"
+    }
+  ],
+  "all_results": [
+    {
+      "name": "Compile: memory_system/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.401796+00:00"
+    },
+    {
+      "name": "Compile: memory_system/agent_memory_system_facade.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.410515+00:00"
+    },
+    {
+      "name": "Compile: memory_system/aiops_platform.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.417031+00:00"
+    },
+    {
+      "name": "Compile: memory_system/api_doc_generator.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.418493+00:00"
+    },
+    {
+      "name": "Compile: memory_system/api_gateway.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.423989+00:00"
+    },
+    {
+      "name": "Compile: memory_system/async_batch_writer.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.425898+00:00"
+    },
+    {
+      "name": "Compile: memory_system/async_pipeline.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.433383+00:00"
+    },
+    {
+      "name": "Compile: memory_system/audit_logger.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.435514+00:00"
+    },
+    {
+      "name": "Compile: memory_system/batch_processor.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.438366+00:00"
+    },
+    {
+      "name": "Compile: memory_system/cache_replacement_policies.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.439889+00:00"
+    },
+    {
+      "name": "Compile: memory_system/cache_warmer.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.441342+00:00"
+    },
+    {
+      "name": "Compile: memory_system/chaos_engineering.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.447579+00:00"
+    },
+    {
+      "name": "Compile: memory_system/code_memory_support/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.447921+00:00"
+    },
+    {
+      "name": "Compile: memory_system/code_memory_support/ast_parser.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.448994+00:00"
+    },
+    {
+      "name": "Compile: memory_system/code_memory_support/code_analyzer.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.450015+00:00"
+    },
+    {
+      "name": "Compile: memory_system/code_memory_support/code_memory.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.450928+00:00"
+    },
+    {
+      "name": "Compile: memory_system/code_memory_support/language_detector.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.451712+00:00"
+    },
+    {
+      "name": "Compile: memory_system/code_memory_support/utils.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.452070+00:00"
+    },
+    {
+      "name": "Compile: memory_system/command_line_interface.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.453344+00:00"
+    },
+    {
+      "name": "Compile: memory_system/config_center.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.459629+00:00"
+    },
+    {
+      "name": "Compile: memory_system/configuration_settings/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.459892+00:00"
+    },
+    {
+      "name": "Compile: memory_system/configuration_settings/memory_system_configuration.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.461820+00:00"
+    },
+    {
+      "name": "Compile: memory_system/consistency_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.464533+00:00"
+    },
+    {
+      "name": "Compile: memory_system/consolidation_strategies/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.464832+00:00"
+    },
+    {
+      "name": "Compile: memory_system/consolidation_strategies/similarity_based_consolidation_strategy.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.465832+00:00"
+    },
+    {
+      "name": "Compile: memory_system/consolidation_strategies/time_based_consolidation_strategy.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.466734+00:00"
+    },
+    {
+      "name": "Compile: memory_system/contrastive_memory_learning.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.471015+00:00"
+    },
+    {
+      "name": "Compile: memory_system/core_abstractions/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.471271+00:00"
+    },
+    {
+      "name": "Compile: memory_system/core_abstractions/abstract_component_interfaces.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.472972+00:00"
+    },
+    {
+      "name": "Compile: memory_system/core_abstractions/authentication_middleware.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.473998+00:00"
+    },
+    {
+      "name": "Compile: memory_system/core_abstractions/component_registry_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.474714+00:00"
+    },
+    {
+      "name": "Compile: memory_system/core_abstractions/filter_utility_functions.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.475218+00:00"
+    },
+    {
+      "name": "Compile: memory_system/core_abstractions/mathematical_utility_functions.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.476200+00:00"
+    },
+    {
+      "name": "Compile: memory_system/core_abstractions/memory_data_models.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.478955+00:00"
+    },
+    {
+      "name": "Compile: memory_system/core_abstractions/system_constants_definitions.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.479359+00:00"
+    },
+    {
+      "name": "Compile: memory_system/cqrs_system.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.486199+00:00"
+    },
+    {
+      "name": "Compile: memory_system/deduplication_system.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.488204+00:00"
+    },
+    {
+      "name": "Compile: memory_system/demo_step3.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.490310+00:00"
+    },
+    {
+      "name": "Compile: memory_system/di_container.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.492373+00:00"
+    },
+    {
+      "name": "Compile: memory_system/distributed_tracing.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.497581+00:00"
+    },
+    {
+      "name": "Compile: memory_system/distributed_transaction_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.502801+00:00"
+    },
+    {
+      "name": "Compile: memory_system/documentation_generator.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.508159+00:00"
+    },
+    {
+      "name": "Compile: memory_system/embedding_factory.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.510258+00:00"
+    },
+    {
+      "name": "Compile: memory_system/embedding_providers/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.510569+00:00"
+    },
+    {
+      "name": "Compile: memory_system/embedding_providers/bge_embedding_provider.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.511417+00:00"
+    },
+    {
+      "name": "Compile: memory_system/embedding_providers/openai_embedding_provider.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.512323+00:00"
+    },
+    {
+      "name": "Compile: memory_system/embedding_providers/sentence_transformer_embedding_provider.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.513180+00:00"
+    },
+    {
+      "name": "Compile: memory_system/enhanced_tenant_isolation.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.515093+00:00"
+    },
+    {
+      "name": "Compile: memory_system/event_driven_core.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.521844+00:00"
+    },
+    {
+      "name": "Compile: memory_system/exceptions.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.523384+00:00"
+    },
+    {
+      "name": "Compile: memory_system/forgetting_strategies/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.523636+00:00"
+    },
+    {
+      "name": "Compile: memory_system/forgetting_strategies/score_based_forgetting_strategy.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.524732+00:00"
+    },
+    {
+      "name": "Compile: memory_system/gnn_memory_engine.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.529204+00:00"
+    },
+    {
+      "name": "Compile: memory_system/grpc_service.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.534177+00:00"
+    },
+    {
+      "name": "Compile: memory_system/grpc_service_server.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.535503+00:00"
+    },
+    {
+      "name": "Compile: memory_system/hnsw_index.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.537961+00:00"
+    },
+    {
+      "name": "Compile: memory_system/hybrid_logical_clock.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.540119+00:00"
+    },
+    {
+      "name": "Compile: memory_system/i18n.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.542284+00:00"
+    },
+    {
+      "name": "Compile: memory_system/i18n_support.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.546922+00:00"
+    },
+    {
+      "name": "Compile: memory_system/importance_scorers/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.547187+00:00"
+    },
+    {
+      "name": "Compile: memory_system/importance_scorers/heuristic_importance_scorer.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.548041+00:00"
+    },
+    {
+      "name": "Compile: memory_system/incremental_embedding_updater.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.549411+00:00"
+    },
+    {
+      "name": "Compile: memory_system/k8s_operator.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.555298+00:00"
+    },
+    {
+      "name": "Compile: memory_system/llm_summarizer.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.557093+00:00"
+    },
+    {
+      "name": "Compile: memory_system/memory_io_operations/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.557347+00:00"
+    },
+    {
+      "name": "Compile: memory_system/memory_io_operations/memory_exporter_importer.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.558454+00:00"
+    },
+    {
+      "name": "Compile: memory_system/memory_snapshot_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.561549+00:00"
+    },
+    {
+      "name": "Compile: memory_system/memory_ttl_expiration_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.565715+00:00"
+    },
+    {
+      "name": "Compile: memory_system/meta_learning_embedder.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.570070+00:00"
+    },
+    {
+      "name": "Compile: memory_system/metrics_collector.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.572857+00:00"
+    },
+    {
+      "name": "Compile: memory_system/microservices_framework.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.582155+00:00"
+    },
+    {
+      "name": "Compile: memory_system/mmap_storage_backend.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.585840+00:00"
+    },
+    {
+      "name": "Compile: memory_system/monitoring_alerting.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.591882+00:00"
+    },
+    {
+      "name": "Compile: memory_system/monitoring_metrics_collector.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.592736+00:00"
+    },
+    {
+      "name": "Compile: memory_system/nas_module.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.597334+00:00"
+    },
+    {
+      "name": "Compile: memory_system/partition_tolerance.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.600148+00:00"
+    },
+    {
+      "name": "Compile: memory_system/plugin_extension_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.601127+00:00"
+    },
+    {
+      "name": "Compile: memory_system/raft_consensus.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.609902+00:00"
+    },
+    {
+      "name": "Compile: memory_system/rate_limiter.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.612033+00:00"
+    },
+    {
+      "name": "Compile: memory_system/read_write_lock.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.614079+00:00"
+    },
+    {
+      "name": "Compile: memory_system/restful_api_server.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.617906+00:00"
+    },
+    {
+      "name": "Compile: memory_system/retrieval_engine.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.620412+00:00"
+    },
+    {
+      "name": "Compile: memory_system/retrieval_strategies/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.620711+00:00"
+    },
+    {
+      "name": "Compile: memory_system/retrieval_strategies/adaptive_strategy_selector.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.622292+00:00"
+    },
+    {
+      "name": "Compile: memory_system/retrieval_strategies/hierarchical_retrieval_strategy.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.624103+00:00"
+    },
+    {
+      "name": "Compile: memory_system/retrieval_strategies/hybrid_retrieval_strategy.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.625312+00:00"
+    },
+    {
+      "name": "Compile: memory_system/retrieval_strategies/vector_only_retrieval_strategy.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.625838+00:00"
+    },
+    {
+      "name": "Compile: memory_system/retrieval_utils.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.628321+00:00"
+    },
+    {
+      "name": "Compile: memory_system/rl_retrieval_optimizer.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.633832+00:00"
+    },
+    {
+      "name": "Compile: memory_system/security_hardening.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.639143+00:00"
+    },
+    {
+      "name": "Compile: memory_system/service_mesh_client.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.645578+00:00"
+    },
+    {
+      "name": "Compile: memory_system/session_consistency.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.648170+00:00"
+    },
+    {
+      "name": "Compile: memory_system/snapshot_serializer.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.650197+00:00"
+    },
+    {
+      "name": "Compile: memory_system/storage_backends/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.650541+00:00"
+    },
+    {
+      "name": "Compile: memory_system/storage_backends/chroma_vector_storage_backend.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.652046+00:00"
+    },
+    {
+      "name": "Compile: memory_system/storage_backends/distributed_storage_backend.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.654486+00:00"
+    },
+    {
+      "name": "Compile: memory_system/storage_backends/faiss_ann_storage_backend.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.656314+00:00"
+    },
+    {
+      "name": "Compile: memory_system/storage_backends/in_memory_storage_backend.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.660328+00:00"
+    },
+    {
+      "name": "Compile: memory_system/storage_backends/qdrant_vector_storage_backend.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.661977+00:00"
+    },
+    {
+      "name": "Compile: memory_system/structured_logging_config.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.663754+00:00"
+    },
+    {
+      "name": "Compile: memory_system/task_scheduler.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.667794+00:00"
+    },
+    {
+      "name": "Compile: memory_system/telemetry_tracing_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.668853+00:00"
+    },
+    {
+      "name": "Compile: memory_system/tenant_isolation_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.670548+00:00"
+    },
+    {
+      "name": "Compile: memory_system/test_consistency_fixes.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.673334+00:00"
+    },
+    {
+      "name": "Compile: memory_system/testing_platform.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.678296+00:00"
+    },
+    {
+      "name": "Compile: memory_system/time_indexed_ttl_manager.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.679936+00:00"
+    },
+    {
+      "name": "Compile: memory_system/transformer_xl_memory.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.683762+00:00"
+    },
+    {
+      "name": "Compile: memory_system/ttl_storage_interface.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.686480+00:00"
+    },
+    {
+      "name": "Compile: memory_system/type_hints_check.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.688503+00:00"
+    },
+    {
+      "name": "Compile: memory_system/validators.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.690680+00:00"
+    },
+    {
+      "name": "Compile: memory_system/vector_clock.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.693027+00:00"
+    },
+    {
+      "name": "Compile: memory_system/vector_quantization.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.695298+00:00"
+    },
+    {
+      "name": "Compile: memory_system/websocket_event_notifier.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.696383+00:00"
+    },
+    {
+      "name": "Compile: memory_system/working_memory_backends/__init__.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.696643+00:00"
+    },
+    {
+      "name": "Compile: memory_system/working_memory_backends/memory_backend_redis.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.697627+00:00"
+    },
+    {
+      "name": "Compile: memory_system/working_memory_backends/memory_backend_sqlite.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.698687+00:00"
+    },
+    {
+      "name": "Compile: memory_system/working_memory_cache.py",
+      "phase": "Phase1_Compilation",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.699604+00:00"
+    },
+    {
+      "name": "Import: memory_system.raft_consensus",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.707261+00:00"
+    },
+    {
+      "name": "Import: memory_system.cqrs_system",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.714075+00:00"
+    },
+    {
+      "name": "Import: memory_system.event_driven_core",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.718989+00:00"
+    },
+    {
+      "name": "Import: memory_system.security_hardening",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.723007+00:00"
+    },
+    {
+      "name": "Import: memory_system.config_center",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.740610+00:00"
+    },
+    {
+      "name": "Import: memory_system.distributed_transaction_manager",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.743329+00:00"
+    },
+    {
+      "name": "Import: memory_system.microservices_framework",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.746158+00:00"
+    },
+    {
+      "name": "Import: memory_system.async_pipeline",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.749287+00:00"
+    },
+    {
+      "name": "Import: memory_system.task_scheduler",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.752671+00:00"
+    },
+    {
+      "name": "Import: memory_system.monitoring_alerting",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.760110+00:00"
+    },
+    {
+      "name": "Import: memory_system.chaos_engineering",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.766024+00:00"
+    },
+    {
+      "name": "Import: memory_system.partition_tolerance",
+      "phase": "Phase2_Import",
+      "passed": false,
+      "expected": "Module imports successfully",
+      "actual": "Import error: ModuleNotFoundError",
+      "error": "No module named 'hybrid_logical_clock'",
+      "timestamp": "2026-05-17T18:26:30.766489+00:00"
+    },
+    {
+      "name": "Import: memory_system.hybrid_logical_clock",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.767463+00:00"
+    },
+    {
+      "name": "Import: memory_system.vector_clock",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.768416+00:00"
+    },
+    {
+      "name": "Import: memory_system.session_consistency",
+      "phase": "Phase2_Import",
+      "passed": false,
+      "expected": "Module imports successfully",
+      "actual": "Import error: ModuleNotFoundError",
+      "error": "No module named 'hybrid_logical_clock'",
+      "timestamp": "2026-05-17T18:26:30.768773+00:00"
+    },
+    {
+      "name": "Import: memory_system.consistency_manager",
+      "phase": "Phase2_Import",
+      "passed": false,
+      "expected": "Module imports successfully",
+      "actual": "Import error: ModuleNotFoundError",
+      "error": "No module named 'hybrid_logical_clock'",
+      "timestamp": "2026-05-17T18:26:30.769098+00:00"
+    },
+    {
+      "name": "Import: memory_system.agent_memory_system_facade",
+      "phase": "Phase2_Import",
+      "passed": false,
+      "expected": "Module imports successfully",
+      "actual": "Import error: ModuleNotFoundError",
+      "error": "No module named 'pydantic'",
+      "timestamp": "2026-05-17T18:26:30.778682+00:00"
+    },
+    {
+      "name": "Import: memory_system.embedding_factory",
+      "phase": "Phase2_Import",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.780438+00:00"
+    },
+    {
+      "name": "DA-003: propose_command creates entries inside lock",
+      "phase": "Phase3_P0_Fixes",
+      "passed": true,
+      "expected": "LogEntry created inside _state_lock",
+      "actual": "lock=True, entry=True, inside=True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.784961+00:00"
+    },
+    {
+      "name": "DA-024: AggregateRoot.apply_event updates self._version",
+      "phase": "Phase3_P0_Fixes",
+      "passed": true,
+      "expected": "self._version updated in apply_event",
+      "actual": "self._version found: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.785624+00:00"
+    },
+    {
+      "name": "D02: QuorumManager.has_quorum(Set) method exists",
+      "phase": "Phase3_P0_Fixes",
+      "passed": true,
+      "expected": "has_quorum method with Set parameter",
+      "actual": "has_quorum: True, Set param: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.785779+00:00"
+    },
+    {
+      "name": "D04: facade imports without cachetools (conditional import)",
+      "phase": "Phase3_P0_Fixes",
+      "passed": true,
+      "expected": "cachetools imported conditionally",
+      "actual": "conditional import found: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.785947+00:00"
+    },
+    {
+      "name": "DA-002: RaftNode instantiable without event loop",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "RaftNode created without error",
+      "actual": "Created: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.786009+00:00"
+    },
+    {
+      "name": "DA-006: InMemoryEventBus same priority events",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "",
+      "actual": "",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.786416+00:00"
+    },
+    {
+      "name": "DA-008: simple_encrypt emits DeprecationWarning",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "DeprecationWarning raised",
+      "actual": "Warnings: 1",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.786518+00:00"
+    },
+    {
+      "name": "DA-009: hash_data(md5) emits DeprecationWarning",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "DeprecationWarning raised",
+      "actual": "Warnings: 1",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.786570+00:00"
+    },
+    {
+      "name": "DA-011: _replication_tasks tracking works",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "_replication_tasks exists and is a set",
+      "actual": "has_attr=True, is_set=True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.786604+00:00"
+    },
+    {
+      "name": "DA-013: _recovery_loop uses per-transaction locks",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "Per-transaction locks via _tx_locks",
+      "actual": "_tx_locks=True, setdefault=True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.787655+00:00"
+    },
+    {
+      "name": "DA-014: _attempt_recovery doesn't hold global lock during health checks",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "Per-transaction lock pattern in recovery",
+      "actual": "per-tx lock: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.788320+00:00"
+    },
+    {
+      "name": "DA-016: KafkaEventBus.publish accepts **kwargs",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "publish has **kwargs parameter",
+      "actual": "Parameters: ['self', 'event', 'topic', 'kwargs']",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.788398+00:00"
+    },
+    {
+      "name": "DA-017: PostgreSQLEventStore raises RuntimeError when pool is None",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "RuntimeError raised",
+      "actual": "PostgreSQL event store not connected. Call connect() first.",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.788567+00:00"
+    },
+    {
+      "name": "DA-023: check_permission is thread-safe (uses lock)",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "check_permission uses self._lock",
+      "actual": "lock found: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.789570+00:00"
+    },
+    {
+      "name": "D01: InMemoryConfigStorage get/set/delete/list_keys",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "All CRUD operations work",
+      "actual": "All operations passed",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.789737+00:00"
+    },
+    {
+      "name": "D05: embedding_factory imports without pydantic",
+      "phase": "Phase3_P1_Fixes",
+      "passed": true,
+      "expected": "No pydantic import",
+      "actual": "pydantic import found: False",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.790035+00:00"
+    },
+    {
+      "name": "DA-001: raft_consensus has no unnecessary imports (struct/Protocol)",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "No struct/Protocol imports",
+      "actual": "Found: []",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.790294+00:00"
+    },
+    {
+      "name": "DA-004: Task.create_future uses get_running_loop",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "get_running_loop used",
+      "actual": "get_running_loop found: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.790766+00:00"
+    },
+    {
+      "name": "DA-005: ConcurrencyException defined before InMemoryEventStore",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "ConcurrencyException before InMemoryEventStore",
+      "actual": "Both importable: True, correct order: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.790888+00:00"
+    },
+    {
+      "name": "DA-007: EtcdConfigStorage endpoints is Optional[List[str]]",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "Optional[List[str]] type hint",
+      "actual": "Optional: True, List: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.791453+00:00"
+    },
+    {
+      "name": "DA-010: AlertInstance.fingerprint uses sha256",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "sha256 used in fingerprint",
+      "actual": "sha256 found: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.791973+00:00"
+    },
+    {
+      "name": "DA-012: _compression_count removed from async_pipeline",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "_compression_count not present",
+      "actual": "_compression_count found: False",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.792529+00:00"
+    },
+    {
+      "name": "DA-015: FileConfigStorage has stop() and _running flag",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "stop() method and _running flag present",
+      "actual": "stop(): True, _running: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.792918+00:00"
+    },
+    {
+      "name": "DA-018: AuditLogger has _handlers_lock",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "_handlers_lock in AuditLogger",
+      "actual": "_handlers_lock found: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.793178+00:00"
+    },
+    {
+      "name": "DA-019: unreachable code removed from SagaStep.execute",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "No unreachable code after raise",
+      "actual": "unreachable code: False",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.793483+00:00"
+    },
+    {
+      "name": "DA-020: _get_fair uses heapq",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "heapq used in _get_fair",
+      "actual": "heapq found: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.794041+00:00"
+    },
+    {
+      "name": "DA-021: chaos_engineering conditional import for resource",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "Conditional import with HAS_RESOURCE flag",
+      "actual": "try/import: True, HAS_RESOURCE: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.794482+00:00"
+    },
+    {
+      "name": "DA-022: _compression_count removed from all modules",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "_compression_count not found anywhere",
+      "actual": "Found in: []",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.794714+00:00"
+    },
+    {
+      "name": "DA-025: SecurityHardeningModule docstring corrected",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "Valid docstring without typos",
+      "actual": "has_doc: True, no_typo: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.794739+00:00"
+    },
+    {
+      "name": "DA-026: propose_command uses get_running_loop",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "get_running_loop used",
+      "actual": "get_running_loop found: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.795406+00:00"
+    },
+    {
+      "name": "DA-027: escape_sql emits DeprecationWarning",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "DeprecationWarning raised",
+      "actual": "Warnings: 1",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.797092+00:00"
+    },
+    {
+      "name": "D08: ConfigCenter has list_keys method",
+      "phase": "Phase3_P2_Fixes",
+      "passed": true,
+      "expected": "list_keys method exists",
+      "actual": "list_keys exists: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.797111+00:00"
+    },
+    {
+      "name": "Integration: RaftNode lifecycle (create/start/stop)",
+      "phase": "Phase4_Integration",
+      "passed": true,
+      "expected": "Node starts and stops successfully",
+      "actual": "Role after start: LEADER",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.797340+00:00"
+    },
+    {
+      "name": "Integration: CQRS event sourcing (create/apply events)",
+      "phase": "Phase4_Integration",
+      "passed": true,
+      "expected": "Aggregate created, events applied, reloaded correctly",
+      "actual": "Aggregate version: 2",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:30.797461+00:00"
+    },
+    {
+      "name": "Integration: EventBus publish/subscribe",
+      "phase": "Phase4_Integration",
+      "passed": true,
+      "expected": "Event received by subscriber",
+      "actual": "Received 1 events",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:31.298447+00:00"
+    },
+    {
+      "name": "Integration: Security RBAC permission check",
+      "phase": "Phase4_Integration",
+      "passed": true,
+      "expected": "USER: R/W, no DEL; ADMIN: R/W/DEL/EXEC/ADMIN",
+      "actual": "R=True, W=True, D=False, D+admin=True, A=True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:31.298568+00:00"
+    },
+    {
+      "name": "Integration: ConfigCenter get/set/delete",
+      "phase": "Phase4_Integration",
+      "passed": true,
+      "expected": "ConfigCenter CRUD works",
+      "actual": "All ConfigCenter operations passed",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:31.298766+00:00"
+    },
+    {
+      "name": "Integration: Pipeline stage creation and data flow",
+      "phase": "Phase4_Integration",
+      "passed": true,
+      "expected": "Data flows through all pipeline stages",
+      "actual": "stage1=True, stage2=True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:32.301509+00:00"
+    },
+    {
+      "name": "Integration: QuorumManager has_quorum",
+      "phase": "Phase4_Integration",
+      "passed": true,
+      "expected": "has_quorum checks _write_quorum",
+      "actual": "has_quorum: True, write_quorum: True",
+      "error": "",
+      "timestamp": "2026-05-17T18:26:32.301724+00:00"
+    }
+  ],
+  "elapsed_seconds": 1.9
+}

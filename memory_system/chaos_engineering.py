@@ -16,7 +16,11 @@ import json
 import logging
 import os
 import random
-import resource
+try:
+    import resource
+    HAS_RESOURCE = True
+except ImportError:
+    HAS_RESOURCE = False
 import signal
 import socket
 import subprocess
@@ -389,8 +393,8 @@ class MemoryFaultInjector(FaultInjector):
     def _save_rollback_state(self) -> None:
         """保存内存限制状态"""
         try:
-            import resource
-            self._rollback_state['memory_limit'] = resource.getrlimit(resource.RLIMIT_AS)
+            if HAS_RESOURCE:
+                self._rollback_state['memory_limit'] = resource.getrlimit(resource.RLIMIT_AS)
         except Exception:
             pass
 
@@ -442,8 +446,8 @@ class MemoryFaultInjector(FaultInjector):
     def _set_memory_limit(self, limit_bytes: int) -> None:
         """设置内存限制"""
         try:
-            import resource
-            resource.setrlimit(resource.RLIMIT_AS, (limit_bytes, limit_bytes))
+            if HAS_RESOURCE:
+                resource.setrlimit(resource.RLIMIT_AS, (limit_bytes, limit_bytes))
         except Exception as e:
             logger.warning(f"Failed to set memory limit: {e}")
 
@@ -462,8 +466,8 @@ class MemoryFaultInjector(FaultInjector):
             # 恢复内存限制
             if 'memory_limit' in self._rollback_state:
                 try:
-                    import resource
-                    resource.setrlimit(resource.RLIMIT_AS, self._rollback_state['memory_limit'])
+                    if HAS_RESOURCE:
+                        resource.setrlimit(resource.RLIMIT_AS, self._rollback_state['memory_limit'])
                 except Exception:
                     pass
             

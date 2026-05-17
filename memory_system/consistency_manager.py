@@ -30,13 +30,13 @@ from collections import defaultdict
 import threading
 
 # 导入核心组件
-from hybrid_logical_clock import HybridLogicalClock, HLCTimestamp, get_timestamp
-from vector_clock import VectorClock, VectorClockManager, VectorClockRelation
-from session_consistency import (
+from memory_system.hybrid_logical_clock import HybridLogicalClock, HLCTimestamp, get_timestamp
+from memory_system.vector_clock import VectorClock, VectorClockManager, VectorClockRelation
+from memory_system.session_consistency import (
     SessionManager, SessionState, SessionConsistencyLevel,
     ConsistentSession
 )
-from partition_tolerance import (
+from memory_system.partition_tolerance import (
     PartitionManager, QuorumManager, PartitionTolerantStorage,
     NodeState, PartitionState
 )
@@ -489,7 +489,7 @@ class ConsistencyManager:
                 if req["type"] in ["read_your_writes", "monotonic_reads"]:
                     ts_dict = req.get("min_timestamp")
                     if ts_dict:
-                        from hybrid_logical_clock import HLCTimestamp
+                        from memory_system.hybrid_logical_clock import HLCTimestamp
                         ts = HLCTimestamp.from_dict(ts_dict)
                         if min_timestamp is None or ts > min_timestamp:
                             min_timestamp = ts

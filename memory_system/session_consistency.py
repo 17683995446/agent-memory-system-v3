@@ -29,8 +29,8 @@ from collections import defaultdict
 import threading
 import asyncio
 
-from hybrid_logical_clock import HybridLogicalClock, HLCTimestamp, get_timestamp
-from vector_clock import VectorClock, VectorClockRelation
+from memory_system.hybrid_logical_clock import HybridLogicalClock, HLCTimestamp, get_timestamp
+from memory_system.vector_clock import VectorClock, VectorClockRelation
 
 
 class SessionConsistencyLevel(Enum):

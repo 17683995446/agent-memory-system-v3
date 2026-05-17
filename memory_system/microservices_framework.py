@@ -377,54 +377,55 @@ class InMemoryServiceRegistry(ServiceRegistry):
 
     async def _attempt_recovery(self) -> None:
         """
-        尝试恢复失败的服务
-
-        DEFECT-S4-001 [P0] 修复: 实现自动恢复逻辑
+        尝试恢复失败的服务 - DA-014 [P1] 修复: 锁外执行网络I/O
         """
-        recovered = []
-
+        # Phase 1: 在锁内收集需要检查的服务
         async with self._lock:
+            to_check = []
             for sid, failure_info in list(self._failed_services.items()):
                 instance = failure_info.get("instance")
                 if not instance:
                     continue
-
-                # 检查恢复尝试次数
                 attempts = self._recovery_attempts.get(sid, 0)
                 if attempts >= self._max_recovery_attempts:
-                    logger.warning(
-                        f"Max recovery attempts ({self._max_recovery_attempts}) "
-                        f"reached for service {instance.name} ({sid}), removing from recovery"
-                    )
-                    recovered.append(sid)
+                    to_check.append((sid, instance, attempts, True))  # True = should remove
                     continue
+                to_check.append((sid, instance, attempts, False))
 
-                # 尝试恢复
-                self._recovery_attempts[sid] = attempts + 1
-                logger.info(
-                    f"Attempting recovery of {instance.name} ({sid}), "
-                    f"attempt {attempts + 1}/{self._max_recovery_attempts}"
-                )
-
-                # 执行健康检查
+        # Phase 2: 在锁外执行健康检查（网络I/O）
+        health_results = {}
+        for sid, instance, attempts, should_remove in to_check:
+            if should_remove:
+                health_results[sid] = ("remove", None)
+            else:
                 is_healthy = await self._check_service_health(instance)
+                health_results[sid] = ("check", is_healthy)
 
-                if is_healthy:
-                    # 恢复成功
-                    instance.status = ServiceStatus.HEALTHY
-                    instance.last_heartbeat = datetime.now(timezone.utc)
-                    self._services[sid] = instance
-                    self._service_index[instance.name].add(sid)
-                    recovered.append(sid)
-                    # 重置恢复计数
-                    self._recovery_attempts.pop(sid, None)
-                    logger.info(f"Service recovered successfully: {instance.name} ({sid})")
-                    # 通知观察者
-                    await self._notify_watchers(instance.name)
-
-        # 清理已恢复的服务记录
-        for sid in recovered:
-            self._failed_services.pop(sid, None)
+        # Phase 3: 在锁内更新状态
+        async with self._lock:
+            for sid, (action, result) in health_results.items():
+                if action == "remove":
+                    self._failed_services.pop(sid, None)
+                    logger.warning(
+                        f"Max recovery attempts reached for service {sid}, removing"
+                    )
+                elif result:  # is_healthy
+                    # Find the instance and update
+                    failure_info = self._failed_services.get(sid)
+                    if failure_info:
+                        instance = failure_info.get("instance")
+                        if instance:
+                            instance.status = ServiceStatus.HEALTHY
+                            instance.last_heartbeat = datetime.now(timezone.utc)
+                            self._services[sid] = instance
+                            self._service_index[instance.name].add(sid)
+                            del self._failed_services[sid]
+                            self._recovery_attempts.pop(sid, None)
+                            logger.info(f"Service {instance.name} ({sid}) recovered successfully")
+                else:
+                    failure_info = self._failed_services.get(sid)
+                    if failure_info:
+                        self._recovery_attempts[sid] = self._recovery_attempts.get(sid, 0) + 1
 
     async def _check_service_health(self, instance: ServiceInstance) -> bool:
         """

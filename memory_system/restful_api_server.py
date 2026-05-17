@@ -17,7 +17,13 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Request, status, Web
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import BaseModel, Field
+try:
+    from pydantic import BaseModel, Field
+    HAS_PYDANTIC = True
+except ImportError:
+    HAS_PYDANTIC = False
+    BaseModel = object
+    Field = lambda **kwargs: kwargs
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded

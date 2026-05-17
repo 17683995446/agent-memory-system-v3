@@ -20,6 +20,7 @@ import secrets
 import threading
 import time
 import uuid
+import warnings
 from abc import ABC, abstractmethod
 from base64 import b64decode, b64encode
 from dataclasses import dataclass, field
@@ -215,7 +216,11 @@ class InputValidator:
     
     def escape_sql(self, value: str) -> str:
         """转义SQL特殊字符"""
-        # 基本转义，实际应使用参数化查询
+        warnings.warn(
+            "escape_sql is not safe against SQL injection. Use parameterized queries instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         return value.replace("'", "''").replace("\\", "\\\\")
     
     def validate_json(self, value: str) -> Tuple[bool, Optional[Dict]]:
@@ -308,12 +313,22 @@ class CryptoManager:
         elif algorithm == "sha512":
             return hashlib.sha512(data.encode()).hexdigest()
         elif algorithm == "md5":
+            warnings.warn(
+                "MD5 is cryptographically broken. Use SHA-256 instead.",
+                DeprecationWarning,
+                stacklevel=2
+            )
             return hashlib.md5(data.encode()).hexdigest()
         else:
             raise ValueError(f"Unsupported algorithm: {algorithm}")
     
     def simple_encrypt(self, data: str, key: Optional[bytes] = None) -> str:
         """简单加密 (XOR，仅用于演示，生产环境请使用专业加密库)"""
+        warnings.warn(
+            "simple_encrypt uses insecure XOR encryption. Use encrypt() with AES instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         key = key or self._master_key
         key_len = len(key)
         encrypted = bytearray()
@@ -323,6 +338,11 @@ class CryptoManager:
     
     def simple_decrypt(self, encrypted_data: str, key: Optional[bytes] = None) -> str:
         """简单解密"""
+        warnings.warn(
+            "simple_decrypt uses insecure XOR encryption. Use decrypt() with AES instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         key = key or self._master_key
         encrypted = b64decode(encrypted_data)
         key_len = len(key)
@@ -457,36 +477,37 @@ class RBACManager:
             - 资源特定权限优先于默认权限，且资源特定权限完全覆盖默认权限
             - 添加显式拒绝检查
         """
-        user = self.get_user(user_id)
-        if not user:
-            return False
-
-        if not user.is_active:
-            return False
-
-        # DEFECT-R3-S5-003 [P0] 修复: 如果指定了资源，优先使用资源特定权限
-        if resource:
-            resource_perms_config = self._resource_permissions.get(resource, {})
-
-            # 检查是否有任何角色在该资源上定义了特定权限
-            has_resource_specific_config = False
-            for role in user.roles:
-                if role in resource_perms_config:
-                    has_resource_specific_config = True
-                    if permission in resource_perms_config[role]:
-                        return True
-
-            # 如果该资源有特定配置，但没有找到权限，则拒绝访问
-            if has_resource_specific_config:
+        with self._lock:
+            user = self._users.get(user_id)
+            if not user:
                 return False
 
-        # DEFECT-R3-S5-003 [P0] 修复: 使用默认角色权限
-        for role in user.roles:
-            role_perms = self._role_permissions.get(role, [])
-            if permission in role_perms:
-                return True
+            if not user.is_active:
+                return False
 
-        return False
+            # DEFECT-R3-S5-003 [P0] 修复: 如果指定了资源，优先使用资源特定权限
+            if resource:
+                resource_perms_config = self._resource_permissions.get(resource, {})
+
+                # 检查是否有任何角色在该资源上定义了特定权限
+                has_resource_specific_config = False
+                for role in user.roles:
+                    if role in resource_perms_config:
+                        has_resource_specific_config = True
+                        if permission in resource_perms_config[role]:
+                            return True
+
+                # 如果该资源有特定配置，但没有找到权限，则拒绝访问
+                if has_resource_specific_config:
+                    return False
+
+            # DEFECT-R3-S5-003 [P0] 修复: 使用默认角色权限
+            for role in user.roles:
+                role_perms = self._role_permissions.get(role, [])
+                if permission in role_perms:
+                    return True
+
+            return False
     
     def set_resource_permission(self, resource: str, role: Role, permissions: List[Permission]) -> None:
         """设置资源权限"""
@@ -621,10 +642,12 @@ class AuditLogger:
         self._max_entries = max_entries
         self._lock = threading.Lock()
         self._handlers: List[Callable[[AuditLogEntry], None]] = []
+        self._handlers_lock = threading.Lock()
     
     def add_handler(self, handler: Callable[[AuditLogEntry], None]) -> None:
         """添加日志处理器"""
-        self._handlers.append(handler)
+        with self._handlers_lock:
+            self._handlers.append(handler)
     
     def log(
         self,
@@ -656,8 +679,10 @@ class AuditLogger:
             if len(self._entries) > self._max_entries:
                 self._entries = self._entries[-self._max_entries:]
         
-        # 通知处理器
-        for handler in self._handlers:
+        # 通知处理器 (使用锁保护handlers列表的快照)
+        with self._handlers_lock:
+            handlers_snapshot = self._handlers.copy()
+        for handler in handlers_snapshot:
             try:
                 handler(entry)
             except Exception as e:
@@ -846,8 +871,8 @@ class SecurityHardeningModule:
         >>> decrypted = security.crypto.decrypt(encrypted)
         >>> 
         >>> # RBAC 权限检查
-        >>> security.rbac.add_role("admin", [Permission.READ, Permission.WRITE, Permission.ADMIN])
-        >>> security.rbac.assign_role("user_001", "admin")
+        >>> from security_hardening import Role
+        >>> security.rbac.assign_role("user_001", Role.ADMIN)
         >>> allowed = security.rbac.check_permission("user_001", Permission.WRITE)
     """
     
