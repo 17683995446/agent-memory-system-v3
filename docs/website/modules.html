@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模块详解 - Agent Memory System V3.0</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <div class="header-logo-icon">AM</div>
+      <div>
+        <div class="header-logo-text">Agent Memory System</div>
+        <span class="header-logo-version">V3.0</span>
+      </div>
+    </a>
+    <div class="header-right">
+      <div class="search-box">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜索文档...">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">概览</div>
+          <a href="index.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            首页
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">架构设计</div>
+          <a href="architecture.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            架构设计
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">流程图</div>
+          <a href="flows.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            核心流程
+          </a>
+          <a href="sequence.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            时序图
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">详细设计</div>
+          <a href="modules.html" class="nav-item active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            模块详解
+          </a>
+          <a href="tech-specs.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            技术说明
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>模块详解</h1>
+        <p>系统各模块的详细设计，包括核心抽象层、存储后端、检索策略等</p>
+      </div>
+
+      <!-- Core Abstraction Layer -->
+      <div class="card" id="abstraction">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            核心抽象层模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class Memory {
+        +string ID
+        +string AgentID
+        +string Content
+        +Vector Embedding
+        +Metadata Meta
+        +Timestamp CreatedAt
+        +Timestamp UpdatedAt
+        +float Importance
+        +int AccessCount
+        +Store()
+        +Retrieve()
+        +Merge()
+        +Forget()
+    }
+
+    class MemoryStore {
+        <<interface>>
+        +Store(memory Memory)
+        +Retrieve(query Query) []Memory
+        +Delete(id string)
+        +Update(memory Memory)
+    }
+
+    class RetrievalStrategy {
+        <<interface>>
+        +Search(query Query) []Result
+        +Rank(results []Result) []Result
+    }
+
+    class EmbeddingProvider {
+        <<interface>>
+        +Embed(text string) Vector
+        +BatchEmbed(texts []string) []Vector
+        +GetDimension() int
+    }
+
+    class ConsistencyManager {
+        <<interface>>
+        +Propose(entry LogEntry)
+        +Commit(index int)
+        +Apply(entry LogEntry)
+    }
+
+    MemoryStore <|.. TieredMemoryStore
+    RetrievalStrategy <|.. VectorRetrieval
+    RetrievalStrategy <|.. KeywordRetrieval
+    RetrievalStrategy <|.. HybridRetrieval
+    EmbeddingProvider <|.. OpenAIProvider
+    EmbeddingProvider <|.. BERTProvider
+    EmbeddingProvider <|.. LocalProvider
+    ConsistencyManager <|.. RaftManager
+
+    Memory --> MemoryStore
+    MemoryStore --> RetrievalStrategy
+    MemoryStore --> EmbeddingProvider
+    MemoryStore --> ConsistencyManager
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>核心抽象层定义了系统的核心领域模型和接口，包括记忆实体、存储接口、
+              检索策略、嵌入提供者和一致性管理器。通过接口抽象实现模块间的解耦。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Storage Backend Module -->
+      <div class="card" id="storage">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+            存储后端模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class StorageAdapter {
+        <<interface>>
+        +Connect() error
+        +Disconnect() error
+        +Health() bool
+    }
+
+    class HotStorage {
+        -redisClient *Redis
+        -ttl time.Duration
+        +Get(key string) (Value, error)
+        +Set(key string, value Value, ttl time.Duration) error
+        +Delete(key string) error
+        +Expire(key string, ttl time.Duration) error
+    }
+
+    class WarmStorage {
+        -mongoClient *MongoDB
+        -collection string
+        +Find(query Query) ([]Document, error)
+        +Insert(doc Document) error
+        +Update(filter Filter, update Update) error
+        +Delete(filter Filter) error
+    }
+
+    class ColdStorage {
+        -s3Client *S3
+        -bucket string
+        +Upload(key string, data []byte) error
+        +Download(key string) ([]byte, error)
+        +Archive(keys []string) error
+    }
+
+    class VectorStorage {
+        -milvusClient *Milvus
+        -collection string
+        +Search(vector Vector, topK int) ([]SearchResult, error)
+        +Insert(vectors []Vector) error
+        +Delete(ids []string) error
+        +CreateIndex(params IndexParams) error
+    }
+
+    class TieredStorageManager {
+        -hot HotStorage
+        -warm WarmStorage
+        -cold ColdStorage
+        -vector VectorStorage
+        +Store(memory Memory) error
+        +Retrieve(query Query) ([]Memory, error)
+        +MigrateToWarm(keys []string) error
+        +MigrateToCold(keys []string) error
+    }
+
+    StorageAdapter <|.. HotStorage
+    StorageAdapter <|.. WarmStorage
+    StorageAdapter <|.. ColdStorage
+    StorageAdapter <|.. VectorStorage
+
+    TieredStorageManager --> HotStorage
+    TieredStorageManager --> WarmStorage
+    TieredStorageManager --> ColdStorage
+    TieredStorageManager --> VectorStorage
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>存储后端采用分层架构，热存储使用Redis提供低延迟访问，
+              温存储使用MongoDB持久化结构化数据，冷存储使用S3归档历史数据，向量存储使用Milvus支持相似度检索。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Retrieval Strategy Module -->
+      <div class="card" id="retrieval">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            检索策略模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class RetrievalEngine {
+        -strategies []RetrievalStrategy
+        -selector StrategySelector
+        +Search(query Query) ([]Result, error)
+        +SelectStrategy(query Query) RetrievalStrategy
+        +Rank(results []Result) []Result
+    }
+
+    class RetrievalStrategy {
+        <<interface>>
+        +Name() string
+        +Search(query Query) ([]Result, error)
+        +Score(query Query, memory Memory) float64
+    }
+
+    class VectorRetrieval {
+        -vectorDB VectorStorage
+        -embeddingProvider EmbeddingProvider
+        +Search(query Query) ([]Result, error)
+        +Score(query Query, memory Memory) float64
+    }
+
+    class KeywordRetrieval {
+        -index InvertedIndex
+        -tokenizer Tokenizer
+        +Search(query Query) ([]Result, error)
+        +Score(query Query, memory Memory) float64
+    }
+
+    class SemanticRetrieval {
+        -model LanguageModel
+        -embeddingProvider EmbeddingProvider
+        +Search(query Query) ([]Result, error)
+        +Score(query Query, memory Memory) float64
+    }
+
+    class HybridRetrieval {
+        -vectorRetrieval VectorRetrieval
+        -keywordRetrieval KeywordRetrieval
+        -weights Weights
+        +Search(query Query) ([]Result, error)
+        +Score(query Query, memory Memory) float64
+        +CombineResults(results ...[]Result) []Result
+    }
+
+    class StrategySelector {
+        -rules []SelectionRule
+        +Select(query Query) RetrievalStrategy
+        +LearnFromFeedback(feedback Feedback)
+    }
+
+    RetrievalEngine --> RetrievalStrategy
+    RetrievalStrategy <|.. VectorRetrieval
+    RetrievalStrategy <|.. KeywordRetrieval
+    RetrievalStrategy <|.. SemanticRetrieval
+    RetrievalStrategy <|.. HybridRetrieval
+    RetrievalEngine --> StrategySelector
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>检索引擎支持多种检索策略，包括向量检索、关键词检索、语义检索和混合检索。
+              策略选择器根据查询特征自动选择最优策略，并支持基于反馈的自学习优化。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Embedding Provider Module -->
+      <div class="card" id="embedding">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            嵌入提供者模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class EmbeddingProvider {
+        <<interface>>
+        +Name() string
+        +Embed(text string) (Vector, error)
+        +BatchEmbed(texts []string) ([]Vector, error)
+        +GetDimension() int
+        +Health() bool
+    }
+
+    class OpenAIProvider {
+        -client OpenAIClient
+        -model string
+        -apiKey string
+        +Embed(text string) (Vector, error)
+        +BatchEmbed(texts []string) ([]Vector, error)
+        +GetDimension() int
+    }
+
+    class BERTProvider {
+        -model BERTModel
+        -tokenizer Tokenizer
+        -device string
+        +Embed(text string) (Vector, error)
+        +BatchEmbed(texts []string) ([]Vector, error)
+        +GetDimension() int
+    }
+
+    class LocalProvider {
+        -model EmbeddingModel
+        -cache EmbeddingCache
+        +Embed(text string) (Vector, error)
+        +BatchEmbed(texts []string) ([]Vector, error)
+        +GetDimension() int
+    }
+
+    class EmbeddingManager {
+        -providers map[string]EmbeddingProvider
+        -selector ProviderSelector
+        -cache EmbeddingCache
+        +GetProvider(name string) EmbeddingProvider
+        +SelectProvider(context Context) EmbeddingProvider
+        +Embed(text string, provider string) (Vector, error)
+        +BatchEmbed(texts []string, provider string) ([]Vector, error)
+    }
+
+    class ProviderSelector {
+        -latencyTracker LatencyTracker
+        -qualityTracker QualityTracker
+        +Select(context Context) string
+        +UpdateMetrics(provider string, latency time.Duration, quality float64)
+    }
+
+    EmbeddingProvider <|.. OpenAIProvider
+    EmbeddingProvider <|.. BERTProvider
+    EmbeddingProvider <|.. LocalProvider
+    EmbeddingManager --> EmbeddingProvider
+    EmbeddingManager --> ProviderSelector
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>嵌入提供者支持多种模型，包括OpenAI API、BERT本地模型和轻量级本地模型。
+              管理者根据延迟、质量和成本自动选择最优提供者，并支持结果缓存。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consistency Manager Module -->
+      <div class="card" id="consistency">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            一致性管理模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class RaftNode {
+        -id string
+        -state NodeState
+        -currentTerm int
+        -votedFor string
+        -log []LogEntry
+        -commitIndex int
+        -lastApplied int
+        +Start()
+        +Stop()
+        +Propose(cmd Command) (Result, error)
+        +IsLeader() bool
+    }
+
+    class RaftStateMachine {
+        <<interface>>
+        +Apply(entry LogEntry) error
+        +Snapshot() (Snapshot, error)
+        +Restore(snapshot Snapshot) error
+    }
+
+    class RaftTransport {
+        <<interface>>
+        +SendAppendEntries(node string, req AppendEntriesRequest) (AppendEntriesResponse, error)
+        +SendRequestVote(node string, req RequestVoteRequest) (RequestVoteResponse, error)
+        +SendSnapshot(node string, req InstallSnapshotRequest) (InstallSnapshotResponse, error)
+    }
+
+    class RaftStorage {
+        <<interface>>
+        +SaveState(state PersistentState) error
+        +LoadState() (PersistentState, error)
+        +SaveEntries(entries []LogEntry) error
+        +LoadEntries() ([]LogEntry, error)
+    }
+
+    class ConsensusManager {
+        -raft RaftNode
+        -stateMachine RaftStateMachine
+        -transport RaftTransport
+        -storage RaftStorage
+        +Propose(command Command) (Result, error)
+        +GetCommitted(index int) (LogEntry, error)
+        +WaitCommitted(index int, timeout time.Duration) error
+        +IsLeader() bool
+        +GetLeader() string
+    }
+
+    class DistributedLock {
+        -consensus ConsensusManager
+        +Acquire(lockName string, ttl time.Duration) (Lock, error)
+        +Release(lock Lock) error
+        +Renew(lock Lock) error
+    }
+
+    RaftNode --> RaftStateMachine
+    RaftNode --> RaftTransport
+    RaftNode --> RaftStorage
+    ConsensusManager --> RaftNode
+    DistributedLock --> ConsensusManager
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>一致性管理基于Raft算法实现，提供强一致性保证。包含Raft节点状态机、
+              传输层、持久化存储等组件，同时提供分布式锁实现。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Self-Healing System Module -->
+      <div class="card" id="healing">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            自愈系统模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class HealthChecker {
+        -targets []Target
+        -interval time.Duration
+        -timeout time.Duration
+        +Start()
+        +Stop()
+        +Check(target Target) HealthStatus
+        +Register(target Target)
+        +Unregister(target Target)
+    }
+
+    class FailureDetector {
+        -phiAccrual PhiAccrual
+        -threshold float64
+        +Analyze(heartbeats []Heartbeat) Failure suspicion
+        +IsFailed(suspicion FailureSuspicion) bool
+        +GetConfidenceLevel() float64
+    }
+
+    class RecoveryOrchestrator {
+        -strategies map[string]RecoveryStrategy
+        -executor RecoveryExecutor
+        +DetectFailure(failure Failure) error
+        +SelectStrategy(failure Failure) RecoveryStrategy
+        +ExecuteRecovery(strategy RecoveryStrategy) error
+        +VerifyRecovery(failure Failure) bool
+    }
+
+    class RecoveryStrategy {
+        <<interface>>
+        +Name() string
+        +Execute(failure Failure) error
+        +Rollback() error
+    }
+
+    class NodeReplacement {
+        -k8sClient KubernetesClient
+        +Execute(failure Failure) error
+        +Rollback() error
+    }
+
+    class DataRepair {
+        -storage Storage
+        +Execute(failure Failure) error
+        +Rollback() error
+    }
+
+    class ServiceRestart {
+        -serviceManager ServiceManager
+        +Execute(failure Failure) error
+        +Rollback() error
+    }
+
+    class AutoScaler {
+        -metrics MetricsCollector
+        -k8sClient KubernetesClient
+        +EvaluateScaling() ScalingDecision
+        +ScaleUp(reason string) error
+        +ScaleDown(reason string) error
+    }
+
+    HealthChecker --> FailureDetector
+    FailureDetector --> RecoveryOrchestrator
+    RecoveryOrchestrator --> RecoveryStrategy
+    RecoveryStrategy <|.. NodeReplacement
+    RecoveryStrategy <|.. DataRepair
+    RecoveryStrategy <|.. ServiceRestart
+    RecoveryOrchestrator --> AutoScaler
+            </div>
+          </div>
+          <div class="alert alert-warning">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>自愈系统包含健康检查、故障检测、恢复编排和自动扩缩容等组件。
+              支持节点替换、数据修复、服务重启等多种恢复策略，实现故障的自动检测和恢复。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Microservice Framework Module -->
+      <div class="card" id="microservice">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            微服务框架模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class Service {
+        <<interface>>
+        +Name() string
+        +Start() error
+        +Stop() error
+        +Health() HealthStatus
+    }
+
+    class GRPCServer {
+        -server *grpc.Server
+        -port int
+        -interceptors []Interceptor
+        +RegisterService(service Service)
+        +Start() error
+        +Stop() error
+        +AddInterceptor(interceptor Interceptor)
+    }
+
+    class HTTPServer {
+        -server *http.Server
+        -port int
+        -handlers map[string]Handler
+        +RegisterHandler(path string, handler Handler)
+        +Start() error
+        +Stop() error
+        +Use(middleware Middleware)
+    }
+
+    class ServiceRegistry {
+        -registry Registry
+        -ttl time.Duration
+        +Register(service ServiceInfo) error
+        +Deregister(serviceID string) error
+        +Discover(serviceName string) ([]ServiceInfo, error)
+        +Watch(serviceName string) (Watcher, error)
+    }
+
+    class LoadBalancer {
+        -strategy Strategy
+        +Select(services []ServiceInfo) ServiceInfo
+        +UpdateHealth(serviceID string, healthy bool)
+    }
+
+    class CircuitBreaker {
+        -threshold int
+        -timeout time.Duration
+        -state State
+        +Call(fn func() error) error
+        +RecordSuccess()
+        +RecordFailure()
+        +GetState() State
+    }
+
+    class RateLimiter {
+        -limiter Limiter
+        +Allow(key string) bool
+        +AllowN(key string, n int) bool
+    }
+
+    Service <|.. GRPCServer
+    Service <|.. HTTPServer
+    GRPCServer --> ServiceRegistry
+    HTTPServer --> ServiceRegistry
+    GRPCServer --> CircuitBreaker
+    HTTPServer --> CircuitBreaker
+    GRPCServer --> RateLimiter
+    HTTPServer --> RateLimiter
+    ServiceRegistry --> LoadBalancer
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>微服务框架提供服务注册发现、负载均衡、熔断限流等核心能力。
+              支持gRPC和HTTP双协议，内置多种中间件实现横切关注点。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Module -->
+      <div class="card" id="security">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            安全模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class Authenticator {
+        <<interface>>
+        +Authenticate(credentials Credentials) (Identity, error)
+        +ValidateToken(token string) (Identity, error)
+        +RefreshToken(token string) (string, error)
+    }
+
+    class JWTAuthenticator {
+        -secret string
+        -issuer string
+        -expiry time.Duration
+        +Authenticate(credentials Credentials) (Identity, error)
+        +ValidateToken(token string) (Identity, error)
+        +RefreshToken(token string) (string, error)
+    }
+
+    class OAuth2Authenticator {
+        -provider OAuthProvider
+        +Authenticate(credentials Credentials) (Identity, error)
+        +ValidateToken(token string) (Identity, error)
+        +RefreshToken(token string) (string, error)
+    }
+
+    class Authorizer {
+        <<interface>>
+        +Authorize(identity Identity, resource Resource, action Action) bool
+        +GetPermissions(identity Identity) []Permission
+    }
+
+    class RBACAuthorizer {
+        -roles map[string]Role
+        -permissions map[string]Permission
+        +Authorize(identity Identity, resource Resource, action Action) bool
+        +GetPermissions(identity Identity) []Permission
+        +AssignRole(identity Identity, role string) error
+    }
+
+    class EncryptionManager {
+        -provider EncryptionProvider
+        +Encrypt(plaintext []byte) ([]byte, error)
+        +Decrypt(ciphertext []byte) ([]byte, error)
+        +EncryptField(data interface{}, field string) error
+    }
+
+    class AuditLogger {
+        -storage AuditStorage
+        +Log(event AuditEvent) error
+        +Query(filter AuditFilter) ([]AuditEvent, error)
+        +Export(start, end time.Time) ([]AuditEvent, error)
+    }
+
+    class SecurityManager {
+        -authenticator Authenticator
+        -authorizer Authorizer
+        -encryption EncryptionManager
+        -audit AuditLogger
+        +Authenticate(credentials Credentials) (Identity, error)
+        +Authorize(identity Identity, resource Resource, action Action) bool
+        +Audit(event AuditEvent) error
+    }
+
+    Authenticator <|.. JWTAuthenticator
+    Authenticator <|.. OAuth2Authenticator
+    Authorizer <|.. RBACAuthorizer
+    SecurityManager --> Authenticator
+    SecurityManager --> Authorizer
+    SecurityManager --> EncryptionManager
+    SecurityManager --> AuditLogger
+            </div>
+          </div>
+          <div class="alert alert-danger">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>安全模块提供认证、授权、加密和审计功能。支持JWT和OAuth2认证，
+              基于RBAC的权限管理，字段级加密，以及完整的操作审计日志。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monitoring Module -->
+      <div class="card" id="monitoring">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            监控告警模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class MetricsCollector {
+        -registry Registry
+        +Counter(name string) Counter
+        +Gauge(name string) Gauge
+        +Histogram(name string) Histogram
+        +Summary(name string) Summary
+        +Expose() string
+    }
+
+    class Tracer {
+        -exporter SpanExporter
+        +StartSpan(name string, opts ...SpanOption) Span
+        +Inject(ctx context.Context, carrier Carrier)
+        +Extract(carrier Carrier) SpanContext
+    }
+
+    class Logger {
+        -level LogLevel
+        -output io.Writer
+        -formatter Formatter
+        +Debug(msg string, fields ...Field)
+        +Info(msg string, fields ...Field)
+        +Warn(msg string, fields ...Field)
+        +Error(msg string, fields ...Field)
+        +Fatal(msg string, fields ...Field)
+    }
+
+    class AlertManager {
+        -rules []AlertRule
+        -notifiers map[string]Notifier
+        +AddRule(rule AlertRule) error
+        +RemoveRule(name string) error
+        +Evaluate() []Alert
+        +Notify(alert Alert) error
+    }
+
+    class AlertRule {
+        +Name string
+        +Condition Condition
+        +Duration time.Duration
+        +Severity Severity
+        +Labels map[string]string
+        +Annotations map[string]string
+        +Evaluate(metrics Metrics) bool
+    }
+
+    class Notifier {
+        <<interface>>
+        +Name() string
+        +Notify(alert Alert) error
+    }
+
+    class EmailNotifier {
+        -smtpConfig SMTPConfig
+        +Notify(alert Alert) error
+    }
+
+    class SlackNotifier {
+        -webhookURL string
+        +Notify(alert Alert) error
+    }
+
+    class PagerDutyNotifier {
+        -apiKey string
+        +Notify(alert Alert) error
+    }
+
+    class Dashboard {
+        -metrics MetricsCollector
+        +Render() DashboardView
+        +Query(query string) QueryResult
+    }
+
+    MetricsCollector --> AlertManager
+    AlertManager --> AlertRule
+    AlertManager --> Notifier
+    Notifier <|.. EmailNotifier
+    Notifier <|.. SlackNotifier
+    Notifier <|.. PagerDutyNotifier
+    MetricsCollector --> Dashboard
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>监控模块提供Metrics、Tracing、Logging三位一体可观测性。
+              告警管理支持多种规则和多渠道通知，Dashboard提供可视化监控界面。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Config Center Module -->
+      <div class="card" id="config">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            配置中心模块图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+classDiagram
+    class ConfigProvider {
+        <<interface>>
+        +Get(key string) (Value, error)
+        +Set(key string, value Value) error
+        +Delete(key string) error
+        +Watch(key string) (Watcher, error)
+    }
+
+    class ETCDProvider {
+        -client ETCDClient
+        -prefix string
+        +Get(key string) (Value, error)
+        +Set(key string, value Value) error
+        +Delete(key string) error
+        +Watch(key string) (Watcher, error)
+    }
+
+    class ConsulProvider {
+        -client ConsulClient
+        +Get(key string) (Value, error)
+        +Set(key string, value Value) error
+        +Delete(key string) error
+        +Watch(key string) (Watcher, error)
+    }
+
+    class FileProvider {
+        -path string
+        -format Format
+        +Get(key string) (Value, error)
+        +Set(key string, value Value) error
+        +Delete(key string) error
+        +Watch(key string) (Watcher, error)
+    }
+
+    class ConfigManager {
+        -providers []ConfigProvider
+        -cache ConfigCache
+        -watchers map[string][]Watcher
+        +Load() error
+        +Get(key string) (Value, error)
+        +GetString(key string) string
+        +GetInt(key string) int
+        +GetBool(key string) bool
+        +GetDuration(key string) time.Duration
+        +Subscribe(key string, handler Handler)
+        +Reload() error
+    }
+
+    class ConfigValidator {
+        -rules []ValidationRule
+        +Validate(config Config) error
+        +AddRule(rule ValidationRule)
+    }
+
+    class FeatureFlag {
+        -config ConfigManager
+        +IsEnabled(flag string) bool
+        +GetVariant(flag string) string
+        +GetPercentage(flag string) int
+    }
+
+    ConfigProvider <|.. ETCDProvider
+    ConfigProvider <|.. ConsulProvider
+    ConfigProvider <|.. FileProvider
+    ConfigManager --> ConfigProvider
+    ConfigManager --> ConfigValidator
+    ConfigManager --> FeatureFlag
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>模块说明：</strong>配置中心支持多种配置源（ETCD、Consul、文件），提供配置热更新、
+              配置验证和特性开关功能。支持监听配置变化并自动刷新。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module Summary -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            模块汇总
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>模块</th>
+                  <th>职责</th>
+                  <th>核心组件</th>
+                  <th>技术选型</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-blue">核心抽象层</span></td>
+                  <td>领域模型与接口定义</td>
+                  <td>Memory, Store, Strategy, Provider</td>
+                  <td>Go Interface</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">存储后端</span></td>
+                  <td>分层数据存储</td>
+                  <td>Redis, MongoDB, S3, Milvus</td>
+                  <td>官方Client</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">检索策略</span></td>
+                  <td>智能检索引擎</td>
+                  <td>Vector, Keyword, Hybrid</td>
+                  <td>自定义实现</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">嵌入提供者</span></td>
+                  <td>向量生成服务</td>
+                  <td>OpenAI, BERT, Local</td>
+                  <td>REST API / ONNX</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-red">一致性管理</span></td>
+                  <td>分布式共识</td>
+                  <td>Raft, State Machine</td>
+                  <td>etcd Raft</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-cyan">自愈系统</span></td>
+                  <td>故障检测与恢复</td>
+                  <td>Health Check, Recovery</td>
+                  <td>自定义实现</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-blue">微服务框架</span></td>
+                  <td>服务治理</td>
+                  <td>gRPC, HTTP, Registry</td>
+                  <td>gRPC / Gin</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">安全模块</span></td>
+                  <td>认证授权加密</td>
+                  <td>JWT, RBAC, Encryption</td>
+                  <td>JWT-go / Casbin</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">监控告警</span></td>
+                  <td>可观测性</td>
+                  <td>Metrics, Trace, Log</td>
+                  <td>Prometheus / Jaeger</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">配置中心</span></td>
+                  <td>配置管理</td>
+                  <td>Provider, Manager, Flag</td>
+                  <td>ETCD / Viper</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="common.js"></script>
+</body>
+</html>

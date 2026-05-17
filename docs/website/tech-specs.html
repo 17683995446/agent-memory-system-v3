@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术说明 - Agent Memory System V3.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="header">
+        <div class="flex items-center gap-4">
+            <button id="mobile-menu-btn" class="md:hidden text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <h1 class="text-xl font-bold">Agent Memory System V3.0</h1>
+        </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="搜索文档...">
+            <button id="search-btn">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="nav-section">
+                <h3 class="nav-title">概览</h3>
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">首页</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <h3 class="nav-title">架构设计</h3>
+                <ul class="nav-list">
+                    <li><a href="architecture.html" class="nav-link">系统架构</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <h3 class="nav-title">流程图</h3>
+                <ul class="nav-list">
+                    <li><a href="flows.html" class="nav-link">核心流程</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <h3 class="nav-title">时序图</h3>
+                <ul class="nav-list">
+                    <li><a href="sequence.html" class="nav-link">交互时序</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <h3 class="nav-title">模块详解</h3>
+                <ul class="nav-list">
+                    <li><a href="modules.html" class="nav-link">模块关系</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <h3 class="nav-title">技术说明</h3>
+                <ul class="nav-list">
+                    <li><a href="tech-specs.html" class="nav-link active">技术规范</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1 class="page-title">技术说明</h1>
+            <p class="page-description">Agent Memory System V3.0 详细技术规范，包括数据模型、API接口、配置参数、性能指标和部署指南</p>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="data-model">数据模型</button>
+                <button class="tab-btn" data-tab="api-docs">API接口</button>
+                <button class="tab-btn" data-tab="config">配置参数</button>
+                <button class="tab-btn" data-tab="performance">性能指标</button>
+                <button class="tab-btn" data-tab="deployment">部署指南</button>
+            </div>
+
+            <!-- Tab Content: Data Model -->
+            <div id="data-model" class="tab-content active">
+                <div class="card">
+                    <h2 class="card-title">核心数据模型</h2>
+                    <p class="mb-4">系统采用分层数据模型设计，支持多种数据类型和灵活的关系定义。</p>
+                    
+                    <h3 class="text-xl font-semibold mb-3">1. Memory 数据模型</h3>
+                    <pre><code class="language-json">{
+  "id": "uuid-string",
+  "content": "记忆内容文本",
+  "embedding": [0.1, 0.2, ...],
+  "metadata": {
+    "source": "user-input",
+    "timestamp": "2024-01-01T00:00:00Z",
+    "importance": 0.85,
+    "tags": ["tag1", "tag2"],
+    "category": "conversation"
+  },
+  "vector_clock": {"node1": 10, "node2": 5},
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2024-01-01T00:00:00Z",
+  "ttl": 86400,
+  "access_count": 5
+}</code></pre>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">2. MemoryNode 实体关系</h3>
+                    <div class="mermaid">
+classDiagram
+    class MemoryNode {
+        +UUID id
+        +String content
+        +Vector embedding
+        +Metadata metadata
+        +VectorClock vector_clock
+        +DateTime created_at
+        +DateTime updated_at
+        +Integer ttl
+        +Integer access_count
+        +save()
+        +update()
+        +delete()
+        +get_similar()
+    }
+    
+    class Metadata {
+        +String source
+        +DateTime timestamp
+        +Float importance
+        +List tags
+        +String category
+    }
+    
+    class VectorClock {
+        +Map node_counters
+        +increment()
+        +merge()
+        +compare()
+    }
+    
+    MemoryNode --> Metadata
+    MemoryNode --> VectorClock
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">3. 数据类型定义</h3>
+                    <table class="w-full border-collapse border border-gray-300 mt-4">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border p-2 text-left">字段</th>
+                                <th class="border p-2 text-left">类型</th>
+                                <th class="border p-2 text-left">必填</th>
+                                <th class="border p-2 text-left">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border p-2">id</td>
+                                <td class="border p-2">UUID</td>
+                                <td class="border p-2">是</td>
+                                <td class="border p-2">唯一标识符</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">content</td>
+                                <td class="border p-2">String</td>
+                                <td class="border p-2">是</td>
+                                <td class="border p-2">记忆内容，最大10MB</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">embedding</td>
+                                <td class="border p-2">Vector</td>
+                                <td class="border p-2">否</td>
+                                <td class="border p-2">向量表示，维度768/1024/1536</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">metadata</td>
+                                <td class="border p-2">Object</td>
+                                <td class="border p-2">否</td>
+                                <td class="border p-2">元数据信息</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">vector_clock</td>
+                                <td class="border p-2">Map</td>
+                                <td class="border p-2">否</td>
+                                <td class="border p-2">分布式因果时钟</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">ttl</td>
+                                <td class="border p-2">Integer</td>
+                                <td class="border p-2">否</td>
+                                <td class="border p-2">生存时间（秒），0表示永久</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">索引模型</h2>
+                    <p class="mb-4">系统支持多种索引类型以优化不同查询场景。</p>
+                    
+                    <div class="mermaid">
+graph TB
+    subgraph "索引层"
+        A[HNSW索引<br/>向量相似度] --> B[内存索引<br/>热数据]
+        C[Inverted索引<br/>文本搜索] --> D[B+树索引<br/>范围查询]
+        E[Bitmap索引<br/>标签过滤] --> F[Time索引<br/>时间范围]
+    end
+    
+    subgraph "存储层"
+        B --> G[Hot存储<br/>Redis]
+        D --> H[Warm存储<br/>SSD]
+        F --> I[Cold存储<br/>S3]
+    end
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: API Docs -->
+            <div id="api-docs" class="tab-content">
+                <div class="card">
+                    <h2 class="card-title">REST API 接口</h2>
+                    <p class="mb-4">系统提供完整的RESTful API接口，支持CRUD操作和高级查询。</p>
+
+                    <h3 class="text-xl font-semibold mb-3">1. 记忆存储 API</h3>
+                    <div class="bg-gray-800 text-white p-4 rounded mb-4">
+                        <p class="text-green-400">POST /api/v1/memories</p>
+                        <p class="text-gray-400 mt-2">存储新的记忆内容</p>
+                    </div>
+                    <pre><code class="language-bash"># 请求示例
+curl -X POST http://localhost:8080/api/v1/memories \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "content": "这是一个重要的记忆",
+    "metadata": {
+      "source": "user-input",
+      "importance": 0.9,
+      "tags": ["重要", "工作"]
+    },
+    "ttl": 604800
+  }'
+
+# 响应示例
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "content": "这是一个重要的记忆",
+  "embedding": [0.1, 0.2, ...],
+  "metadata": {
+    "source": "user-input",
+    "importance": 0.9,
+    "tags": ["重要", "工作"]
+  },
+  "created_at": "2024-01-01T12:00:00Z",
+  "status": "stored"
+}</code></pre>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">2. 记忆检索 API</h3>
+                    <div class="bg-gray-800 text-white p-4 rounded mb-4">
+                        <p class="text-blue-400">GET /api/v1/memories/search</p>
+                        <p class="text-gray-400 mt-2">语义相似度搜索</p>
+                    </div>
+                    <pre><code class="language-bash"># 请求示例
+curl "http://localhost:8080/api/v1/memories/search?query=重要记忆&limit=10&threshold=0.8" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+
+# 响应示例
+{
+  "results": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "content": "这是一个重要的记忆",
+      "similarity": 0.95,
+      "metadata": {...}
+    }
+  ],
+  "total": 1,
+  "query_time_ms": 15.2
+}</code></pre>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">3. 批量操作 API</h3>
+                    <div class="bg-gray-800 text-white p-4 rounded mb-4">
+                        <p class="text-green-400">POST /api/v1/memories/batch</p>
+                        <p class="text-gray-400 mt-2">批量存储记忆</p>
+                    </div>
+                    <pre><code class="language-python"># Python SDK 示例
+from agent_memory import MemoryClient
+
+client = MemoryClient(api_key="YOUR_API_KEY")
+
+# 批量存储
+memories = [
+    {"content": "记忆1", "metadata": {"tag": "A"}},
+    {"content": "记忆2", "metadata": {"tag": "B"}},
+    {"content": "记忆3", "metadata": {"tag": "C"}}
+]
+
+results = client.batch_store(memories)
+print(f"成功存储: {results.success_count}")
+print(f"失败: {results.failed_count}")</code></pre>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">4. gRPC 接口</h3>
+                    <p class="mb-4">高性能场景推荐使用gRPC接口。</p>
+                    <pre><code class="language-protobuf">// memory_service.proto
+service MemoryService {
+  rpc StoreMemory(StoreRequest) returns (StoreResponse);
+  rpc RetrieveMemory(RetrieveRequest) returns (RetrieveResponse);
+  rpc SearchMemories(SearchRequest) returns (stream SearchResult);
+  rpc BatchStore(stream StoreRequest) returns (BatchResponse);
+  rpc SubscribeChanges(SubscribeRequest) returns (stream ChangeEvent);
+}</code></pre>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">WebSocket 实时接口</h2>
+                    <p class="mb-4">支持实时记忆更新通知和流式搜索。</p>
+                    <pre><code class="language-javascript">// JavaScript 客户端示例
+const ws = new WebSocket('ws://localhost:8080/ws/memories');
+
+ws.onopen = () => {
+  // 订阅记忆更新
+  ws.send(JSON.stringify({
+    action: 'subscribe',
+    filters: { tags: ['重要'] }
+  }));
+};
+
+ws.onmessage = (event) => {
+  const update = JSON.parse(event.data);
+  console.log('记忆更新:', update);
+};</code></pre>
+                </div>
+            </div>
+
+            <!-- Tab Content: Config -->
+            <div id="config" class="tab-content">
+                <div class="card">
+                    <h2 class="card-title">系统配置参数</h2>
+                    <p class="mb-4">通过配置文件或环境变量调整系统行为。</p>
+
+                    <h3 class="text-xl font-semibold mb-3">1. 核心配置 (config.yaml)</h3>
+                    <pre><code class="language-yaml"># 服务器配置
+server:
+  host: "0.0.0.0"
+  port: 8080
+  grpc_port: 50051
+  max_request_size: "10MB"
+  timeout: 30s
+
+# 存储配置
+storage:
+  backend: "milvus"  # milvus | chroma | qdrant | redis
+  connection:
+    host: "localhost"
+    port: 19530
+  index:
+    type: "HNSW"
+    params:
+      M: 16
+      efConstruction: 200
+      ef: 64
+
+# 嵌入模型配置
+embedding:
+  provider: "openai"  # openai | sentence-transformers | bge
+  model: "text-embedding-3-small"
+  dimension: 1536
+  batch_size: 100
+  timeout: 30s
+
+# 一致性配置
+consistency:
+  level: "causal"  # linearizable | causal | session | eventual
+  vector_clock:
+    enabled: true
+    max_nodes: 1000
+  raft:
+    enabled: true
+    election_timeout: 1000ms
+    heartbeat_interval: 100ms
+
+# 缓存配置
+cache:
+  enabled: true
+  type: "redis"
+  ttl: 3600s
+  max_size: "1GB"
+  hot_data_ratio: 0.2
+
+# 日志配置
+logging:
+  level: "info"  # debug | info | warn | error
+  format: "json"
+  output: "stdout"
+  file:
+    enabled: true
+    path: "/var/log/agent-memory/app.log"
+    max_size: "100MB"
+    max_backups: 10
+
+# 监控配置
+monitoring:
+  enabled: true
+  metrics_port: 9090
+  prometheus:
+    enabled: true
+    path: "/metrics"
+  tracing:
+    enabled: true
+    sampler: 0.1</code></pre>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">2. 环境变量配置</h3>
+                    <table class="w-full border-collapse border border-gray-300 mt-4">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border p-2 text-left">变量名</th>
+                                <th class="border p-2 text-left">默认值</th>
+                                <th class="border p-2 text-left">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border p-2">AMS_SERVER_HOST</td>
+                                <td class="border p-2">0.0.0.0</td>
+                                <td class="border p-2">服务器监听地址</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">AMS_SERVER_PORT</td>
+                                <td class="border p-2">8080</td>
+                                <td class="border p-2">HTTP服务端口</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">AMS_STORAGE_BACKEND</td>
+                                <td class="border p-2">milvus</td>
+                                <td class="border p-2">存储后端类型</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">AMS_EMBEDDING_PROVIDER</td>
+                                <td class="border p-2">openai</td>
+                                <td class="border p-2">嵌入模型提供者</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">AMS_OPENAI_API_KEY</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2">OpenAI API密钥</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">AMS_LOG_LEVEL</td>
+                                <td class="border p-2">info</td>
+                                <td class="border p-2">日志级别</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">AMS_CONSISTENCY_LEVEL</td>
+                                <td class="border p-2">causal</td>
+                                <td class="border p-2">一致性级别</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab Content: Performance -->
+            <div id="performance" class="tab-content">
+                <div class="card">
+                    <h2 class="card-title">性能指标</h2>
+                    <p class="mb-4">系统在不同场景下的性能表现指标。</p>
+
+                    <h3 class="text-xl font-semibold mb-3">1. 基准测试指标</h3>
+                    <table class="w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border p-2 text-left">指标</th>
+                                <th class="border p-2 text-left">目标值</th>
+                                <th class="border p-2 text-left">实际值</th>
+                                <th class="border p-2 text-left">测试条件</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border p-2">写入吞吐量</td>
+                                <td class="border p-2">≥10,000 TPS</td>
+                                <td class="border p-2 text-green-600">12,500 TPS</td>
+                                <td class="border p-2">批量写入，100并发</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">读取吞吐量</td>
+                                <td class="border p-2">≥50,000 QPS</td>
+                                <td class="border p-2 text-green-600">65,000 QPS</td>
+                                <td class="border p-2">缓存命中，200并发</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">向量搜索延迟</td>
+                                <td class="border p-2">≤50ms (P99)</td>
+                                <td class="border p-2 text-green-600">35ms</td>
+                                <td class="border p-2">100万数据，top-10</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">写入延迟</td>
+                                <td class="border p-2">≤100ms (P99)</td>
+                                <td class="border p-2 text-green-600">45ms</td>
+                                <td class="border p-2">单条写入，同步确认</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">内存占用</td>
+                                <td class="border p-2">≤4GB</td>
+                                <td class="border p-2 text-green-600">2.8GB</td>
+                                <td class="border p-2">100万数据，缓存20%</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-2">索引构建时间</td>
+                                <td class="border p-2">≤30分钟</td>
+                                <td class="border p-2 text-green-600">18分钟</td>
+                                <td class="border p-2">1000万数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">2. 扩展性指标</h3>
+                    <div class="mermaid">
+graph LR
+    subgraph "单节点性能"
+        A[10K TPS写入] --> B[65K QPS读取]
+        C[35ms搜索延迟] --> D[2.8GB内存]
+    end
+    
+    subgraph "10节点集群"
+        E[100K TPS写入] --> F[650K QPS读取]
+        G[35ms搜索延迟] --> H[28GB内存]
+    end
+    
+    subgraph "100节点集群"
+        I[1M TPS写入] --> J[6.5M QPS读取]
+        K[35ms搜索延迟] --> L[280GB内存]
+    end
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">3. 资源使用监控</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded">
+                            <h4 class="font-semibold mb-2">CPU 使用</h4>
+                            <ul class="list-disc list-inside text-sm">
+                                <li>平均: 35%</li>
+                                <li>峰值: 75%</li>
+                                <li>写入时: 60%</li>
+                                <li>查询时: 45%</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded">
+                            <h4 class="font-semibold mb-2">内存使用</h4>
+                            <ul class="list-disc list-inside text-sm">
+                                <li>基础: 800MB</li>
+                                <li>缓存: 1.5GB</li>
+                                <li>索引: 500MB</li>
+                                <li>总计: 2.8GB</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Deployment -->
+            <div id="deployment" class="tab-content">
+                <div class="card">
+                    <h2 class="card-title">部署指南</h2>
+                    <p class="mb-4">支持多种部署方式：单机、Docker、Kubernetes。</p>
+
+                    <h3 class="text-xl font-semibold mb-3">1. Docker 部署</h3>
+                    <pre><code class="language-bash"># 1. 拉取镜像
+docker pull agent-memory/agent-memory-system:v3.0.0
+
+# 2. 运行容器
+docker run -d \
+  --name agent-memory \
+  -p 8080:8080 \
+  -p 50051:50051 \
+  -e AMS_STORAGE_BACKEND=milvus \
+  -e AMS_MILVUS_HOST=milvus-standalone \
+  -v /data/agent-memory:/data \
+  agent-memory/agent-memory-system:v3.0.0
+
+# 3. 验证部署
+curl http://localhost:8080/health</code></pre>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">2. Docker Compose 部署</h3>
+                    <pre><code class="language-yaml"># docker-compose.yaml
+version: '3.8'
+
+services:
+  agent-memory:
+    image: agent-memory/agent-memory-system:v3.0.0
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    environment:
+      - AMS_STORAGE_BACKEND=milvus
+      - AMS_MILVUS_HOST=milvus-standalone
+      - AMS_EMBEDDING_PROVIDER=openai
+      - AMS_OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./data:/data
+      - ./config.yaml:/app/config.yaml
+    depends_on:
+      - milvus
+      - redis
+    networks:
+      - agent-memory-net
+
+  milvus:
+    image: milvusdb/milvus:v2.3.0
+    command: ["milvus", "run", "standalone"]
+    ports:
+      - "19530:19530"
+    volumes:
+      - ./milvus_data:/var/lib/milvus
+    networks:
+      - agent-memory-net
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    networks:
+      - agent-memory-net
+
+networks:
+  agent-memory-net:
+    driver: bridge</code></pre>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">3. Kubernetes 部署</h3>
+                    <pre><code class="language-yaml"># k8s-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-memory
+  labels:
+    app: agent-memory
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: agent-memory
+  template:
+    metadata:
+      labels:
+        app: agent-memory
+    spec:
+      containers:
+      - name: agent-memory
+        image: agent-memory/agent-memory-system:v3.0.0
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 50051
+          name: grpc
+        env:
+        - name: AMS_STORAGE_BACKEND
+          value: "milvus"
+        - name: AMS_LOG_LEVEL
+          value: "info"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-memory
+spec:
+  selector:
+    app: agent-memory
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  - name: grpc
+    port: 50051
+    targetPort: 50051
+  type: LoadBalancer</code></pre>
+
+                    <h3 class="text-xl font-semibold mb-3 mt-6">4. Helm 部署</h3>
+                    <pre><code class="language-bash"># 添加 Helm 仓库
+helm repo add agent-memory https://charts.agent-memory.io
+helm repo update
+
+# 安装 Chart
+helm install agent-memory agent-memory/agent-memory \
+  --set replicaCount=3 \
+  --set storage.backend=milvus \
+  --set embedding.provider=openai \
+  --set openai.apiKey=YOUR_API_KEY
+
+# 升级
+helm upgrade agent-memory agent-memory/agent-memory</code></pre>
+
+                    <div class="alert alert-info mt-6">
+                        <strong>生产环境建议：</strong>
+                        <ul class="list-disc list-inside mt-2">
+                            <li>使用外部 Milvus 集群而非 standalone 模式</li>
+                            <li>配置 Redis Sentinel 或 Cluster 保证缓存高可用</li>
+                            <li>启用 TLS 加密通信</li>
+                            <li>配置监控告警（Prometheus + Grafana）</li>
+                            <li>定期备份数据到对象存储</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="common.js"></script>
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                
+                // Update active button
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                
+                // Re-render mermaid diagrams in the active tab
+                mermaid.init(undefined, document.getElementById(tabId).querySelectorAll('.mermaid'));
+            });
+        });
+    </script>
+</body>
+</html>

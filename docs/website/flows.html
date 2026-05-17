@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>核心流程 - Agent Memory System V3.0</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <div class="header-logo-icon">AM</div>
+      <div>
+        <div class="header-logo-text">Agent Memory System</div>
+        <span class="header-logo-version">V3.0</span>
+      </div>
+    </a>
+    <div class="header-right">
+      <div class="search-box">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜索文档...">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">概览</div>
+          <a href="index.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            首页
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">架构设计</div>
+          <a href="architecture.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            架构设计
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">流程图</div>
+          <a href="flows.html" class="nav-item active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            核心流程
+          </a>
+          <a href="sequence.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            时序图
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">详细设计</div>
+          <a href="modules.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            模块详解
+          </a>
+          <a href="tech-specs.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            技术说明
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>核心流程</h1>
+        <p>系统核心业务流程图，包括记忆存储、检索、合并、遗忘等关键流程</p>
+      </div>
+
+      <!-- Memory Store Flow -->
+      <div class="card" id="store">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+            记忆存储流程图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TD
+    Start([开始]) --> Receive["接收记忆数据"]
+    Receive --> Validate{"参数校验"}
+    Validate -->|"校验失败"| Error1["返回错误"]
+    Error1 --> End1([结束])
+    Validate -->|"校验通过"| Preprocess["数据预处理"]
+    Preprocess --> GenerateID["生成记忆ID"]
+    GenerateID --> SelectProvider["选择嵌入提供者"]
+    SelectProvider --> GenerateEmbedding["生成嵌入向量"]
+    GenerateEmbedding --> RaftPropose["Raft Propose<br/>提议日志条目"]
+    RaftPropose --> Replicate{"复制到多数节点"}
+    Replicate -->|"复制失败"| Retry{"重试?"}
+    Retry -->|"是"| RaftPropose
+    Retry -->|"否"| Error2["返回错误"]
+    Error2 --> End2([结束])
+    Replicate -->|"复制成功"| ApplyLog["Apply日志"]
+    ApplyLog --> WriteHot["写入热存储<br/>Redis"]
+    ApplyLog --> WriteWarm["写入温存储<br/>MongoDB"]
+    ApplyLog --> WriteVector["写入向量库<br/>Milvus"]
+    WriteHot --> PublishEvent["发布事件"]
+    WriteWarm --> PublishEvent
+    WriteVector --> PublishEvent
+    PublishEvent --> UpdateMetrics["更新指标"]
+    UpdateMetrics --> ReturnSuccess["返回成功"]
+    ReturnSuccess --> End3([结束])
+
+    style Start fill:#d1fae5
+    style End1 fill:#fee2e2
+    style End2 fill:#fee2e2
+    style End3 fill:#d1fae5
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>流程说明：</strong>记忆存储采用Raft共识保证数据一致性，嵌入向量同步生成，
+              多存储后端并行写入以优化性能。所有操作通过事件总线异步通知下游系统。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memory Retrieve Flow -->
+      <div class="card" id="retrieve">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            记忆检索流程图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TD
+    Start([开始]) --> ReceiveQuery["接收查询请求"]
+    ReceiveQuery --> ParseQuery["解析查询条件"]
+    ParseQuery --> SelectStrategy["选择检索策略"]
+
+    SelectStrategy --> StrategyType{"策略类型"}
+    StrategyType -->|"向量检索"| VectorSearch["向量相似度检索"]
+    StrategyType -->|"关键词检索"| KeywordSearch["关键词匹配检索"]
+    StrategyType -->|"混合检索"| HybridSearch["混合检索"]
+
+    VectorSearch --> CheckCache["检查热存储缓存"]
+    KeywordSearch --> CheckCache
+    HybridSearch --> CheckCache
+
+    CheckCache --> CacheHit{"缓存命中?"}
+    CacheHit -->|"是"| ReturnCache["返回缓存结果"]
+    CacheHit -->|"否"| ExecuteSearch["执行检索"]
+
+    ExecuteSearch --> GenerateQueryVector["生成查询向量"]
+    GenerateQueryVector --> SearchVectorDB["搜索向量数据库"]
+    SearchVectorDB --> FilterResults["过滤结果"]
+    FilterResults --> RankResults["结果排序"]
+    RankResults --> MergeResults["合并结果"]
+
+    MergeResults --> WriteCache["写入缓存"]
+    ReturnCache --> FormatResponse["格式化响应"]
+    WriteCache --> FormatResponse
+
+    FormatResponse --> UpdateMetrics["更新指标"]
+    UpdateMetrics --> ReturnResult["返回结果"]
+    ReturnResult --> End([结束])
+
+    style Start fill:#d1fae5
+    style End fill:#d1fae5
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>流程说明：</strong>检索流程支持多种策略，优先访问热存储缓存，
+              支持向量检索、关键词检索和混合检索模式，结果经过过滤、排序和合并后返回。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memory Merge Flow -->
+      <div class="card" id="merge">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+            记忆合并流程图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TD
+    Start([开始]) --> TriggerMerge["触发合并"]
+    TriggerMerge --> LoadMemories["加载待合并记忆"]
+    LoadMemories --> CheckSimilarity{"相似度检查"}
+
+    CheckSimilarity -->|"相似度<阈值"| SkipMerge["跳过合并"]
+    CheckSimilarity -->|"相似度>=阈值"| SelectTarget["选择合并目标"]
+
+    SelectTarget --> ConflictDetect["冲突检测"]
+    ConflictDetect --> HasConflict{"存在冲突?"}
+
+    HasConflict -->|"是"| ResolveConflict["解决冲突"]
+    ResolveConflict --> Strategy{"解决策略"}
+    Strategy -->|"时间优先"| UseLatest["使用最新版本"]
+    Strategy -->|"置信度优先"| UseConfident["使用高置信度版本"]
+    Strategy -->|"合并内容"| MergeContent["合并内容"]
+
+    HasConflict -->|"否"| DirectMerge["直接合并"]
+    UseLatest --> UpdateMemory
+    UseConfident --> UpdateMemory
+    MergeContent --> UpdateMemory
+    DirectMerge --> UpdateMemory["更新记忆"]
+
+    UpdateMemory --> RaftPropose["Raft Propose"]
+    RaftPropose --> Replicate["复制到多数节点"]
+    Replicate --> ApplyLog["Apply日志"]
+
+    ApplyLog --> UpdateStorage["更新存储"]
+    UpdateStorage --> DeleteOld["删除旧记忆"]
+    DeleteOld --> PublishEvent["发布合并事件"]
+
+    SkipMerge --> PublishEvent
+    PublishEvent --> UpdateMetrics["更新指标"]
+    UpdateMetrics --> End([结束])
+
+    style Start fill:#d1fae5
+    style End fill:#d1fae5
+            </div>
+          </div>
+          <div class="alert alert-warning">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <div>
+              <strong>流程说明：</strong>记忆合并基于相似度检测，支持多种冲突解决策略。
+              合并操作同样经过Raft共识，确保数据一致性。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memory Forget Flow -->
+      <div class="card" id="forget">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            记忆遗忘流程图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TD
+    Start([开始]) --> TriggerForget["触发遗忘"]
+    TriggerForget --> ForgetType{"遗忘类型"}
+
+    ForgetType -->|"主动遗忘"| ExplicitForget["显式遗忘请求"]
+    ForgetType -->|"TTL过期"| TTLExpire["TTL过期检查"]
+    ForgetType -->|"容量淘汰"| Eviction["容量淘汰"]
+    ForgetType -->|"策略遗忘"| PolicyForget["策略驱动遗忘"]
+
+    ExplicitForget --> ValidatePermission["验证权限"]
+    TTLExpire --> LoadExpired["加载过期记忆"]
+    Eviction --> SelectVictim["选择淘汰目标"]
+    PolicyForget --> EvaluatePolicy["评估遗忘策略"]
+
+    ValidatePermission -->|"无权限"| Error["返回错误"]
+    Error --> End1([结束])
+    ValidatePermission -->|"有权限"| ConfirmForget["确认遗忘"]
+
+    LoadExpired --> BatchForget["批量遗忘"]
+    SelectVictim --> BatchForget
+    EvaluatePolicy --> BatchForget
+    ConfirmForget --> BatchForget
+
+    BatchForget --> RaftPropose["Raft Propose<br/>删除日志"]
+    RaftPropose --> Replicate["复制到多数节点"]
+    Replicate --> ApplyLog["Apply日志"]
+
+    ApplyLog --> DeleteHot["删除热存储"]
+    ApplyLog --> DeleteWarm["删除温存储"]
+    ApplyLog --> DeleteVector["删除向量库"]
+    ApplyLog --> ArchiveCold{"需要归档?"}
+
+    ArchiveCold -->|"是"| MoveToCold["移至冷存储"]
+    ArchiveCold -->|"否"| PermanentDelete["永久删除"]
+
+    DeleteHot --> PublishEvent["发布遗忘事件"]
+    DeleteWarm --> PublishEvent
+    DeleteVector --> PublishEvent
+    MoveToCold --> PublishEvent
+    PermanentDelete --> PublishEvent
+
+    PublishEvent --> UpdateMetrics["更新指标"]
+    UpdateMetrics --> End2([结束])
+
+    style Start fill:#d1fae5
+    style End1 fill:#fee2e2
+    style End2 fill:#d1fae5
+            </div>
+          </div>
+          <div class="alert alert-danger">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>流程说明：</strong>支持多种遗忘触发方式，包括显式删除、TTL过期、容量淘汰和策略驱动。
+              遗忘操作可选择归档或永久删除，所有操作经过Raft共识保证一致性。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distributed Transaction Flow -->
+      <div class="card" id="transaction">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            分布式事务流程图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+sequenceDiagram
+    participant C as Client
+    participant TM as Transaction Manager
+    participant P1 as Participant 1
+    participant P2 as Participant 2
+    participant P3 as Participant 3
+
+    C->>TM: Begin Transaction
+    TM->>TM: Generate TXID
+    TM->>C: TXID
+
+    C->>TM: Execute Operation 1
+    TM->>P1: Prepare
+    P1->>P1: Lock Resources
+    P1->>TM: Ready
+
+    C->>TM: Execute Operation 2
+    TM->>P2: Prepare
+    P2->>P2: Lock Resources
+    P2->>TM: Ready
+
+    C->>TM: Execute Operation 3
+    TM->>P3: Prepare
+    P3->>P3: Lock Resources
+    P3->>TM: Ready
+
+    TM->>TM: All Ready?
+
+    alt All Participants Ready
+        TM->>P1: Commit
+        TM->>P2: Commit
+        TM->>P3: Commit
+        P1->>P1: Apply Changes
+        P2->>P2: Apply Changes
+        P3->>P3: Apply Changes
+        P1->>TM: Committed
+        P2->>TM: Committed
+        P3->>TM: Committed
+        TM->>C: Transaction Committed
+    else Any Participant Failed
+        TM->>P1: Rollback
+        TM->>P2: Rollback
+        TM->>P3: Rollback
+        P1->>P1: Release Locks
+        P2->>P2: Release Locks
+        P3->>P3: Release Locks
+        P1->>TM: Rolled Back
+        P2->>TM: Rolled Back
+        P3->>TM: Rolled Back
+        TM->>C: Transaction Aborted
+    end
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>流程说明：</strong>采用两阶段提交（2PC）协议实现分布式事务，事务管理器协调各参与者，
+              确保跨多个存储后端的事务原子性。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Raft Consensus Flow -->
+      <div class="card" id="raft">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            Raft共识流程图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TD
+    Start([开始]) --> ReceiveRequest["接收客户端请求"]
+    ReceiveRequest --> CheckLeader{"当前是Leader?"}
+
+    CheckLeader -->|"否"| ForwardToLeader["转发给Leader"]
+    CheckLeader -->|"是"| AppendToLog["追加到本地日志"]
+
+    ForwardToLeader --> LeaderAppend["Leader追加日志"]
+    LeaderAppend --> SendAppendEntries
+    AppendToLog --> SendAppendEntries["发送AppendEntries<br/>给Followers"]
+
+    SendAppendEntries --> WaitResponse{"等待多数响应"}
+    WaitResponse -->|"超时"| Retry["重试"]
+    Retry --> SendAppendEntries
+
+    WaitResponse -->|"收到多数成功"| CommitLog["提交日志"]
+    WaitResponse -->|"收到拒绝"| CheckTerm{"检查Term"}
+
+    CheckTerm -->|"Term更高"| StepDown["退位为Follower"]
+    CheckTerm -->|"日志不匹配"| FindMatch["查找匹配点"]
+    FindMatch --> SendAppendEntries
+
+    CommitLog --> ApplyToStateMachine["应用到状态机"]
+    ApplyToStateMachine --> SendResponse["返回客户端响应"]
+
+    StepDown --> End1([结束])
+    SendResponse --> End2([结束])
+
+    style Start fill:#d1fae5
+    style End1 fill:#fee2e2
+    style End2 fill:#d1fae5
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>流程说明：</strong>Raft共识算法保证日志复制的一致性。Leader负责接收客户端请求，
+              将日志条目复制到多数节点后才提交，确保系统容错能力。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Failure Recovery Flow -->
+      <div class="card" id="recovery">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            故障恢复流程图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TD
+    Start([开始]) --> DetectFailure["故障检测"]
+    DetectFailure --> FailureType{"故障类型"}
+
+    FailureType -->|"节点故障"| NodeFailure["节点故障处理"]
+    FailureType -->|"网络分区"| NetworkPartition["网络分区处理"]
+    FailureType -->|"数据损坏"| DataCorruption["数据损坏处理"]
+    FailureType -->|"Leader故障"| LeaderFailure["Leader故障处理"]
+
+    NodeFailure --> IsolateNode["隔离故障节点"]
+    IsolateNode --> ElectNewLeader{"需要选主?"}
+    ElectNewLeader -->|"是"| StartElection["发起选举"]
+    ElectNewLeader -->|"否"| Rebalance["重新平衡数据"]
+
+    LeaderFailure --> DetectLeaderDown["检测Leader下线"]
+    DetectLeaderDown --> StartElection
+    StartElection --> Vote["投票阶段"]
+    Vote --> NewLeaderElected{"选出Leader?"}
+    NewLeaderElected -->|"是"| UpdateMetadata["更新元数据"]
+    NewLeaderElected -->|"否"| RetryElection["重试选举"]
+    RetryElection --> StartElection
+
+    NetworkPartition --> DetectPartition["检测分区"]
+    DetectPartition --> MinorityPartition{"少数派分区?"}
+    MinorityPartition -->|"是"| EnterReadOnly["进入只读模式"]
+    MinorityPartition -->|"否"| ContinueOperation["继续操作"]
+
+    DataCorruption --> DetectCorruption["检测数据损坏"]
+    DetectCorruption --> StopWrites["停止写入"]
+    StopWrites --> RestoreFromReplica["从副本恢复"]
+    RestoreFromReplica --> VerifyData["验证数据完整性"]
+    VerifyData --> ResumeWrites["恢复写入"]
+
+    UpdateMetadata --> NotifyClients["通知客户端"]
+    Rebalance --> NotifyClients
+    ContinueOperation --> NotifyClients
+    EnterReadOnly --> NotifyClients
+    ResumeWrites --> NotifyClients
+
+    NotifyClients --> UpdateMetrics["更新指标"]
+    UpdateMetrics --> End([结束])
+
+    style Start fill:#d1fae5
+    style End fill:#d1fae5
+            </div>
+          </div>
+          <div class="alert alert-warning">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <div>
+              <strong>流程说明：</strong>系统具备完善的故障检测和自动恢复机制，支持节点故障、网络分区、
+              数据损坏等多种故障场景的自动处理。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Sync Flow -->
+      <div class="card" id="sync">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            数据同步流程图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TD
+    Start([开始]) --> DetectLag["检测同步延迟"]
+    DetectLag --> LagCheck{"延迟超过阈值?"}
+
+    LagCheck -->|"否"| End1([结束])
+    LagCheck -->|"是"| IdentifyLagSource["识别延迟源"]
+
+    IdentifyLagSource --> SyncType{"同步类型"}
+    SyncType -->|"全量同步"| FullSync["全量数据同步"]
+    SyncType -->|"增量同步"| IncrementalSync["增量数据同步"]
+    SyncType -->|"修复同步"| RepairSync["修复性同步"]
+
+    FullSync --> StopWrites["暂停写入"]
+    StopWrites --> Snapshot["创建快照"]
+    Snapshot --> TransferSnapshot["传输快照"]
+    TransferSnapshot --> ApplySnapshot["应用快照"]
+    ApplySnapshot --> ResumeWrites["恢复写入"]
+
+    IncrementalSync --> ReadBinlog["读取Binlog"]
+    ReadBinlog --> FilterEvents["过滤事件"]
+    FilterEvents --> ApplyEvents["应用事件"]
+    ApplyEvents --> UpdatePosition["更新同步位点"]
+
+    RepairSync --> IdentifyMissing["识别缺失数据"]
+    IdentifyMissing --> FetchMissing["获取缺失数据"]
+    FetchMissing --> VerifyChecksum{"校验和检查"}
+    VerifyChecksum -->|"失败"| Refetch["重新获取"]
+    Refetch --> FetchMissing
+    VerifyChecksum -->|"成功"| ApplyRepair["应用修复"]
+
+    ResumeWrites --> UpdateSyncStatus["更新同步状态"]
+    UpdatePosition --> UpdateSyncStatus
+    ApplyRepair --> UpdateSyncStatus
+
+    UpdateSyncStatus --> NotifyMonitor["通知监控"]
+    NotifyMonitor --> End2([结束])
+
+    style Start fill:#d1fae5
+    style End1 fill:#d1fae5
+    style End2 fill:#d1fae5
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>流程说明：</strong>数据同步支持全量同步、增量同步和修复同步三种模式，
+              根据延迟情况自动选择合适的同步策略，确保数据最终一致性。
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="common.js"></script>
+</body>
+</html>

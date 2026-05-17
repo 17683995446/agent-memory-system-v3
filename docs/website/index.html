@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Memory System V3.0 - 技术文档</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <div class="header-logo-icon">AM</div>
+      <div>
+        <div class="header-logo-text">Agent Memory System</div>
+        <span class="header-logo-version">V3.0</span>
+      </div>
+    </a>
+    <div class="header-right">
+      <div class="search-box">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜索文档...">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">概览</div>
+          <a href="index.html" class="nav-item active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            首页
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">架构设计</div>
+          <a href="architecture.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            架构设计
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">流程图</div>
+          <a href="flows.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            核心流程
+          </a>
+          <a href="sequence.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            时序图
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">详细设计</div>
+          <a href="modules.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            模块详解
+          </a>
+          <a href="tech-specs.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            技术说明
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>Agent Memory System V3.0</h1>
+        <p>企业级智能体记忆管理系统 - 高可用、高性能、可扩展的分布式记忆存储与检索平台</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">99.99%</div>
+          <div class="stat-label">系统可用性</div>
+          <div class="stat-change positive">+0.5% 较V2.0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">&lt;10ms</div>
+          <div class="stat-label">P99查询延迟</div>
+          <div class="stat-change positive">-40% 性能提升</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">100M+</div>
+          <div class="stat-label">日处理记忆数</div>
+          <div class="stat-change positive">3倍吞吐提升</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">PB级</div>
+          <div class="stat-label">存储容量支持</div>
+          <div class="stat-change positive">水平扩展</div>
+        </div>
+      </div>
+
+      <!-- System Overview -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            系统概述
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="margin-bottom: 16px;">
+            Agent Memory System V3.0 是一款专为AI智能体设计的企业级记忆管理系统。它提供了完整的记忆生命周期管理能力，
+            包括记忆存储、检索、合并、遗忘等核心功能，同时支持分布式部署、高可用架构和弹性扩展。
+          </p>
+          <p style="margin-bottom: 16px;">
+            系统采用微服务架构设计，基于Raft共识算法实现分布式一致性，内置自愈机制和完善的监控告警体系，
+            确保在各种复杂场景下的稳定运行。V3.0版本在性能、可靠性和易用性方面进行了全面升级，
+            为大规模AI应用提供了坚实的记忆基础设施。
+          </p>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>版本亮点：</strong>V3.0引入了全新的分层存储架构、智能检索策略、自适应嵌入提供者选择等创新特性，
+              同时优化了Raft实现，显著提升了系统的整体性能和可靠性。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Core Features -->
+      <div class="card" id="features">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+            核心特性
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon blue">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+              </div>
+              <div class="feature-title">分层存储架构</div>
+              <div class="feature-desc">支持热温冷三层存储，自动根据访问频率进行数据分层，优化存储成本和访问性能。</div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon purple">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </div>
+              <div class="feature-title">智能检索策略</div>
+              <div class="feature-desc">多策略检索引擎，支持向量相似度、关键词匹配、语义理解等多种检索方式，自动选择最优策略。</div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon green">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              </div>
+              <div class="feature-title">Raft分布式共识</div>
+              <div class="feature-desc">基于Raft算法实现强一致性，支持自动Leader选举、故障转移和数据复制，确保数据可靠性。</div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon orange">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+              </div>
+              <div class="feature-title">自适应嵌入</div>
+              <div class="feature-desc">支持多种嵌入模型（OpenAI、BERT、本地模型等），根据场景自动选择最优嵌入提供者。</div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon red">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+              </div>
+              <div class="feature-title">自愈系统</div>
+              <div class="feature-desc">内置故障检测和自动恢复机制，支持节点自动替换、数据自动修复、服务自动重启等功能。</div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon cyan">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+              </div>
+              <div class="feature-title">全链路监控</div>
+              <div class="feature-desc">提供完整的监控指标、分布式追踪、日志聚合和智能告警，全方位保障系统可观测性。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            快速导航
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="quick-links">
+            <a href="architecture.html" class="quick-link">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+              架构设计
+            </a>
+            <a href="flows.html" class="quick-link">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+              核心流程
+            </a>
+            <a href="sequence.html" class="quick-link">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+              时序图
+            </a>
+            <a href="modules.html" class="quick-link">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+              模块详解
+            </a>
+            <a href="tech-specs.html" class="quick-link">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              技术说明
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Architecture Preview -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            系统架构概览
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+graph TB
+    subgraph ClientLayer["客户端层"]
+        Client1["AI Agent 1"]
+        Client2["AI Agent 2"]
+        Client3["AI Agent N"]
+    end
+
+    subgraph GatewayLayer["网关层"]
+        LB["负载均衡器"]
+        API["API Gateway"]
+    end
+
+    subgraph ServiceLayer["服务层"]
+        MemoryService["Memory Service"]
+        RetrievalService["Retrieval Service"]
+        EmbeddingService["Embedding Service"]
+    end
+
+    subgraph StorageLayer["存储层"]
+        HotStore["热存储<br/>Redis"]
+        WarmStore["温存储<br/>MongoDB"]
+        ColdStore["冷存储<br/>S3"]
+        VectorDB["向量数据库<br/>Milvus"]
+    end
+
+    subgraph ConsensusLayer["共识层"]
+        Raft1["Raft Node 1"]
+        Raft2["Raft Node 2"]
+        Raft3["Raft Node 3"]
+    end
+
+    Client1 --> LB
+    Client2 --> LB
+    Client3 --> LB
+    LB --> API
+    API --> MemoryService
+    API --> RetrievalService
+    MemoryService --> EmbeddingService
+    MemoryService --> HotStore
+    MemoryService --> WarmStore
+    MemoryService --> ColdStore
+    RetrievalService --> VectorDB
+    MemoryService --> Raft1
+    MemoryService --> Raft2
+    MemoryService --> Raft3
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 16px;">
+            <a href="architecture.html" class="quick-link" style="display: inline-flex;">
+              查看完整架构设计
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech Stack -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+            技术栈
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>层级</th>
+                  <th>技术组件</th>
+                  <th>用途</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-blue">编程语言</span></td>
+                  <td>Go 1.21+ / Rust 1.70+</td>
+                  <td>核心服务开发</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">通信协议</span></td>
+                  <td>gRPC / HTTP/2 / Protocol Buffers</td>
+                  <td>服务间通信</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">热存储</span></td>
+                  <td>Redis Cluster 7.0+</td>
+                  <td>高频访问记忆缓存</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">温存储</span></td>
+                  <td>MongoDB 6.0+</td>
+                  <td>结构化记忆存储</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-red">冷存储</span></td>
+                  <td>AWS S3 / MinIO</td>
+                  <td>归档记忆存储</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">向量数据库</span></td>
+                  <td>Milvus 2.3+ / Pinecone</td>
+                  <td>向量相似度检索</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-blue">消息队列</span></td>
+                  <td>Apache Kafka / NATS</td>
+                  <td>异步事件处理</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">监控</span></td>
+                  <td>Prometheus + Grafana + Jaeger</td>
+                  <td>指标监控与追踪</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="common.js"></script>
+</body>
+</html>

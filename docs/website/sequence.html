@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>时序图 - Agent Memory System V3.0</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <div class="header-logo-icon">AM</div>
+      <div>
+        <div class="header-logo-text">Agent Memory System</div>
+        <span class="header-logo-version">V3.0</span>
+      </div>
+    </a>
+    <div class="header-right">
+      <div class="search-box">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜索文档...">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">概览</div>
+          <a href="index.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            首页
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">架构设计</div>
+          <a href="architecture.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            架构设计
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">流程图</div>
+          <a href="flows.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            核心流程
+          </a>
+          <a href="sequence.html" class="nav-item active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            时序图
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">详细设计</div>
+          <a href="modules.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            模块详解
+          </a>
+          <a href="tech-specs.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            技术说明
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>时序图</h1>
+        <p>系统关键操作的时序交互图，展示各组件间的协作关系</p>
+      </div>
+
+      <!-- Client Write Sequence -->
+      <div class="card" id="write">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            客户端写入时序图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant LB as Load Balancer
+    participant API as API Gateway
+    participant MS as Memory Service
+    participant ES as Embedding Service
+    participant RL as Raft Leader
+    participant RF as Raft Follower
+    participant RS as Redis
+    participant MG as MongoDB
+    participant MV as Milvus
+
+    C->>LB: Write Memory Request
+    LB->>API: Route Request
+    API->>API: Auth & Rate Limit
+    API->>MS: Forward Request
+
+    MS->>MS: Validate Request
+    MS->>ES: Generate Embedding
+    ES-->>MS: Return Vector
+
+    MS->>RL: Propose Log Entry
+    RL->>RL: Append to Local Log
+
+    par Replicate to Followers
+        RL->>RF: AppendEntries RPC
+        RF->>RF: Append to Local Log
+        RF-->>RL: AppendEntries Response
+    and Write to Storage
+        RL->>RS: Write to Hot Storage
+        RL->>MG: Write to Warm Storage
+        RL->>MV: Write Vector
+    end
+
+    RL->>RL: Commit Log (Majority)
+    RL->>MS: Apply Notification
+    MS->>MS: Update Metrics
+    MS-->>API: Write Success
+    API-->>LB: Response
+    LB-->>C: 200 OK
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>时序说明：</strong>客户端写入请求经过负载均衡、网关认证后到达Memory Service。
+              嵌入向量同步生成，Raft Leader负责日志复制，多数节点确认后提交，同时并行写入多个存储后端。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distributed Query Sequence -->
+      <div class="card" id="query">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            分布式查询时序图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant LB as Load Balancer
+    participant RS as Retrieval Service
+    participant RC as Redis Cache
+    participant ES as Embedding Service
+    participant MV as Milvus
+    participant MS1 as Memory Service 1
+    participant MS2 as Memory Service 2
+    participant MS3 as Memory Service 3
+
+    C->>LB: Query Request
+    LB->>RS: Route to Retrieval Service
+
+    RS->>RS: Parse Query
+    RS->>RC: Check Cache
+
+    alt Cache Hit
+        RC-->>RS: Return Cached Results
+    else Cache Miss
+        RS->>ES: Generate Query Vector
+        ES-->>RS: Query Vector
+
+        par Parallel Search
+            RS->>MV: Vector Similarity Search
+            MV-->>RS: Top-K Vector IDs
+        and
+            RS->>MS1: Search Local Index
+            MS1-->>RS: Local Results
+            RS->>MS2: Search Local Index
+            MS2-->>RS: Local Results
+            RS->>MS3: Search Local Index
+            MS3-->>RS: Local Results
+        end
+
+        RS->>RS: Merge & Rank Results
+        RS->>RC: Write to Cache
+    end
+
+    RS->>RS: Format Response
+    RS-->>LB: Query Results
+    LB-->>C: 200 OK + Results
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>时序说明：</strong>查询优先检查缓存，缓存未命中时并行执行向量检索和分布式索引搜索，
+              结果合并排序后返回，并异步更新缓存。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leader Election Sequence -->
+      <div class="card" id="election">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            Leader选举时序图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant F1 as Follower 1
+    participant F2 as Follower 2
+    participant F3 as Follower 3
+
+    Note over F1,F3: Leader Timeout
+
+    F1->>F1: Become Candidate
+    F1->>F1: Increment Term
+    F1->>F1: Vote for Self
+
+    F1->>F2: RequestVote RPC
+    F1->>F3: RequestVote RPC
+
+    F2->>F2: Check Term & Log
+    F2->>F2: Grant Vote
+    F2-->>F1: Vote Granted
+
+    F3->>F3: Check Term & Log
+    F3->>F3: Grant Vote
+    F3-->>F1: Vote Granted
+
+    F1->>F1: Receive Majority Votes
+    F1->>F1: Become Leader
+
+    F1->>F2: Heartbeat (AppendEntries)
+    F1->>F3: Heartbeat (AppendEntries)
+    F2-->>F1: Heartbeat ACK
+    F3-->>F1: Heartbeat ACK
+
+    Note over F1: Leader Established
+            </div>
+          </div>
+          <div class="alert alert-warning">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <div>
+              <strong>时序说明：</strong>当Follower在选举超时时间内未收到Leader心跳时，会转变为Candidate发起选举。
+              获得多数选票后成为Leader，立即发送心跳抑制其他选举。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Failover Sequence -->
+      <div class="card" id="failover">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            故障转移时序图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant M as Monitor
+    participant L as Old Leader
+    participant F1 as Follower 1
+    participant F2 as Follower 2
+    participant C as Client
+    participant LB as Load Balancer
+
+    Note over L: Leader Crashes
+
+    M->>M: Health Check Timeout
+    M->>M: Mark Leader Unhealthy
+
+    F1->>F1: Election Timeout
+    F1->>F1: Become Candidate
+    F1->>F2: RequestVote
+    F2-->>F1: Vote Granted
+    F1->>F1: Become New Leader
+
+    F1->>M: Report Leadership
+    M->>M: Update Metadata
+    M->>LB: Update Routing Table
+
+    C->>LB: Write Request
+    LB->>LB: Detect Old Leader Down
+    LB->>LB: Route to New Leader
+    LB->>F1: Forward Request
+    F1->>F1: Process Request
+    F1-->>LB: Success
+    LB-->>C: 200 OK
+
+    Note over F1: Failover Complete
+            </div>
+          </div>
+          <div class="alert alert-danger">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>时序说明：</strong>监控系统检测到Leader故障后，Follower通过Raft选举产生新Leader。
+              负载均衡器更新路由，客户端请求自动路由到新Leader，整个过程对客户端透明。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Replication Sequence -->
+      <div class="card" id="replication">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+            数据复制时序图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant L as Leader
+    participant F1 as Follower 1
+    participant F2 as Follower 2
+    participant C as Client
+
+    C->>L: Write Request
+    L->>L: Append to Local Log<br/>Index: 10, Term: 5
+
+    par Replicate to Follower 1
+        L->>F1: AppendEntries<br/>PrevIndex: 9, PrevTerm: 5<br/>Entries: [Index:10, Term:5]
+        F1->>F1: Append to Local Log
+        F1-->>L: Success<br/>MatchIndex: 10
+    and Replicate to Follower 2
+        L->>F2: AppendEntries<br/>PrevIndex: 9, PrevTerm: 5<br/>Entries: [Index:10, Term:5]
+        F2->>F2: Append to Local Log
+        F2-->>L: Success<br/>MatchIndex: 10
+    end
+
+    L->>L: Majority Achieved<br/>Commit Index: 10
+    L->>L: Apply to State Machine
+
+    L->>F1: Heartbeat<br/>CommitIndex: 10
+    L->>F2: Heartbeat<br/>CommitIndex: 10
+
+    F1->>F1: Apply Index 10
+    F2->>F2: Apply Index 10
+
+    F1-->>L: Heartbeat ACK
+    F2-->>L: Heartbeat ACK
+
+    L-->>C: Write Success
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>时序说明：</strong>Leader并行复制日志到所有Follower，收到多数成功响应后提交日志。
+              通过心跳通知Follower提交索引，确保所有节点最终一致。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction Commit Sequence -->
+      <div class="card" id="commit">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            事务提交时序图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant TM as Transaction Manager
+    participant P1 as Redis Participant
+    participant P2 as MongoDB Participant
+    participant P3 as Milvus Participant
+
+    C->>TM: Begin Transaction
+    TM->>TM: Generate TXID: txn_123
+    TM-->>C: TXID
+
+    C->>TM: Operation 1: Write to Redis
+    TM->>P1: Prepare(TXID)
+    P1->>P1: Lock Key
+    P1->>P1: Write to Undo Log
+    P1-->>TM: Ready
+
+    C->>TM: Operation 2: Write to MongoDB
+    TM->>P2: Prepare(TXID)
+    P2->>P2: Lock Document
+    P2->>P2: Write to Undo Log
+    P2-->>TM: Ready
+
+    C->>TM: Operation 3: Write to Milvus
+    TM->>P3: Prepare(TXID)
+    P3->>P3: Lock Vector
+    P3->>P3: Write to Undo Log
+    P3-->>TM: Ready
+
+    C->>TM: Commit Transaction
+
+    TM->>TM: All Participants Ready?
+
+    TM->>P1: Commit(TXID)
+    P1->>P1: Apply Changes
+    P1->>P1: Release Lock
+    P1-->>TM: Committed
+
+    TM->>P2: Commit(TXID)
+    P2->>P2: Apply Changes
+    P2->>P2: Release Lock
+    P2-->>TM: Committed
+
+    TM->>P3: Commit(TXID)
+    P3->>P3: Apply Changes
+    P3->>P3: Release Lock
+    P3-->>TM: Committed
+
+    TM->>TM: Cleanup Transaction
+    TM-->>C: Transaction Committed
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>时序说明：</strong>分布式事务采用两阶段提交协议。准备阶段各参与者锁定资源并记录Undo日志，
+              提交阶段协调者通知所有参与者提交，确保跨存储事务的原子性。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sequence Summary -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            时序图汇总
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>时序图</th>
+                  <th>场景</th>
+                  <th>关键组件</th>
+                  <th>性能指标</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>客户端写入</td>
+                  <td>记忆存储操作</td>
+                  <td>API Gateway, Memory Service, Raft</td>
+                  <td>P99 &lt; 50ms</td>
+                </tr>
+                <tr>
+                  <td>分布式查询</td>
+                  <td>记忆检索操作</td>
+                  <td>Retrieval Service, Milvus, Redis</td>
+                  <td>P99 &lt; 10ms</td>
+                </tr>
+                <tr>
+                  <td>Leader选举</td>
+                  <td>故障恢复</td>
+                  <td>Raft Nodes</td>
+                  <td>&lt; 1s</td>
+                </tr>
+                <tr>
+                  <td>故障转移</td>
+                  <td>Leader故障</td>
+                  <td>Monitor, Raft, Load Balancer</td>
+                  <td>&lt; 3s</td>
+                </tr>
+                <tr>
+                  <td>数据复制</td>
+                  <td>日志同步</td>
+                  <td>Raft Leader, Followers</td>
+                  <td>&lt; 10ms</td>
+                </tr>
+                <tr>
+                  <td>事务提交</td>
+                  <td>跨存储事务</td>
+                  <td>Transaction Manager, Participants</td>
+                  <td>P99 &lt; 100ms</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="common.js"></script>
+</body>
+</html>

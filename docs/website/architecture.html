@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>架构设计 - Agent Memory System V3.0</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <div class="header-logo-icon">AM</div>
+      <div>
+        <div class="header-logo-text">Agent Memory System</div>
+        <span class="header-logo-version">V3.0</span>
+      </div>
+    </a>
+    <div class="header-right">
+      <div class="search-box">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜索文档...">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">概览</div>
+          <a href="index.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            首页
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">架构设计</div>
+          <a href="architecture.html" class="nav-item active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            架构设计
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">流程图</div>
+          <a href="flows.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            核心流程
+          </a>
+          <a href="sequence.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            时序图
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">详细设计</div>
+          <a href="modules.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            模块详解
+          </a>
+          <a href="tech-specs.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            技术说明
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>架构设计</h1>
+        <p>系统整体架构、分层设计、部署方案和数据流设计</p>
+      </div>
+
+      <!-- Overall Architecture -->
+      <div class="card" id="overall">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            整体架构图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+graph TB
+    subgraph ClientLayer["客户端层 Client Layer"]
+        ClientSDK["Client SDK<br/>Go/Python/JS"]
+        CLI["CLI工具"]
+        WebUI["Web管理界面"]
+    end
+
+    subgraph GatewayLayer["网关层 Gateway Layer"]
+        LB["负载均衡<br/>Nginx/HAProxy"]
+        APIGateway["API Gateway<br/>Kong/AWS API Gateway"]
+        Auth["认证授权<br/>JWT/OAuth2"]
+        RateLimit["限流熔断<br/>Sentinel"]
+    end
+
+    subgraph ServiceLayer["服务层 Service Layer"]
+        subgraph CoreServices["核心服务"]
+            MemoryService["Memory Service<br/>记忆管理服务"]
+            RetrievalService["Retrieval Service<br/>检索服务"]
+            EmbeddingService["Embedding Service<br/>嵌入服务"]
+        end
+        subgraph SupportServices["支撑服务"]
+            ConfigService["Config Service<br/>配置服务"]
+            MonitorService["Monitor Service<br/>监控服务"]
+            HealingService["Healing Service<br/>自愈服务"]
+        end
+    end
+
+    subgraph ConsensusLayer["共识层 Consensus Layer"]
+        RaftCluster["Raft Cluster"]
+        RaftNode1["Raft Node 1<br/>Leader"]
+        RaftNode2["Raft Node 2<br/>Follower"]
+        RaftNode3["Raft Node 3<br/>Follower"]
+    end
+
+    subgraph StorageLayer["存储层 Storage Layer"]
+        subgraph TieredStorage["分层存储"]
+            HotStorage["热存储 Hot<br/>Redis Cluster"]
+            WarmStorage["温存储 Warm<br/>MongoDB Cluster"]
+            ColdStorage["冷存储 Cold<br/>S3/MinIO"]
+        end
+        VectorDB["向量数据库<br/>Milvus/Pinecone"]
+        MetaStore["元数据存储<br/>etcd"]
+    end
+
+    subgraph Infrastructure["基础设施 Infrastructure"]
+        Kafka["消息队列<br/>Kafka/NATS"]
+        Prometheus["监控<br/>Prometheus"]
+        Grafana["可视化<br/>Grafana"]
+        Jaeger["链路追踪<br/>Jaeger"]
+    end
+
+    ClientSDK --> LB
+    CLI --> APIGateway
+    WebUI --> APIGateway
+    LB --> APIGateway
+    APIGateway --> Auth
+    Auth --> RateLimit
+    RateLimit --> MemoryService
+    RateLimit --> RetrievalService
+    MemoryService --> EmbeddingService
+    MemoryService --> RaftCluster
+    RaftNode1 --> RaftNode2
+    RaftNode2 --> RaftNode3
+    RaftNode3 --> RaftNode1
+    MemoryService --> HotStorage
+    MemoryService --> WarmStorage
+    MemoryService --> ColdStorage
+    RetrievalService --> VectorDB
+    RaftCluster --> MetaStore
+    MemoryService --> Kafka
+    MemoryService --> Prometheus
+    RetrievalService --> Prometheus
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>架构说明：</strong>系统采用分层架构设计，各层之间通过标准接口通信，支持独立扩展和部署。
+              共识层基于Raft算法保证数据一致性，存储层采用分层设计优化成本和性能。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layered Architecture -->
+      <div class="card" id="layers">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            分层架构图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+graph TB
+    subgraph Presentation["表示层 Presentation Layer"]
+        direction LR
+        WebPortal["Web Portal<br/>React/Vue"]
+        MobileApp["Mobile App"]
+        AdminDashboard["Admin Dashboard"]
+    end
+
+    subgraph Application["应用层 Application Layer"]
+        direction LR
+        MemoryAPI["Memory API<br/>REST/gRPC"]
+        QueryAPI["Query API"]
+        AdminAPI["Admin API"]
+        BatchAPI["Batch API"]
+    end
+
+    subgraph Domain["领域层 Domain Layer"]
+        direction LR
+        MemoryManager["Memory Manager<br/>记忆生命周期管理"]
+        RetrievalEngine["Retrieval Engine<br/>检索引擎"]
+        EmbeddingProvider["Embedding Provider<br/>嵌入提供者"]
+        ConsistencyManager["Consistency Manager<br/>一致性管理"]
+    end
+
+    subgraph InfrastructureLayer["基础设施层 Infrastructure Layer"]
+        direction LR
+        StorageAdapter["Storage Adapter<br/>存储适配器"]
+        CacheManager["Cache Manager<br/>缓存管理"]
+        MessageQueue["Message Queue<br/>消息队列"]
+        DistributedLock["Distributed Lock<br/>分布式锁"]
+    end
+
+    subgraph DataAccess["数据访问层 Data Access Layer"]
+        direction LR
+        RedisClient["Redis Client"]
+        MongoClient["MongoDB Client"]
+        S3Client["S3 Client"]
+        MilvusClient["Milvus Client"]
+    end
+
+    Presentation --> Application
+    Application --> Domain
+    Domain --> InfrastructureLayer
+    InfrastructureLayer --> DataAccess
+
+    style Presentation fill:#dbeafe
+    style Application fill:#ede9fe
+    style Domain fill:#d1fae5
+    style InfrastructureLayer fill:#ffedd5
+    style DataAccess fill:#fee2e2
+            </div>
+          </div>
+
+          <div class="table-container" style="margin-top: 24px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>层级</th>
+                  <th>职责</th>
+                  <th>核心组件</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-blue">表示层</span></td>
+                  <td>用户界面交互、数据展示</td>
+                  <td>Web Portal、Mobile App、Admin Dashboard</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">应用层</span></td>
+                  <td>API接口、请求处理、参数校验</td>
+                  <td>Memory API、Query API、Admin API</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">领域层</span></td>
+                  <td>核心业务逻辑、领域模型</td>
+                  <td>Memory Manager、Retrieval Engine、Consistency Manager</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">基础设施层</span></td>
+                  <td>技术实现、通用能力</td>
+                  <td>Storage Adapter、Cache Manager、Message Queue</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-red">数据访问层</span></td>
+                  <td>数据持久化、存储访问</td>
+                  <td>Redis Client、MongoDB Client、S3 Client</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deployment Architecture -->
+      <div class="card" id="deployment">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+            部署架构图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+graph TB
+    subgraph Internet["互联网 Internet"]
+        Users["用户 Users"]
+        CDN["CDN"]
+    end
+
+    subgraph DMZ["DMZ区"]
+        WAF["WAF"]
+        DDoS["DDoS防护"]
+    end
+
+    subgraph K8sCluster["Kubernetes集群"]
+        subgraph Ingress["入口层"]
+            IngressCtrl["Ingress Controller<br/>Nginx Ingress"]
+            CertManager["Cert Manager"]
+        end
+
+        subgraph AppNamespace["应用命名空间 ams-production"]
+            subgraph APIDeployment["API服务部署"]
+                APIPod1["API Pod 1"]
+                APIPod2["API Pod 2"]
+                APIPodN["API Pod N"]
+            end
+
+            subgraph WorkerDeployment["Worker服务部署"]
+                WorkerPod1["Worker Pod 1"]
+                WorkerPod2["Worker Pod 2"]
+            end
+
+            subgraph RaftDeployment["Raft集群部署"]
+                RaftPod1["Raft Pod 1"]
+                RaftPod2["Raft Pod 2"]
+                RaftPod3["Raft Pod 3"]
+            end
+        end
+
+        subgraph DataNamespace["数据命名空间 ams-data"]
+            RedisMaster["Redis Master"]
+            RedisSlave1["Redis Slave 1"]
+            RedisSlave2["Redis Slave 2"]
+
+            MongoPrimary["MongoDB Primary"]
+            MongoSecondary1["MongoDB Secondary 1"]
+            MongoSecondary2["MongoDB Secondary 2"]
+
+            MilvusCluster["Milvus Cluster"]
+        end
+
+        subgraph MonitoringNamespace["监控命名空间 monitoring"]
+            PrometheusPod["Prometheus"]
+            GrafanaPod["Grafana"]
+            JaegerPod["Jaeger"]
+            AlertManager["Alert Manager"]
+        end
+    end
+
+    subgraph ExternalServices["外部服务"]
+        S3["对象存储 S3"]
+        KafkaExternal["Kafka集群"]
+        ETCD["etcd集群"]
+    end
+
+    Users --> CDN
+    CDN --> WAF
+    WAF --> DDoS
+    DDoS --> IngressCtrl
+    IngressCtrl --> APIPod1
+    IngressCtrl --> APIPod2
+    IngressCtrl --> APIPodN
+    APIPod1 --> WorkerPod1
+    APIPod2 --> WorkerPod2
+    APIPod1 --> RaftPod1
+    RaftPod1 --> RaftPod2
+    RaftPod2 --> RaftPod3
+    APIPod1 --> RedisMaster
+    APIPod1 --> MongoPrimary
+    APIPod1 --> MilvusCluster
+    WorkerPod1 --> S3
+    WorkerPod1 --> KafkaExternal
+    RaftPod1 --> ETCD
+    APIPod1 --> PrometheusPod
+            </div>
+          </div>
+
+          <div class="alert alert-success">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <strong>部署特点：</strong>基于Kubernetes的云原生部署架构，支持多可用区部署、自动扩缩容、滚动更新。
+              各服务按命名空间隔离，数据服务独立部署确保稳定性。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Flow Architecture -->
+      <div class="card" id="dataflow">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+            数据流架构图
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TB
+    subgraph WritePath["写入路径 Write Path"]
+        Client["客户端"]
+        API["API Gateway"]
+        Validation["参数校验"]
+        Embedding["嵌入生成"]
+        RaftWrite["Raft写入"]
+        Replicate["数据复制"]
+
+        Client -->|"1. Write Request"| API
+        API -->|"2. Validate"| Validation
+        Validation -->|"3. Generate Embedding"| Embedding
+        Embedding -->|"4. Propose Entry"| RaftWrite
+        RaftWrite -->|"5. Replicate"| Replicate
+    end
+
+    subgraph StoragePath["存储路径 Storage Path"]
+        Hot["热存储<br/>Redis"]
+        Warm["温存储<br/>MongoDB"]
+        Cold["冷存储<br/>S3"]
+        Vector["向量库<br/>Milvus"]
+
+        Replicate -->|"6a. Write Hot"| Hot
+        Replicate -->|"6b. Write Warm"| Warm
+        Replicate -->|"6c. Write Vector"| Vector
+        Hot -.->|"迁移"| Warm
+        Warm -.->|"归档"| Cold
+    end
+
+    subgraph ReadPath["读取路径 Read Path"]
+        Query["查询请求"]
+        CacheCheck["缓存检查"]
+        VectorSearch["向量检索"]
+        ResultMerge["结果合并"]
+        Response["返回结果"]
+
+        Client -->|"A. Query"| Query
+        Query -->|"B. Check Cache"| CacheCheck
+        CacheCheck -->|"Cache Miss"| VectorSearch
+        VectorSearch -->|"D. Search Results"| ResultMerge
+        Hot -->|"C. Cache Hit"| ResultMerge
+        ResultMerge -->|"E. Return"| Response
+        Response --> Client
+    end
+
+    subgraph AsyncPath["异步路径 Async Path"]
+        EventBus["事件总线"]
+        IndexBuilder["索引构建"]
+        Compaction["数据压缩"]
+        Analytics["分析统计"]
+
+        RaftWrite -->|"Event"| EventBus
+        EventBus --> IndexBuilder
+        EventBus --> Compaction
+        EventBus --> Analytics
+    end
+
+    style WritePath fill:#dbeafe
+    style ReadPath fill:#d1fae5
+    style AsyncPath fill:#ffedd5
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">数据流说明</h3>
+            <div class="features-grid">
+              <div class="feature-card">
+                <div class="feature-icon blue">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                </div>
+                <div class="feature-title">写入路径</div>
+                <div class="feature-desc">所有写入操作经过Raft共识，确保强一致性。嵌入向量同步生成，多存储后端并行写入。</div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon green">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <div class="feature-title">读取路径</div>
+                <div class="feature-desc">优先访问热存储缓存，缓存未命中时进行向量相似度检索，多源结果智能合并。</div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon orange">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div class="feature-title">异步路径</div>
+                <div class="feature-desc">通过事件总线解耦，异步完成索引构建、数据压缩、统计分析等后台任务。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Architecture Principles -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+            架构设计原则
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>原则</th>
+                  <th>说明</th>
+                  <th>实现方式</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-blue">高可用</span></td>
+                  <td>系统可用性达到99.99%</td>
+                  <td>多副本部署、故障自动转移、无单点设计</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-green">高性能</span></td>
+                  <td>P99延迟小于10ms</td>
+                  <td>分层缓存、异步处理、连接池、批处理</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-purple">可扩展</span></td>
+                  <td>支持水平扩展至PB级</td>
+                  <td>无状态服务、分片存储、自动分区</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-yellow">一致性</span></td>
+                  <td>强一致性保证</td>
+                  <td>Raft共识、分布式事务、幂等设计</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-red">可观测</span></td>
+                  <td>全链路可观测</td>
+                  <td>Metrics、Logging、Tracing三位一体</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-cyan">安全性</span></td>
+                  <td>企业级安全</td>
+                  <td>传输加密、访问控制、审计日志</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="common.js"></script>
+</body>
+</html>
