@@ -309,7 +309,20 @@ class PartitionManager:
             True如果已分区
         """
         with self._lock:
-            return self._partition_state == PartitionState.PARTITIONED
+            # 检查显式分区状态
+            if self._partition_state == PartitionState.PARTITIONED:
+                return True
+            
+            # 检查是否有足够多的节点处于失败或不可达状态
+            # 当大多数节点失败/不可达时，也认为处于分区状态
+            failed_or_unreachable_nodes = [
+                node_id for node_id, health in self._node_health.items()
+                if health.state in (NodeState.FAILED, NodeState.UNREACHABLE)
+            ]
+            if len(failed_or_unreachable_nodes) >= len(self._peers) // 2 + 1:
+                return True
+            
+            return False
     
     def get_partition_view(self) -> Set[str]:
         """
@@ -391,12 +404,14 @@ class QuorumManager:
         
         Args:
             total_nodes: 总节点数
-            read_quorum: 读多数派大小（默认: floor(n/2)+1）
+            read_quorum: 读多数派大小（默认: floor(n/2)）
             write_quorum: 写多数派大小（默认: floor(n/2)+1）
         """
         self._total_nodes = total_nodes
-        self._read_quorum = read_quorum or (total_nodes // 2 + 1)
-        self._write_quorum = write_quorum or (total_nodes // 2 + 1)
+        # 读仲裁默认为 floor(n/2)，允许在部分失败时仍然提供读服务
+        self._read_quorum = read_quorum if read_quorum is not None else (total_nodes // 2)
+        # 写仲裁默认为 floor(n/2)+1，确保写入的强一致性
+        self._write_quorum = write_quorum if write_quorum is not None else (total_nodes // 2 + 1)
     
     @property
     def read_quorum(self) -> int:

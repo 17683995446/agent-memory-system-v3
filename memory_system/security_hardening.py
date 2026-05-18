@@ -40,7 +40,11 @@ from typing import (
 )
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-import passlib.hash as _passlib_hash
+try:
+    import bcrypt as _bcrypt
+    HAS_BCRYPT = True
+except ImportError:
+    HAS_BCRYPT = False
 
 # 配置日志
 logger = logging.getLogger(__name__)
@@ -400,13 +404,28 @@ class CryptoManager:
         return plaintext.decode('utf-8')
 
     def hash_password_bcrypt(self, password: str) -> str:
-        """使用bcrypt哈希密码 (生产级安全)"""
-        return _passlib_hash.bcrypt.hash(password)
+        """使用bcrypt哈希密码 (生产级安全)
+        
+        bcrypt有72字节限制，超长密码会被截断
+        """
+        if not HAS_BCRYPT:
+            raise RuntimeError("bcrypt library not available")
+        # bcrypt限制密码长度为72字节，需要截断
+        password_bytes = password.encode('utf-8')[:72]
+        # 使用原生bcrypt库，避免passlib的兼容性问题
+        salt = _bcrypt.gensalt(rounds=12)
+        hashed = _bcrypt.hashpw(password_bytes, salt)
+        return hashed.decode('utf-8')
     
     def verify_password_bcrypt(self, password: str, hash_value: str) -> bool:
         """验证bcrypt密码哈希"""
+        if not HAS_BCRYPT:
+            return False
         try:
-            return _passlib_hash.bcrypt.verify(password, hash_value)
+            # bcrypt限制密码长度为72字节，需要截断
+            password_bytes = password.encode('utf-8')[:72]
+            hash_bytes = hash_value.encode('utf-8') if isinstance(hash_value, str) else hash_value
+            return _bcrypt.checkpw(password_bytes, hash_bytes)
         except Exception:
             return False
 

@@ -326,8 +326,20 @@ class MetricsCollector:
                 
                 lines.append(f"# TYPE {name} histogram")
                 
-                for bucket, count in sorted(hist["buckets"].items()):
-                    bucket_label = f'le="{bucket}"' if bucket != "+Inf" else 'le="+Inf"'
+                # 分离数值桶和 +Inf 桶，避免类型比较错误
+                bucket_items = list(hist["buckets"].items())
+                numeric_buckets = [(k, v) for k, v in bucket_items if k != "+Inf"]
+                inf_bucket = [(k, v) for k, v in bucket_items if k == "+Inf"]
+                
+                # 对数值桶排序
+                for bucket, count in sorted(numeric_buckets, key=lambda x: x[0]):
+                    bucket_label = f'le="{bucket}"'
+                    full_labels = label_str.rstrip("}") + f',{bucket_label}}}' if label_str != "{}" else f"{{{bucket_label}}}"
+                    lines.append(f"{name}_bucket{full_labels} {count}")
+                
+                # 添加 +Inf 桶
+                for bucket, count in inf_bucket:
+                    bucket_label = 'le="+Inf"'
                     full_labels = label_str.rstrip("}") + f',{bucket_label}}}' if label_str != "{}" else f"{{{bucket_label}}}"
                     lines.append(f"{name}_bucket{full_labels} {count}")
                 

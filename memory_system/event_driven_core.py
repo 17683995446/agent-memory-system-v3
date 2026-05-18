@@ -285,26 +285,31 @@ class InMemoryEventBus(EventBus):
     用于开发和测试环境，支持异步事件处理
     """
     
-    def __init__(self, max_queue_size: int = 10000):
+    def __init__(self, max_queue_size: int = 10000, consumer_count: int = 4):
         super().__init__(BackendType.IN_MEMORY)
         self._event_queue: asyncio.PriorityQueue = asyncio.PriorityQueue(maxsize=max_queue_size)
-        self._consumer_task: Optional[asyncio.Task] = None
+        self._consumer_tasks: List[asyncio.Task] = []
+        self._consumer_count = consumer_count
         self._shutdown_event = asyncio.Event()
         self._sequence: int = 0
         
     async def connect(self) -> None:
         """启动消费者任务"""
-        self._consumer_task = asyncio.create_task(self._consume_events())
+        self._consumer_tasks = [
+            asyncio.create_task(self._consume_events())
+            for _ in range(self._consumer_count)
+        ]
         
     async def disconnect(self) -> None:
         """停止消费者任务"""
         self._shutdown_event.set()
-        if self._consumer_task:
-            self._consumer_task.cancel()
+        for task in self._consumer_tasks:
+            task.cancel()
             try:
-                await self._consumer_task
+                await task
             except asyncio.CancelledError:
                 pass
+        self._consumer_tasks.clear()
     
     async def publish(self, event: DomainEvent, topic: Optional[str] = None) -> bool:
         """发布事件到内存队列"""
@@ -315,8 +320,8 @@ class InMemoryEventBus(EventBus):
             await self._event_queue.put((priority, self._sequence, time.time(), event))
             logger.debug(f"Published event {event.event_id} to memory queue")
             return True
-        except asyncio.QueueFull:
-            logger.error(f"Event queue full, failed to publish {event.event_id}")
+        except Exception as e:
+            logger.error(f"Failed to publish event {event.event_id}: {e}")
             return False
     
     async def subscribe(self, event_type: str, handler: EventHandler) -> None:
@@ -361,7 +366,10 @@ class InMemoryEventBus(EventBus):
     async def _safe_handle(self, handler: EventHandler, event: DomainEvent) -> None:
         """安全地执行处理器"""
         try:
-            await handler(event)
+            result = handler(event)
+            # 如果处理器返回协程，则等待它
+            if asyncio.iscoroutine(result):
+                await result
         except Exception as e:
             logger.exception(f"Handler error for event {event.event_id}: {e}")
 
