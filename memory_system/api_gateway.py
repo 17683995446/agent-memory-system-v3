@@ -97,7 +97,10 @@ class GatewayRequest:
     
     @property
     def content_type(self) -> str:
-        return self.headers.get("content-type", "application/json")
+        for key, value in self.headers.items():
+            if key.lower() == "content-type":
+                return value
+        return "application/json"
     
     def get_header(self, name: str, default: str = "") -> str:
         return self.headers.get(name.lower(), default)
@@ -303,8 +306,12 @@ class APIKeyAuthenticator(Authenticator):
     
     async def authenticate(self, request: GatewayRequest) -> Optional[Dict[str, Any]]:
         """验证API密钥"""
-        # 从Header获取
-        api_key = request.headers.get(self.header_name)
+        # 从Header获取（大小写不敏感查找）
+        api_key = None
+        for header_key, header_value in request.headers.items():
+            if header_key.lower() == self.header_name:
+                api_key = header_value
+                break
         
         # 从Query参数获取
         if not api_key:
@@ -782,8 +789,11 @@ class BFFAggregator:
     
     async def connect(self) -> None:
         """初始化HTTP客户端"""
-        import aiohttp
-        self._http_client = aiohttp.ClientSession()
+        try:
+            import aiohttp
+            self._http_client = aiohttp.ClientSession()
+        except ImportError:
+            logger.warning("aiohttp is not installed; BFF aggregator HTTP client is disabled")
     
     async def disconnect(self) -> None:
         """关闭HTTP客户端"""

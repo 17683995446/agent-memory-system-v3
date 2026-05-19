@@ -470,7 +470,7 @@ class SessionManager:
                 # 单调写
                 if level in [SessionConsistencyLevel.MONOTONIC_WRITES, SessionConsistencyLevel.SESSION]:
                     ok, min_vc = self.check_monotonic_writes(session_id, key)
-                    if min_vc:
+                    if min_vc is not None:
                         requirements["requirements"].append({
                             "type": "monotonic_writes",
                             "min_vector_clock": min_vc,

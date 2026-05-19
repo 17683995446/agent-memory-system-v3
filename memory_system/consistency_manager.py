@@ -49,6 +49,7 @@ class ConsistencyLevel(Enum):
     SESSION = "session"                # 会话一致性
     MONOTONIC_READS = "monotonic_reads"  # 单调读
     READ_YOUR_WRITES = "read_your_writes"  # 读己之写
+    MONOTONIC_WRITES = "monotonic_writes"  # 单调写
     BOUNDED_STALENESS = "bounded_staleness"  # 有界陈旧性
     LINEARIZABLE = "linearizable"      # 线性一致性
     STRONG = "strong"                  # 强一致性（等同于线性一致性）
@@ -243,7 +244,10 @@ class ConsistencyManager:
             
             # 更新统计
             with self._lock:
-                self._stats["writes"] += 1
+                if result.success:
+                    self._stats["writes"] += 1
+                else:
+                    self._stats["failures"] += 1
                 if consistency == ConsistencyLevel.LINEARIZABLE:
                     self._stats["linearizable_ops"] += 1
                 elif consistency == ConsistencyLevel.CAUSAL:
@@ -354,6 +358,8 @@ class ConsistencyManager:
         # 本地写入
         with self._lock:
             self._local_store[key] = (value, timestamp, vector_clock)
+        # 同时写入共享存储，确保 LINEARIZABLE 读取能读到 CAUSAL 写入的数据
+        await self._storage.write(key, value, timestamp, vector_clock)
         
         # 异步复制到其他节点
         asyncio.create_task(self._replicate_async(key, value, timestamp, vector_clock))
