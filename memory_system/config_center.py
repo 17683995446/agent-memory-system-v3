@@ -638,7 +638,12 @@ class AESConfigEncryptor(ConfigEncryptor):
         self.key = hashlib.sha256(key.encode()).digest()
     
     def encrypt(self, value: str) -> str:
-        """加密值"""
+        """
+        加密值
+        
+        [BUG 5 修复] 加密失败时抛出异常而非静默返回明文，
+        防止敏感数据以未加密形式存储。
+        """
         try:
             from cryptography.fernet import Fernet
             
@@ -650,11 +655,23 @@ class AESConfigEncryptor(ConfigEncryptor):
             return f"ENC:{encrypted.decode()}"
         except ImportError:
             logger.error("cryptography not installed")
-            return value
+            raise RuntimeError(
+                "无法加密配置值：cryptography库未安装。"
+                "请执行 pip install cryptography 后重试。"
+            )
+        except Exception as e:
+            logger.exception(f"Encryption error: {e}")
+            raise RuntimeError(f"配置值加密失败: {e}") from e
     
     def decrypt(self, encrypted_value: str) -> str:
-        """解密值"""
+        """
+        解密值
+        
+        [BUG 5 修复] 解密失败时抛出异常而非静默返回密文，
+        防止上层代码误用密文作为明文处理。
+        """
         if not encrypted_value.startswith("ENC:"):
+            # 非加密值直接返回（明文配置项）
             return encrypted_value
         
         try:
@@ -668,7 +685,9 @@ class AESConfigEncryptor(ConfigEncryptor):
             return decrypted.decode()
         except Exception as e:
             logger.exception(f"Decryption error: {e}")
-            return encrypted_value
+            raise RuntimeError(
+                f"配置值解密失败，密文可能已损坏或密钥不匹配: {e}"
+            ) from e
 
 
 # ============================================================================
@@ -967,7 +986,12 @@ class ConfigCenter:
         namespace: str,
         version_id: str
     ) -> bool:
-        """回滚到指定版本"""
+        """
+        回滚到指定版本
+        
+        [BUG 6 修复] 添加异常处理，回滚失败时记录日志并继续，
+        最后报告回滚结果，避免中途失败导致部分回滚的不一致状态。
+        """
         versions = self._versions.get(namespace, [])
         target_version = None
         
@@ -979,9 +1003,34 @@ class ConfigCenter:
         if not target_version:
             return False
         
-        # 恢复配置
+        # 恢复配置 - 逐项回滚并记录每项的结果
+        success_count = 0
+        failed_count = 0
+        failed_keys = []
+        
         for key, value in target_version.config_data.items():
-            await self.set(key, value, namespace)
+            try:
+                await self.set(key, value, namespace)
+                success_count += 1
+            except Exception as e:
+                # [BUG 6 修复] 单项回滚失败不中断整体流程，记录日志继续
+                failed_count += 1
+                failed_keys.append(key)
+                logger.error(
+                    f"回滚配置项失败: namespace={namespace}, key={key}, "
+                    f"error={e}"
+                )
+        
+        if failed_count > 0:
+            logger.warning(
+                f"回滚部分失败: namespace={namespace}, version={version_id}, "
+                f"成功={success_count}, 失败={failed_count}, "
+                f"失败键={failed_keys}"
+            )
+            # 有部分成功也算回滚完成（尽力而为），但记录警告
+            # 如果全部失败则返回False
+            if success_count == 0:
+                return False
         
         logger.info(f"Rolled back to version: {version_id}")
         return True

@@ -988,14 +988,55 @@ class APIGateway:
             # 2. 版本检查
             version = self.version_manager.get_version_from_request(request)
             
-            # 3. 检查缓存
-            cache_config = None  # 应该从路由获取
+            # 3. 路由匹配 - 提前匹配以获取路由配置（auth_required, cache_config 等）
+            route = self.router.match(request.method, request.path)
+            if not route:
+                return GatewayResponse(
+                    status_code=404,
+                    body={"error": "Route not found"},
+                    request_id=request.request_id
+                )
+            
+            # [BUG 1 修复] 认证失败时，如果路由需要认证则返回401拒绝请求
+            if route.auth_required and self.authenticator and request.user is None:
+                logger.warning(
+                    f"Authentication failed for {request.method} {request.path} "
+                    f"[{request.request_id}]"
+                )
+                return GatewayResponse(
+                    status_code=401,
+                    headers={"WWW-Authenticate": 'Bearer realm="api"'},
+                    body={"error": "Authentication required"},
+                    request_id=request.request_id
+                )
+            
+            # [BUG 2 修复] RBAC授权检查 - 认证成功后、路由处理前调用authorize()
+            if request.user is not None and route.allowed_roles:
+                # 从路由路径推断资源名，用于授权检查
+                resource = route.path.split("/")[1] if "/" in route.path else route.path
+                action = request.method.lower()
+                authorized = await self.authz_manager.authorize(
+                    request.user, resource, action
+                )
+                if not authorized:
+                    logger.warning(
+                        f"Authorization denied for user {request.user.get('user_id')} "
+                        f"on {request.method} {request.path} [{request.request_id}]"
+                    )
+                    return GatewayResponse(
+                        status_code=403,
+                        body={"error": "Insufficient permissions"},
+                        request_id=request.request_id
+                    )
+            
+            # [BUG 3 修复] 从路由获取cache_config，而非硬编码为None
+            cache_config = route.cache_config
             if cache_config and cache_config.get("strategy") != CacheStrategy.NO_CACHE:
                 cached = await self.cache_manager.get(request)
                 if cached:
                     return cached
             
-            # 4. 路由
+            # 4. 路由处理
             response = await self.router.handle(request)
             
             # 5. 添加版本弃用头
@@ -1117,8 +1158,57 @@ async def rate_limit_middleware(
     max_requests: int = 100,
     window_seconds: int = 60
 ) -> GatewayResponse:
-    """限流中间件"""
-    # 简化实现
+    """
+    限流中间件
+    
+    [BUG 4 修复] 集成RateLimiter进行实际限流检查，
+    基于客户端IP和用户ID进行滑动窗口限流。
+    """
+    try:
+        from memory_system.rate_limiter import RateLimiter, RateLimitConfig, RateLimitStrategy
+    except ImportError:
+        # rate_limiter模块不可用时，放行请求并记录警告
+        logger.warning("rate_limiter模块不可用，限流中间件降级为放行模式")
+        return await next_handler(request)
+    
+    # 使用模块级缓存避免每次请求创建新的限流器实例
+    if not hasattr(rate_limit_middleware, '_limiter'):
+        config = RateLimitConfig(
+            requests_per_minute=max_requests,
+            burst_size=max_requests,
+            strategy=RateLimitStrategy.SLIDING_WINDOW,
+            per_user=True,
+            per_endpoint=True,
+            window_size=window_seconds,
+        )
+        rate_limit_middleware._limiter = RateLimiter(config)
+    
+    limiter = rate_limit_middleware._limiter
+    
+    # 确定限流标识：优先使用用户ID，其次使用客户端IP
+    user_id = request.user.get("user_id", "") if request.user else ""
+    if not user_id:
+        user_id = request.client_ip or "anonymous"
+    
+    endpoint = request.path
+    
+    # 执行限流检查
+    if not limiter.is_allowed(user_id=user_id, endpoint=endpoint):
+        logger.warning(
+            f"Rate limit exceeded for {user_id} on {endpoint} "
+            f"[{request.request_id}]"
+        )
+        return GatewayResponse(
+            status_code=429,
+            headers={
+                "Retry-After": str(window_seconds),
+                "X-RateLimit-Limit": str(max_requests),
+                "X-RateLimit-Remaining": "0",
+            },
+            body={"error": "Rate limit exceeded"},
+            request_id=request.request_id
+        )
+    
     return await next_handler(request)
 
 

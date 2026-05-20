@@ -32,6 +32,7 @@ import asyncio
 import logging
 import time
 import uuid
+from abc import ABC, abstractmethod
 from concurrent import futures
 from dataclasses import dataclass, field
 from typing import (
@@ -337,16 +338,54 @@ class MockMemoryStore(MemoryStoreInterface):
                 "metadata": metadata,
                 "memory_type": memory_type,
                 "created_at": time.time(),
+                # [BUG 9 修复] 记录TTL，单位为秒；ttl=0表示永不过期
+                "ttl": ttl,
             }
             return memory_id
     
     async def get(self, memory_id: str, agent_id: str, tenant_id: str) -> Optional[Dict[str, Any]]:
-        return self._memories.get(memory_id)
+        memory = self._memories.get(memory_id)
+        if memory is None:
+            return None
+        
+        # [BUG 7 修复] 租户隔离校验：验证agent_id和tenant_id匹配
+        if memory.get("agent_id") != agent_id:
+            logger.warning(
+                f"租户隔离校验失败: memory_id={memory_id}, "
+                f"请求agent_id={agent_id}, 存储agent_id={memory.get('agent_id')}"
+            )
+            return None
+        if memory.get("tenant_id") != tenant_id:
+            logger.warning(
+                f"租户隔离校验失败: memory_id={memory_id}, "
+                f"请求tenant_id={tenant_id}, 存储tenant_id={memory.get('tenant_id')}"
+            )
+            return None
+        
+        # [BUG 9 修复] 检查TTL是否过期
+        ttl = memory.get("ttl", 0)
+        if ttl > 0:
+            created_at = memory.get("created_at", 0)
+            if time.time() - created_at > ttl:
+                logger.info(f"内存条目已过期: memory_id={memory_id}, ttl={ttl}s")
+                # 清理过期条目
+                async with self._lock:
+                    self._memories.pop(memory_id, None)
+                return None
+        
+        return memory
     
     async def delete(self, memory_id: str, agent_id: str, tenant_id: str,
                      permanent: bool = False) -> bool:
         async with self._lock:
             if memory_id in self._memories:
+                # [BUG 7 修复] 删除前也校验租户隔离
+                memory = self._memories[memory_id]
+                if memory.get("agent_id") != agent_id or memory.get("tenant_id") != tenant_id:
+                    logger.warning(
+                        f"删除操作租户隔离校验失败: memory_id={memory_id}"
+                    )
+                    return False
                 if permanent:
                     del self._memories[memory_id]
                 else:
@@ -358,6 +397,13 @@ class MockMemoryStore(MemoryStoreInterface):
                      **kwargs) -> bool:
         async with self._lock:
             if memory_id in self._memories:
+                # [BUG 7 修复] 更新前也校验租户隔离
+                memory = self._memories[memory_id]
+                if memory.get("agent_id") != agent_id or memory.get("tenant_id") != tenant_id:
+                    logger.warning(
+                        f"更新操作租户隔离校验失败: memory_id={memory_id}"
+                    )
+                    return False
                 self._memories[memory_id].update(kwargs)
                 return True
             return False
@@ -367,16 +413,90 @@ class MockMemoryStore(MemoryStoreInterface):
                      top_k: int = 10, min_score: float = 0.0,
                      filters: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
         results = []
+        now = time.time()
+        
         for memory in self._memories.values():
-            if memory.get("agent_id") == agent_id:
-                # 简单模拟搜索
-                score = 0.5  # 模拟相似度分数
-                if score >= min_score:
-                    results.append({**memory, "score": score})
+            # [BUG 7 修复] 搜索时也校验agent_id（tenant_id可选过滤）
+            if memory.get("agent_id") != agent_id:
+                continue
+            if memory.get("tenant_id") != tenant_id:
+                continue
+            
+            # [BUG 9 修复] 跳过已过期的条目
+            ttl = memory.get("ttl", 0)
+            if ttl > 0:
+                created_at = memory.get("created_at", 0)
+                if now - created_at > ttl:
+                    continue
+            
+            # 跳过已软删除的条目
+            if memory.get("deleted"):
+                continue
+            
+            # [BUG 8 修复] 使用简单的文本匹配计算相似度分数，替代硬编码的0.5
+            score = self._compute_similarity(query, memory, query_embedding)
+            
+            if score >= min_score:
+                results.append({**memory, "score": score})
         
         # 按分数排序并限制数量
         results.sort(key=lambda x: x["score"], reverse=True)
         return results[:top_k]
+    
+    @staticmethod
+    def _compute_similarity(
+        query: str,
+        memory: Dict[str, Any],
+        query_embedding: Optional[List[float]] = None
+    ) -> float:
+        """
+        计算查询与内存条目之间的相似度分数
+        
+        [BUG 8 修复] 使用多种策略计算分数：
+        1. 如果提供了query_embedding和memory embedding，使用余弦相似度
+        2. 否则使用简单的文本匹配（关键词重叠率）
+        
+        Returns:
+            float: 0.0 ~ 1.0 之间的相似度分数
+        """
+        # 策略1：向量余弦相似度
+        if query_embedding and memory.get("embedding"):
+            memory_embedding = memory["embedding"]
+            if len(query_embedding) == len(memory_embedding) and len(query_embedding) > 0:
+                # 计算余弦相似度
+                dot_product = sum(a * b for a, b in zip(query_embedding, memory_embedding))
+                norm_a = sum(a * a for a in query_embedding) ** 0.5
+                norm_b = sum(b * b for b in memory_embedding) ** 0.5
+                if norm_a > 0 and norm_b > 0:
+                    return dot_product / (norm_a * norm_b)
+        
+        # 策略2：文本关键词匹配
+        content = memory.get("content", "")
+        if not query or not content:
+            return 0.0
+        
+        # 将查询和内容拆分为词（简单分词）
+        query_terms = set(query.lower().split())
+        content_terms = set(content.lower().split())
+        
+        if not query_terms:
+            return 0.0
+        
+        # 计算Jaccard相似度：交集/并集
+        intersection = query_terms & content_terms
+        union = query_terms | content_terms
+        
+        if not union:
+            return 0.0
+        
+        jaccard = len(intersection) / len(union)
+        
+        # 额外加成：查询词在内容中出现的频率
+        content_lower = content.lower()
+        match_ratio = sum(1 for term in query_terms if term in content_lower) / len(query_terms)
+        
+        # 综合分数：Jaccard相似度 * 0.4 + 匹配比率 * 0.6
+        return jaccard * 0.4 + match_ratio * 0.6
 
 
 class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):

@@ -24,7 +24,7 @@ import signal
 import time
 import uuid
 from abc import ABC, abstractmethod
-from collections import deque
+from collections import defaultdict, deque
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone, timedelta
 from enum import Enum, auto
@@ -880,10 +880,18 @@ class LoadBalancer:
         service_name: str,
         instances: List[ServiceInstance]
     ) -> ServiceInstance:
-        """轮询策略"""
+        """轮询策略
+
+        BUG修复 [P1]: 使用模运算限制计数器大小，防止_round_robin_counters
+        无界增长。计数器在每次递增后对实例数量取模，保持计数器值在合理范围内。
+        当实例列表为空时直接返回None。
+        """
+        if not instances:
+            return None  # type: ignore[return-value]
         counter = self._round_robin_counters.get(service_name, 0)
         instance = instances[counter % len(instances)]
-        self._round_robin_counters[service_name] = counter + 1
+        # 使用模运算限制计数器大小，防止无界增长
+        self._round_robin_counters[service_name] = (counter + 1) % len(instances)
         return instance
     
     def _weighted_random(self, instances: List[ServiceInstance]) -> ServiceInstance:
@@ -948,10 +956,51 @@ class LoadBalancer:
         self._connection_counts[instance.id] += 1
     
     def record_connection_end(self, instance: ServiceInstance) -> None:
-        """记录连接结束"""
-        self._connection_counts[instance.id] = max(
-            0, self._connection_counts[instance.id] - 1
-        )
+        """记录连接结束
+
+        BUG修复 [P1]: 当连接计数归零时，从字典中删除该实例的条目，
+        防止_connection_counts字典无限增长。
+        """
+        if instance.id in self._connection_counts:
+            self._connection_counts[instance.id] -= 1
+            if self._connection_counts[instance.id] <= 0:
+                del self._connection_counts[instance.id]
+
+    def cleanup_stale_connection_counts(
+        self,
+        active_instance_ids: Optional[Set[ServiceId]] = None
+    ) -> int:
+        """清理不再活跃的实例连接计数
+
+        BUG修复 [P1]: 定期调用此方法清理_connection_counts中
+        不再活跃的实例条目，防止长时间运行后字典无限增长。
+        如果提供了active_instance_ids，只保留该集合中的实例；
+        否则清理所有连接计数为0的条目。
+
+        Args:
+            active_instance_ids: 当前活跃的实例ID集合
+
+        Returns:
+            清理的条目数量
+        """
+        if active_instance_ids is not None:
+            # 清理不在活跃集合中的所有条目
+            stale_keys = [
+                k for k in self._connection_counts
+                if k not in active_instance_ids
+            ]
+            for k in stale_keys:
+                del self._connection_counts[k]
+            return len(stale_keys)
+        else:
+            # 清理连接计数为0的条目（防御性清理）
+            stale_keys = [
+                k for k, v in self._connection_counts.items()
+                if v <= 0
+            ]
+            for k in stale_keys:
+                del self._connection_counts[k]
+            return len(stale_keys)
 
 
 # ============================================================================
@@ -1052,17 +1101,73 @@ class CircuitBreaker:
                 self._failure_count = 0
     
     async def _on_failure(self, error: Exception) -> None:
-        """处理失败调用"""
+        """处理失败调用
+
+        BUG修复 [P1]: 修复CircuitBreaker不区分错误类型的问题。
+        原先_on_failure()对所有异常都计入失败计数，CircuitBreakerConfig.error_codes
+        定义了但从未使用。现在检查异常类型/错误码，只有匹配error_codes的异常才
+        计入失败计数；不匹配的异常直接向上传播，不影响熔断器状态。
+        """
+        # 检查异常是否属于应计入失败计数的错误类型
+        should_count = self._should_count_as_failure(error)
+        if not should_count:
+            logger.debug(
+                f"Circuit breaker '{self.name}': error {type(error).__name__} "
+                f"not in error_codes, not counting as failure"
+            )
+            return
+
         async with self._lock:
             self._failure_count += 1
             self._last_failure_time = datetime.now(timezone.utc)
-            
+
             if self._state == CircuitState.HALF_OPEN:
                 self._state = CircuitState.OPEN
                 logger.warning(f"Circuit breaker '{self.name}' moved to OPEN (half-open failure)")
             elif self._failure_count >= self.config.failure_threshold:
                 self._state = CircuitState.OPEN
                 logger.warning(f"Circuit breaker '{self.name}' moved to OPEN")
+
+    def _should_count_as_failure(self, error: Exception) -> bool:
+        """判断异常是否应计入熔断器失败计数
+
+        BUG修复 [P1]: 新增辅助方法，根据CircuitBreakerConfig.error_codes
+        判断异常是否应触发熔断器失败计数。
+
+        判断逻辑：
+        1. 如果异常有 status_code / status / code 属性（如HTTP异常），
+           检查其值是否在 error_codes 中；如果不在则不计入失败
+        2. 如果异常类型本身在 error_codes 中（支持直接传入异常类），
+           也计入失败
+        3. 如果异常没有可识别的状态码属性（如普通 RuntimeError），
+           默认计入失败（保守策略，保持向后兼容）
+        4. 如果 error_codes 为空，则所有异常都计入失败（向后兼容）
+        """
+        if not self.config.error_codes:
+            # error_codes为空时，所有异常都计入失败（向后兼容）
+            return True
+
+        # 检查异常的HTTP状态码属性（常见于 aiohttp 等库的异常）
+        has_status_attr = False
+        for attr in ("status_code", "status", "code"):
+            code = getattr(error, attr, None)
+            if code is not None:
+                has_status_attr = True
+                if int(code) in self.config.error_codes:
+                    return True
+
+        # 如果异常有状态码属性但不在 error_codes 中，不计入失败
+        if has_status_attr:
+            return False
+
+        # 检查异常类型是否在 error_codes 中（支持异常类作为 error_code）
+        for ec in self.config.error_codes:
+            if isinstance(ec, type) and isinstance(error, ec):
+                return True
+
+        # 异常没有可识别的状态码属性（如普通 RuntimeError），
+        # 默认计入失败（保守策略，保持向后兼容）
+        return True
     
     def get_metrics(self) -> Dict[str, Any]:
         """获取熔断器指标"""
@@ -1356,11 +1461,6 @@ class ServiceClient:
         timeout = timeout or self.failover_config.failover_timeout
         start_time = time.time()
         
-        # 限流检查
-        if self.rate_limiter:
-            if not await self.rate_limiter.acquire(service_name):
-                raise RateLimitExceeded(f"Rate limit exceeded for service: {service_name}")
-        
         tried_instances: List[ServiceId] = []
         last_error: Optional[Exception] = None
         
@@ -1375,6 +1475,13 @@ class ServiceClient:
                     tried_instances=tried_instances,
                     last_error=last_error
                 )
+            
+            # BUG修复 [P1]: 将限流检查移到重试循环内部。
+            # 原先限流检查在重试循环外只执行一次，导致重试时绕过限流。
+            # 现在每次重试前都检查限流，确保重试也受限流保护。
+            if self.rate_limiter:
+                if not await self.rate_limiter.acquire(service_name):
+                    raise RateLimitExceeded(f"Rate limit exceeded for service: {service_name}")
             
             # 计算重试延迟
             if retry > 0:
@@ -1588,8 +1695,10 @@ class HealthChecker:
     执行各种健康检查并报告状态
     """
     
-    def __init__(self):
+    def __init__(self, check_timeout: float = 10.0):
         self._checks: Dict[str, Callable[[], Coroutine[Any, Any, Tuple[bool, Any]]]] = {}
+        # BUG修复 [P1]: 新增单次检查超时时间配置，防止单个检查函数挂起阻塞整个check()
+        self._check_timeout = check_timeout
     
     def register_check(
         self,
@@ -1598,21 +1707,59 @@ class HealthChecker:
     ) -> None:
         """注册健康检查"""
         self._checks[name] = check_func
+
+    def remove_check(self, name: str) -> None:
+        """移除健康检查"""
+        self._checks.pop(name, None)
+    
+    async def _run_single_check(
+        self,
+        name: str,
+        check_func: Callable[[], Coroutine[Any, Any, Tuple[bool, Any]]]
+    ) -> Tuple[str, bool, Any]:
+        """执行单个健康检查（带超时）
+
+        BUG修复 [P1]: 为每个检查添加asyncio.wait_for超时，
+        防止单个检查函数挂起时阻塞整个健康检查流程。
+        """
+        try:
+            healthy, detail = await asyncio.wait_for(
+                check_func(), timeout=self._check_timeout
+            )
+            return name, healthy, detail
+        except asyncio.TimeoutError:
+            return name, False, f"Health check timed out after {self._check_timeout}s"
+        except Exception as e:
+            return name, False, str(e)
     
     async def check(self) -> HealthStatus:
-        """执行所有健康检查"""
+        """执行所有健康检查
+
+        BUG修复 [P1]: 修复HealthChecker串行执行且无超时的问题。
+        原先使用for循环逐个await，串行执行效率低且单个检查挂起会阻塞整个check()。
+        现在使用asyncio.gather()并行执行所有检查，并为每个检查添加超时保护。
+        """
         checks = {}
         details = {}
-        
-        for name, check_func in self._checks.items():
-            try:
-                healthy, detail = await check_func()
-                checks[name] = healthy
-                details[name] = detail
-            except Exception as e:
-                checks[name] = False
-                details[name] = str(e)
-        
+
+        if not self._checks:
+            return HealthStatus(
+                status=ServiceStatus.HEALTHY,
+                checks=checks,
+                details=details
+            )
+
+        # 并行执行所有健康检查
+        tasks = [
+            self._run_single_check(name, check_func)
+            for name, check_func in self._checks.items()
+        ]
+        results = await asyncio.gather(*tasks)
+
+        for name, healthy, detail in results:
+            checks[name] = healthy
+            details[name] = detail
+
         overall_status = ServiceStatus.HEALTHY if all(checks.values()) else ServiceStatus.UNHEALTHY
         
         return HealthStatus(
