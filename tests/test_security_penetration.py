@@ -427,3 +427,4 @@ class TestSideChannelAttacks(TestSecurityPenetration):
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])
+#!/usr/bin/env python3

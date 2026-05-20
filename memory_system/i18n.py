@@ -126,7 +126,7 @@ MESSAGES: Dict[str, Dict[str, str]] = {
         "operation_failed": "작업 실패: {reason}",
         "unauthorized": "인증되지 않은 접근",
         "forbidden": "접근 금지",
-        "internal_error": "낶部 오류 발생",
+        "internal_error": "내부 오류 발생",
         "timeout": "작업 시간 초과",
         "rate_limit_exceeded": "요청 속도 제한 초과. 나중에 다시 시도하세요",
     },

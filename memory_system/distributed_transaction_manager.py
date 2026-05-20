@@ -263,12 +263,19 @@ class SagaStep:
     
     async def execute(self, context: TransactionContext) -> Any:
         """执行步骤 - 使用tenacity重试机制替代手动循环"""
+        from tenacity import RetryError as TenacityRetryError
         retry_decorator = retry(
             stop=stop_after_attempt(self.max_retries),
             wait=wait_exponential(multiplier=0.1, min=0.1, max=10.0),
+            reraise=True,
         )
         retry_fn = retry_decorator(self.action)
-        return await retry_fn(context)
+        try:
+            return await retry_fn(context)
+        except TenacityRetryError as e:
+            # tenacity包装了原始异常，提取最后的原因
+            last_error = e.last_attempt.exception() if e.last_attempt and e.last_attempt.exception() else e
+            raise last_error
     
     async def compensate(self, context: TransactionContext, action_result: Any):
         """执行补偿"""

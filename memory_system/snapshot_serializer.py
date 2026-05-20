@@ -9,6 +9,7 @@ from typing import Dict, Any, Optional, List
 import json
 import pickle
 import gzip
+import zlib
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
@@ -95,7 +96,13 @@ class SnapshotSerializer(ABC):
     def _decompress(self, data: bytes) -> bytes:
         """解压数据"""
         if self.compression:
-            return gzip.decompress(data)
+            try:
+                return gzip.decompress(data)
+            except (EOFError, zlib.error, OSError, gzip.BadGzipFile) as e:
+                raise SerializationError(
+                    message=f"Gzip decompression failed: {str(e)}",
+                    serializer="unknown"
+                )
         return data
 
 
@@ -125,7 +132,14 @@ class JSONSerializer(SnapshotSerializer):
         """从JSON反序列化"""
         try:
             decompressed = self._decompress(data)
-            return json.loads(decompressed.decode('utf-8'))
+            text = decompressed.decode('utf-8')
+            # 拒绝非标准JSON值: NaN, Infinity, -Infinity
+            if any(token in text for token in ['undefined', 'NaN', 'Infinity', '-Infinity']):
+                raise SerializationError(
+                    message="JSON contains non-standard values (NaN, Infinity, undefined)",
+                    serializer="json"
+                )
+            return json.loads(text)
         except (json.JSONDecodeError, UnicodeDecodeError) as e:
             raise SerializationError(
                 message=f"JSON deserialization failed: {str(e)}",
@@ -223,7 +237,7 @@ class PickleSerializer(SnapshotSerializer):
         try:
             bytes_data = pickle.dumps(data, protocol=self.protocol)
             return self._compress(bytes_data)
-        except pickle.PicklingError as e:
+        except (pickle.PicklingError, RecursionError, AttributeError, TypeError) as e:
             raise SerializationError(
                 message=f"Pickle serialization failed: {str(e)}",
                 serializer="pickle"
@@ -234,7 +248,7 @@ class PickleSerializer(SnapshotSerializer):
         try:
             decompressed = self._decompress(data)
             return pickle.loads(decompressed)
-        except (pickle.UnpicklingError, EOFError) as e:
+        except (pickle.UnpicklingError, EOFError, OverflowError, ValueError, TypeError) as e:
             raise SerializationError(
                 message=f"Pickle deserialization failed: {str(e)}",
                 serializer="pickle"
