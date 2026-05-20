@@ -2,11 +2,14 @@
 
 import time
 import asyncio
+import logging
 from typing import Dict, Optional, Callable, Any, List
 from dataclasses import dataclass, field
 from enum import Enum
 from collections import deque
 import threading
+
+logger = logging.getLogger(__name__)
 
 
 class RateLimitStrategy(Enum):
@@ -83,6 +86,24 @@ class RateLimiter:
             )
         return self._states[key]
 
+    def _cleanup_expired_states(self) -> None:
+        """清理过期的限流状态，防止 _states 字典无界增长"""
+        now = time.time()
+        # 当状态数量超过阈值时才执行清理，避免频繁遍历
+        if len(self._states) <= 1000:
+            return
+        expired_keys = []
+        for key, state in self._states.items():
+            # 清理条件：未被封禁 且 请求队列为空 且 距上次更新超过窗口大小
+            if (state.blocked_until <= now
+                    and len(state.requests) == 0
+                    and now - state.last_update > self.config.window_size):
+                expired_keys.append(key)
+        for key in expired_keys:
+            del self._states[key]
+        if expired_keys:
+            logger.debug(f"Cleaned up {len(expired_keys)} expired rate limit states")
+
     def is_allowed(self, user_id: str = "", endpoint: str = "", **kwargs) -> bool:
         """检查是否允许请求
 
@@ -97,6 +118,10 @@ class RateLimiter:
         key = self._get_key(user_id, endpoint, **kwargs)
 
         with self._lock:
+            # BUG 6 修复：定期清理过期的 _states 条目，防止字典无界增长。
+            # 每次调用时检查并清理不再活跃的限流状态（未被封禁且请求队列为空）。
+            self._cleanup_expired_states()
+
             state = self._get_or_create_state(key)
 
             # 检查是否被封禁
@@ -169,15 +194,19 @@ class RateLimiter:
         time_passed = now - state.last_update
         leaked = time_passed * (self.config.requests_per_minute / 60)
 
-        # 更新当前水位
-        current_level = max(0, len(state.requests) - leaked)
+        # BUG 5 修复：原实现用 deque([now] * int(current_level + 1)) 重建deque，
+        # 丢失了原始请求时间信息。改为从deque左侧popleft已过期的请求，
+        # 保留剩余请求的原始时间戳，再追加新请求。
+        while leaked >= 1 and state.requests:
+            state.requests.popleft()
+            leaked -= 1
 
         # 检查是否溢出
-        if current_level >= self.config.burst_size:
+        if len(state.requests) >= self.config.burst_size:
             return False
 
-        # 添加新请求
-        state.requests = deque([now] * int(current_level + 1))
+        # 添加新请求（保留原始时间戳）
+        state.requests.append(now)
         state.last_update = now
         return True
 

@@ -23,11 +23,14 @@
 import asyncio
 import time
 import uuid
+import logging
 from typing import Dict, List, Optional, Set, Tuple, Any, Callable, Union
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from collections import defaultdict
 import threading
+
+logger = logging.getLogger(__name__)
 
 # 导入核心组件
 from memory_system.hybrid_logical_clock import HybridLogicalClock, HLCTimestamp, get_timestamp
@@ -167,11 +170,16 @@ class ConsistencyManager:
         
         # 锁
         self._lock = threading.RLock()
+        # [BUG 8 修复] 添加 asyncio.Lock 保护 _leader_id 和 _is_leader 的并发修改
+        self._leader_lock = asyncio.Lock()
         
         # 运行状态
         self._running = False
         self._is_leader = False
         self._leader_id: Optional[str] = None
+        
+        # [BUG 9 修复] 保存异步复制任务的引用，防止Task被GC且便于stop()时清理
+        self._replication_tasks: List[asyncio.Task] = []
         
         # 统计信息
         self._stats = {
@@ -198,6 +206,15 @@ class ConsistencyManager:
         self._running = False
         self._partition_manager.stop()
         self._session_manager.stop_cleanup_task()
+        
+        # [BUG 9 修复] 停止时取消所有未完成的异步复制任务
+        for task in self._replication_tasks:
+            if not task.done():
+                task.cancel()
+        # 等待所有任务处理取消
+        if self._replication_tasks:
+            await asyncio.gather(*self._replication_tasks, return_exceptions=True)
+        self._replication_tasks.clear()
         
         print(f"[ConsistencyManager] Stopped on node {self._node_id}")
     
@@ -333,7 +350,16 @@ class ConsistencyManager:
         else:
             # 转发到Leader
             if self._leader_id:
-                # 模拟转发（实际应使用RPC）
+                # [BUG 6 修复] 添加注释说明这是设计上的简化（单进程模拟）
+                # 在真实的分布式系统中，这里应该通过RPC将写请求转发到Leader节点执行。
+                # 当前实现为单进程模拟，非Leader节点仅模拟网络延迟后返回成功，
+                # 实际数据并未持久化到Leader，因此存在数据丢失风险。
+                # 生产环境中应替换为实际的RPC调用（如 gRPC、HTTP 等）。
+                logger.warning(
+                    "[ConsistencyManager] 非Leader节点(node=%s)模拟转发写请求到Leader(node=%s)，"
+                    "数据可能未实际持久化（单进程模拟限制）",
+                    self._node_id, self._leader_id
+                )
                 await asyncio.sleep(0.01)
                 return OperationResult(
                     success=True,
@@ -362,7 +388,10 @@ class ConsistencyManager:
         await self._storage.write(key, value, timestamp, vector_clock)
         
         # 异步复制到其他节点
-        asyncio.create_task(self._replicate_async(key, value, timestamp, vector_clock))
+        # [BUG 9 修复] 保存Task引用到列表，防止被GC回收，并在stop()时统一清理
+        task = asyncio.create_task(self._replicate_async(key, value, timestamp, vector_clock))
+        task.add_done_callback(lambda t: self._replication_tasks.remove(t) if t in self._replication_tasks else None)
+        self._replication_tasks.append(task)
         
         return OperationResult(
             success=True,
@@ -579,16 +608,20 @@ class ConsistencyManager:
         """
         return self._session_manager.close_session(session_id)
     
-    def set_leader(self, leader_id: str, is_leader: bool = False):
+    async def set_leader(self, leader_id: str, is_leader: bool = False):
         """
         设置Leader信息
+        
+        [BUG 8 修复] 使用 asyncio.Lock 保护 _leader_id 和 _is_leader 的修改，
+        防止在异步环境中多个协程并发修改导致状态不一致。
         
         Args:
             leader_id: Leader节点ID
             is_leader: 当前节点是否为Leader
         """
-        self._leader_id = leader_id
-        self._is_leader = is_leader
+        async with self._leader_lock:
+            self._leader_id = leader_id
+            self._is_leader = is_leader
     
     def get_stats(self) -> Dict[str, Any]:
         """
@@ -644,14 +677,53 @@ class ConsistencyVerifier:
         """
         验证线性一致性
         
+        基本验证策略：
+        1. 对所有操作按时间戳排序，形成全序
+        2. 模拟按全序执行，检查读操作是否能看到最近一次写入的值
+        3. 如果任何读操作返回的值与全序中最近一次写入不一致，则违反线性一致性
+        
         Args:
-            operations: 操作列表
+            operations: 操作列表，每个操作包含 type, key, value, timestamp, operation_id 等
             
         Returns:
             True如果满足线性一致性
         """
-        # 简化的线性一致性验证
-        # 实际应实现完整的线性一致性检查算法
+        # [BUG 5 修复] 实现基本的线性一致性验证
+        # 线性一致性要求：操作必须看起来像按某个全序原子执行
+        
+        if not operations:
+            return True
+        
+        # 按时间戳排序所有操作，形成全序序列
+        sorted_ops = sorted(operations, key=lambda op: op.get("timestamp", 0))
+        
+        # 模拟按全序执行，跟踪每个 key 的最新写入值
+        # key -> (value, timestamp)
+        latest_writes: Dict[str, Tuple[Any, Any]] = {}
+        
+        for op in sorted_ops:
+            op_type = op.get("type", "")
+            key = op.get("key", "")
+            op_ts = op.get("timestamp", 0)
+            
+            if op_type == "write":
+                # 写入操作：更新 key 的最新值
+                latest_writes[key] = (op.get("value"), op_ts)
+            elif op_type == "read":
+                # 读操作：检查返回值是否与全序中最近一次写入一致
+                if key in latest_writes:
+                    expected_value, _ = latest_writes[key]
+                    actual_value = op.get("value")
+                    if actual_value != expected_value:
+                        logger.warning(
+                            "[ConsistencyVerifier] 线性一致性违规: key=%s, "
+                            "期望值=%s, 实际值=%s, operation_id=%s",
+                            key, expected_value, actual_value,
+                            op.get("operation_id", "unknown")
+                        )
+                        return False
+                # 如果 key 没有被写过，读操作返回任何值都是合法的
+        
         return True
     
     async def verify_causal_consistency(self, operations: List[Dict[str, Any]]) -> bool:
@@ -705,13 +777,18 @@ class ConsistencyVerifier:
         for op in operations:
             if op["type"] == "write":
                 key = op["key"]
-                writes[key] = op
                 
-                # 检查单调写
-                if key in writes:
-                    prev_write = writes[key]
+                # [BUG 7 修复] 在写入前保存旧值，用于单调写比较
+                # 原始代码先写入 writes[key]=op，然后立即检查 writes[key]，
+                # 此时 prev_write 就是当前 write 自身，比较毫无意义
+                prev_write = writes.get(key)
+                
+                # 检查单调写：当前写入的时间戳必须 >= 同一 key 上一次写入的时间戳
+                if prev_write is not None:
                     if op["timestamp"] < prev_write["timestamp"]:
                         results["monotonic_writes"] = False
+                
+                writes[key] = op
                         
             elif op["type"] == "read":
                 key = op["key"]

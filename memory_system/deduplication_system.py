@@ -3,14 +3,18 @@
 基于语义相似度的重复记忆检测与合并
 """
 
+import re
 from typing import List, Tuple, Optional, Dict, Any
 from dataclasses import dataclass
 import asyncio
 from collections import defaultdict
 import time
+import logging
 
 from memory_system.core_abstractions.abstract_component_interfaces import StorageBackend, EmbeddingProvider
 from memory_system.core_abstractions.memory_data_models import MemoryItem, MemoryType, ImportanceLevel
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -112,7 +116,9 @@ class MemoryDeduplicationSystem:
         # 合并内容（去重句子）
         all_sentences = []
         for memory in memories:
-            sentences = memory.content.split('。')
+            # BUG 9 修复：原实现只按中文句号('。')分割，
+            # 现在支持中文句号、英文句号、问号、感叹号、分号等多种分隔符
+            sentences = re.split(r'[。.!?！？；;]', memory.content)
             all_sentences.extend(s.strip() for s in sentences if s.strip())
 
         # 去重（保持顺序）
@@ -180,7 +186,12 @@ class MemoryDeduplicationSystem:
 
             # 删除重复记忆
             for memory_id in merged_ids:
-                await self.storage.delete(memory_id)
+                # BUG 10 修复：删除记忆失败时不应中断整个去重流程，
+                # 添加 try-except 记录日志后继续处理其他记忆
+                try:
+                    await self.storage.delete(memory_id)
+                except Exception as e:
+                    logger.warning(f"Failed to delete duplicate memory {memory_id}: {e}")
 
             stats["merged"] += len(merged_ids)
 

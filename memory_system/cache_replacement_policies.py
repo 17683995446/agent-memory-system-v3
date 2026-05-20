@@ -94,7 +94,9 @@ class WTinyLFUCache:
         for i in range(self._sketch_depth):
             idx = self._hash(key, i + 1)
             min_count = min(min_count, self._sketch[i][idx])
-        return min_count
+        # BUG 8 修复：当所有计数为0时 min_count 仍为 float('inf')，
+        # 此时应返回0而非inf，否则会导致频率比较异常
+        return 0 if min_count == float('inf') else min_count
 
     def get(self, key: str) -> Optional[Any]:
         """
@@ -113,6 +115,10 @@ class WTinyLFUCache:
             entry = self._window[key]
             entry.frequency += 1
             entry.last_access = time.time()
+            # BUG 7 修复：窗口缓存命中时也需要更新频率草图（sketch），
+            # 否则窗口缓存中的条目频率不会被记录到sketch中，
+            # 导致晋升到主缓存后其频率估计偏低，更容易被错误淘汰
+            self._increment_sketch(key)
             # 移动到末尾（LRU）
             self._window.move_to_end(key)
             self._hit_count += 1

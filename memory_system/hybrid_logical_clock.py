@@ -21,11 +21,14 @@
 import time
 import json
 import struct
+import logging
 from typing import Dict, Tuple, Optional, Any, Union
 from dataclasses import dataclass, field
 from enum import Enum, auto
 import threading
 import hashlib
+
+logger = logging.getLogger(__name__)
 
 
 class HLCComparisonResult(Enum):
@@ -173,7 +176,10 @@ class HybridLogicalClock:
             
             # 检查时钟回退
             if current_physical < self._last_physical_time:
-                # 时钟回退，增加逻辑计数器
+                # [BUG 1 修复] 时钟回退时，_physical_time 应保持为 _last_physical_time
+                # 以确保生成的HLC时间戳单调递增；同时 _last_physical_time 不更新，
+                # 避免丢失"已观测到的最大物理时间"信息导致后续判断异常
+                self._physical_time = self._last_physical_time
                 self._logical_counter += 1
                 self._stats["clock_drifts_detected"] += 1
             elif current_physical > self._physical_time:
@@ -186,8 +192,19 @@ class HybridLogicalClock:
                 self._logical_counter += 1
                 self._stats["logical_increments"] += 1
             
-            self._last_physical_time = current_physical
+            # [BUG 1 修复] _last_physical_time 只在物理时间前进或相等时更新，
+            # 时钟回退时保持不变，以正确追踪已观测到的最大物理时间
+            if current_physical >= self._last_physical_time:
+                self._last_physical_time = current_physical
             self._stats["total_ticks"] += 1
+            
+            # [BUG 2 修复] 当逻辑计数器超过 max_drift_ms 对应的阈值时，记录警告日志
+            if self._logical_counter > self._max_drift_ms:
+                logger.warning(
+                    "[HLC] 逻辑计数器(%d)超过最大漂移阈值(%dms)，"
+                    "物理时钟可能存在严重漂移，node_id=%s",
+                    self._logical_counter, self._max_drift_ms, self._node_id
+                )
             
             return HLCTimestamp(
                 physical=self._physical_time,
@@ -230,6 +247,14 @@ class HybridLogicalClock:
             
             self._last_physical_time = current_physical
             self._stats["total_ticks"] += 1
+            
+            # [BUG 2 修复] 当逻辑计数器超过 max_drift_ms 对应的阈值时，记录警告日志
+            if self._logical_counter > self._max_drift_ms:
+                logger.warning(
+                    "[HLC] update()逻辑计数器(%d)超过最大漂移阈值(%dms)，"
+                    "物理时钟可能存在严重漂移，node_id=%s",
+                    self._logical_counter, self._max_drift_ms, self._node_id
+                )
             
             return HLCTimestamp(
                 physical=self._physical_time,
@@ -401,17 +426,31 @@ class HLCClockManager:
     管理多个HLC实例，提供分布式系统范围的时钟服务
     """
     
-    def __init__(self, node_id: str):
+    def __init__(self, node_id: str, max_entries: int = 10000):
         """
         初始化管理器
         
         Args:
             node_id: 当前节点ID
+            max_entries: 事件日志最大条目数，超过时自动清理旧条目
         """
         self._node_id = node_id
         self._hlc = HybridLogicalClock(node_id)
         self._event_log: list = []
+        # [BUG 3 修复] 添加 max_entries 限制，防止 _event_log 无界增长
+        self._max_entries = max_entries
         self._lock = threading.RLock()
+    
+    def _trim_event_log(self):
+        """[BUG 3 修复] 当事件日志超过 max_entries 时，清理最旧的条目"""
+        if len(self._event_log) > self._max_entries:
+            # 保留最新的 max_entries 条，丢弃旧条目
+            trim_count = len(self._event_log) - self._max_entries
+            self._event_log = self._event_log[trim_count:]
+            logger.debug(
+                "[HLCClockManager] 事件日志已清理 %d 条旧记录，当前 %d 条",
+                trim_count, len(self._event_log)
+            )
     
     def generate_timestamp(self, event_type: str = "", metadata: Optional[Dict[str, Any]] = None) -> HLCTimestamp:
         """
@@ -434,6 +473,8 @@ class HLCClockManager:
                 "local": True,
             }
             self._event_log.append(event)
+            # [BUG 3 修复] 每次添加事件后检查是否需要清理
+            self._trim_event_log()
             
             return ts
     
@@ -460,6 +501,8 @@ class HLCClockManager:
                 "remote_timestamp": remote_ts,
             }
             self._event_log.append(event)
+            # [BUG 3 修复] 每次添加事件后检查是否需要清理
+            self._trim_event_log()
             
             return local_ts
     

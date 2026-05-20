@@ -21,11 +21,14 @@
 
 import copy
 import json
+import logging
 from typing import Dict, List, Optional, Tuple, Set, Any
 from dataclasses import dataclass, field
 from enum import Enum, auto
 import threading
 import time
+
+logger = logging.getLogger(__name__)
 
 
 class VectorClockRelation(Enum):
@@ -382,18 +385,39 @@ class VectorClockManager:
     管理多个事件的向量时钟，提供因果一致性检查
     """
     
-    def __init__(self, node_id: str):
+    def __init__(self, node_id: str, max_history_size: int = 10000):
         """
         初始化管理器
         
         Args:
             node_id: 当前节点ID
+            max_history_size: [BUG 4 修复] 事件历史最大条目数，超过时自动清理旧事件
         """
         self._node_id = node_id
         self._current_clock = VectorClock(node_id)
         self._event_history: List[CausalEvent] = []
         self._causal_dependencies: Dict[str, Set[str]] = {}  # event_id -> {dependent_event_ids}
+        # [BUG 4 修复] 添加 max_history_size 限制，防止 _event_history 无界增长
+        self._max_history_size = max_history_size
         self._lock = threading.RLock()
+    
+    def _trim_event_history(self):
+        """[BUG 4 修复] 当事件历史超过 max_history_size 时，清理最旧的事件"""
+        if len(self._event_history) > self._max_history_size:
+            trim_count = len(self._event_history) - self._max_history_size
+            removed_events = self._event_history[:trim_count]
+            self._event_history = self._event_history[trim_count:]
+            # 同步清理已移除事件的因果依赖关系
+            removed_ids = {e.event_id for e in removed_events}
+            for removed_id in removed_ids:
+                self._causal_dependencies.pop(removed_id, None)
+                # 从其他事件的依赖集合中移除已删除的事件引用
+                for deps in self._causal_dependencies.values():
+                    deps.discard(removed_id)
+            logger.debug(
+                "[VectorClockManager] 事件历史已清理 %d 条旧记录，当前 %d 条",
+                trim_count, len(self._event_history)
+            )
     
     def record_event(self, event_id: str, event_type: str = "", payload: Optional[Dict[str, Any]] = None) -> CausalEvent:
         """
@@ -421,6 +445,8 @@ class VectorClockManager:
             )
             
             self._event_history.append(event)
+            # [BUG 4 修复] 每次添加事件后检查是否需要清理
+            self._trim_event_history()
             return event
     
     def receive_event(self, event: CausalEvent) -> bool:
@@ -439,6 +465,8 @@ class VectorClockManager:
             
             # 记录事件
             self._event_history.append(event)
+            # [BUG 4 修复] 每次添加事件后检查是否需要清理
+            self._trim_event_history()
             
             # 记录因果关系
             for prev_event in self._event_history[:-1]:

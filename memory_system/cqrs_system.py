@@ -16,6 +16,7 @@ CQRS读写分离系统模块 - CQRS System Module
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import logging
 import time
@@ -276,6 +277,10 @@ class InMemoryEventStore(EventStore):
     ) -> List[StoredEvent]:
         """获取聚合事件"""
         stream = self._streams.get(aggregate_id, [])
+        # BUG 3 修复：from_version=0 时 stream[-1:] 会返回最后一个元素（边界BUG），
+        # 添加 from_version >= 1 的校验，from_version=0 时返回空列表
+        if from_version < 1:
+            return []
         to_version = to_version or len(stream)
         return stream[from_version - 1:to_version]
     
@@ -1006,7 +1011,9 @@ class QueryBus:
         async with self._lock:
             if key in self._cache:
                 value, timestamp = self._cache[key]
-                if (datetime.now(timezone.utc) - timestamp).seconds < self._cache_ttl:
+                # BUG 2 修复：使用 total_seconds() 替代 .seconds，
+                # 因为 timedelta.seconds 只返回秒数部分(0-86399)，不包含天数，超过1天会回绕
+                if (datetime.now(timezone.utc) - timestamp).total_seconds() < self._cache_ttl:
                     return value
                 else:
                     del self._cache[key]
@@ -1275,14 +1282,17 @@ class CreateOrderHandler(CommandHandler[CreateOrderCommand]):
             aggregate.uncommitted_events,
             expected_version=0
         )
-        
+
+        # BUG 4 修复：在 mark_committed() 之前保存事件列表，
+        # 因为 mark_committed() 会清空 uncommitted_events，之后再引用会得到空列表
+        committed_events = [e.event_data for e in aggregate.uncommitted_events]
         aggregate.mark_committed()
-        
+
         return CommandResult.success(
             command_id=command.command_id,
             aggregate_id=order_id,
             version=aggregate.version,
-            events=[e.event_data for e in aggregate.uncommitted_events]
+            events=committed_events
         )
 
 

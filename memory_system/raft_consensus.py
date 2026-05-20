@@ -774,9 +774,17 @@ class RaftNode:
                 timeout=timeout
             )
         except asyncio.TimeoutError:
+            # BUG 1 [P0] 修复: 先在锁内记录状态快照，再释放锁后调用 _start_election，
+            # 避免 _start_election 内部的 asyncio.gather 触发 handle_request_vote 时
+            # 因重复获取 _state_lock 而导致死锁。
+            should_start_election = False
             async with self._state_lock:
                 if not self._shutdown_event.is_set():
-                    await self._start_election()
+                    # 记录当前状态，释放锁后用于验证状态未变
+                    should_start_election = True
+
+            if should_start_election:
+                await self._start_election()
     
     async def _start_election(self):
         """开始选举 - P1修复: 改进选举逻辑"""
@@ -971,7 +979,7 @@ class RaftNode:
         try:
             request = AppendEntriesRequest(
                 term=self._persistent_state.current_term,
-                leader_id=self.node_id,  # 请求者ID
+                leader_id=self._current_leader,  # BUG 3 [P1] 修复: 应设为实际Leader ID而非自身node_id，
                 prev_log_index=self._persistent_state.get_last_log_index(),
                 prev_log_term=self._persistent_state.get_last_log_term(),
                 entries=[],  # 空条目表示同步请求
@@ -1011,7 +1019,21 @@ class RaftNode:
                     timeout=self.config.heartbeat_interval
                 )
             except asyncio.TimeoutError:
-                if self._role == RaftRole.LEADER:
+                # BUG 2 [P1] 修复: 检查 _role 时获取 _state_lock，
+                # 避免与其他协程并发修改 _role 时产生数据竞争。
+                # 使用短超时非阻塞方式获取锁，避免心跳循环长时间阻塞。
+                try:
+                    is_leader = await asyncio.wait_for(
+                        self._state_lock.acquire(), timeout=0.001
+                    )
+                    if is_leader:
+                        is_leader = self._role == RaftRole.LEADER
+                        self._state_lock.release()
+                except asyncio.TimeoutError:
+                    # 锁被其他协程持有，跳过本轮心跳检查
+                    continue
+
+                if is_leader:
                     # P1修复: 检查心跳状态
                     now = time.time()
                     self._last_heartbeat_sent = now
@@ -1046,7 +1068,19 @@ class RaftNode:
         for peer in self.config.peers:
             task = asyncio.create_task(self._send_append_entries_to_peer(peer))
             self._replication_tasks.add(task)
-            task.add_done_callback(self._replication_tasks.discard)
+            # BUG 5 [P2] 修复: 添加 done_callback 记录任务异常，
+            # 避免复制任务失败时异常被静默忽略导致问题难以排查。
+            def _log_replication_error(t: asyncio.Task, peer_name: str = peer) -> None:
+                self._replication_tasks.discard(t)
+                if t.cancelled():
+                    return
+                exc = t.exception()
+                if exc is not None:
+                    logger.error(
+                        f"Replication task for peer {peer_name} failed with error: {exc}",
+                        exc_info=exc,
+                    )
+            task.add_done_callback(_log_replication_error)
     
     async def _send_append_entries_to_peer(self, peer_id: str):
         """发送追加条目到指定peer - P1修复: 完善日志复制协议"""
@@ -1506,7 +1540,8 @@ class RaftNode:
         if self._role != RaftRole.LEADER:
             raise NotLeaderError(self._current_leader)
         
-        # DA-003 [P0] 修复: 在锁内创建日志条目和追加，避免竞态条件
+        # BUG 4 [P1] 修复: 在锁内完成日志条目创建、追加以及future的创建和注册，
+        # 避免释放锁后、注册future前的窗口期内，日志条目被提交但找不到对应future导致提案结果丢失。
         async with self._state_lock:
             entry = LogEntry(
                 term=self._persistent_state.current_term,
@@ -1514,10 +1549,10 @@ class RaftNode:
                 command=command,
             )
             self._persistent_state.log.append(entry)
-        
-        # 创建Future等待提交
-        future: asyncio.Future = asyncio.get_running_loop().create_future()
-        self._pending_proposals[entry.entry_id] = future
+
+            # 在锁内创建Future并注册到 _pending_proposals
+            future: asyncio.Future = asyncio.get_running_loop().create_future()
+            self._pending_proposals[entry.entry_id] = future
         
         # 立即广播
         await self._broadcast_append_entries()
