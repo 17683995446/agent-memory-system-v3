@@ -10,7 +10,11 @@ try:
 except ImportError:
     HAS_PYDANTIC = False
     BaseModel = object
-    Field = lambda **kwargs: kwargs
+    # 修复: Field应该返回default值或default_factory的结果
+    def Field(default=None, default_factory=None, **kwargs):
+        if default_factory is not None:
+            return default_factory()
+        return default
     def field_validator(*args, **kwargs):
         def decorator(func):
             return func

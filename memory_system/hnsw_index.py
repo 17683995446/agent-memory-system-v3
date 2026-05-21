@@ -253,11 +253,12 @@ class HNSWIndex:
         if len(neighbors) <= self.m_max:
             return
 
-        # 计算到所有邻居的距离
-        distances = [
-            (self._distance_func(node.vector, self._nodes[n].vector), n)
-            for n in neighbors
-        ]
+        # 计算到所有邻居的距离（跳过不存在的节点）
+        distances = []
+        for n in neighbors:
+            if n in self._nodes:
+                dist = self._distance_func(node.vector, self._nodes[n].vector)
+                distances.append((dist, n))
         distances.sort()
 
         # 保留最近的m_max个

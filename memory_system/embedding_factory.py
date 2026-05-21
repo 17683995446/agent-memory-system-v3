@@ -499,3 +499,22 @@ def get_available_providers() -> List[str]:
         提供者名称列表
     """
     return EmbeddingFactory.list_providers()
+
+
+# 将 MockEmbeddingProvider 注册到全局 _embedding_registry
+# 这样 MemorySystemBuilder.from_config 可以找到它
+from memory_system.core_abstractions.component_registry_manager import (
+    _embedding_registry,
+    register_embedding
+)
+
+# 注册 MockEmbeddingProvider 到全局注册表
+@register_embedding("mock")
+class MockEmbeddingProviderForRegistry(MockEmbeddingProvider):
+    """Mock嵌入提供者包装类 - 用于全局注册"""
+    
+    @classmethod
+    def from_config(cls, config):
+        """从配置创建实例"""
+        dimension = getattr(config, 'dimension', 384)
+        return cls(dimension=dimension)
