@@ -757,12 +757,12 @@ class TestRound26RaftDeep:
         logger.debug("test_heartbeat_manual_lock_management: PASSED")
 
     @pytest.mark.asyncio
-    async def test_apply_committed_entries_exception_future_hang(self):
+    async def test_apply_committed_entries_exception_future_resolved(self):
         """
-        验证apply异常后future永远挂起
-        Mock state_machine.apply()抛异常，检查future是否超时
+        验证apply异常后future被正确resolve（BUG已修复）
+        Mock state_machine.apply()抛异常，检查future是否被设置为异常状态
         """
-        logger.debug("test_apply_committed_entries_exception_future_hang: START")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: START")
 
         config = RaftConfig(
             node_id="test_node_apply",
@@ -770,23 +770,21 @@ class TestRound26RaftDeep:
             election_timeout_min=0.15,
             election_timeout_max=0.30,
         )
-        logger.debug("test_apply_committed_entries_exception_future_hang: RaftConfig created")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: RaftConfig created")
 
         node = RaftNode(config)
-        logger.debug("test_apply_committed_entries_exception_future_hang: RaftNode created")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: RaftNode created")
 
         node._ensure_async_primitives()
-        logger.debug("test_apply_committed_entries_exception_future_hang: async primitives ensured")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: async primitives ensured")
 
         # Mock state_machine.apply()抛异常
-        original_apply = node.state_machine.apply
-
         async def mock_apply(command):
-            logger.debug("test_apply_committed_entries_exception_future_hang: mock_apply raising exception")
+            logger.debug("test_apply_committed_entries_exception_future_resolved: mock_apply raising exception")
             raise RuntimeError("Simulated state machine apply failure")
 
         node.state_machine.apply = mock_apply
-        logger.debug("test_apply_committed_entries_exception_future_hanging: apply mock installed")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: apply mock installed")
 
         # 添加一个日志条目并设置commit_index
         from memory_system.raft_consensus import LogEntry
@@ -797,25 +795,29 @@ class TestRound26RaftDeep:
         )
         node._persistent_state.log.append(entry)
         node._volatile_state.commit_index = 0
-        logger.debug("test_apply_committed_entries_exception_future_hang: log entry added, commit_index=0")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: log entry added, commit_index=0")
 
         # 创建一个等待future
         future = asyncio.get_event_loop().create_future()
         node._pending_proposals[entry.entry_id] = future
-        logger.debug("test_apply_committed_entries_exception_future_hang: pending proposal registered")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: pending proposal registered")
 
         # 调用_apply_committed_entries
-        logger.debug("test_apply_committed_entries_exception_future_hang: calling _apply_committed_entries")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: calling _apply_committed_entries")
         await node._apply_committed_entries()
-        logger.debug("test_apply_committed_entries_exception_future_hang: _apply_committed_entries returned")
+        logger.debug("test_apply_committed_entries_exception_future_resolved: _apply_committed_entries returned")
 
-        # BUG: apply异常后future.set_result不会被调用，future永远挂起
-        logger.debug(f"test_apply_committed_entries_exception_future_hang: future.done={future.done()}")
-        assert not future.done(), (
-            "Future should not be done - apply exception caused future to hang forever. "
-            "This confirms the BUG where exception in apply() leaves the future pending."
+        # BUG FIX验证: apply异常后future应该被resolve为异常状态，而不是永远挂起
+        logger.debug(f"test_apply_committed_entries_exception_future_resolved: future.done={future.done()}")
+        assert future.done(), (
+            "Future should be done - BUG FIX: exception in apply() should resolve the future with exception. "
+            "Previously this was a BUG where exception left the future pending forever."
         )
-        logger.debug("test_apply_committed_entries_exception_future_hang: PASSED (BUG confirmed)")
+
+        # 验证future被设置为异常
+        assert future.exception() is not None, "Future should have an exception set"
+        assert "Simulated state machine apply failure" in str(future.exception())
+        logger.debug("test_apply_committed_entries_exception_future_resolved: PASSED (BUG FIX verified)")
 
     @pytest.mark.asyncio
     async def test_hlc_from_bytes_insufficient_length(self):

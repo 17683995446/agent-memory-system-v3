@@ -886,26 +886,35 @@ class ProjectionManager:
             return
         
         checkpoint.status = ProjectionStatus.PROCESSING
+        total_processed = 0
         
         try:
-            # 获取新事件
-            events = await self.event_store.get_all_events(
-                checkpoint.last_sequence,
-                limit=100
-            )
+            # 循环处理所有可用事件，直到没有更多事件
+            while self._running:
+                # 获取新事件
+                events = await self.event_store.get_all_events(
+                    checkpoint.last_sequence,
+                    limit=100
+                )
+                
+                if not events:
+                    break
+                
+                # 处理事件
+                for event in events:
+                    if event.event_type in projection.get_handled_event_types():
+                        await projection.project(event)
+                    checkpoint.last_sequence = event.sequence_number
+                    total_processed += 1
+                
+                checkpoint.timestamp = datetime.now(timezone.utc)
+                
+                # 如果获取的事件数小于限制，说明没有更多事件了
+                if len(events) < 100:
+                    break
             
-            if not events:
-                checkpoint.status = ProjectionStatus.COMPLETED
-                return
-            
-            # 处理事件
-            for event in events:
-                if event.event_type in projection.get_handled_event_types():
-                    await projection.project(event)
-                checkpoint.last_sequence = event.sequence_number
-            
-            checkpoint.timestamp = datetime.now(timezone.utc)
             checkpoint.status = ProjectionStatus.COMPLETED
+            logger.debug(f"Projection {projection.name} processed {total_processed} events, checkpoint at {checkpoint.last_sequence}")
             
         except Exception as e:
             logger.exception(f"Projection {projection.name} error: {e}")

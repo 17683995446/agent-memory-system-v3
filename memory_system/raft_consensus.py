@@ -25,6 +25,8 @@ import json
 import logging
 import random
 import time
+import uuid
+import threading
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import (
@@ -117,6 +119,21 @@ class LeaderElectionError(RaftError):
         super().__init__(message)
 
 
+# 全局计数器用于确保entry_id唯一性
+_entry_id_counter = 0
+_entry_id_lock = threading.Lock()
+
+def _generate_entry_id() -> str:
+    """生成唯一的entry_id，使用UUID4 + 原子计数器确保唯一性"""
+    global _entry_id_counter
+    with _entry_id_lock:
+        _entry_id_counter += 1
+        counter = _entry_id_counter
+    # 结合UUID4和原子计数器，确保即使在高并发下也不会碰撞
+    unique_str = f"{uuid.uuid4().hex}-{counter}-{time.time():.9f}-{random.randint(0, 999999)}"
+    return hashlib.sha256(unique_str.encode()).hexdigest()[:16]
+
+
 @dataclass
 class LogEntry:
     """
@@ -133,9 +150,7 @@ class LogEntry:
     index: int
     command: Dict[str, Any]
     timestamp: float = field(default_factory=time.time)
-    entry_id: str = field(default_factory=lambda: hashlib.sha256(
-        str(time.time() + random.random()).encode()
-    ).hexdigest()[:16])
+    entry_id: str = field(default_factory=_generate_entry_id)
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典表示"""
@@ -1291,7 +1306,15 @@ class RaftNode:
                     self._volatile_state.last_applied = next_index
                 except Exception as e:
                     logger.error(f"Failed to apply entry {next_index}: {e}")
-                    break
+                    
+                    # BUG FIX: 异常时也要resolve等待的future，避免永久挂起
+                    if entry.entry_id in self._pending_proposals:
+                        future = self._pending_proposals.pop(entry.entry_id)
+                        if not future.done():
+                            future.set_exception(e)
+                    
+                    # 继续处理其他条目，而不是break
+                    self._volatile_state.last_applied = next_index
             else:
                 break
     

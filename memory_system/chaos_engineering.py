@@ -316,17 +316,24 @@ class CPUFaultInjector(FaultInjector):
             work_duration = cycle_duration * (load_percent / 100.0)
             sleep_duration = cycle_duration - work_duration
             
-            # 工作阶段
+            # 工作阶段 - 使用更小的批次检查停止事件
             start = time.time()
             while time.time() - start < work_duration:
                 if self._stop_event.is_set():
                     break
-                # 执行计算密集型操作
-                _ = sum(i * i for i in range(10000))
+                # 执行计算密集型操作，但每批次后检查停止事件
+                _ = sum(i * i for i in range(1000))
+                # 每10ms检查一次停止事件
+                if time.time() - start >= work_duration:
+                    break
             
-            # 休眠阶段
+            # 休眠阶段 - 使用短睡眠循环以便快速响应停止
             if sleep_duration > 0 and not self._stop_event.is_set():
-                time.sleep(sleep_duration)
+                sleep_start = time.time()
+                while time.time() - sleep_start < sleep_duration:
+                    if self._stop_event.is_set():
+                        break
+                    time.sleep(min(0.01, sleep_duration))
 
     def _adjust_process_priority(self, process_names: List[str], increase_load: bool) -> None:
         """调整进程优先级"""
@@ -350,16 +357,28 @@ class CPUFaultInjector(FaultInjector):
             # 停止所有压力线程
             self._stop_event.set()
             
+            # 等待所有线程结束，使用更长的超时
+            remaining_threads = []
             for thread in self._threads:
-                thread.join(timeout=5.0)
+                thread.join(timeout=10.0)
+                if thread.is_alive():
+                    remaining_threads.append(thread)
+                    logger.warning(f"CPU stress thread {thread.name} did not terminate gracefully")
             
+            # 清理线程列表
             self._threads.clear()
+            
+            # 重置停止事件（为下次使用做准备）
             self._stop_event.clear()
             
             # 恢复进程优先级
             config = self.config
             if config.target_processes:
                 self._adjust_process_priority(config.target_processes, increase_load=False)
+            
+            # 如果有未终止的线程，记录警告但不返回失败
+            if remaining_threads:
+                logger.warning(f"{len(remaining_threads)} CPU stress threads could not be terminated")
             
             return True
         except Exception as e:
@@ -990,28 +1009,45 @@ class ChaosEngineeringFramework:
 
     def _monitor_experiment(self, experiment_id: str) -> None:
         """监控实验执行"""
-        while True:
+        max_iterations = 1000  # 防止无限循环
+        iteration = 0
+        
+        while iteration < max_iterations:
+            iteration += 1
+            should_stop = False
+            auto_rollback = False
+            
             with self._lock:
                 experiment = self._experiments.get(experiment_id)
                 injector = self._active_injectors.get(experiment_id)
                 
                 if not experiment or not injector:
+                    logger.debug(f"Monitor for {experiment_id[:8]}: experiment or injector not found, exiting")
                     break
                 
                 # 检查是否超过持续时间
                 if experiment.started_at:
                     duration = (datetime.utcnow() - experiment.started_at).total_seconds()
                     if duration >= experiment.fault_config.duration:
-                        # 自动停止
-                        if experiment.fault_config.auto_rollback:
-                            self.stop_experiment(experiment_id)
-                        break
+                        # 标记需要停止，但在释放锁后执行
+                        should_stop = True
+                        auto_rollback = experiment.fault_config.auto_rollback
+                        logger.debug(f"Monitor for {experiment_id[:8]}: duration {duration:.1f}s >= {experiment.fault_config.duration}s, should_stop={should_stop}, auto_rollback={auto_rollback}")
                 
                 # 收集指标
                 metrics = injector.get_metrics()
                 experiment.result = metrics
             
-            time.sleep(5.0)
+            # 在锁外调用stop_experiment，避免死锁
+            if should_stop:
+                if auto_rollback:
+                    logger.debug(f"Monitor for {experiment_id[:8]}: calling stop_experiment")
+                    self.stop_experiment(experiment_id)
+                break
+            
+            time.sleep(1.0)  # 缩短检查间隔，更快响应
+        
+        logger.debug(f"Monitor for {experiment_id[:8]}: exited after {iteration} iterations")
 
     def get_experiment_status(self, experiment_id: str) -> Optional[Dict[str, Any]]:
         """获取实验状态"""
@@ -1121,13 +1157,15 @@ class ChaosEngineeringFramework:
     def run_chaos_suite(
         self,
         experiments: List[ChaosExperiment],
-        delay_between: float = 60.0
+        delay_between: float = 60.0,
+        max_wait_per_experiment: float = 300.0  # 每个实验最大等待时间
     ) -> Dict[str, Any]:
         """运行混沌实验套件"""
         results = []
         
         for experiment in experiments:
             logger.info(f"Running experiment: {experiment.name}")
+            start_time = time.time()
             
             # 启动实验
             if self.start_experiment(experiment.id):
@@ -1136,13 +1174,23 @@ class ChaosEngineeringFramework:
                     status = self.get_experiment_status(experiment.id)
                     if status and status["status"] in ["completed", "failed", "rolled_back"]:
                         break
+                    
+                    # 检查是否超过最大等待时间
+                    elapsed = time.time() - start_time
+                    if elapsed >= max_wait_per_experiment:
+                        logger.warning(f"Experiment {experiment.name} exceeded max wait time, forcing stop")
+                        self.stop_experiment(experiment.id)
+                        break
+                    
                     time.sleep(1.0)
                 
+                # 重新获取最终状态
+                final_status = self.get_experiment_status(experiment.id)
                 results.append({
                     "experiment_id": experiment.id,
                     "name": experiment.name,
-                    "status": status["status"] if status else "unknown",
-                    "metrics": status.get("metrics", {}) if status else {},
+                    "status": final_status["status"] if final_status else "unknown",
+                    "metrics": final_status.get("metrics", {}) if final_status else {},
                 })
             else:
                 results.append({
