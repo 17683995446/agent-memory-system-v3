@@ -307,6 +307,9 @@ class CPUFaultInjector(FaultInjector):
 
     def _cpu_stress_thread(self, load_percent: float) -> None:
         """CPU压力线程"""
+        # 边界校验：将 load_percent 限制在 [0, 100] 范围内
+        load_percent = max(0.0, min(100.0, load_percent))
+
         while not self._stop_event.is_set():
             # 计算工作时间和休眠时间以达到目标负载
             cycle_duration = 0.1  # 100ms周期

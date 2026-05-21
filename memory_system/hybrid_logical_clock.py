@@ -87,6 +87,10 @@ class HLCTimestamp:
     @classmethod
     def from_bytes(cls, data: bytes) -> "HLCTimestamp":
         """从字节创建"""
+        if len(data) < 12:
+            raise ValueError(
+                f"Insufficient data for HLCTimestamp: expected at least 12 bytes, got {len(data)}"
+            )
         physical, logical = struct.unpack('>QI', data[:12])
         node_id = data[12:].decode('utf-8')
         return cls(physical=physical, logical=logical, node_id=node_id)

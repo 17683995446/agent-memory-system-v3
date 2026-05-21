@@ -642,7 +642,7 @@ class TestLinearizableWriteNonLeaderFakeWrite:
 
     @pytest.mark.asyncio
     async def test_non_leader_fake_write_bug(self):
-        """非Leader节点的线性一致性写入返回成功但数据实际不存在"""
+        """非Leader节点的线性一致性写入应返回失败（修复后行为）"""
         cm = ConsistencyManager(node_id="node1", peers=["node2", "node3"])
         cm._is_leader = False
         cm._leader_id = "node2"  # 有Leader但不是自己
@@ -650,22 +650,11 @@ class TestLinearizableWriteNonLeaderFakeWrite:
         result = await cm.write("fake_key", "fake_value", consistency=ConsistencyLevel.LINEARIZABLE)
 
         print(f"[LOG] test_non_leader_fake_write_bug::非Leader写入结果 - "
-              f"期望 success=True(BUG) vs 实际 success={result.success}")
+              f"期望 success=False(已修复) vs 实际 success={result.success}")
 
-        # BUG: 非Leader写入返回success=True，但数据并未真正写入
-        assert result.success is True, "非Leader返回success=True（模拟转发成功）"
-
-        # 验证数据是否真的存在
-        with cm._lock:
-            key_exists_locally = "fake_key" in cm._local_store
-            print(f"[LOG] test_non_leader_fake_write_bug::本地存储检查 - "
-                  f"期望 key不存在(BUG) vs 实际 key存在={key_exists_locally}")
-
-            # BUG确认：非Leader的线性一致性写入只是模拟转发，
-            # 返回success=True但数据并未写入本地存储
-            if not key_exists_locally:
-                print("[LOG] test_non_leader_fake_write_bug::BUG确认 - "
-                      "非Leader线性一致性写入返回成功但数据不存在于本地存储")
+        # 修复验证：非Leader写入应返回 success=False
+        assert result.success is False, "非Leader应返回success=False（数据未实际持久化）"
+        assert result.error is not None, "非Leader应包含错误信息"
 
 
 class TestSessionConsistencyReadDegradation:

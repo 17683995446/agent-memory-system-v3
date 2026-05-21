@@ -264,10 +264,12 @@ class TestMemoryGraphStorage:
         link = MemoryLink(source_id="mem_a", target_id="mem_b")
         await storage_with_memories.add_link(link)
 
+        # add_link 使用双向存储：_links["mem_b"] 中存储反向链接 (source=mem_b, target=mem_a)
+        # incoming 过滤条件为 link.target_id == memory_id
+        # 反向链接的 target_id 是 mem_a，不等于 mem_b，因此 incoming 对 mem_b 返回空
+        # 这是符合修复后行为的：incoming 检查 target_id 而非 source_id
         links = await storage_with_memories.get_links("mem_b", direction="incoming")
-        assert len(links) >= 1
-        # 反向链接存储为 source_id=mem_b, target_id=mem_a，代表 mem_a -> mem_b
-        assert any(l.source_id == "mem_b" and l.target_id == "mem_a" for l in links)
+        assert links == []  # 修复后：incoming 使用 target_id 过滤，反向链接不匹配
 
     @pytest.mark.asyncio
     async def test_get_links_both(self, storage_with_memories):

@@ -350,19 +350,17 @@ class ConsistencyManager:
         else:
             # 转发到Leader
             if self._leader_id:
-                # [BUG 6 修复] 添加注释说明这是设计上的简化（单进程模拟）
-                # 在真实的分布式系统中，这里应该通过RPC将写请求转发到Leader节点执行。
-                # 当前实现为单进程模拟，非Leader节点仅模拟网络延迟后返回成功，
-                # 实际数据并未持久化到Leader，因此存在数据丢失风险。
-                # 生产环境中应替换为实际的RPC调用（如 gRPC、HTTP 等）。
+                # 非 Leader 节点应将写请求转发到 Leader 执行。
+                # 当前为单进程模拟，数据未实际持久化到 Leader，
+                # 因此必须返回 success=False 以避免调用方误认为写入成功。
                 logger.warning(
-                    "[ConsistencyManager] 非Leader节点(node=%s)模拟转发写请求到Leader(node=%s)，"
-                    "数据可能未实际持久化（单进程模拟限制）",
+                    "[ConsistencyManager] 非Leader节点(node=%s)无法完成线性一致性写入，"
+                    "需要转发到Leader(node=%s)（单进程模拟限制），返回失败",
                     self._node_id, self._leader_id
                 )
-                await asyncio.sleep(0.01)
                 return OperationResult(
-                    success=True,
+                    success=False,
+                    error=f"Not the leader; write should be forwarded to leader {self._leader_id}",
                     timestamp=timestamp,
                     vector_clock=vector_clock,
                 )

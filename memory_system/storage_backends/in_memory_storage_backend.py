@@ -531,7 +531,7 @@ class MemoryStorage(StorageBackend):
                     if link.source_id == memory_id:
                         result.append(link)
                 elif direction == "incoming":
-                    if link.source_id == memory_id:
+                    if link.target_id == memory_id:
                         result.append(link)
                 else:  # both
                     result.append(link)

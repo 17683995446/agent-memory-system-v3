@@ -1031,14 +1031,16 @@ class MemorySystem:
         """遗忘指定记忆"""
         success = await self.storage.delete(memory_id)
         if success:
-            self._stats["total_added"] = max(0, self._stats["total_added"] - 1)
+            async with self._stats_lock:
+                self._stats["total_added"] = max(0, self._stats["total_added"] - 1)
             logger.info(f"手动遗忘记忆: {memory_id}")
         return success
     
     async def forget_batch(self, memory_ids: List[str]) -> int:
         """批量遗忘记忆"""
         count = await self.storage.batch_delete(memory_ids)
-        self._stats["total_added"] = max(0, self._stats["total_added"] - count)
+        async with self._stats_lock:
+            self._stats["total_added"] = max(0, self._stats["total_added"] - count)
         logger.info(f"批量遗忘记忆: 删除 {count} 条")
         return count
     
@@ -1345,9 +1347,11 @@ class MemorySystem:
 
         if self.ttl_manager:
             await self.ttl_manager.stop()
-        await self.storage.close()
-        if self.tracing:
-            self.tracing.shutdown()
+        try:
+            await self.storage.close()
+        finally:
+            if self.tracing:
+                self.tracing.shutdown()
 
     async def __aenter__(self):
         """异步上下文管理器入口"""
