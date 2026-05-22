@@ -1307,7 +1307,10 @@ class RaftNode:
             await self._broadcast_append_entries()
     
     async def _apply_committed_entries(self):
-        """应用已提交的条目到状态机"""
+        """应用已提交的条目到状态机
+        
+        DEFECT-RC-002 [P0] 修复: 异常后不再递增last_applied，避免状态机与日志永久不一致
+        """
         while self._volatile_state.last_applied < self._volatile_state.commit_index:
             next_index = self._volatile_state.last_applied + 1
             entry = self._persistent_state.get_entry_at(next_index)
@@ -1326,14 +1329,15 @@ class RaftNode:
                 except Exception as e:
                     logger.error(f"Failed to apply entry {next_index}: {e}")
                     
-                    # BUG FIX: 异常时也要resolve等待的future，避免永久挂起
+                    # 如果有等待的提案，设置异常
                     if entry.entry_id in self._pending_proposals:
                         future = self._pending_proposals.pop(entry.entry_id)
                         if not future.done():
                             future.set_exception(e)
                     
-                    # 继续处理其他条目，而不是break
-                    self._volatile_state.last_applied = next_index
+                    # DEFECT-RC-002: 异常时break，不递增last_applied
+                    # 下次重试时会重新应用此条目
+                    break
             else:
                 break
     
@@ -1465,6 +1469,19 @@ class RaftNode:
                 index = request.prev_log_index + 1 + i
                 
                 if index < len(self._persistent_state.log):
+                    # DEFECT-RC-003 [P0]: 检查是否尝试截断已提交条目
+                    if index <= self._volatile_state.commit_index:
+                        logger.error(
+                            f"Refusing to truncate committed entry at index {index}, "
+                            f"commit_index={self._volatile_state.commit_index}"
+                        )
+                        return AppendEntriesResponse(
+                            term=self._persistent_state.current_term,
+                            follower_id=self.node_id,
+                            success=False,
+                            conflict_index=self._volatile_state.commit_index + 1,
+                        )
+                    
                     # 如果存在冲突，删除之后的所有条目
                     existing_entry = self._persistent_state.log[index]
                     if existing_entry.term != entry.term:

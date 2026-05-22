@@ -217,15 +217,22 @@ class Participant:
         return True
     
     async def commit(self, tx_id: str, context: TransactionContext) -> bool:
-        """提交"""
+        """提交
+        
+        DEFECT-DC-014 [P1] 修复: commit异常后更新参与者状态为FAILED
+        """
         if self.commit_handler:
             try:
                 result = await self.commit_handler(tx_id, context)
                 if result:
                     self.status = ParticipantStatus.COMMITTED
+                else:
+                    self.status = ParticipantStatus.FAILED
                 return result
             except Exception as e:
                 logger.error(f"Participant {self.participant_id} commit failed: {e}")
+                # DEFECT-DC-014: 更新状态为FAILED，避免恢复逻辑误认为仍可重试
+                self.status = ParticipantStatus.FAILED
                 return False
         self.status = ParticipantStatus.COMMITTED
         return True

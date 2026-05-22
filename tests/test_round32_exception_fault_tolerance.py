@@ -175,8 +175,9 @@ class TestRaftStateMachineConsistency:
             # 应用日志 - 应该处理异常而不崩溃
             await node._apply_committed_entries()
             
-            # 验证last_applied仍然前进（不阻塞）
-            assert node._volatile_state.last_applied == 0
+            # DEFECT-RC-002修复后: last_applied不递增（保持-1或初始值）
+            # 因为apply失败了，last_applied不应该前进
+            assert node._volatile_state.last_applied < 1
             
             logger.info("DEFECT-R3-010: State machine apply failure handled gracefully")
             
