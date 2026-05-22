@@ -397,8 +397,9 @@ class FileConfigStorage(ConfigStorage):
                             await self._notify_change(namespace, config_file)
                     
                     self._file_mtimes[file_key] = mtime
-                except Exception:
-                    pass
+                except Exception as e:
+                    # DEFECT-R3-006 [P0] 修复: 记录配置监控异常
+                    logger.warning(f"Error monitoring config file {config_file}: {e}")
     
     async def _notify_change(self, namespace: str, config_file: Path) -> None:
         """通知配置变化"""

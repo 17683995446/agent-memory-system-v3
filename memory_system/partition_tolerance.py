@@ -612,8 +612,9 @@ class PartitionTolerantStorage:
                         # 模拟写入（实际应使用RPC）
                         # await self._write_to_node(node, key, value, timestamp, vector_clock)
                         success_count += 1
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        # DEFECT-R3-007 [P0] 修复: 记录分区写入异常
+                        logger.warning(f"Failed to write to node {node}: {e}")
             
             # 检查是否达到多数派
             if self._quorum_manager.is_write_quorum(success_count):
@@ -672,8 +673,9 @@ class PartitionTolerantStorage:
                         # 模拟读取（实际应使用RPC）
                         # result = await self._read_from_node(node, key)
                         pass
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        # DEFECT-R3-008 [P0] 修复: 记录分区读取异常
+                        logger.debug(f"Failed to read from node {node}: {e}")
             
             # 检查是否达到多数派
             if self._quorum_manager.is_read_quorum(len(responses)):

@@ -185,5 +185,6 @@ class WebSocketEventNotifier:
         for conn in connections:
             try:
                 await conn.close()
-            except Exception:
-                pass
+            except Exception as e:
+                # DEFECT-R3-009 [P0] 修复: 记录WebSocket关闭异常
+                logger.debug(f"Error closing WebSocket connection: {e}")

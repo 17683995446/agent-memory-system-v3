@@ -2000,8 +2000,9 @@ async def example_usage():
             except CircuitBreakerOpen:
                 print(f"Circuit breaker opened at attempt {i}")
                 break
-            except Exception:
-                pass
+            except Exception as e:
+                # DEFECT-R3-005 [P0] 修复: 记录异常而非静默忽略
+                logger.debug(f"Expected failure during circuit breaker test: {e}")
         
         print(f"Circuit breaker state: {breaker.state.value}")
         print(f"Circuit breaker metrics: {breaker.get_metrics()}")

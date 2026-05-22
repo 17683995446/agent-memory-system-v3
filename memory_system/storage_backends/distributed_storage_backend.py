@@ -5,6 +5,7 @@
 
 import hashlib
 import bisect
+import logging
 from typing import Dict, List, Optional, Set, Tuple, Any
 from dataclasses import dataclass
 import asyncio
@@ -14,6 +15,9 @@ import time
 from memory_system.core_abstractions.abstract_component_interfaces import StorageBackend
 from memory_system.core_abstractions.memory_data_models import MemoryItem, MemoryType, MemoryLink
 from memory_system.exceptions import StorageError
+
+# 配置日志
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -222,12 +226,19 @@ class DistributedStorageBackend(StorageBackend):
         top_k: int = 5,
         filters: Optional[Dict[str, Any]] = None
     ) -> List[Tuple[MemoryItem, float]]:
-        """向量相似度搜索 - 在所有节点上搜索并合并结果"""
+        """向量相似度搜索 - 在所有节点上搜索并合并结果
+        
+        DEFECT-R3-001 [P0] 修复: 异常不再被静默忽略，而是记录并传播严重错误
+        """
         all_results = []
+        exceptions = []
 
         # 在所有健康节点上并行搜索
         search_tasks = []
         healthy_nodes = self.hash_ring.get_all_healthy_nodes()
+
+        if not healthy_nodes:
+            raise StorageError("No healthy nodes available for search")
 
         for node in healthy_nodes:
             store = self._get_store(node)
@@ -240,8 +251,15 @@ class DistributedStorageBackend(StorageBackend):
             try:
                 results = await task
                 all_results.extend(results)
-            except Exception:
+            except Exception as e:
+                # DEFECT-R3-001: 记录异常而非静默忽略
+                exceptions.append(e)
+                logger.warning(f"Search task failed on node: {e}")
                 continue
+
+        # DEFECT-R3-001: 如果所有任务都失败，传播异常
+        if not all_results and exceptions:
+            raise StorageError(f"All search tasks failed: {exceptions[0]}")
 
         # 去重并按相似度排序
         seen_ids = set()
@@ -261,12 +279,19 @@ class DistributedStorageBackend(StorageBackend):
         end_time: float,
         memory_type: Optional[str] = None
     ) -> List[MemoryItem]:
-        """按时间范围搜索 - 在所有节点上搜索并合并结果"""
+        """按时间范围搜索 - 在所有节点上搜索并合并结果
+        
+        DEFECT-R3-002 [P0] 修复: 异常不再被静默忽略
+        """
         all_results = []
+        exceptions = []
 
         # 在所有健康节点上并行搜索
         search_tasks = []
         healthy_nodes = self.hash_ring.get_all_healthy_nodes()
+
+        if not healthy_nodes:
+            raise StorageError("No healthy nodes available for time range search")
 
         for node in healthy_nodes:
             store = self._get_store(node)
@@ -279,8 +304,15 @@ class DistributedStorageBackend(StorageBackend):
             try:
                 results = await task
                 all_results.extend(results)
-            except Exception:
+            except Exception as e:
+                # DEFECT-R3-002: 记录异常
+                exceptions.append(e)
+                logger.warning(f"Time range search task failed: {e}")
                 continue
+
+        # DEFECT-R3-002: 如果所有任务都失败，传播异常
+        if not all_results and exceptions:
+            raise StorageError(f"All time range search tasks failed: {exceptions[0]}")
 
         # 去重并排序
         seen_ids = set()
@@ -293,11 +325,14 @@ class DistributedStorageBackend(StorageBackend):
         return unique_results
 
     async def delete(self, memory_id: str) -> bool:
-        """删除记忆 - 从所有副本删除"""
+        """删除记忆 - 从所有副本删除
+        
+        DEFECT-R3-003 [P0] 修复: 删除异常处理增强
+        """
         nodes = self.hash_ring.get_nodes(memory_id, self.replication_factor)
 
         if not nodes:
-            return False
+            raise StorageError(f"No nodes available for delete operation: {memory_id}")
 
         # 并行删除所有副本
         delete_tasks = []
@@ -307,25 +342,41 @@ class DistributedStorageBackend(StorageBackend):
                 delete_tasks.append(self._delete_with_timeout(store, memory_id))
 
         if not delete_tasks:
-            return False
+            raise StorageError(f"No healthy nodes available for delete: {memory_id}")
 
         # 等待删除完成，至少一个成功
         success_count = 0
+        exceptions = []
         for task in asyncio.as_completed(delete_tasks):
             try:
                 result = await task
                 if result:
                     success_count += 1
-            except Exception:
+            except Exception as e:
+                # DEFECT-R3-003: 记录异常
+                exceptions.append(e)
+                logger.warning(f"Delete task failed on node: {e}")
                 continue
+
+        # DEFECT-R3-003: 如果所有删除都失败，传播异常
+        if success_count == 0 and exceptions:
+            raise StorageError(f"All delete tasks failed for {memory_id}: {exceptions[0]}")
 
         return success_count > 0
 
     async def count(self, memory_type: Optional[str] = None) -> int:
-        """统计记忆数量 - 在所有节点上统计"""
+        """统计记忆数量 - 在所有节点上统计
+        
+        DEFECT-R3-004 [P0] 修复: 计数异常处理增强
+        """
         total = 0
+        exceptions = []
 
         healthy_nodes = self.hash_ring.get_all_healthy_nodes()
+
+        if not healthy_nodes:
+            raise StorageError("No healthy nodes available for count operation")
+
         count_tasks = []
 
         for node in healthy_nodes:
@@ -336,8 +387,15 @@ class DistributedStorageBackend(StorageBackend):
             try:
                 count = await task
                 total += count
-            except Exception:
+            except Exception as e:
+                # DEFECT-R3-004: 记录异常
+                exceptions.append(e)
+                logger.warning(f"Count task failed on node: {e}")
                 continue
+
+        # DEFECT-R3-004: 如果所有计数都失败，传播异常
+        if total == 0 and exceptions and len(exceptions) == len(count_tasks):
+            raise StorageError(f"All count tasks failed: {exceptions[0]}")
 
         return total
 
