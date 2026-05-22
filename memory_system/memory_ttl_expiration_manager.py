@@ -117,6 +117,10 @@ class MemoryTTLExpirationManager:
             "memory_freed_bytes": 0,
             "compression_count": 0,
         }
+
+        # [BUG FIX] 紧急清理和OOM恢复任务引用，防止任务泄漏
+        self._emergency_cleanup_task: Optional[asyncio.Task] = None
+        self._oom_recovery_task: Optional[asyncio.Task] = None
     
     async def start(self) -> None:
         """启动后台清理任务 - DEFECT-R2-004 [P0] 修复: 启动增强内存监控"""
@@ -176,10 +180,16 @@ class MemoryTTLExpirationManager:
                 self._consecutive_high_memory_count += 1
                 if not self._emergency_cleanup_in_progress and not self._oom_recovery_in_progress:
                     logger.error(f"【紧急】内存紧急状态: {memory_percent*100:.1f}%，启动紧急清理和OOM恢复")
-                    asyncio.create_task(self._emergency_cleanup())
+                    # [BUG FIX] 保存紧急清理任务引用
+                    if self._emergency_cleanup_task is None or self._emergency_cleanup_task.done():
+                        self._emergency_cleanup_task = asyncio.create_task(self._emergency_cleanup())
+                        self._emergency_cleanup_task.add_done_callback(self._handle_emergency_cleanup_done)
                     # DEFECT-R2-005: 同时启动OOM恢复
                     if self.config.oom_recovery_enabled:
-                        asyncio.create_task(self._oom_recovery())
+                        # [BUG FIX] 保存OOM恢复任务引用
+                        if self._oom_recovery_task is None or self._oom_recovery_task.done():
+                            self._oom_recovery_task = asyncio.create_task(self._oom_recovery())
+                            self._oom_recovery_task.add_done_callback(self._handle_oom_recovery_done)
             elif memory_percent >= self.config.aggressive_cleanup_threshold:
                 self._memory_pressure_level = "critical"
                 self._consecutive_high_memory_count += 1
@@ -211,6 +221,26 @@ class MemoryTTLExpirationManager:
 
         except Exception as e:
             logger.warning(f"Failed to check memory pressure: {e}")
+
+    def _handle_emergency_cleanup_done(self, task: asyncio.Task):
+        """[BUG FIX] 紧急清理任务完成回调"""
+        try:
+            task.result()
+            logger.debug("Emergency cleanup task completed")
+        except asyncio.CancelledError:
+            logger.debug("Emergency cleanup task was cancelled")
+        except Exception as e:
+            logger.warning(f"Emergency cleanup task failed: {e}")
+
+    def _handle_oom_recovery_done(self, task: asyncio.Task):
+        """[BUG FIX] OOM恢复任务完成回调"""
+        try:
+            task.result()
+            logger.debug("OOM recovery task completed")
+        except asyncio.CancelledError:
+            logger.debug("OOM recovery task was cancelled")
+        except Exception as e:
+            logger.warning(f"OOM recovery task failed: {e}")
 
     async def _emergency_cleanup(self):
         """DEFECT-R2-004 [P0] 修复: 增强紧急内存清理"""

@@ -675,7 +675,7 @@ class DiskFaultInjector(FaultInjector):
                 logger.error(f"Failed to fill disk: {e}")
                 try:
                     os.unlink(path)
-                except:
+                except Exception:
                     pass
 
     def rollback(self) -> bool:

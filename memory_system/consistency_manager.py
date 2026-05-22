@@ -205,7 +205,14 @@ class ConsistencyManager:
         """停止一致性管理器"""
         self._running = False
         self._partition_manager.stop()
+        
+        # [BUG FIX] 等待session_manager清理任务完成
         self._session_manager.stop_cleanup_task()
+        if hasattr(self._session_manager, '_cleanup_task') and self._session_manager._cleanup_task:
+            try:
+                await self._session_manager._cleanup_task
+            except asyncio.CancelledError:
+                pass
         
         # [BUG 9 修复] 停止时取消所有未完成的异步复制任务
         for task in self._replication_tasks:

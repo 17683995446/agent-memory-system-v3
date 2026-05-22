@@ -476,13 +476,13 @@ class DARTSSearcher:
         # 获取批次数据
         try:
             train_inputs, train_targets = next(self.train_iter)
-        except:
+        except StopIteration:
             self.train_iter = iter(self.train_loader)
             train_inputs, train_targets = next(self.train_iter)
 
         try:
             val_inputs, val_targets = next(self.val_iter)
-        except:
+        except StopIteration:
             self.val_iter = iter(self.val_loader)
             val_inputs, val_targets = next(self.val_iter)
 

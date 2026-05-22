@@ -802,39 +802,43 @@ class RaftNode:
                 await self._start_election()
     
     async def _start_election(self):
-        """开始选举 - P1修复: 改进选举逻辑"""
-        if self._role == RaftRole.LEADER:
-            return
-        
-        # P1修复: 记录选举开始时间和轮次
-        self._election_start_time = time.time()
-        self._election_round += 1
-        
-        logger.info(
-            f"Node {self.node_id} starting election round {self._election_round} "
-            f"at term {self._persistent_state.current_term + 1}"
-        )
-        
-        # 转换为Candidate
-        self._role = RaftRole.CANDIDATE
-        self._persistent_state.current_term += 1
-        self._persistent_state.voted_for = self.node_id
-        self._votes_received = {self.node_id}
-        
+        """开始选举 - P1修复: 改进选举逻辑 - [BUG FIX] 添加锁保护防止竞态"""
+        # [BUG FIX] 使用锁保护状态修改，防止竞态条件
+        async with self._state_lock:
+            if self._role == RaftRole.LEADER:
+                return
+
+            # P1修复: 记录选举开始时间和轮次
+            self._election_start_time = time.time()
+            self._election_round += 1
+
+            logger.info(
+                f"Node {self.node_id} starting election round {self._election_round} "
+                f"at term {self._persistent_state.current_term + 1}"
+            )
+
+            # 转换为Candidate
+            self._role = RaftRole.CANDIDATE
+            self._persistent_state.current_term += 1
+            self._persistent_state.voted_for = self.node_id
+            self._votes_received = {self.node_id}
+
+            # 在锁内读取状态快照，用于后续网络请求
+            current_term = self._persistent_state.current_term
+            last_log_index = self._persistent_state.get_last_log_index()
+            last_log_term = self._persistent_state.get_last_log_term()
+
         # P1修复: 重置选举定时器，使用随机化超时避免选举死锁
         self._reset_election_timer()
-        
-        # 向所有peer发送请求投票
-        last_log_index = self._persistent_state.get_last_log_index()
-        last_log_term = self._persistent_state.get_last_log_term()
-        
+
+        # 向所有peer发送请求投票（锁外发送网络请求）
         request = RequestVoteRequest(
-            term=self._persistent_state.current_term,
+            term=current_term,
             candidate_id=self.node_id,
             last_log_index=last_log_index,
             last_log_term=last_log_term,
         )
-        
+
         # 并行发送投票请求
         tasks = [
             self._send_request_vote(peer, request)
@@ -842,7 +846,7 @@ class RaftNode:
         ]
         if tasks:
             await asyncio.gather(*tasks, return_exceptions=True)
-        
+
         # P1修复: 检查选举是否超时
         election_duration = time.time() - self._election_start_time
         if election_duration > self.config.election_timeout_max:
@@ -1100,6 +1104,15 @@ class RaftNode:
                     )
             task.add_done_callback(_log_replication_error)
     
+    def _log_task_error(self, task: asyncio.Task, peer_id: str):
+        """[BUG FIX] 记录复制任务异常"""
+        try:
+            task.result()
+        except asyncio.CancelledError:
+            pass
+        except Exception as e:
+            logger.warning(f"Replication task failed for peer {peer_id}: {e}")
+
     async def _send_append_entries_to_peer(self, peer_id: str):
         """发送追加条目到指定peer - P1修复: 完善日志复制协议"""
         async with self._state_lock:
@@ -1234,8 +1247,11 @@ class RaftNode:
                         f"next_index jumped from {current_next} to {new_next}"
                     )
                 
-                # 立即重试
-                asyncio.create_task(self._send_append_entries_to_peer(peer_id))
+                # [BUG FIX] 立即重试，保存任务引用并添加异常处理
+                retry_task = asyncio.create_task(self._send_append_entries_to_peer(peer_id))
+                self._replication_tasks.add(retry_task)
+                retry_task.add_done_callback(self._replication_tasks.discard)
+                retry_task.add_done_callback(lambda t: self._log_task_error(t, peer_id))
     
     async def _advance_commit_index(self):
         """推进提交索引 - P1修复: 改进提交索引更新逻辑"""

@@ -518,6 +518,8 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
         self._start_time = time.time()
         self._request_count = 0
         self._lock = asyncio.Lock()
+        # [BUG FIX] 添加后台任务集合，防止任务泄漏
+        self._background_tasks: Set[asyncio.Task] = set()
     
     async def _increment_request_count(self):
         """增加请求计数"""
@@ -526,7 +528,10 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
     
     def Store(self, request: pb2.StoreRequest, context: ServicerContext) -> pb2.StoreResponse:
         """存储内存条目"""
-        asyncio.create_task(self._increment_request_count())
+        # [BUG FIX] 保存任务引用，防止任务泄漏
+        task = asyncio.create_task(self._increment_request_count())
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
         
         try:
             # 使用Raft保证一致性
@@ -565,7 +570,10 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
     
     def Get(self, request: pb2.GetRequest, context: ServicerContext) -> pb2.MemoryEntry:
         """获取内存条目"""
-        asyncio.create_task(self._increment_request_count())
+        # [BUG FIX] 保存任务引用，防止任务泄漏
+        task = asyncio.create_task(self._increment_request_count())
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
         
         try:
             memory = asyncio.run(self.memory_store.get(
@@ -595,7 +603,10 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
     
     def Delete(self, request: pb2.DeleteRequest, context: ServicerContext) -> pb2.DeleteResponse:
         """删除内存条目"""
-        asyncio.create_task(self._increment_request_count())
+        # [BUG FIX] 保存任务引用，防止任务泄漏
+        task = asyncio.create_task(self._increment_request_count())
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
         
         try:
             success = asyncio.run(self.memory_store.delete(
@@ -616,7 +627,10 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
     
     def Update(self, request: pb2.UpdateRequest, context: ServicerContext) -> pb2.StoreResponse:
         """更新内存条目"""
-        asyncio.create_task(self._increment_request_count())
+        # [BUG FIX] 保存任务引用，防止任务泄漏
+        task = asyncio.create_task(self._increment_request_count())
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
         
         try:
             kwargs = {}
@@ -648,7 +662,10 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
     
     def Search(self, request: pb2.SearchRequest, context: ServicerContext) -> pb2.SearchResponse:
         """搜索内存"""
-        asyncio.create_task(self._increment_request_count())
+        # [BUG FIX] 保存任务引用，防止任务泄漏
+        task = asyncio.create_task(self._increment_request_count())
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
         start_time = time.time()
         
         try:
@@ -695,7 +712,10 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
         context: ServicerContext
     ) -> Iterator[pb2.StreamingSearchResponse]:
         """流式搜索"""
-        asyncio.create_task(self._increment_request_count())
+        # [BUG FIX] 保存任务引用，防止任务泄漏
+        task = asyncio.create_task(self._increment_request_count())
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
         
         try:
             results = asyncio.run(self.memory_store.search(
@@ -741,7 +761,10 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
         context: ServicerContext
     ) -> pb2.BatchStoreResponse:
         """批量存储"""
-        asyncio.create_task(self._increment_request_count())
+        # [BUG FIX] 保存任务引用，防止任务泄漏
+        task = asyncio.create_task(self._increment_request_count())
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
         
         responses = []
         success_count = 0
@@ -786,7 +809,10 @@ class AgentMemoryServicer(pb2_grpc.AgentMemoryServiceServicer):
         context: ServicerContext
     ) -> pb2.StoreResponse:
         """流式存储"""
-        asyncio.create_task(self._increment_request_count())
+        # [BUG FIX] 保存任务引用，防止任务泄漏
+        task = asyncio.create_task(self._increment_request_count())
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
         
         try:
             chunks = []
