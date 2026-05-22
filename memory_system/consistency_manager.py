@@ -431,6 +431,12 @@ class ConsistencyManager:
         with self._lock:
             self._local_store[key] = (value, timestamp, vector_clock)
         
+        # BUG FIX: SESSION写入也需要同步到共享存储，否则其他节点无法读取
+        try:
+            await self._storage.write(key, value, timestamp, vector_clock)
+        except Exception as e:
+            logger.warning(f"Session write to shared storage failed (data still in local store): {e}")
+        
         # 记录会话写操作
         self._session_manager.record_write(
             session_id, key, value, self._node_id, vector_clock

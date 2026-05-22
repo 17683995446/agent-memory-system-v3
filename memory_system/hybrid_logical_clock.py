@@ -92,7 +92,13 @@ class HLCTimestamp:
                 f"Insufficient data for HLCTimestamp: expected at least 12 bytes, got {len(data)}"
             )
         physical, logical = struct.unpack('>QI', data[:12])
-        node_id = data[12:].decode('utf-8')
+        # BUG FIX: 验证node_id非空，防止破坏全序关系唯一性
+        try:
+            node_id = data[12:].decode('utf-8')
+        except UnicodeDecodeError as e:
+            raise ValueError(f"Invalid UTF-8 in node_id bytes: {e}") from e
+        if not node_id:
+            raise ValueError("node_id must not be empty in HLCTimestamp")
         return cls(physical=physical, logical=logical, node_id=node_id)
     
     def to_dict(self) -> Dict[str, Any]:
@@ -196,10 +202,9 @@ class HybridLogicalClock:
                 self._logical_counter += 1
                 self._stats["logical_increments"] += 1
             
-            # [BUG 1 修复] _last_physical_time 只在物理时间前进或相等时更新，
-            # 时钟回退时保持不变，以正确追踪已观测到的最大物理时间
-            if current_physical >= self._last_physical_time:
-                self._last_physical_time = current_physical
+            # BUG FIX: _last_physical_time应取max(current_physical, self._physical_time)
+            # 确保回退检测基于最新的物理时间，而不是可能较小的current_physical
+            self._last_physical_time = max(current_physical, self._physical_time)
             self._stats["total_ticks"] += 1
             
             # [BUG 2 修复] 当逻辑计数器超过 max_drift_ms 对应的阈值时，记录警告日志
@@ -249,7 +254,9 @@ class HybridLogicalClock:
                 else:
                     self._logical_counter += 1
             
-            self._last_physical_time = current_physical
+            # BUG FIX: _last_physical_time应取max(current_physical, self._physical_time)
+            # 确保回退检测基于最新的物理时间
+            self._last_physical_time = max(current_physical, self._physical_time)
             self._stats["total_ticks"] += 1
             
             # [BUG 2 修复] 当逻辑计数器超过 max_drift_ms 对应的阈值时，记录警告日志

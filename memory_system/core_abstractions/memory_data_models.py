@@ -9,6 +9,9 @@ from typing import Any, Dict, List, Optional
 import time
 import uuid
 import threading
+import logging
+
+logger = logging.getLogger(__name__)
 
 # D05 [P1 Integration] 修复: pydantic 作为可选依赖
 try:
@@ -297,7 +300,12 @@ class MemoryItem(BaseModel):
         if "importance" in data and isinstance(data["importance"], str):
             data["importance"] = ImportanceLevel[data["importance"].upper()]
         if "importance" in data and isinstance(data["importance"], int):
-            data["importance"] = ImportanceLevel(data["importance"])
+            try:
+                data["importance"] = ImportanceLevel(data["importance"])
+            except ValueError:
+                # BUG FIX: 对超出范围的importance值提供默认值，而不是崩溃
+                logger.warning(f"Invalid importance value: {data['importance']}, defaulting to MEDIUM")
+                data["importance"] = ImportanceLevel.MEDIUM
         return cls(**data)
 
 

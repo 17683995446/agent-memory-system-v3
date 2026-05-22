@@ -808,11 +808,12 @@ class MemorySystem:
             # 批量处理长期记忆（使用批量嵌入）
             if long_term_contents:
                 # 批量生成嵌入（带缓存）
-                embeddings = []
+                # BUG FIX: 使用有序字典确保embeddings与long_term_contents顺序一致
+                embedding_map = {}  # content -> embedding
                 contents_to_embed = []
                 for content in long_term_contents:
                     if content in self._embedding_cache:
-                        embeddings.append(self._embedding_cache[content])
+                        embedding_map[content] = self._embedding_cache[content]
                     else:
                         contents_to_embed.append(content)
 
@@ -820,7 +821,10 @@ class MemorySystem:
                     new_embeddings = await self.embedding.embed_batch(contents_to_embed)
                     for content, embedding in zip(contents_to_embed, new_embeddings):
                         self._embedding_cache[content] = embedding
-                    embeddings.extend(new_embeddings)
+                        embedding_map[content] = embedding
+
+                # 按原始顺序获取embeddings
+                embeddings = [embedding_map[content] for content in long_term_contents]
 
                 for content, embedding_vector in zip(long_term_contents, embeddings):
                     item = MemoryItem(

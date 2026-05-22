@@ -149,8 +149,9 @@ class VectorClock:
         Returns:
             更新后的时钟副本
         """
+        # BUG FIX: 在获取self锁之前先获取other的时钟数据，避免AB-BA死锁
+        other_clock = other.clock
         with self._lock:
-            other_clock = other.clock
             for node_id, counter in other_clock.items():
                 self._clock[node_id] = max(self._clock.get(node_id, 0), counter)
             return copy.deepcopy(self._clock)
@@ -186,9 +187,10 @@ class VectorClock:
             - CONCURRENT: 并发（无因果关系）
             - EQUAL: 相等
         """
+        # BUG FIX: 在获取self锁之前先获取other的时钟数据，避免AB-BA死锁
+        clock2 = other.clock
         with self._lock:
             clock1 = self._clock
-            clock2 = other.clock
             
             # 获取所有节点ID
             all_nodes = set(clock1.keys()) | set(clock2.keys())
@@ -289,9 +291,10 @@ class VectorClock:
         Returns:
             新的合并后的向量时钟
         """
+        # BUG FIX: 在获取self锁之前先获取other的时钟数据，避免AB-BA死锁
+        other_clock = other.clock
         with self._lock:
             new_clock = copy.deepcopy(self._clock)
-            other_clock = other.clock
             
             for node_id, counter in other_clock.items():
                 new_clock[node_id] = max(new_clock.get(node_id, 0), counter)

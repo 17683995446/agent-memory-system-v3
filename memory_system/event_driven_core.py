@@ -861,6 +861,8 @@ class SagaOrchestrator:
         self._sagas: Dict[str, List[SagaStep]] = {}
         self._instances: Dict[str, SagaInstance] = {}
         self._lock = asyncio.Lock()
+        # BUG FIX: 跟踪活跃的Saga任务，防止异常被静默吞没
+        self._active_tasks: set = set()
         
     def register_saga(self, saga_name: str, steps: List[SagaStep]) -> None:
         """
@@ -892,8 +894,23 @@ class SagaOrchestrator:
         async with self._lock:
             self._instances[instance.saga_id] = instance
         
-        # 异步执行Saga
-        asyncio.create_task(self._execute_saga(instance.saga_id, saga_name))
+        # 异步执行Saga（保存任务引用以便异常处理和取消）
+        task = asyncio.create_task(self._execute_saga(instance.saga_id, saga_name))
+        # BUG FIX: 添加回调确保Saga异常不会被静默吞没
+        def _saga_done_callback(t: asyncio.Task) -> None:
+            if t.cancelled():
+                logger.warning(f"Saga {saga_name} instance {instance.saga_id} was cancelled")
+                return
+            exc = t.exception()
+            if exc:
+                logger.error(f"Saga {saga_name} instance {instance.saga_id} failed with unhandled exception: {exc}")
+                # 确保Saga实例状态被标记为FAILED
+                if instance.saga_id in self._instances:
+                    self._instances[instance.saga_id].status = SagaStatus.FAILED
+                    self._instances[instance.saga_id].error_message = f"Unhandled exception: {exc}"
+        task.add_done_callback(_saga_done_callback)
+        self._active_tasks.add(task)
+        task.add_done_callback(self._active_tasks.discard)
         
         logger.info(f"Started saga {saga_name} with instance {instance.saga_id}")
         return instance
