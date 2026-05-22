@@ -965,10 +965,11 @@ class QueryBus:
     负责路由查询到对应的处理器，支持缓存
     """
     
-    def __init__(self):
+    def __init__(self, max_cache_size: int = 1000):
         self._handlers: Dict[type, QueryHandler] = {}
         self._cache: Dict[str, Tuple[Any, datetime]] = {}
         self._cache_ttl = 60  # 默认缓存60秒
+        self._max_cache_size = max_cache_size
         self._lock = asyncio.Lock()
     
     def register_handler(self, handler: QueryHandler) -> None:
@@ -1031,6 +1032,11 @@ class QueryBus:
     async def _set_cached(self, key: str, value: Any) -> None:
         """设置缓存值"""
         async with self._lock:
+            # 如果缓存已满，淘汰最早的条目
+            if len(self._cache) >= self._max_cache_size and key not in self._cache:
+                # 移除最早插入的条目（FIFO淘汰）
+                oldest_key = next(iter(self._cache))
+                del self._cache[oldest_key]
             self._cache[key] = (value, datetime.now(timezone.utc))
     
     async def invalidate_cache(self, pattern: Optional[str] = None) -> None:

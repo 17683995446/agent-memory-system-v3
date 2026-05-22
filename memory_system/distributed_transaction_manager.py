@@ -429,7 +429,13 @@ class TwoPhaseCommitCoordinator:
                 
                 # 获取所有活动事务
                 active_txs = await self.store.get_active_transactions()
-                
+
+                # 清理已完成事务的锁
+                active_tx_ids = {tx.tx_id for tx in active_txs}
+                stale_ids = set(self._tx_locks.keys()) - active_tx_ids
+                for tx_id in stale_ids:
+                    self._tx_locks.pop(tx_id, None)
+
                 for tx in active_txs:
                     # DA-013 [P1] 修复: 使用per-transaction锁保护恢复操作
                     lock = self._tx_locks.setdefault(tx.tx_id, asyncio.Lock())
@@ -529,6 +535,9 @@ class TwoPhaseCommitCoordinator:
             tx.status = TransactionStatus.TIMEOUT
             await self.store.save_transaction(tx)
             raise TransactionTimeoutError(f"Transaction {tx_id} timed out")
+
+        if tx.status != TransactionStatus.ACTIVE:
+            raise TransactionError(f"Cannot prepare transaction {tx_id} in status {tx.status}")
 
         tx.status = TransactionStatus.PREPARING
         await self.store.save_transaction(tx)
@@ -720,7 +729,9 @@ class TwoPhaseCommitCoordinator:
         if success and len(committed_participants) == len(commit_tasks):
             tx.status = TransactionStatus.COMMITTED
         else:
-            tx.status = TransactionStatus.ABORTED
+            tx.status = TransactionStatus.UNKNOWN  # 部分提交失败标记为UNKNOWN而非ABORTED
+            tx.metadata["committed_participants"] = committed_participants
+            tx.metadata["inconsistent"] = True
             success = False
 
         await self.store.save_transaction(tx)
@@ -804,6 +815,15 @@ class TwoPhaseCommitCoordinator:
             raise TransactionNotFoundError(f"Transaction {tx_id} not found")
         
         if tx.status in (TransactionStatus.COMMITTED, TransactionStatus.ABORTED):
+            return True
+        
+        terminal_states = {
+            TransactionStatus.COMMITTED,
+            TransactionStatus.ABORTED,
+            TransactionStatus.SAGA_COMPENSATED,
+            TransactionStatus.TIMEOUT,
+        }
+        if tx.status in terminal_states:
             return True
         
         tx.status = TransactionStatus.ABORTING

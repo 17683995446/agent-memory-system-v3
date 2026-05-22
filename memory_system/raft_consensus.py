@@ -1038,11 +1038,14 @@ class RaftNode:
                 # 避免与其他协程并发修改 _role 时产生数据竞争。
                 # 使用短超时非阻塞方式获取锁，避免心跳循环长时间阻塞。
                 try:
-                    is_leader = await asyncio.wait_for(
-                        self._state_lock.acquire(), timeout=0.001
+                    acquired = await asyncio.wait_for(
+                        self._state_lock.acquire(), timeout=0.01
                     )
-                    if is_leader:
+                    if not acquired:
+                        continue
+                    try:
                         is_leader = self._role == RaftRole.LEADER
+                    finally:
                         self._state_lock.release()
                 except asyncio.TimeoutError:
                     # 锁被其他协程持有，跳过本轮心跳检查
