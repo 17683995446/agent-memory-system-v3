@@ -271,20 +271,44 @@ class RaftState:
     current_term: int = 0
     voted_for: Optional[str] = None
     log: List[LogEntry] = field(default_factory=list)
+    _log_offset: int = 0  # DEFECT-RC-019 [P0]: 日志偏移量，快照安装后使用
     
     def get_last_log_index(self) -> int:
         """获取最后日志索引"""
-        return len(self.log) - 1 if self.log else -1
+        if not self.log:
+            return self._log_offset - 1
+        return self._log_offset + len(self.log) - 1
     
     def get_last_log_term(self) -> int:
         """获取最后日志任期"""
         return self.log[-1].term if self.log else 0
     
     def get_entry_at(self, index: int) -> Optional[LogEntry]:
-        """获取指定索引的日志条目"""
-        if 0 <= index < len(self.log):
-            return self.log[index]
+        """获取指定索引的日志条目
+        
+        DEFECT-RC-019 [P0] 修复: 考虑日志偏移量
+        """
+        physical_index = index - self._log_offset
+        if 0 <= physical_index < len(self.log):
+            return self.log[physical_index]
         return None
+    
+    def truncate_log_before(self, index: int):
+        """截断index之前的所有日志（快照安装后使用）
+        
+        DEFECT-RC-019 [P0] 修复: 更新日志偏移量
+        """
+        physical_index = index - self._log_offset
+        if physical_index >= 0 and physical_index < len(self.log):
+            self.log = self.log[physical_index + 1:]
+            self._log_offset = index + 1
+        elif physical_index < 0:
+            # 已经包含在之前的快照中
+            pass
+        else:
+            # index超出当前日志范围
+            self.log = []
+            self._log_offset = index + 1
 
 
 @dataclass
@@ -1524,6 +1548,9 @@ class RaftNode:
         """
         处理安装快照请求
         
+        DEFECT-RC-004 [P0] 修复: 先更新元数据和截断日志，再恢复状态机
+        DEFECT-RC-019 [P0] 修复: 使用truncate_log_before方法正确处理日志偏移
+        
         Args:
             request: 安装快照请求
             
@@ -1544,28 +1571,23 @@ class RaftNode:
             self._reset_election_timer()
             self._current_leader = request.leader_id
             
-            # 应用快照数据到状态机
+            # DEFECT-RC-004 [P0]: 先更新元数据
+            self._last_snapshot_index = request.last_included_index
+            self._last_snapshot_term = request.last_included_term
+            
+            # DEFECT-RC-004 [P0]: 更新应用索引
+            self._volatile_state.last_applied = request.last_included_index
+            self._volatile_state.commit_index = max(
+                self._volatile_state.commit_index,
+                request.last_included_index
+            )
+            
+            # DEFECT-RC-019 [P0]: 使用新的truncate_log_before方法截断日志
+            self._persistent_state.truncate_log_before(request.last_included_index)
+            
+            # DEFECT-RC-004 [P0]: 最后恢复状态机
             try:
                 await self.state_machine.restore(request.data)
-                
-                # 更新快照信息
-                self._last_snapshot_index = request.last_included_index
-                self._last_snapshot_term = request.last_included_term
-                
-                # 截断日志
-                if request.last_included_index < len(self._persistent_state.log):
-                    self._persistent_state.log = self._persistent_state.log[
-                        request.last_included_index + 1:
-                    ]
-                else:
-                    self._persistent_state.log = []
-                
-                # 更新应用索引
-                self._volatile_state.last_applied = request.last_included_index
-                self._volatile_state.commit_index = max(
-                    self._volatile_state.commit_index,
-                    request.last_included_index
-                )
                 
                 return InstallSnapshotResponse(
                     term=self._persistent_state.current_term,
