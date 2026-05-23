@@ -24,15 +24,18 @@ import struct
 import logging
 from typing import Dict, Tuple, Optional, Any, Union
 from dataclasses import dataclass, field
-from enum import Enum, auto
+from enum import Enum, auto, IntEnum
 import threading
 import hashlib
 
 logger = logging.getLogger(__name__)
 
 
-class HLCComparisonResult(Enum):
-    """HLC比较结果"""
+class HLCComparisonResult(IntEnum):
+    """HLC比较结果
+
+    DEFECT-HL-005 [P0] 修复: 使用IntEnum而非Enum，支持比较运算符
+    """
     LESS = -1
     EQUAL = 0
     GREATER = 1

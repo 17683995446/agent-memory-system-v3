@@ -370,10 +370,14 @@ class VectorClock:
         return self.__str__()
     
     def __eq__(self, other) -> bool:
-        """相等比较"""
+        """相等比较
+
+        DEFECT-VC-001 [P1] 修复: 直接比较时钟字典，与__hash__保持一致
+        """
         if not isinstance(other, VectorClock):
             return False
-        return self.compare(other) == VectorClockRelation.EQUAL
+        with self._lock:
+            return self._clock == other._clock
     
     def __hash__(self) -> int:
         """哈希值"""
@@ -463,9 +467,12 @@ class VectorClockManager:
             True如果成功接收
         """
         with self._lock:
-            # 更新本地时钟
+            # 更新本地时钟（合并远程时钟）
             self._current_clock.update_from_dict(event.vector_clock)
-            
+
+            # DEFECT-VC-003 [P1] 修复: 递增本地时钟以记录接收事件
+            self._current_clock.increment()
+
             # 记录事件
             self._event_history.append(event)
             # [BUG 4 修复] 每次添加事件后检查是否需要清理
