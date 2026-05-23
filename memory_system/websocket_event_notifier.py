@@ -71,16 +71,21 @@ class WebSocketEventNotifier:
         tenant_id: str = "default",
         subscriptions: List[str] = None
     ) -> None:
-        """接受 WebSocket 连接"""
+        """接受 WebSocket 连接
+        
+        DEFECT-R3-009 [P0] 修复: 即使FastAPI不可用也追踪连接，
+        确保资源管理的一致性
+        """
+        async with self._lock:
+            self._connections.add(websocket)
+            self._subscriptions[websocket] = set(subscriptions or [])
+            self._tenants[websocket] = tenant_id
+        
         if not _FASTAPI_AVAILABLE:
             logger.warning("FastAPI 未安装，WebSocket 不可用")
             return
         
         await websocket.accept()
-        async with self._lock:
-            self._connections.add(websocket)
-            self._subscriptions[websocket] = set(subscriptions or [])
-            self._tenants[websocket] = tenant_id
         
         logger.debug(f"WebSocket 连接已建立: tenant={tenant_id}")
         
