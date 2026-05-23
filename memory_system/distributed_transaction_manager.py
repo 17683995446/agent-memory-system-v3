@@ -352,12 +352,14 @@ class InMemoryTransactionStore(TransactionStore):
     
     async def get_active_transactions(self) -> List[Transaction]:
         """获取活动事务"""
+        # DEFECT-DC-005 [P0]: UNKNOWN状态也应被视为活动状态
         active_statuses = {
             TransactionStatus.ACTIVE,
             TransactionStatus.PREPARING,
             TransactionStatus.PREPARED,
             TransactionStatus.COMMITTING,
             TransactionStatus.SAGA_COMPENSATING,
+            TransactionStatus.UNKNOWN,
         }
         return [
             tx for tx in self._transactions.values()
@@ -456,6 +458,13 @@ class TwoPhaseCommitCoordinator:
                         elif tx.status == TransactionStatus.PREPARING:
                             logger.info(f"Aborting incomplete transaction {tx.tx_id}")
                             await self.abort(tx.tx_id)
+                        # DEFECT-DC-005 [P0]: 处理UNKNOWN状态事务
+                        elif tx.status == TransactionStatus.UNKNOWN:
+                            logger.warning(
+                                f"Transaction {tx.tx_id} in UNKNOWN state, "
+                                f"requires manual intervention"
+                            )
+                            # 记录告警，保持UNKNOWN状态等待人工处理
                         
             except asyncio.CancelledError:
                 break
@@ -534,20 +543,23 @@ class TwoPhaseCommitCoordinator:
         Returns:
             是否所有参与者都准备成功
         """
-        tx = await self.store.load_transaction(tx_id)
-        if not tx:
-            raise TransactionNotFoundError(f"Transaction {tx_id} not found")
+        # DEFECT-DC-001 [P0]: 使用per-transaction锁保护并发安全
+        lock = self._tx_locks.setdefault(tx_id, asyncio.Lock())
+        async with lock:
+            tx = await self.store.load_transaction(tx_id)
+            if not tx:
+                raise TransactionNotFoundError(f"Transaction {tx_id} not found")
 
-        if tx.is_timed_out():
-            tx.status = TransactionStatus.TIMEOUT
+            if tx.is_timed_out():
+                tx.status = TransactionStatus.TIMEOUT
+                await self.store.save_transaction(tx)
+                raise TransactionTimeoutError(f"Transaction {tx_id} timed out")
+
+            if tx.status != TransactionStatus.ACTIVE:
+                raise TransactionError(f"Cannot prepare transaction {tx_id} in status {tx.status}")
+
+            tx.status = TransactionStatus.PREPARING
             await self.store.save_transaction(tx)
-            raise TransactionTimeoutError(f"Transaction {tx_id} timed out")
-
-        if tx.status != TransactionStatus.ACTIVE:
-            raise TransactionError(f"Cannot prepare transaction {tx_id} in status {tx.status}")
-
-        tx.status = TransactionStatus.PREPARING
-        await self.store.save_transaction(tx)
 
         logger.info(f"Transaction {tx_id} entering prepare phase")
 
@@ -632,16 +644,19 @@ class TwoPhaseCommitCoordinator:
         Returns:
             是否提交成功
         """
-        tx = await self.store.load_transaction(tx_id)
-        if not tx:
-            raise TransactionNotFoundError(f"Transaction {tx_id} not found")
-        
-        if tx.status != TransactionStatus.PREPARED:
-            raise TransactionError(
-                f"Transaction {tx_id} cannot be committed in status {tx.status}"
-            )
-        
-        return await self._do_commit(tx)
+        # DEFECT-DC-001 [P0]: 使用per-transaction锁保护并发安全
+        lock = self._tx_locks.setdefault(tx_id, asyncio.Lock())
+        async with lock:
+            tx = await self.store.load_transaction(tx_id)
+            if not tx:
+                raise TransactionNotFoundError(f"Transaction {tx_id} not found")
+
+            if tx.status != TransactionStatus.PREPARED:
+                raise TransactionError(
+                    f"Transaction {tx_id} cannot be committed in status {tx.status}"
+                )
+
+            return await self._do_commit(tx)
     
     async def _do_commit(self, tx: Transaction) -> bool:
         """
@@ -817,43 +832,56 @@ class TwoPhaseCommitCoordinator:
         Returns:
             是否中止成功
         """
-        tx = await self.store.load_transaction(tx_id)
-        if not tx:
-            raise TransactionNotFoundError(f"Transaction {tx_id} not found")
-        
-        if tx.status in (TransactionStatus.COMMITTED, TransactionStatus.ABORTED):
+        # DEFECT-DC-001 [P0]: 使用per-transaction锁保护并发安全
+        lock = self._tx_locks.setdefault(tx_id, asyncio.Lock())
+        async with lock:
+            tx = await self.store.load_transaction(tx_id)
+            if not tx:
+                raise TransactionNotFoundError(f"Transaction {tx_id} not found")
+
+            if tx.status in (TransactionStatus.COMMITTED, TransactionStatus.ABORTED):
+                return True
+
+            # DEFECT-DC-006 [P0]: COMMITTING状态不能被简单中止
+            if tx.status == TransactionStatus.COMMITTING:
+                logger.warning(
+                    f"Cannot abort transaction {tx_id} in COMMITTING state, "
+                    f"marking as UNKNOWN for manual recovery"
+                )
+                tx.status = TransactionStatus.UNKNOWN
+                await self.store.save_transaction(tx)
+                return False
+
+            terminal_states = {
+                TransactionStatus.COMMITTED,
+                TransactionStatus.ABORTED,
+                TransactionStatus.SAGA_COMPENSATED,
+                TransactionStatus.TIMEOUT,
+            }
+            if tx.status in terminal_states:
+                return True
+
+            tx.status = TransactionStatus.ABORTING
+            await self.store.save_transaction(tx)
+
+            logger.info(f"Transaction {tx_id} aborting")
+
+            # 向所有参与者发送中止请求
+            abort_tasks = []
+            for participant_id in tx._participants:
+                participant = self._participants.get(participant_id)
+                if participant:
+                    task = participant.abort(tx_id, tx.context)
+                    abort_tasks.append(task)
+
+            if abort_tasks:
+                await asyncio.gather(*abort_tasks, return_exceptions=True)
+
+            tx.status = TransactionStatus.ABORTED
+            await self.store.save_transaction(tx)
+
+            logger.info(f"Transaction {tx_id} aborted")
             return True
-        
-        terminal_states = {
-            TransactionStatus.COMMITTED,
-            TransactionStatus.ABORTED,
-            TransactionStatus.SAGA_COMPENSATED,
-            TransactionStatus.TIMEOUT,
-        }
-        if tx.status in terminal_states:
-            return True
-        
-        tx.status = TransactionStatus.ABORTING
-        await self.store.save_transaction(tx)
-        
-        logger.info(f"Transaction {tx_id} aborting")
-        
-        # 向所有参与者发送中止请求
-        abort_tasks = []
-        for participant_id in tx._participants:
-            participant = self._participants.get(participant_id)
-            if participant:
-                task = participant.abort(tx_id, tx.context)
-                abort_tasks.append(task)
-        
-        if abort_tasks:
-            await asyncio.gather(*abort_tasks, return_exceptions=True)
-        
-        tx.status = TransactionStatus.ABORTED
-        await self.store.save_transaction(tx)
-        
-        logger.info(f"Transaction {tx_id} aborted")
-        return True
     
     async def get_transaction_status(self, tx_id: str) -> Optional[TransactionStatus]:
         """获取事务状态"""
